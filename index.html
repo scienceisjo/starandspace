@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080d1a">
+<title>VIII. 별과 우주 · 중2 과학 단원 허브</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
+  --line:#2b3763; --line-soft:#222c54;
+  --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
+  --accent:#7c9cff; --accent2:#a9c0ff; --on-accent:#08112a;
+  --c1:#ffd166;  /* 시차 */
+  --c2:#67e8e0;  /* 연주 시차 */
+  --c3:#9ae66e;  /* 밝기·등급 */
+  --c4:#ff8fb1;  /* 표면 온도·색 */
+  --c5:#c4a7ff;  /* 은하·우주 */
+  --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
+  --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:var(--disp);
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --jua:"Jua",var(--disp);
+  --header-h:60px; --r:18px;
+  --shadow:0 18px 50px -22px rgba(0,0,0,.8);
+  --scrim:.80;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);color:var(--ink);line-height:1.62;
+  background:
+    radial-gradient(1100px 620px at 80% -10%, rgba(124,156,255,.13), transparent 62%),
+    radial-gradient(800px 520px at 8% 12%, rgba(196,167,255,.10), transparent 58%),
+    var(--abyss);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+::selection{background:rgba(124,156,255,.32);color:#fff}
+
+/* 별 배경 */
+#stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+#bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;
+  background-image:radial-gradient(120% 90% at 50% 0%, #1b2450, #080d1a 68%)}
+@media print{#stars,#bgLayer{display:none}}
+
+/* 헤더 */
+header.top{position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg,rgba(8,13,26,.96),rgba(8,13,26,.80) 70%,rgba(8,13,26,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.top-bar{max-width:1120px;margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:12px;padding:0 16px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .logo{width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;font-size:18px;
+  background:radial-gradient(circle at 32% 28%,#2b3a68,#0d1533);border:1px solid var(--line)}
+.brand b{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.2px;white-space:nowrap}
+.brand b span{color:var(--accent)}
+.brand .sub{font-size:11px;color:var(--ink-mute);white-space:nowrap}
+@media(max-width:560px){.brand .sub{display:none}}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tmode{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink-dim);cursor:pointer;transition:.18s}
+.tmode:hover{border-color:var(--gold)}
+body.teacher .tmode{background:rgba(255,209,102,.14);border-color:var(--gold)}
+.progress-mini{display:flex;align-items:center;gap:9px}
+.progress-mini .bar{width:92px;height:7px;border-radius:99px;background:#16203d;overflow:hidden;border:1px solid var(--line)}
+.progress-mini .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .6s cubic-bezier(.22,1,.36,1);box-shadow:0 0 12px var(--accent)}
+.progress-mini .pct{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:34px;text-align:right}
+@media(max-width:470px){.progress-mini .bar{width:52px}}
+
+main{max-width:1120px;margin:0 auto;padding:26px 16px 80px}
+
+/* 히어로 — img/hub-hero.jpg 가 있으면 배경 사진이 깔린다 */
+.hero{text-align:center;padding:26px 0 6px;position:relative}
+.hero.has-img{
+  min-height:clamp(320px,52vh,520px);display:flex;flex-direction:column;justify-content:center;
+  padding:60px 22px;margin:0 -16px 8px;border-radius:0;
+  background-size:cover;background-position:center 42%;
+}
+@media(min-width:1148px){.hero.has-img{margin:0 0 8px;border-radius:22px;overflow:hidden}}
+
+/* 차시 카드 썸네일 */
+.lesson .thumb{position:relative;aspect-ratio:16/7;border-radius:12px;overflow:hidden;
+  background:linear-gradient(135deg,#12203f,#1b2647);display:none}
+.lesson .thumb.on{display:block}
+.lesson .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s ease}
+.lesson.ready:hover .thumb img{transform:scale(1.06)}
+.lesson .thumb::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,13,26,.10),rgba(8,13,26,.72))}
+.lesson.soon .thumb img{filter:grayscale(.55) brightness(.7)}
+.hero .em{font-size:clamp(28px,6.6vw,40px);letter-spacing:.2em;line-height:1;
+  filter:drop-shadow(0 0 20px rgba(124,156,255,.6))}
+.hero h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,7vw,56px);line-height:1.12;
+  margin:16px 0 10px;letter-spacing:-.6px;text-shadow:0 0 30px rgba(124,156,255,.35),0 2px 20px rgba(0,0,0,.7)}
+.hero h1 span{color:var(--accent2)}
+.hero p{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px);max-width:58ch;margin:0 auto}
+.hero .meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:5px 12px;
+  border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-dim)}
+.badge.gold{background:rgba(255,209,102,.1);border-color:#5a4a1e;color:var(--gold)}
+.badge.ok{background:rgba(74,222,128,.1);border-color:#2e6e44;color:var(--ok)}
+.badge.wait{background:rgba(115,130,173,.12);border-color:#3a4568;color:var(--ink-mute)}
+.badge.c5{background:rgba(196,167,255,.12);border-color:#4a3a78;color:#d6c2ff}
+
+/* 블록 질문 */
+.block-q{margin-top:34px;background:linear-gradient(180deg,var(--surface),var(--deep));
+  border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.block-q::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 130% at 12% 0%,rgba(124,156,255,.16),transparent 62%);pointer-events:none}
+.block-q.b2::before{background:radial-gradient(70% 130% at 12% 0%,rgba(196,167,255,.14),transparent 62%)}
+.block-q .lab{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+  letter-spacing:1.4px;color:var(--accent2);margin-bottom:10px}
+.block-q.b2 .lab{color:#d6c2ff}
+.block-q h2{font-family:var(--jua);font-size:clamp(19px,3.6vw,27px);line-height:1.35;color:#fff;position:relative}
+.block-q .desc{color:var(--ink-dim);font-size:14.5px;margin-top:10px;position:relative;max-width:70ch}
+
+/* 차시 카드 */
+.lessons{display:grid;gap:14px;margin-top:18px;grid-template-columns:1fr}
+@media(min-width:700px){.lessons{grid-template-columns:1fr 1fr}}
+.lesson{position:relative;display:flex;flex-direction:column;gap:10px;text-align:left;
+  background:var(--surface2);border:1px solid var(--line);border-radius:15px;padding:18px;
+  font-family:var(--body);color:inherit;text-decoration:none;transition:.2s;overflow:hidden}
+.lesson::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--k,var(--accent))}
+.lesson.ready{cursor:pointer}
+.lesson.ready:hover{transform:translateY(-3px);border-color:var(--k,var(--accent));
+  box-shadow:0 20px 40px -22px var(--k,var(--accent))}
+.lesson.soon{opacity:.62}
+.lesson .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lesson .no{flex:none;width:31px;height:31px;border-radius:10px;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:700;font-size:14px;background:var(--k,var(--accent));color:var(--on-accent)}
+.lesson.soon .no{background:#2b3763;color:var(--ink-mute)}
+.lesson .pg{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-mute)}
+.lesson h3{font-family:var(--jua);font-size:18px;line-height:1.35;color:var(--ink)}
+.lesson .why{font-size:13.5px;color:var(--ink-dim);line-height:1.55}
+.lesson .tags{display:flex;flex-wrap:wrap;gap:6px}
+.lesson .tag{font-size:11.5px;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);color:var(--ink-dim)}
+.lesson .go{margin-top:2px;display:flex;align-items:center;gap:7px;font-weight:800;font-size:14px;color:var(--k,var(--accent))}
+.lesson.soon .go{color:var(--ink-mute)}
+.lesson .seen{position:absolute;top:14px;right:14px;font-size:15px;opacity:0;transition:.3s}
+.lesson.visited .seen{opacity:1}
+
+/* 교사 노트 */
+.tnote{display:none;gap:11px;align-items:flex-start;border-left:3px solid var(--gold);
+  background:rgba(255,209,102,.07);padding:12px 14px;border-radius:0 12px 12px 0;margin-top:12px;
+  font-size:13.5px;color:var(--ink-dim);line-height:1.55}
+.tnote .ic{flex:none;font-size:16px}
+.tnote b{color:var(--gold)}
+body.teacher .tnote{display:flex}
+
+/* 안내 박스 */
+.info{margin-top:16px;display:flex;gap:12px;align-items:flex-start;border:1px dashed #3a4568;
+  border-radius:14px;padding:15px 17px;color:var(--ink-dim);font-size:13.5px;line-height:1.6;background:rgba(255,255,255,.02)}
+.info .ic{flex:none;font-size:17px}
+.info b{color:var(--ink)}
+
+/* 하단 도구 */
+.tools{display:grid;gap:12px;grid-template-columns:1fr;margin-top:30px}
+@media(min-width:640px){.tools{grid-template-columns:1fr 1fr}}
+.tool{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:15px 17px;text-decoration:none;color:inherit;transition:.18s}
+.tool:hover{border-color:var(--accent);background:var(--surface2)}
+.tool .e{font-size:22px;flex:none}
+.tool b{font-size:14.5px;display:block}
+.tool span{font-size:12.5px;color:var(--ink-mute)}
+
+h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;align-items:center;gap:9px}
+.sechead .line{flex:1;height:1px;background:var(--line-soft)}
+
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:200;
+  background:rgba(14,22,44,.96);border:1px solid var(--accent);color:var(--ink);padding:12px 20px;border-radius:13px;
+  font-weight:700;font-size:14.5px;box-shadow:0 16px 40px -12px rgba(0,0,0,.8);opacity:0;pointer-events:none;
+  transition:.3s;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.08s!important;scroll-behavior:auto}}
+@media print{
+  header.top,#toast,.tools{display:none!important}
+  body{background:#fff;color:#111}
+  .block-q,.lesson,.tool{background:#fff;border-color:#ccc;box-shadow:none;opacity:1}
+  .hero h1,.block-q h2,.lesson h3{color:#111}
+  .lesson .why,.hero p,.block-q .desc{color:#333}
+  .tnote{display:flex!important}
+}
+</style>
+</head>
+<body>
+<div id="bgLayer"></div>
+<canvas id="stars"></canvas>
+
+<header class="top">
+  <div class="top-bar">
+    <div class="brand">
+      <div class="logo">🌌</div>
+      <div>
+        <b>VIII. <span>별과 우주</span></b>
+        <div class="sub">중2 과학 · 비상교육 · 단원 허브</div>
+      </div>
+    </div>
+    <div class="head-right">
+      <button class="tmode" id="tmodeBtn" title="교사 모드 (지도 메모 표시)">🧑‍🏫</button>
+      <div class="progress-mini" title="내가 지나온 차시">
+        <div class="bar"><i id="progBar"></i></div>
+        <div class="pct" id="progPct">0%</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="em">🔭 ⭐ 🌌</div>
+    <h1>밤하늘을 <span>재는</span> 법</h1>
+    <p>손이 닿지 않는 별까지의 거리를, 사람은 어떻게 알아냈을까?
+       이 단원에서는 <b>각도</b>와 <b>밝기</b>와 <b>색</b>이라는 세 개의 단서로 별을 읽는 법을 배웁니다.</p>
+    <div class="meta">
+      <span class="badge">📘 교과서 269~277쪽</span>
+      <span class="badge">🗓️ 첫 번째 블록 · 4차시</span>
+      <span class="badge ok" id="doneBadge" style="display:none">✔ <span id="doneN">0</span>차시 완료</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 첫 번째 블록 ═══════════ -->
+  <section class="block-q">
+    <div class="lab">■ 첫 번째 블록</div>
+    <h2>별까지의 거리와 별의 표면 온도는<br>어떻게 알 수 있을까?</h2>
+    <p class="desc">아래 네 차시의 단서를 모으면 이 질문에 답할 수 있습니다.
+       ① 각도로 재기(연주 시차) → ② 밝기와 거리의 관계 → ③ 등급으로 재기 → ④ 색으로 온도 읽기</p>
+    <div class="tnote"><span class="ic">💬</span><div><b>중단원 지도 유의점</b> — 별의 연주 시차와 거리 관계를 <b>수식으로 다루지 않습니다</b>. 등급으로 거리를 구하는 공식도 도입하지 않습니다. 별의 색과 온도는 정량적으로 다루지 않고 관련짓는 정도로만 지도합니다.</div></div>
+  </section>
+
+  <div class="lessons">
+
+    <a class="lesson ready" style="--k:var(--c2)" data-id="l1" href="01-parallax.html">
+      <div class="thumb" data-thumb="l1"></div>
+      <span class="seen">✅</span>
+      <div class="top"><div class="no">1</div><span class="badge ok">수업 준비 완료</span><span class="pg">270~271쪽</span></div>
+      <h3>연주 시차로 구하는<br>별까지의 거리</h3>
+      <p class="why">움직인 건 별일까, 나일까? 눈앞의 연필로 시작해 지구 공전 궤도라는 거대한 자로 별까지의 거리를 잽니다.</p>
+      <div class="tags"><span class="tag">시차</span><span class="tag">연주 시차</span><span class="tag">pc(파섹)</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — 학생들은 별의 시차 현상을 <b>별이 실제로 움직인 것</b>으로 생각하기 쉽습니다. 지구 공전으로 관측자 위치가 달라져 정지한 별이 다르게 보이는 것임을 지도하세요.</div></div>
+    </a>
+
+    <a class="lesson ready" style="--k:var(--c3)" data-id="l2" href="02-brightness.html">
+      <div class="thumb" data-thumb="l2"></div>
+      <span class="seen">✅</span>
+      <div class="top"><div class="no">2</div><span class="badge ok">수업 준비 완료</span><span class="pg">272~273쪽</span></div>
+      <h3>빛의 밝기와<br>광원까지의 거리</h3>
+      <p class="why">응원봉은 왜 멀수록 어두워 보일까? 조도 측정 앱으로 거리와 빛의 세기를 직접 재어 관계를 찾습니다.</p>
+      <div class="tags"><span class="tag">조도</span><span class="tag">거리의 제곱에 반비례</span><span class="tag">디지털 탐구</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — 광도와 조도를 구분하기 어려워합니다. 광도는 광원이 사방으로 내는 빛의 세기, 조도는 단위 면이 받는 밝기(거리 제곱에 반비례)임을 구분해 지도하세요.</div></div>
+    </a>
+
+    <a class="lesson ready" style="--k:var(--c3)" data-id="l3" href="03-magnitude.html">
+      <div class="thumb" data-thumb="l3"></div>
+      <span class="seen">✅</span>
+      <div class="top"><div class="no">3</div><span class="badge ok">수업 준비 완료</span><span class="pg">274~275쪽</span></div>
+      <h3>겉보기 등급과<br>절대 등급</h3>
+      <p class="why">밝게 보이는 별이 정말 밝은 별일까? 시리우스와 베텔게우스를 견주며 '보이는 밝기'와 '진짜 밝기'를 가릅니다.</p>
+      <div class="tags"><span class="tag">겉보기 등급</span><span class="tag">절대 등급</span><span class="tag">10 pc</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — "가까운 별은 밝고 먼 별은 어둡다"고 생각합니다. 실제로 밝아도 멀면 어둡게 보인다는 점을 강조하세요.</div></div>
+    </a>
+
+    <a class="lesson ready" style="--k:var(--c4)" data-id="l4" href="04-color.html">
+      <div class="thumb" data-thumb="l4"></div>
+      <span class="seen">✅</span>
+      <div class="top"><div class="no">4</div><span class="badge ok">수업 준비 완료</span><span class="pg">276~277쪽</span></div>
+      <h3>색으로 비교하는<br>별의 표면 온도</h3>
+      <p class="why">용광로 쇳물의 색이 식으며 달라지듯, 별의 색도 온도를 알려 줍니다. 청색이 뜨겁고 적색이 차갑습니다.</p>
+      <div class="tags"><span class="tag">표면 온도</span><span class="tag">별의 색</span><span class="tag">청색↔적색</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — 일상에서 적색=따뜻, 청색=차가움이라 <b>거꾸로</b> 생각하기 쉽습니다. 온도가 높을수록 청색임을 반복해 강조하세요.</div></div>
+    </a>
+
+  </div>
+
+  <!-- ═══════════ 두 번째 블록 ═══════════ -->
+  <h2 class="sechead">두 번째 블록<span class="line"></span></h2>
+  <section class="block-q b2">
+    <div class="lab">■ 두 번째 블록 · 2. 우리은하와 우주 탐사</div>
+    <h2>우리은하를 구성하는 천체는<br>어떻게 탐사할 수 있을까?</h2>
+    <p class="desc">별 하나에서 눈을 들어 별의 무리, 은하, 그리고 우주 전체로 시야를 넓힙니다.
+       아래 여섯 차시의 단서를 모으면 이 질문에 답할 수 있습니다.</p>
+    <div class="tnote"><span class="ic">💬</span><div><b>중단원 지도 유의점</b> — 우리은하의 모양은 지구에서 관측되는 <b>은하수와 관련지어</b> 이해하도록 지도합니다. 우주 팽창과 관련해 <b>적색 편이·허블 법칙·가속 팽창 같은 심화 내용은 다루지 않습니다.</b></div></div>
+  </section>
+
+  <div class="lessons">
+    <a class="lesson ready" style="--k:var(--c5)" data-id="l5" href="05-milkyway.html">
+      <div class="thumb" data-thumb="l5"></div>
+      <span class="seen">✅</span>
+      <div class="top"><div class="no">5</div><span class="badge ok">수업 준비 완료</span><span class="pg">280~281쪽</span></div>
+      <h3>태양계가 있는<br>우리은하</h3>
+      <p class="why">밤하늘을 가로지르는 뿌연 띠의 정체. 우리는 우리은하를 밖에서 본 적이 없는데, 어떻게 그 모양을 알아냈을까요?</p>
+      <div class="tags"><span class="tag">우리은하</span><span class="tag">은하수</span><span class="tag">8500 pc</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — 태양계가 우리은하의 <b>중심</b>에 있다고 생각하기 쉽습니다. 중심에서 약 8500 pc 벗어난 나선팔에 있다는 점, 그래서 은하수가 방향에 따라 다르게 보인다는 점을 연결해 지도하세요.</div></div>
+    </a>
+
+    <div class="lesson soon" style="--k:var(--c5)" data-id="l6">
+      <div class="thumb" data-thumb="l6"></div>
+      <div class="top"><div class="no">6</div><span class="badge wait">준비 중</span><span class="pg">282~283쪽</span></div>
+      <h3>우리은하를 이루는 천체 ①<br>직접 관측하기</h3>
+      <p class="why">천체 관측 프로그램으로 궁수·오리온·황소·전갈자리를 훑으며 성운과 성단을 직접 찾아 특징을 비교합니다.</p>
+      <div class="tags"><span class="tag">성운</span><span class="tag">성단</span><span class="tag">디지털 탐구</span></div>
+      <div class="go">준비 중</div>
+      <div class="tnote"><span class="ic">💡</span><div>성운은 <b>성간 물질의 밝기</b>를, 성단은 <b>별이 모여 있는 정도</b>를 기준으로 비교하게 하세요. 조사 중 우리은하 <b>밖</b>의 천체를 가져오는 경우가 있어 확인이 필요합니다.</div></div>
+    </div>
+
+    <div class="lesson soon" style="--k:var(--c5)" data-id="l7">
+      <div class="thumb" data-thumb="l7"></div>
+      <div class="top"><div class="no">7</div><span class="badge wait">준비 중</span><span class="pg">284~285쪽</span></div>
+      <h3>우리은하를 이루는 천체 ②<br>성운과 성단의 종류</h3>
+      <p class="why">방출·반사·암흑 성운, 그리고 산개 성단과 구상 성단. 말머리성운은 왜 검게 보일까요?</p>
+      <div class="tags"><span class="tag">방출·반사·암흑</span><span class="tag">산개 성단</span><span class="tag">구상 성단</span></div>
+      <div class="go">준비 중</div>
+      <div class="tnote"><span class="ic">💡</span><div>좀생이별(플레이아데스)이 1차시 도입 사진으로 나왔던 그 천체입니다 — <b>산개 성단</b>이며 주변에 반사 성운이 있어 성운으로 소개되기도 합니다.</div></div>
+    </div>
+
+    <div class="lesson soon" style="--k:var(--c5)" data-id="l8">
+      <div class="thumb" data-thumb="l8"></div>
+      <div class="top"><div class="no">8</div><span class="badge wait">준비 중</span><span class="pg">286~287쪽</span></div>
+      <h3>팽창하는 우주</h3>
+      <p class="why">풍선에 붙임딱지를 붙이고 불어 봅니다. 멀리 있는 것일수록 더 많이 멀어지는 이유를 손으로 확인합니다.</p>
+      <div class="tags"><span class="tag">외부 은하</span><span class="tag">우주 팽창</span><span class="tag">138억 년</span></div>
+      <div class="go">준비 중</div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념 둘</b> — ① 우주를 풍선의 <b>내부</b>로 생각합니다(우주는 <b>표면</b>). ② 우리은하가 우주의 <b>중심</b>이라 여깁니다(모든 은하가 서로 멀어지므로 중심은 없음).</div></div>
+    </div>
+
+    <div class="lesson soon" style="--k:var(--c5)" data-id="l9">
+      <div class="thumb" data-thumb="l9"></div>
+      <div class="top"><div class="no">9</div><span class="badge wait">준비 중</span><span class="pg">288~291쪽</span></div>
+      <h3>인류에게 영향을 미치는<br>우주 탐사</h3>
+      <p class="why">정수기·에어쿠션 운동화·GPS·형상기억합금 안경테. 우주로 나간 기술이 어떻게 내 책상까지 왔을까요?</p>
+      <div class="tags"><span class="tag">인공위성</span><span class="tag">우주 망원경</span><span class="tag">탐사선·탐사차</span></div>
+      <div class="go">준비 중</div>
+      <div class="tnote"><span class="ic">💡</span><div>퍼서비어런스 탐사차(2021, 화성)가 <b>첨단 과학 &amp; 진로와 직업</b> 지면으로 이어집니다. 화성 거주지 구상 활동과 묶어 운영할 수 있습니다.</div></div>
+    </div>
+
+    <div class="lesson soon" style="--k:var(--c5)" data-id="l10">
+      <div class="thumb" data-thumb="l10"></div>
+      <div class="top"><div class="no">10</div><span class="badge wait">준비 중</span><span class="pg">292~293쪽</span></div>
+      <h3>우주 탐사 계획 세우기</h3>
+      <p class="why">블록 질문에 답하는 마무리 차시. 모둠이 직접 탐사 목적·대상·방법을 정해 계획서를 만듭니다.</p>
+      <div class="tags"><span class="tag">문제 해결</span><span class="tag">모둠 프로젝트</span></div>
+      <div class="go">준비 중</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 선지식 · 도구 ═══════════ -->
+  <h2 class="sechead">이 단원을 배우기 전에<span class="line"></span></h2>
+  <div class="info">
+    <span class="ic">🎒</span>
+    <div><b>초등학교에서 이미 배운 것</b> — 별은 스스로 빛을 내는 천체이고, 북극성 주변의 별자리를 관찰할 수 있다(3~4학년군).
+      지구는 태양을 중심으로 일 년에 한 바퀴 공전하며, 계절에 따라 보이는 별자리가 달라진다(5~6학년군).<br>
+      <span style="color:var(--ink-mute)">→ 1차시 연주 시차는 <b>지구의 공전</b>을 기억하고 있어야 이해됩니다.</span></div>
+  </div>
+
+  <div class="tools">
+    <a class="tool" href="https://stellarium-web.org/" target="_blank" rel="noopener">
+      <span class="e">🔭</span><div><b>스텔라리움 웹</b><span>브라우저에서 바로 보는 밤하늘 · 별 이름과 색 확인</span></div></a>
+    <a class="tool" href="https://astro.kasi.re.kr/" target="_blank" rel="noopener">
+      <span class="e">🇰🇷</span><div><b>한국천문연구원 천문우주지식정보</b><span>별자리 구성 · 별의 색 조사(4차시 「해 보기」 활동)</span></div></a>
+  </div>
+
+</main>
+
+<div id="toast"></div>
+
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+/* ══════════════════════════════════════════════════════════════
+   🖼️ 허브 사진 — img 폴더에 파일명만 맞춰 넣으면 자동으로 들어갑니다
+   ① hero  : 히어로 큰 배경 사진 (가로로 긴 16:9)
+   ② page  : 페이지 전체에 은은하게 깔리는 배경
+   ③ l1~l8 : 차시 카드 썸네일 (16:7)
+   없는 사진은 그냥 안 나옵니다 — 지금 상태로도 깨지지 않아요
+   ══════════════════════════════════════════════════════════════ */
+const HUB_IMG={
+  hero:'img/hub-hero.jpg',
+  page:'img/bg-hub.jpg',
+  l1:'img/hub-l1.png',  // 연주 시차
+  l2:'img/hub-l2.png',  // 빛의 밝기와 거리
+  l3:'img/hub-l3.png',  // 겉보기·절대 등급
+  l4:'img/hub-l4.png',  // 별의 색과 표면 온도
+  l5:'img/hub-l5.png',  // 태양계가 있는 우리은하
+  l6:'img/hub-l6.png',  // 우리은하를 이루는 천체 ① 관측
+  l7:'img/hub-l7.png',  // 우리은하를 이루는 천체 ② 성운·성단
+  l8:'img/hub-l8.png',  // 팽창하는 우주
+  l9:'img/hub-l9.png',  // 인류에게 영향을 미치는 우주 탐사
+  l10:'img/hub-l10.png' // 우주 탐사 계획 세우기
+};
+(function(){
+  /* 페이지 배경 */
+  if(HUB_IMG.page){
+    const im=new Image();
+    im.onload=()=>{document.getElementById('bgLayer').style.backgroundImage=
+      `linear-gradient(180deg,rgba(8,13,26,.74),rgba(8,13,26,.93)),url("${HUB_IMG.page}")`;};
+    im.src=HUB_IMG.page;
+  }
+  /* 히어로 */
+  if(HUB_IMG.hero){
+    const im=new Image();
+    im.onload=()=>{
+      const h=document.querySelector('.hero');
+      h.classList.add('has-img');
+      h.style.backgroundImage=
+        `linear-gradient(180deg,rgba(8,13,26,.55) 0%,rgba(8,13,26,.18) 34%,rgba(8,13,26,.30) 62%,rgba(8,13,26,.92) 100%),`
+        +`url("${HUB_IMG.hero}")`;
+    };
+    im.src=HUB_IMG.hero;
+  }
+  /* 차시 썸네일 */
+  document.querySelectorAll('[data-thumb]').forEach(box=>{
+    const src=HUB_IMG[box.dataset.thumb];
+    if(!src)return;
+    const im=new Image();
+    im.onload=()=>{
+      const h3=box.closest('.lesson').querySelector('h3');
+      const alt=h3?(h3.innerText||h3.textContent||''):'';
+      box.innerHTML=`<img src="${src}" alt="${alt.replace(/\s+/g,' ').trim()}" loading="lazy">`;
+      box.classList.add('on');
+    };
+    im.src=src;
+  });
+})();
+
+const SAVE='star_unit_hub_v1';
+const READY=['l1','l2','l3','l4','l5'];   // 실제로 열 수 있는 차시
+const TOTAL=10;                           // 전체 차시 수
+let S={visited:{}};
+try{S=JSON.parse(localStorage.getItem(SAVE))||S;}catch(e){}
+S.visited=S.visited||{};
+const save=()=>{try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}};
+
+/* 진행도 */
+function updateProgress(){
+  const n=Object.keys(S.visited).length;
+  const pct=Math.round(n/TOTAL*100);
+  $('#progBar').style.width=pct+'%';
+  $('#progPct').textContent=pct+'%';
+  $('#doneN').textContent=n;
+  $('#doneBadge').style.display=n?'inline-flex':'none';
+  $$('.lesson').forEach(el=>el.classList.toggle('visited',!!S.visited[el.dataset.id]));
+}
+$$('.lesson.ready').forEach(el=>{
+  el.addEventListener('click',()=>{S.visited[el.dataset.id]=1;save();});
+});
+$$('.lesson.soon').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const t=$('#toast'); t.textContent='이 차시는 아직 준비 중이에요 🛠️'; t.className='show';
+    setTimeout(()=>t.className='',1900);
+  });
+});
+
+/* 교사 모드 */
+(function(){
+  const KEY='teacherMode';
+  document.body.classList.toggle('teacher',localStorage.getItem(KEY)==='1');
+  $('#tmodeBtn').addEventListener('click',()=>{
+    const on=!document.body.classList.contains('teacher');
+    document.body.classList.toggle('teacher',on);
+    localStorage.setItem(KEY,on?'1':'0');
+    const t=$('#toast');
+    t.textContent=on?'교사 모드 ON — 지도 메모가 보입니다 🧑‍🏫':'교사 모드 OFF — 학생 화면입니다 🎒';
+    t.className='show'; setTimeout(()=>t.className='',2000);
+  });
+})();
+
+/* 별 배경 */
+(function(){
+  const cv=$('#stars'); const ctx=cv.getContext('2d');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let stars=[],w=0,h=0,raf=null,t=0;
+  function build(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    w=innerWidth; h=innerHeight;
+    cv.width=w*dpr; cv.height=h*dpr; cv.style.width=w+'px'; cv.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(150,w*h/9000));
+    stars=Array.from({length:n},(_,i)=>({
+      x:Math.random()*w, y:Math.random()*h,
+      r:Math.random()*1.25+.35,
+      p:Math.random()*Math.PI*2,
+      s:.6+Math.random()*1.1,
+      c:['#ffffff','#cfe0ff','#ffe6c2','#c9d8ff'][i%4]
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(st=>{
+      const a=reduce?.7:(.42+.42*Math.sin(t*st.s+st.p));
+      ctx.globalAlpha=a; ctx.fillStyle=st.c;
+      ctx.shadowColor=st.c; ctx.shadowBlur=st.r*3.4;
+      ctx.beginPath(); ctx.arc(st.x,st.y,st.r,0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha=1; ctx.shadowBlur=0;
+    if(!reduce){ t+=.014; raf=requestAnimationFrame(draw); }
+  }
+  let rz; addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{build();if(reduce)draw();},200);});
+  build(); draw();
+})();
+
+updateProgress();
+</script>
+</body>
+</html>

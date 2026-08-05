@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080d1a">
+<title>밝게 보이는 별이 밝은 별은 아니다 · 겉보기 등급과 절대 등급</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
+  --line:#2b3763; --line-soft:#222c54;
+  --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
+  --accent:#a9c0ff; --accent2:#d3e0ff; --on-accent:#08112a;
+  --c1:#ffd166;  /* 겉보기 등급 */
+  --c2:#67e8e0;  /* 절대 등급 */
+  --c3:#9ae66e;  /* 10 pc 기준 */
+  --c4:#ff8fb1;  /* 실제 밝기 */
+  --c5:#c4a7ff;  /* 등급 차 */
+  --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
+  --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:var(--disp); --mono:"JetBrains Mono",ui-monospace,monospace; --jua:"Jua",var(--disp);
+  --header-h:60px; --r:16px; --shadow:0 18px 50px -22px rgba(0,0,0,.8); --scrim:.82;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);line-height:1.62;
+  background:radial-gradient(1150px 600px at 78% -8%, rgba(169,192,255,.11), transparent 60%),
+    radial-gradient(820px 520px at 10% 10%, rgba(255,209,102,.08), transparent 58%), var(--abyss);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
+::selection{background:rgba(169,192,255,.32);color:#fff}
+#bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .45s}
+#bgScrim{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,10,22,calc(var(--scrim)*.84)),rgba(6,10,22,var(--scrim)) 58%,rgba(6,10,22,calc(var(--scrim)*1.12)))}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+@media print{#bgLayer,#bgScrim,#stars{display:none}}
+
+#cover{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:26px 18px;overflow-y:auto;
+  background:linear-gradient(180deg,rgba(6,10,22,.5),rgba(6,10,22,.86))}
+#cover.hide{display:none}
+/* 표지가 떠 있는 동안엔 본문을 아예 감춘다 (뒤에 비쳐 보이지 않도록) */
+body.cover-on header.top,body.cover-on main,body.cover-on #app-credit,
+body.cover-on .prog-list,body.cover-on #toast{display:none!important}
+.cover-in{width:100%;max-width:720px;text-align:center;animation:coverUp .6s cubic-bezier(.22,1,.36,1)}
+@keyframes coverUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(169,192,255,.7))}
+.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(26px,5.6vw,46px);line-height:1.16;margin:18px 0 10px;
+  letter-spacing:-.6px;text-shadow:0 0 26px rgba(169,192,255,.4),0 2px 20px rgba(0,0,0,.75)}
+.cover-sub{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px)}
+.cover-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.steps-card{background:rgba(22,31,61,.85);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;
+  margin:26px auto 0;max-width:540px;text-align:left;backdrop-filter:blur(8px);box-shadow:var(--shadow)}
+.steps-card h3{font-family:var(--jua);font-size:18px;text-align:center;color:var(--gold);margin-bottom:14px}
+.steps-card ol{list-style:none;display:grid;gap:11px}
+.steps-card li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--ink-dim);line-height:1.5}
+.steps-card li .sn{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;
+  font-weight:800;background:var(--ok);color:#06210f;margin-top:2px}
+.steps-card li.opt .sn{background:#4a3a78;color:#d6c2ff}
+.steps-card li b{color:var(--ink)}
+.cover-cta{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:26px}
+.btn.xl{font-size:18px;padding:16px 34px;border-radius:16px}
+.cover-hint{font-size:12.5px;color:var(--ink-mute)}
+
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(8,13,26,.96),rgba(8,13,26,.8) 70%,rgba(8,13,26,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.top-bar{max-width:1180px;margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:12px;padding:0 16px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;cursor:pointer;font-family:var(--body);color:inherit;text-align:left;padding:0}
+.brand .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:18px;
+  background:radial-gradient(circle at 30% 30%,#33406e,#0d1533);border:1px solid var(--line)}
+.brand b{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.2px;white-space:nowrap}
+.brand b span{color:var(--accent)}
+.brand .sub{font-size:11px;color:var(--ink-mute);white-space:nowrap}
+@media(max-width:560px){.brand .sub{display:none}}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:9px}
+.hbtn{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink-dim);cursor:pointer;transition:.18s;text-decoration:none}
+.hbtn:hover{border-color:var(--accent);color:var(--ink)}
+body.teacher #tmodeBtn{background:rgba(255,209,102,.14);border-color:var(--gold)}
+.progress-mini{display:flex;align-items:center;gap:9px;cursor:help}
+.progress-mini .bar{width:92px;height:7px;border-radius:99px;background:#16203d;overflow:hidden;border:1px solid var(--line)}
+.progress-mini .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .5s cubic-bezier(.22,1,.36,1);box-shadow:0 0 12px var(--accent)}
+.progress-mini .pct{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:34px;text-align:right}
+@media(max-width:520px){.progress-mini .bar{width:48px}}
+
+nav.tabs{max-width:1180px;margin:0 auto;padding:0 8px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;align-items:center}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;display:flex;align-items:center;gap:7px;font-family:var(--body);font-size:14px;font-weight:700;
+  color:var(--ink-dim);background:transparent;border:1px solid transparent;padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.2s}
+nav.tabs button .sn{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);
+  font-size:11px;font-weight:700;background:#0e1830;border:1px solid var(--line);color:var(--ink-mute)}
+nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+nav.tabs button.active{color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));box-shadow:0 6px 18px -6px var(--accent)}
+nav.tabs button.active .sn{background:var(--on-accent);color:var(--accent2);border-color:transparent}
+nav.tabs button.done .sn{background:var(--ok);color:#06210f;border-color:transparent}
+nav.tabs button.done .sn i{display:none}
+nav.tabs button.done .sn::after{content:"✓"}
+nav.tabs .tab-sep{flex:none;width:1px;height:20px;background:var(--line);margin:0 4px}
+nav.tabs button.optional{color:#d6c2ff;border-color:#3a2f5e;background:rgba(74,58,120,.18)}
+nav.tabs button.optional.active{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
+
+main{max-width:1180px;margin:0 auto;padding:20px 16px 90px}
+.panel{display:none;animation:fade .45s cubic-bezier(.22,1,.36,1)}
+.panel.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.stepline{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stepline .sbadge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;letter-spacing:1px;
+  color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));padding:4px 12px;border-radius:999px;font-weight:700}
+.stepline .swhat{font-size:13px;color:var(--ink-mute)}
+.stepline.opt .sbadge{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
+h1.big{font-family:var(--disp);font-weight:800;font-size:clamp(28px,6.2vw,54px);line-height:1.08;letter-spacing:-.6px;text-shadow:0 2px 24px rgba(0,0,0,.65)}
+h2.sec{font-family:var(--disp);font-weight:800;font-size:clamp(22px,4.2vw,34px);letter-spacing:-.3px;line-height:1.16;margin:0 0 6px;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+h3.card-t{font-family:var(--jua);font-size:20px;letter-spacing:.2px;color:var(--ink)}
+.lead{font-size:clamp(15px,2.4vw,18px);color:var(--ink-dim);max-width:64ch;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.muted{color:var(--ink-mute)}
+.help{font-size:13px;color:var(--ink-mute);margin-top:8px;line-height:1.55}
+b.k{color:var(--ink);font-weight:800}
+.t1{color:var(--c1)}.t2{color:var(--c2)}.t3{color:var(--c3)}.t4{color:var(--c4)}.t5{color:var(--c5)}
+.card{background:linear-gradient(180deg,var(--surface),var(--deep));border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.card+.card{margin-top:18px}
+.grid{display:grid;gap:18px}
+@media(min-width:760px){.grid.c2{grid-template-columns:1fr 1fr}}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-dim)}
+.badge.beyond{background:linear-gradient(180deg,#241b3a,#1a1430);border-color:#4a3a78;color:#d6c2ff}
+.badge.gold{background:rgba(255,209,102,.1);border-color:#5a4a1e;color:var(--gold)}
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{font-size:13px;padding:6px 12px;border-radius:99px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.pill b{color:var(--ink)}
+.note{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);background:rgba(169,192,255,.07);
+  padding:13px 15px;border-radius:0 12px 12px 0;margin-top:14px;font-size:14.5px;color:var(--ink-dim)}
+.note .ic{flex:none;font-size:17px;line-height:1.4}
+.note.myth{border-color:var(--danger);background:rgba(255,93,108,.07)}
+.note.myth b{color:#ff97a1}
+.note.class{display:none;border-color:var(--gold);background:rgba(255,209,102,.07)}
+.note.class b{color:var(--gold)}
+body.teacher .note.class{display:flex}
+.honest{font-size:12px;color:var(--ink-mute);margin-top:8px;display:flex;gap:6px;align-items:flex-start}
+.btn{font-family:var(--body);font-weight:800;font-size:15px;cursor:pointer;padding:12px 20px;border-radius:12px;border:1px solid transparent;
+  display:inline-flex;align-items:center;gap:9px;transition:.18s;user-select:none}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent));color:var(--on-accent);box-shadow:0 10px 24px -10px var(--accent)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{background:rgba(255,255,255,.08);border-color:var(--accent)}
+.btn.sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.choices{display:grid;gap:10px;margin-top:14px}
+.choice{text-align:left;font-family:var(--body);font-size:15.5px;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);
+  border-radius:13px;padding:14px 16px;cursor:pointer;transition:.16s;display:flex;gap:12px;align-items:center;line-height:1.4}
+.choice .key{flex:none;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
+  font-size:14px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.choice:hover:not(.done){border-color:var(--accent);background:#25325c;transform:translateX(3px)}
+.choice.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.choice.correct .key{background:var(--ok);color:#06210f}
+.choice.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.choice.wrong .key{background:var(--danger);color:#2a060b}
+.choice.dim{opacity:.5}.choice.done{cursor:default}
+.explain{margin-top:14px;border-radius:13px;padding:15px 17px;font-size:14.5px;line-height:1.6;border:1px solid var(--line);
+  background:rgba(169,192,255,.07);color:var(--ink-dim);display:none;animation:fade .35s}
+.explain.show{display:block}
+.explain.ok{border-color:#2e6e44;background:rgba(74,222,128,.09)}
+.explain.no{border-color:#7a2f38;background:rgba(255,93,108,.09)}
+.explain b{color:var(--ink)}
+.explain .why{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--accent2);margin-bottom:5px}
+
+/* 등급 비교 도구 */
+.magtool{background:linear-gradient(180deg,#1a2340,#111a34);border:1.5px solid #3a4a7d;border-radius:15px;padding:20px 22px;margin-top:16px}
+.magtool h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.magrow{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:700px){.magrow{grid-template-columns:1fr 1fr}}
+.magpick label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--ink-dim);font-weight:700;margin-bottom:8px}
+.magpick label .v{font-family:var(--mono);font-size:16px}
+.segm{display:flex;gap:4px;flex-wrap:wrap}
+.segm button{flex:1;min-width:38px;font-family:var(--mono);font-weight:700;font-size:14px;color:var(--ink-dim);
+  background:#0e1830;border:1.5px solid var(--line);padding:9px 4px;border-radius:9px;cursor:pointer;transition:.15s}
+.segm button:hover{border-color:var(--accent)}
+.segm button.on{color:var(--on-accent)}
+.magstage{margin-top:16px;background:#0a1226;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.magstage canvas{display:block;width:100%;height:auto}
+.magout{margin-top:14px;text-align:center;font-size:clamp(16px,3vw,20px);font-weight:800;line-height:1.5;color:var(--ink)}
+.magout .num{font-family:var(--mono);color:var(--c5);font-size:1.25em}
+
+/* 판별 카드 */
+.judge{display:grid;gap:14px;grid-template-columns:1fr;margin-top:16px}
+@media(min-width:760px){.judge{grid-template-columns:repeat(3,1fr)}}
+.jcard{background:var(--surface2);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:.2s}
+.jcard.solved{border-color:var(--ok);background:rgba(74,222,128,.08)}
+.jcard .jn{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:8px}
+.jmag{display:flex;gap:8px;flex-wrap:wrap}
+.jmag span{flex:1;min-width:104px;background:#0e1830;border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:center}
+.jmag span b{display:block;font-family:var(--mono);font-size:17px;margin-top:2px}
+.jmag .app{color:var(--c1)}.jmag .abs{color:var(--c2)}
+.jmag small{font-size:11px;color:var(--ink-mute)}
+.jopts{display:grid;gap:7px}
+.jopt{text-align:left;font-family:var(--body);font-size:13.5px;color:var(--ink);background:#16224a;border:1.5px solid var(--line);
+  border-radius:10px;padding:10px 12px;cursor:pointer;transition:.15s}
+.jopt:hover:not(.locked){border-color:var(--accent)}
+.jopt.correct{border-color:var(--ok);background:rgba(74,222,128,.14)}
+.jopt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.jopt.locked{cursor:default}
+.jfb{font-size:12.5px;line-height:1.5;color:var(--ink-dim);display:none;border-top:1px dashed var(--line);padding-top:9px}
+.jfb.show{display:block;animation:fade .3s}
+
+/* 그림 슬롯 */
+.fig{margin:16px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-size:12.5px;color:var(--ink-mute);padding:10px 14px;line-height:1.5;text-align:center;border-top:1px solid var(--line-soft)}
+.fig.slot{display:none;border-style:dashed;border-color:#3a4a7d;background:rgba(169,192,255,.045);padding:22px 18px;text-align:center}
+body.teacher .fig.slot{display:block}
+.fig.slot .fe{font-size:26px;opacity:.6}
+.fig.slot .fn{font-family:var(--mono);font-size:12px;color:var(--accent2);margin-top:8px;word-break:break-all}
+.fig.slot .fd{font-size:12.5px;color:var(--ink-mute);margin-top:6px;line-height:1.5}
+
+.terms{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(min-width:760px){.terms{grid-template-columns:repeat(4,1fr)}}
+.term{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px;border-top:3px solid var(--c,var(--accent))}
+.term .nm{font-family:var(--jua);font-size:17px;margin-bottom:3px}
+.term .de{font-size:13px;color:var(--ink-mute);line-height:1.5}
+
+.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:14px}
+table.dtable{width:100%;border-collapse:collapse;font-size:14px;min-width:380px}
+.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12.5px;padding:10px;text-align:center;border-bottom:1px solid var(--line)}
+.dtable td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line-soft);font-family:var(--mono)}
+.dtable td:first-child{font-family:var(--body)}
+.dtable tr:last-child td{border-bottom:0}
+
+.cloze-line{font-size:15.5px;line-height:2.05;color:var(--ink-dim)}
+.cloze-line+.cloze-line{margin-top:6px}
+.cloze{display:inline-block;min-width:52px;text-align:center;padding:2px 11px;margin:0 2px;border-radius:8px;background:#0e1830;
+  border:1.5px dashed var(--line);color:transparent;cursor:pointer;font-weight:800;transition:.16s;user-select:none;line-height:1.3}
+.cloze::after{content:"❓";font-size:12px}
+.cloze:hover{border-color:var(--accent);background:#16224a}
+.cloze.revealed{border-style:solid;cursor:default;animation:clozePop .42s}
+.cloze.revealed::after{content:none}
+@keyframes clozePop{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cloze-done{display:none;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ok)}
+.cloze-set.complete .cloze-done{display:inline-flex;animation:fade .4s}
+.cloze-hint{font-size:12.5px;color:var(--ink-mute);margin-top:10px}
+
+.miniquiz{background:linear-gradient(180deg,#152040,#0e1730);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.miniquiz .mq-head{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+.miniquiz .mq-badge{font-size:12px;font-weight:800;color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));padding:4px 10px;border-radius:99px}
+.miniquiz .mq-prog{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+.mq-q{margin-top:14px}
+.mq-q .mq-text{font-size:15px;font-weight:600;margin-bottom:9px}
+.mq-q .mq-text .qn{font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-right:6px}
+.mq-choices{display:grid;gap:8px}
+.mq-opt{text-align:left;font-family:var(--body);font-size:14.5px;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);
+  border-radius:11px;padding:11px 14px;cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:center}
+.mq-opt .k{flex:none;width:23px;height:23px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
+  font-size:12px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.mq-opt:hover:not(.locked){border-color:var(--accent);background:#25325c}
+.mq-opt.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.mq-opt.correct .k{background:var(--ok);color:#06210f}
+.mq-opt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.mq-opt.wrong .k{background:var(--danger);color:#2a060b}
+.mq-opt.locked{cursor:default}
+.mq-fb{margin-top:9px;font-size:13.5px;line-height:1.55;border-radius:10px;padding:11px 13px;display:none}
+.mq-fb.show{display:block;animation:fade .3s}
+.mq-fb.ok{background:rgba(74,222,128,.09);border:1px solid #2e6e44;color:var(--ink-dim)}
+.mq-fb.no{background:rgba(255,93,108,.09);border:1px solid #7a2f38;color:var(--ink-dim)}
+.mq-fb b{color:var(--ink)}
+.mq-done{display:none;align-items:center;gap:8px;margin-top:14px;padding:11px 14px;border-radius:11px;background:rgba(255,209,102,.08);
+  border:1px solid #5a4a1e;color:var(--gold);font-weight:700;font-size:14px}
+.miniquiz.alldone .mq-done{display:flex;animation:fade .4s}
+
+.game-hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.lives{display:flex;gap:5px}.lives .h{font-size:22px;transition:.3s}
+.lives .h.gone{filter:grayscale(1) brightness(.5);transform:scale(.85)}
+.score-box{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;background:#0e1830;border:1px solid var(--line);padding:7px 13px;border-radius:11px}
+.score-box .lab2{font-size:11px;color:var(--ink-mute);font-weight:400;font-family:var(--body)}
+.score-box .num{font-size:18px;color:var(--gold)}
+.earned{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.medal{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:8px 13px;border-radius:11px;
+  background:linear-gradient(180deg,#2a2410,#1c1808);border:1px solid #5a4a1e;color:var(--gold);opacity:.3;filter:grayscale(.6);transition:.4s}
+.medal.got{opacity:1;filter:none;box-shadow:0 0 16px -4px var(--gold)}
+.medal .e{font-size:18px}
+textarea{width:100%;font-family:var(--body);font-size:14.5px;color:var(--ink);background:#0e1830;border:1.5px solid var(--line);
+  border-radius:12px;padding:12px 14px;min-height:88px;resize:vertical;outline:none;margin-top:8px;line-height:1.55;transition:.18s}
+textarea:focus{border-color:var(--accent);background:#16224a}
+textarea::placeholder{color:var(--ink-mute)}
+.savemark{font-size:12px;color:var(--ok);margin-top:6px;display:inline-block;opacity:0;transition:.3s}
+.savemark.on{opacity:1}
+.prog-list{position:fixed;right:14px;top:calc(var(--header-h) + 8px);z-index:60;width:264px;background:rgba(14,22,44,.97);
+  border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:none}
+.prog-list.show{display:block;animation:fade .3s}
+.prog-list h4{font-family:var(--jua);font-size:15px;margin-bottom:10px}
+.prog-list li{list-style:none;display:flex;gap:8px;font-size:13px;color:var(--ink-mute);padding:4px 0;line-height:1.45}
+.prog-list li.on{color:var(--ink-dim)}
+.prog-list li .mk{flex:none;color:var(--ink-mute)}
+.prog-list li.on .mk{color:var(--ok)}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:200;background:rgba(14,22,44,.96);
+  border:1px solid var(--accent);color:var(--ink);padding:12px 20px;border-radius:13px;font-weight:700;font-size:14.5px;
+  box-shadow:0 16px 40px -12px rgba(0,0,0,.8);opacity:0;pointer-events:none;transition:.3s;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.good{border-color:var(--ok)}#toast.bad{border-color:var(--danger)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.08s!important;scroll-behavior:auto}}
+@media print{
+  #cover,header.top,nav.tabs,#toast,.prog-list,.cta-row,.btn{display:none!important}
+  body{background:#fff;color:#111}
+  .panel{display:block!important;page-break-after:always}
+  .card,.magtool,.jcard{background:#fff;border-color:#ccc;box-shadow:none}
+  .lead,.muted,.note{color:#333}
+  h1.big,h2.sec,h3.card-t{color:#111}
+  .note.class{display:flex!important}
+  .cloze{color:#111!important;border-style:solid}.cloze::after{content:none}
+}
+</style>
+</head>
+<body>
+<div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
+
+<div id="cover">
+  <div class="cover-in">
+    <div class="cover-emoji">⭐ ⚖️ 🔢</div>
+    <h1 class="cover-title">밝게 보이는 별이<br>밝은 별은 아니다</h1>
+    <p class="cover-sub">겉보기 등급과 절대 등급 — 보이는 밝기와 진짜 밝기 가르기 ✨</p>
+    <div class="cover-meta">
+      <span class="badge">⏱️ 45분</span>
+      <span class="badge">📘 VIII. 별과 우주 · 1. 별 ③ · 274~275쪽</span>
+      <span class="badge gold" id="coverSaved" style="display:none">🔖 이어서 하기</span>
+    </div>
+    <div class="steps-card">
+      <h3>💡 학습 단계 안내</h3>
+      <ol>
+        <li><span class="sn">1</span><div><b>생각 열기</b> — 시리우스와 베텔게우스, 진짜 밝은 별은?</div></li>
+        <li><span class="sn">2</span><div><b>견주어 보기</b> — 등급이 1 차이 나면 밝기는 얼마나 차이 날까</div></li>
+        <li><span class="sn">3</span><div><b>개념 잡기</b> — 겉보기 등급과 절대 등급 가르기</div></li>
+        <li><span class="sn">4</span><div><b>판별하기</b> — 세 별이 10 pc보다 가까운지 먼지 가려내기</div></li>
+        <li><span class="sn">5</span><div><b>확인하기</b> — 배운 것 점검하기</div></li>
+        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 등급이라는 이상한 숫자의 유래</div></li>
+      </ol>
+    </div>
+    <div class="cover-cta">
+      <button class="btn primary xl" id="coverGo">별 밝기 재판 시작 ⚖️</button>
+      <span class="cover-hint">진행 상황은 이 기기에 자동 저장돼요 · 왼쪽 위 제목을 누르면 이 화면으로 돌아옵니다</span>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-bar">
+    <button class="brand" id="brandBtn" title="표지로 돌아가기">
+      <div class="logo">⭐</div>
+      <div><b>밝게 보이는 별이 <span>밝은 별은 아니다</span></b>
+        <div class="sub">VIII. 별과 우주 · 1. 별 ③ · 중2 과학</div></div>
+    </button>
+    <div class="head-right">
+      <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
+      <button class="hbtn" id="tmodeBtn" title="교사 모드">🧑‍🏫</button>
+      <div class="progress-mini" id="progWrap" title="진행도 — 누르면 남은 활동이 보여요">
+        <div class="bar"><i id="progBar"></i></div><div class="pct" id="progPct">0%</div>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabNav">
+    <button data-tab="engage" class="active"><span class="sn"><i>1</i></span>생각 열기</button>
+    <button data-tab="compare"><span class="sn"><i>2</i></span>견주어 보기</button>
+    <button data-tab="explain"><span class="sn"><i>3</i></span>개념 잡기</button>
+    <button data-tab="judge"><span class="sn"><i>4</i></span>판별하기</button>
+    <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
+    <span class="tab-sep"></span>
+    <button data-tab="beyond" class="optional"><span class="sn"><i>+</i></span>🌙 더 알아보기</button>
+  </nav>
+</header>
+
+<div class="prog-list" id="progList"><h4>남은 활동</h4><ul id="progItems"></ul></div>
+
+<main>
+
+<!-- 1 -->
+<section class="panel show" id="panel-engage">
+  <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">생각 열기 · 오늘의 수수께끼</span></div>
+  <h1 class="big">밝게 보이는 별이<br><span class="t4">밝은 별</span>은 아니다.</h1>
+  <p class="lead" style="margin-top:16px">
+    겨울 밤하늘에서 가장 눈에 띄는 별은 큰개자리의 <b class="k">시리우스</b>입니다. 오리온자리의
+    <b class="k">베텔게우스</b>보다 훨씬 밝게 보이죠. 그런데 두 별을 나란히 세워 놓고 비교하면
+    <b class="t4">베텔게우스가 시리우스보다 압도적으로 밝습니다.</b> 어떻게 이런 일이 가능할까요?
+  </p>
+  <figure class="fig" data-fig="sirius"
+    data-alt="밤하늘에서 시리우스가 베텔게우스보다 밝게 보이는 장면"
+    data-cap="우리 눈에는 시리우스가 더 밝게 보인다. 그런데 실제로는?"></figure>
+
+  <div class="card" style="margin-top:20px">
+    <div class="badge" style="margin-bottom:12px">🔮 먼저 예측해 볼까요</div>
+    <h3 class="card-t">두 별이 <span class="t3">똑같은 거리</span>에 놓인다면, 어느 쪽이 더 밝을까?</h3>
+    <div class="choices" id="poeChoices">
+      <button class="choice" data-poe="a"><span class="key">가</span>시리우스 — 지금도 더 밝게 보이니까</button>
+      <button class="choice" data-poe="b"><span class="key">나</span>베텔게우스 — 멀리 있는데도 저 정도로 보이니까</button>
+      <button class="choice" data-poe="c"><span class="key">다</span>둘이 비슷할 것이다</button>
+    </div>
+    <div class="explain" id="poeExplain"></div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 지난 차시(빛의 밝기와 거리)를 여기서 불러오세요. "멀리 있으면 어두워 보인다는 걸 배웠죠? 그럼 멀리 있는데도 밝게 보이는 별은?"이라고 물으면 학생 스스로 '나'에 도달합니다.</div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="eyebrow" style="margin-bottom:8px">오늘의 목표</div>
+    <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 말할 수 있다</h3>
+    <div class="grid c2">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
+        <div><b class="k">별의 등급과 밝기의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">등급이 작을수록 밝고, 1등급 차이는 약 2.5배.</span></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c2);color:#062a28;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
+        <div><b class="k">겉보기 등급과 절대 등급을 구별할 수 있다.</b><br><span class="muted" style="font-size:14px">그리고 두 값을 견주어 거리까지 짐작할 수 있다.</span></div>
+      </div>
+    </div>
+    <div class="pill-list">
+      <span class="pill">핵심어 · <b>등급</b></span><span class="pill"><b>겉보기 등급</b></span>
+      <span class="pill"><b>절대 등급</b></span><span class="pill"><b>10 pc</b></span>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="compare">2단계 · 등급이라는 자를 배워 봅시다 →</button></div>
+</section>
+
+<!-- 2 -->
+<section class="panel" id="panel-compare">
+  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">견주어 보기 · 등급과 밝기</span></div>
+  <h2 class="sec">숫자가 작을수록 밝은, 거꾸로 된 자</h2>
+  <p class="lead">별의 밝기는 <b class="t1">등급</b>으로 나타냅니다. 그런데 이 자는 조금 이상합니다 —
+    숫자가 <b class="k">작을수록</b> 밝아요. 1등급 별이 6등급 별보다 밝습니다.</p>
+
+  <div class="card" style="margin-top:20px">
+    <h3 class="card-t">📏 1등급 차이는 얼마나 큰 차이일까?</h3>
+    <p class="lead" style="font-size:15.5px;margin-top:8px">
+      1등급 별은 6등급 별보다 약 <b class="t5">100배</b> 밝습니다. 그 사이가 5칸이니,
+      한 칸(1등급 차)마다 약 <b class="t5">2.5배</b>씩 차이가 나는 셈이죠.
+      아래에서 두 등급을 골라 직접 비교해 보세요.</p>
+
+    <div class="magtool">
+      <h3>⚖️ 등급 밝기 비교기</h3>
+      <div class="magrow">
+        <div class="magpick">
+          <label>별 ㉮의 등급 <span class="v t1" id="vA">1</span></label>
+          <div class="segm" id="segA"></div>
+        </div>
+        <div class="magpick">
+          <label>별 ㉯의 등급 <span class="v t2" id="vB">6</span></label>
+          <div class="segm" id="segB"></div>
+        </div>
+      </div>
+      <div class="magstage"><canvas id="magcv" height="180"></canvas></div>
+      <div class="magout" id="magOut">—</div>
+      <p class="help" style="text-align:center">두 별의 등급 차이가 커질수록 밝기 차이가 <b class="k">눈덩이처럼</b> 커집니다.</p>
+    </div>
+    <p class="honest"><span class="ic">📌</span>원의 크기는 밝기 차이를 눈으로 느끼게 하려고 과장한 것입니다. 실제 별의 크기와는 관계가 없어요.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>지도상의 유의점</b> — 1등급 차이의 밝기 비(약 2.5배)를 먼저 확인시킨 뒤, 두 별의 밝기 비로 확장하세요. <b>계산 공식은 도입하지 않습니다.</b> "몇 칸 차이인가"로만 다룹니다.</div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">👀 그런데 이 등급은 '보이는' 밝기입니다</h3>
+    <p class="lead" style="font-size:16px;margin-top:8px">
+      밤하늘을 올려다보고 매긴 등급은 <b class="t1">별까지의 거리를 전혀 고려하지 않은</b> 값입니다.
+      실제로 어두운 별이라도 가까이 있으면 밝게 보이고, 실제로 밝은 별이라도 멀면 어둡게 보이죠.
+      그래서 이 값만으로는 <b class="k">별들의 진짜 밝기를 겨룰 수 없습니다.</b></p>
+    <div class="note myth"><span class="ic">⚠️</span><div><b>가장 흔한 오해</b> — "밝게 보이는 별은 가까운 별이고, 어둡게 보이는 별은 먼 별이다."<br>
+      → <b class="k">보이는 밝기로 거리를 판단할 수 없습니다.</b> 밝기에는 '실제 밝기'와 '거리' 두 가지가 섞여 있으니까요.</div></div>
+    <div class="miniquiz" data-quiz="compare"></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="explain">3단계 · 그럼 진짜 밝기는 어떻게 겨룰까 →</button></div>
+</section>
+
+<!-- 3 -->
+<section class="panel" id="panel-explain">
+  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">개념 잡기 · 두 가지 등급 가르기</span></div>
+  <h2 class="sec">모든 별을 같은 출발선에 세운다면</h2>
+  <p class="lead">달리기 실력을 겨루려면 같은 출발선에서 뛰어야죠. 별도 마찬가지입니다.
+    천문학자들은 모든 별을 <b class="t3">10 pc</b>이라는 같은 자리에 세워 놓았다고 <b>가정</b>했습니다.</p>
+
+  <div class="card" style="margin-top:20px">
+    <h3 class="card-t" style="margin-bottom:14px">용어 지도</h3>
+    <div class="terms">
+      <div class="term" style="--c:var(--c1)"><div class="nm t1">겉보기 등급</div><div class="de">거리를 고려하지 않고, 우리 눈에 보이는 밝기를 등급으로 나타낸 것.</div></div>
+      <div class="term" style="--c:var(--c2)"><div class="nm t2">절대 등급</div><div class="de">별까지의 거리가 10 pc이라고 가정했을 때의 밝기를 등급으로 나타낸 것.</div></div>
+      <div class="term" style="--c:var(--c3)"><div class="nm t3">10 pc</div><div class="de">모든 별을 세워 놓고 겨루는 공통 출발선. 약 32.6광년.</div></div>
+      <div class="term" style="--c:var(--c4)"><div class="nm t4">실제 밝기</div><div class="de">별이 원래 내는 밝기. 절대 등급을 견주면 이걸 비교할 수 있다.</div></div>
+    </div>
+    <figure class="fig" data-fig="tenpc"
+      data-alt="여러 별을 지구에서 10 pc 떨어진 같은 거리의 원 위에 나란히 옮겨 놓고 밝기를 비교하는 개념도"
+      data-cap="모든 별을 10 pc 자리로 옮겨 놓았다고 가정하면, 그때 보이는 밝기가 절대 등급이다."></figure>
+  </div>
+
+  <!-- 빈칸 인출 -->
+  <div class="card cloze-set" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">✍️ 빈칸을 눌러 확인 — 먼저 머릿속으로 답한 뒤에</div>
+    <p class="cloze-line">
+      별의 밝기는 등급으로 나타내며, 등급이 <span class="cloze" data-ans="작은" data-c="c1">　</span> 별이
+      등급이 큰 별보다 더 <span class="cloze" data-ans="밝다" data-c="c1">　</span>.
+    </p>
+    <p class="cloze-line">
+      1등급 별은 6등급 별보다 약 <span class="cloze" data-ans="100배" data-c="c5">　</span> 밝고,
+      각 등급 사이의 밝기는 약 <span class="cloze" data-ans="2.5배" data-c="c5">　</span>씩 차이가 난다.
+    </p>
+    <p class="cloze-line">
+      거리를 고려하지 않고 우리 눈에 보이는 밝기를 나타낸 것이
+      <span class="cloze" data-ans="겉보기 등급" data-c="c1">　</span>이고,
+      거리가 <span class="cloze" data-ans="10 pc" data-c="c3">　</span>이라고 가정했을 때의 밝기를 나타낸 것이
+      <span class="cloze" data-ans="절대 등급" data-c="c2">　</span>이다.
+    </p>
+    <p class="cloze-line">
+      별의 <span class="cloze" data-ans="실제 밝기" data-c="c4">　</span>를 비교하려면
+      <span class="cloze" data-ans="절대 등급" data-c="c2">　</span>을 견주어야 한다.
+    </p>
+    <div class="cloze-done">✅ 이 문단은 다 채웠어요!</div>
+    <p class="cloze-hint">빈칸을 그냥 눌러 답만 보면 남지 않아요. 소리 내어 답해 보고 누르세요.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🔍 다시, 시리우스와 베텔게우스</h3>
+    <div class="dtable-wrap">
+      <table class="dtable">
+        <tr><th>별</th><th class="t1">겉보기 등급</th><th class="t2">절대 등급</th></tr>
+        <tr><td>시리우스</td><td>더 밝게 보임</td><td>약 1.4</td></tr>
+        <tr><td>베텔게우스</td><td>더 어둡게 보임</td><td>약 −6.0</td></tr>
+      </table>
+    </div>
+    <p class="lead" style="font-size:16px;margin-top:12px">
+      절대 등급을 보면 베텔게우스가 <b class="t2">−6.0</b>, 시리우스가 <b class="t2">1.4</b>입니다.
+      등급은 작을수록 밝으니 <b class="k">실제로는 베텔게우스가 시리우스보다 훨씬 밝은 별</b>이에요.
+      그런데도 어둡게 보이는 건 그만큼 <b class="t4">멀리 있기</b> 때문입니다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>지도상의 유의점</b> — 절대 등급은 별의 실제 밝기 <b>그 자체가 아니라</b>, 실제 밝기를 <b>비교할 수 있게 해 주는 값</b>임을 짚어 주세요.</div></div>
+    <div class="miniquiz" data-quiz="explain"></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="judge">4단계 · 직접 판별해 보기 →</button></div>
+</section>
+
+<!-- 4 -->
+<section class="panel" id="panel-judge">
+  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">판별하기 · 두 등급을 견주어 거리 알아내기</span></div>
+  <h2 class="sec">두 숫자만 보면 거리가 보인다</h2>
+  <p class="lead">겉보기 등급과 절대 등급을 견주면 그 별이 10 pc보다 가까운지 먼지 알 수 있습니다. 규칙은 셋뿐이에요.</p>
+
+  <div class="card" style="margin-top:20px">
+    <div class="grid c2">
+      <div>
+        <h3 class="card-t" style="margin-bottom:10px">📐 판별 규칙</h3>
+        <p class="lead" style="font-size:15.5px">
+          ① <b class="t1">겉보기</b> = <b class="t2">절대</b> → 그 별까지의 거리는 <b class="t3">딱 10 pc</b><br>
+          ② <b class="t1">겉보기</b> &lt; <b class="t2">절대</b> → <b class="t3">10 pc보다 가까움</b><br>
+          ③ <b class="t1">겉보기</b> &gt; <b class="t2">절대</b> → <b class="t3">10 pc보다 멂</b>
+        </p>
+        <p class="help">외우려 하지 말고 이렇게 생각하세요 — <b class="k">가까이 끌어오면 더 밝아 보인다(=등급이 작아진다).</b>
+          그러니 겉보기가 절대보다 작다면 그건 10 pc보다 가까이 있다는 뜻입니다.</p>
+      </div>
+      <figure class="fig" data-fig="rule" style="margin-top:0"
+        data-alt="지구를 중심으로 반지름 10 pc인 원을 그리고, 원 안쪽과 바깥쪽에 별을 배치해 겉보기 등급과 절대 등급의 대소를 비교한 개념도"
+        data-cap="10 pc 원 안쪽이면 겉보기가 더 작고, 바깥쪽이면 겉보기가 더 크다."></figure>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">📘 해 보기 — 별 (가)·(나)·(다)는 어디에 있을까?</h3>
+    <p class="lead" style="font-size:15.5px;margin-top:8px">교과서 275쪽 활동입니다. 세 별의 두 등급을 견주어 위치를 판별해 보세요.</p>
+    <div class="judge" id="judgeWrap"></div>
+    <div class="note class"><span class="ic">💬</span><div><b>지도 방향</b> — 첫 번째 블록 질문에 대한 <b>두 번째 단서</b>입니다. 연주 시차(1차시)로는 100 pc 안쪽만 잴 수 있었는데, 등급을 쓰면 더 먼 별까지 거리를 짐작할 수 있다는 점을 연결해 주세요. <b>거리를 구하는 공식은 도입하지 않습니다.</b></div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">교과서 275쪽 · 사고력</span></h3>
+    <p class="lead" style="font-size:16px;margin-top:10px">
+      <b class="k">화성</b>에서 태양의 겉보기 등급과 절대 등급을 잰다면, 지구에서 잰 값과 어떻게 다를까요?
+      두 값을 각각 따져 설명해 보세요.</p>
+    <textarea id="essay" placeholder="힌트: 화성은 지구보다 태양에서 멀죠. 겉보기 등급은 '보이는 밝기'이고, 절대 등급은 '10 pc에 놓았다고 가정한 밝기'입니다."></textarea>
+    <span class="savemark" id="essaySaved">✔ 저장됨</span>
+    <div class="btn-row"><button class="btn ghost sm" id="ansBtn">모범 답안 확인하기</button></div>
+    <div class="explain" id="modelAns" style="margin-top:12px">
+      <div class="why">✍️ 모범 답안</div>
+      겉보기 등급은 거리가 멀수록 큰 값을 가지므로, 화성에서 잰 태양의 겉보기 등급은
+      지구에서 잰 값보다 <b>크다</b>(더 어둡게 보인다).
+      반면 절대 등급은 태양의 실제 밝기를 나타내는 값이므로 어디에서 재든 <b>같다</b>.
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 학생들이 절대 등급까지 변한다고 답하는 경우가 많습니다. "절대 등급은 <b>어디서 보든 10 pc에 놓았다고 가정</b>한 값"이라는 정의로 돌아가게 하세요.</div></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="check">5단계 · 얼마나 알게 됐는지 확인 →</button></div>
+</section>
+
+<!-- 5 -->
+<section class="panel" id="panel-check">
+  <div class="stepline"><span class="sbadge">STEP 5</span><span class="swhat">확인하기 · 형성평가</span></div>
+  <h2 class="sec">배운 것을 확인해 봅시다</h2>
+  <p class="lead">점수에 들어가지 않습니다. 어디가 헷갈리는지 찾는 게 목적이에요.</p>
+  <div class="card" style="margin-top:20px">
+    <div class="game-hud">
+      <div class="lives" id="lives"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span></div>
+      <div class="score-box"><span class="lab2">점수</span><span class="num" id="score">0</span></div>
+      <div class="score-box"><span class="lab2">문항</span><span class="num" id="qno">0/0</span></div>
+    </div>
+    <div id="gameBody">
+      <div style="text-align:center;padding:30px 10px">
+        <p class="lead" style="margin:0 auto 18px">준비됐나요? 5문항입니다.</p>
+        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+      </div>
+    </div>
+    <div class="earned" id="medals">
+      <div class="medal" data-medal="first"><span class="e">🥉</span>첫 정답</div>
+      <div class="medal" data-medal="half"><span class="e">🥈</span>절반 돌파</div>
+      <div class="medal" data-medal="perfect"><span class="e">🥇</span>전부 정답</div>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn ghost" data-go="beyond">🌙 더 알아보기 (선택)</button></div>
+</section>
+
+<!-- + -->
+<section class="panel" id="panel-beyond">
+  <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
+  <h2 class="sec">2,000년 전에 만든 자를 아직도 쓴다</h2>
+  <p class="lead">여기서부터는 교과서 밖 이야기입니다. 외울 필요 없어요.</p>
+
+  <div class="grid c2" style="margin-top:20px">
+    <div class="card">
+      <h3 class="card-t">📜 왜 하필 '작을수록 밝다'일까</h3>
+      <p class="lead" style="font-size:16px;margin-top:8px">
+        기원전 2세기 그리스의 천문학자 <b class="k">히파르코스</b>가 밤하늘의 별을 눈으로 보고
+        <b>가장 밝은 것부터 1등성, 2등성…</b> 하고 순위를 매긴 데서 시작했습니다.
+        1등이 가장 밝은 거죠. 그 뒤 2,000년이 지나 정밀 측정이 가능해졌을 때,
+        천문학자들은 이 오래된 순위를 버리지 않고 <b>숫자로 정밀하게 다듬어</b> 계속 쓰기로 했습니다.
+        그래서 지금도 등급은 작을수록 밝습니다.</p>
+      <p class="help">1등보다 밝은 별이 나타나자 0등급, 그보다 밝으면 음수 등급이 되었습니다.</p>
+    </div>
+    <div class="card">
+      <h3 class="card-t">🌕 등급이 음수인 것들</h3>
+      <p class="lead" style="font-size:16px;margin-top:8px">우리 눈에 아주 밝게 보이는 천체들의 겉보기 등급입니다.</p>
+      <div class="dtable-wrap">
+        <table class="dtable">
+          <tr><th>천체</th><th>겉보기 등급</th></tr>
+          <tr><td>달</td><td>−12.6</td></tr>
+          <tr><td>금성</td><td>−4.6</td></tr>
+          <tr><td>목성</td><td>−2.94</td></tr>
+          <tr><td>화성</td><td>−2.91</td></tr>
+          <tr><td>토성</td><td>−0.24</td></tr>
+        </table>
+      </div>
+      <p class="help">달과 행성은 스스로 빛을 내지 않는데도 밝게 보입니다. 아주 가깝기 때문이에요.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
+    <p class="lead" style="font-size:17px;margin-top:10px">
+      <b class="k">"밝게 보이는 별이 밝은 별은 아니다."</b><br><br>
+      시리우스가 밝게 보이는 건 뛰어나서가 아니라 <b class="t4">가까이 있어서</b>입니다.
+      베텔게우스는 훨씬 밝게 타오르면서도 멀리 있다는 이유로 밤하늘에서 손해를 보고 있죠.<br><br>
+      천문학이 <b class="t2">절대 등급</b>이라는 개념을 만든 이유가 여기 있습니다.
+      <b class="k">보이는 것과 실제를 갈라내는 것</b> — 이게 과학이 하는 일입니다.
+      가까워서 커 보이는 것과 정말 큰 것, 소리가 커서 옳아 보이는 것과 정말 옳은 것.
+      별을 재던 이 태도는 밤하늘 밖에서도 쓸모가 있습니다.
+    </p>
+    <div class="cta-row" style="justify-content:center">
+      <button class="btn ghost" data-go="engage">1단계로 돌아가기 ↑</button>
+      <a class="btn ghost" href="index.html">🌌 단원 허브로</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="toast"></div>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+
+<script>
+"use strict";
+const FIGS={
+  sirius:'img/m-sirius.png', tenpc:'img/m-tenpc.png', rule:'img/m-rule.png'
+};
+const BG_IMAGES={cover:'',engage:'',compare:'',explain:'',judge:'',check:'',beyond:''};
+const BG_FALLBACK={
+  cover:'radial-gradient(120% 90% at 50% 0%, #2b3560, #070c1a 68%)',
+  engage:'radial-gradient(110% 80% at 50% 0%, #2b3560, #070c1a 66%)',
+  compare:'radial-gradient(100% 80% at 50% 20%, #333a63, #070c1a 70%)',
+  explain:'linear-gradient(180deg, #202a52, #070c1a 74%)',
+  judge:'radial-gradient(90% 80% at 68% 15%, #2c2f5e, #070c1a 70%)',
+  check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
+  beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
+};
+const SAVE='star_magnitude_v1';
+const POE_ANSWER='b';
+const POE_WHY={
+  right:'맞았어요! 베텔게우스는 시리우스보다 훨씬 멀리 있는데도 저 정도로 보입니다. 같은 거리에 세워 놓으면 <b>비교가 안 될 만큼 베텔게우스가 밝아요.</b> 오늘은 이 "같은 거리에 세워 놓기"를 배웁니다.',
+  wrong:'눈에 보이는 대로라면 그렇게 생각하기 쉽죠. 하지만 실제로는 <b>베텔게우스가 압도적으로 밝습니다.</b> 지난 시간에 배웠죠 — 멀수록 어두워 보인다고. 그렇게 멀리 있는데도 저 정도로 보인다는 건 원래 어마어마하게 밝다는 뜻이에요.'
+};
+
+/* 교과서 275쪽 해 보기 */
+const STARS=[
+  {id:'ga', nm:'별 (가)', app:-1.5, abs:1.4,  ans:'near',
+   why:'겉보기(−1.5)가 절대(1.4)보다 <b>작습니다</b>. 10 pc보다 가까이 있어서 실제보다 밝게 보이는 별이에요.'},
+  {id:'na', nm:'별 (나)', app:1.1,  abs:1.1,  ans:'same',
+   why:'겉보기와 절대가 <b>같습니다</b>. 이 별까지의 거리는 정확히 10 pc이에요.'},
+  {id:'da', nm:'별 (다)', app:0.4,  abs:-6.0, ans:'far',
+   why:'겉보기(0.4)가 절대(−6.0)보다 <b>큽니다</b>. 10 pc보다 훨씬 멀리 있어서, 실제로는 매우 밝은데도 어둡게 보이는 별이에요.'}
+];
+const JOPTS=[{k:'near',t:'10 pc보다 가깝다'},{k:'same',t:'딱 10 pc이다'},{k:'far',t:'10 pc보다 멀다'}];
+
+const QUIZ_SETS={
+  compare:{title:'등급과 밝기', qs:[
+    {q:'1등급 별과 6등급 별 중 더 밝은 것은?',
+     ch:[{t:'1등급 별',ok:1},{t:'6등급 별',ok:0}],
+     why:'등급은 <b>작을수록 밝습니다.</b> 1등급이 6등급보다 약 100배 밝아요.'},
+    {q:'밤하늘에서 어둡게 보이는 별에 대해 옳게 말한 것은?',
+     ch:[{t:'원래 어둡거나, 멀리 있거나 둘 다 가능하다',ok:1},
+         {t:'반드시 멀리 있는 별이다',ok:0},
+         {t:'반드시 원래 어두운 별이다',ok:0}],
+     why:'보이는 밝기에는 <b>실제 밝기와 거리</b>가 섞여 있어 하나로 단정할 수 없습니다.'}
+  ]},
+  explain:{title:'겉보기 등급과 절대 등급', qs:[
+    {q:'별의 실제 밝기를 서로 비교하려면 무엇을 봐야 할까?',
+     ch:[{t:'절대 등급',ok:1},{t:'겉보기 등급',ok:0}],
+     why:'모든 별을 10 pc에 세워 놓았다고 가정한 값이라 공정한 비교가 됩니다.'},
+    {q:'절대 등급은 별까지의 거리를 얼마라고 가정한 값일까?',
+     ch:[{t:'10 pc',ok:1},{t:'1 pc',ok:0},{t:'100 pc',ok:0}],
+     why:'10 pc은 약 32.6광년입니다.'}
+  ]}
+};
+
+const GAME_QS=[
+  {q:'우리 눈에 보이는 별의 밝기를 등급으로 나타낸 것은?',
+   ch:[{t:'겉보기 등급',ok:1},{t:'절대 등급',ok:0},{t:'연주 시차',ok:0}],
+   why:'거리를 고려하지 않은, 그냥 보이는 밝기입니다.'},
+  {q:'어떤 별의 겉보기 등급이 절대 등급보다 크다면, 이 별까지의 거리는?',
+   ch:[{t:'10 pc보다 멀다',ok:1},{t:'10 pc보다 가깝다',ok:0},{t:'정확히 10 pc이다',ok:0}],
+   why:'멀리 있어서 실제보다 어둡게(등급이 크게) 보이는 경우입니다.'},
+  {q:'별 A는 2등급, 별 B는 7등급이다. 옳은 설명은?',
+   ch:[{t:'A가 B보다 약 100배 밝게 보인다',ok:1},
+       {t:'B가 A보다 약 100배 밝게 보인다',ok:0},
+       {t:'A가 B보다 약 5배 밝게 보인다',ok:0}],
+   why:'5등급 차이는 약 100배 차이입니다. 등급이 작은 A가 더 밝아요.'},
+  {q:'시리우스(절대 −1.4 수준이 아닌 약 1.4)와 베텔게우스(절대 약 −6.0) 중 실제로 더 밝은 별은?',
+   ch:[{t:'베텔게우스',ok:1},{t:'시리우스',ok:0},{t:'둘이 같다',ok:0}],
+   why:'절대 등급이 <b>작을수록</b> 밝습니다. −6.0 < 1.4 이므로 베텔게우스가 훨씬 밝아요.'},
+  {q:'겉보기 등급과 절대 등급이 같은 별까지의 거리는?',
+   ch:[{t:'10 pc',ok:1},{t:'1 pc',ok:0},{t:'알 수 없다',ok:0}],
+   why:'절대 등급의 정의가 "10 pc에 있다고 가정했을 때의 밝기"이기 때문입니다.'}
+];
+
+/* 엔진 */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TABS=['engage','compare','explain','judge','check','beyond'];
+const CS=getComputedStyle(document.documentElement);
+const CV=k=>CS.getPropertyValue('--'+k).trim();
+
+function setBg(tab){
+  const L=$('#bgLayer'); if(!L)return;
+  const img=BG_IMAGES[tab]||(tab==='cover'?BG_IMAGES.engage:'');
+  L.style.opacity='0';
+  setTimeout(()=>{L.style.backgroundImage=img?`url("${img}")`:(BG_FALLBACK[tab]||BG_FALLBACK.engage);L.style.opacity='1';},150);
+}
+function fit(cv){
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  const w=cv.clientWidth||cv.parentElement.clientWidth||320;
+  const h=parseInt(cv.getAttribute('height'))||180;
+  cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};
+}
+const A={ctx:null,
+  ensure(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+    if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();return this.ctx;},
+  blip(f=600,d=.08,type='sine',vol=.15){const c=this.ensure();if(!c)return;
+    const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(c.destination);
+    const t=c.currentTime;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);
+    g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.03);},
+  correct(){this.blip(660,.11);setTimeout(()=>this.blip(880,.13),85);setTimeout(()=>this.blip(1170,.18),190);},
+  wrong(){this.blip(200,.2,'sawtooth',.1);setTimeout(()=>this.blip(150,.24,'sawtooth',.08),130);},
+  pop(){this.blip(440,.05,'triangle',.13);},
+  win(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.blip(f,.22,'sine',.15),i*110));}};
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
+
+let S=load()||{tab:'engage',visited:{},poe:null,mag:{a:1,b:6},magTried:0,judge:{},cloze:{},mini:{},essay:'',best:0,medals:{}};
+S.visited=S.visited||{};S.mag=S.mag||{a:1,b:6};S.judge=S.judge||{};S.cloze=S.cloze||{};S.mini=S.mini||{};
+S.medals=S.medals||{};S.essay=S.essay||'';S.magTried=S.magTried||0;
+let CLOZE_TOTAL=0;
+function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
+
+function progChecks(){
+  return [
+    {label:'1단계 · 예측하기',           ok:!!S.poe},
+    {label:'2단계 · 등급 비교기 써 보기', ok:S.magTried>=3},
+    {label:'2단계 · 등급과 밝기 퀴즈',    ok:!!S.mini.compare},
+    {label:'3단계 · 빈칸 모두 채우기',    ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
+    {label:'3단계 · 두 등급 구분 퀴즈',   ok:!!S.mini.explain},
+    {label:'4단계 · 세 별 모두 판별',     ok:Object.keys(S.judge).length>=3},
+    {label:'4단계 · 사고력 문제 답쓰기',  ok:(S.essay||'').trim().length>=15},
+    {label:'5단계 · 확인 문제 완주',      ok:S.best>0}
+  ];
+}
+function updateProgress(){
+  const c=progChecks(), pct=Math.round(c.filter(x=>x.ok).length/c.length*100);
+  $('#progBar').style.width=pct+'%';$('#progPct').textContent=pct+'%';
+  const ul=$('#progItems');
+  if(ul)ul.innerHTML=c.map(x=>`<li class="${x.ok?'on':''}"><span class="mk">${x.ok?'✔':'○'}</span>${x.label}</li>`).join('');
+  const done={engage:!!S.poe, compare:S.magTried>=3&&!!S.mini.compare,
+    explain:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL&&!!S.mini.explain,
+    judge:Object.keys(S.judge).length>=3&&(S.essay||'').trim().length>=15,
+    check:S.best>0, beyond:!!S.visited.beyond};
+  $$('#tabNav button').forEach(b=>b.classList.toggle('done',!!done[b.dataset.tab]));
+}
+let toastT;
+function toast(msg,kind=''){const el=$('#toast');el.innerHTML=msg;el.className='show '+kind;
+  clearTimeout(toastT);toastT=setTimeout(()=>el.className='',2300);}
+
+function showTab(id,noScroll){
+  if(!TABS.includes(id))return;
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+id).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  setBg(id);S.tab=id;S.visited[id]=true;save();updateProgress();
+  if(id==='compare')requestAnimationFrame(drawMag);
+  if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+}
+$('#tabNav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){A.ensure();showTab(b.dataset.go);}});
+
+function refreshCover(){
+  const any=progChecks().some(x=>x.ok);
+  $('#coverSaved').style.display=any?'inline-flex':'none';
+  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) ⚖️`:'별 밝기 재판 시작 ⚖️';
+}
+$('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
+  document.body.classList.remove('cover-on');A.ensure();A.pop();showTab(S.tab||'engage',true);});
+$('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classList.remove('hide');
+  document.body.classList.add('cover-on');setBg('cover');});
+
+(function(){const KEY='teacherMode';
+  document.body.classList.toggle('teacher',localStorage.getItem(KEY)==='1');
+  $('#tmodeBtn').addEventListener('click',()=>{
+    const on=!document.body.classList.contains('teacher');
+    document.body.classList.toggle('teacher',on);localStorage.setItem(KEY,on?'1':'0');
+    toast(on?'교사 모드 ON — 교실 연결 노트가 보입니다 🧑‍🏫':'교사 모드 OFF — 학생 화면입니다 🎒');});})();
+
+(function(){const wrap=$('#progWrap'),list=$('#progList');
+  wrap.addEventListener('click',()=>list.classList.toggle('show'));
+  document.addEventListener('click',e=>{if(!list.contains(e.target)&&!wrap.contains(e.target))list.classList.remove('show');});})();
+
+/* 그림 슬롯 */
+(function(){
+  $$('[data-fig]').forEach(el=>{
+    const key=el.dataset.fig,src=FIGS[key]||'',alt=el.dataset.alt||'',cap=el.dataset.cap||'';
+    const slot=()=>{el.classList.add('slot');
+      el.innerHTML=`<div class="fe">🖼️</div><div class="fn">${FIGS[key]||'img/'+key+'.png'}</div><div class="fd">${alt}</div>`;};
+    if(!src){slot();return;}
+    const im=new Image();
+    im.onload=()=>{el.classList.remove('slot');
+      el.innerHTML=`<img src="${src}" alt="${alt.replace(/"/g,'&quot;')}" loading="lazy">`+(cap?`<figcaption>${cap}</figcaption>`:'');};
+    im.onerror=slot;im.src=src;
+  });
+})();
+
+/* 예측 */
+(function(){
+  const wrap=$('#poeChoices'),exp=$('#poeExplain');
+  function lock(pick){
+    $$('.choice',wrap).forEach(b=>{b.classList.add('done');
+      if(b.dataset.poe===POE_ANSWER)b.classList.add('correct');
+      else if(b.dataset.poe===pick)b.classList.add('wrong');else b.classList.add('dim');});
+    const ok=pick===POE_ANSWER;
+    exp.className='explain show '+(ok?'ok':'no');
+    exp.innerHTML=`<div class="why">${ok?'✅ 예측 성공':'🔍 다시 생각해 보기'}</div>${ok?POE_WHY.right:POE_WHY.wrong}`;
+  }
+  wrap.addEventListener('click',e=>{
+    const b=e.target.closest('.choice');if(!b||S.poe)return;
+    S.poe=b.dataset.poe;save();updateProgress();
+    (S.poe===POE_ANSWER?A.correct:A.wrong).call(A);lock(S.poe);});
+  if(S.poe)lock(S.poe);
+})();
+
+/* 등급 비교기 */
+const MAGS=[1,2,3,4,5,6];
+function buildSeg(id,which){
+  const el=$('#'+id);
+  el.innerHTML=MAGS.map(m=>`<button data-m="${m}">${m}</button>`).join('');
+  el.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    S.mag[which]=+b.dataset.m;S.magTried=(S.magTried||0)+1;save();
+    A.blip(560,.05,'triangle',.1);paintSeg();drawMag();updateProgress();
+    if(S.magTried===3)toast('여러 조합을 비교해 봤어요! 등급 차가 커질수록 밝기 차가 급격히 커지죠 ⚖️','good');
+  });
+}
+function paintSeg(){
+  const colA=CV('c1'),colB=CV('c2');
+  $$('#segA button').forEach(b=>{const on=+b.dataset.m===S.mag.a;
+    b.classList.toggle('on',on);b.style.background=on?colA:'';b.style.borderColor=on?colA:'';});
+  $$('#segB button').forEach(b=>{const on=+b.dataset.m===S.mag.b;
+    b.classList.toggle('on',on);b.style.background=on?colB:'';b.style.borderColor=on?colB:'';});
+  $('#vA').textContent=S.mag.a+'등급';
+  $('#vB').textContent=S.mag.b+'등급';
+}
+function ratioText(){
+  const d=Math.abs(S.mag.b-S.mag.a);
+  const r=Math.pow(2.512,d);
+  const bright=S.mag.a<S.mag.b?'㉮':(S.mag.a>S.mag.b?'㉯':null);
+  if(d===0)return '두 별의 등급이 같으니 <span class="num">밝기도 같습니다</span>.';
+  const rr = r>=100?Math.round(r/10)*10 : (r>=10?Math.round(r):Math.round(r*10)/10);
+  return `등급 차 <span class="num">${d}</span> → <b class="k">별 ${bright}</b>가 약 <span class="num">${rr}배</span> 밝습니다.`;
+}
+function drawMag(){
+  const cv=$('#magcv');if(!cv||!cv.clientWidth)return;
+  const {ctx,w,h}=fit(cv);
+  ctx.clearRect(0,0,w,h);
+  const d=S.mag.b-S.mag.a;
+  const rel=Math.pow(2.512,Math.abs(d));
+  const big=48, small=Math.max(6,big/Math.sqrt(rel));
+  const aBig=S.mag.a<=S.mag.b;
+  const rA=aBig?big:small, rB=aBig?small:big;
+  const colA=CV('c1'),colB=CV('c2');
+  const y=h/2;
+  [[w*0.3,rA,colA,'㉮'],[w*0.7,rB,colB,'㉯']].forEach(([x,r,col,nm])=>{
+    ctx.save();
+    ctx.shadowColor=col;ctx.shadowBlur=r*0.9;
+    const g=ctx.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0,'#ffffff');g.addColorStop(.45,col);g.addColorStop(1,col+'00');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+    ctx.font='700 13px Pretendard, sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=CV('ink-dim');ctx.fillText(nm,x,h-12);
+  });
+  $('#magOut').innerHTML=ratioText();
+}
+addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(drawMag,180);});
+
+/* 판별 카드 */
+(function(){
+  const wrap=$('#judgeWrap');
+  wrap.innerHTML=STARS.map(s=>`
+    <div class="jcard ${S.judge[s.id]?'solved':''}" data-star="${s.id}">
+      <div class="jn">⭐ ${s.nm}</div>
+      <div class="jmag">
+        <span class="app"><small>겉보기 등급</small><b>${s.app}</b></span>
+        <span class="abs"><small>절대 등급</small><b>${s.abs}</b></span>
+      </div>
+      <div class="jopts">${JOPTS.map(o=>`<button class="jopt" data-k="${o.k}">${o.t}</button>`).join('')}</div>
+      <div class="jfb"></div>
+    </div>`).join('');
+  $$('.jcard',wrap).forEach(card=>{
+    const s=STARS.find(x=>x.id===card.dataset.star);
+    const fb=$('.jfb',card);
+    let solved=!!S.judge[s.id], answered=false;
+    const finish=()=>{
+      $$('.jopt',card).forEach(b=>{b.classList.add('locked');if(b.dataset.k===s.ans)b.classList.add('correct');});
+      card.classList.add('solved');
+      fb.className='jfb show';fb.innerHTML=s.why;
+    };
+    card.addEventListener('click',e=>{
+      const b=e.target.closest('.jopt');if(!b||solved||answered)return;
+      if(b.dataset.k===s.ans){
+        solved=true;A.correct();S.judge[s.id]=1;save();updateProgress();finish();
+        if(Object.keys(S.judge).length>=3)toast('세 별 모두 판별 완료! ⚖️','good');
+      }else{
+        answered=true;b.classList.add('wrong');A.wrong();
+        fb.className='jfb show';fb.innerHTML='다시 생각해 볼까요 — <b>겉보기와 절대 중 어느 쪽이 더 작은지</b> 먼저 비교해 보세요.';
+        setTimeout(()=>{answered=false;b.classList.remove('wrong');},1500);
+      }
+    });
+    if(solved)finish();
+  });
+})();
+
+/* 빈칸 */
+(function(){
+  const all=$$('.cloze');CLOZE_TOTAL=all.length;
+  all.forEach((cz,i)=>{
+    const reveal=silent=>{
+      if(cz.classList.contains('revealed'))return;
+      cz.textContent=cz.dataset.ans;
+      const col=CV(cz.dataset.c||'accent');cz.style.color=col;cz.style.borderColor=col;
+      cz.classList.add('revealed');if(!silent)A.blip(720,.08);
+      S.cloze[i]=1;save();
+      const set=cz.closest('.cloze-set');
+      if(set&&$$('.cloze',set).every(x=>x.classList.contains('revealed'))){set.classList.add('complete');if(!silent)A.pop();}
+      updateProgress();};
+    cz.addEventListener('click',()=>reveal(false));
+    if(S.cloze[i])reveal(true);
+  });
+})();
+
+/* 미니 퀴즈 */
+(function(){
+  function build(host,key){
+    const set=QUIZ_SETS[key];if(!set)return;
+    let done=0;const total=set.qs.length;
+    host.innerHTML=`<div class="mq-head"><span class="mq-badge">✅ 개념 확인</span>
+      <span style="font-weight:700">${set.title}</span><span class="mq-prog" data-prog>0/${total}</span></div>`;
+    set.qs.forEach((q,qi)=>{
+      const qEl=document.createElement('div');qEl.className='mq-q';
+      qEl.innerHTML=`<div class="mq-text"><span class="qn">Q${qi+1}.</span>${q.q}</div><div class="mq-choices"></div><div class="mq-fb"></div>`;
+      const cw=$('.mq-choices',qEl),fb=$('.mq-fb',qEl);
+      let answered=false,solved=false;
+      q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+        const c=q.ch[idx];
+        const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.addEventListener('click',()=>{
+          if(answered||solved)return;answered=true;
+          if(c.ok){solved=true;b.classList.add('correct');
+            $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+            A.correct();fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;done++;upd();}
+          else{b.classList.add('wrong');A.wrong();
+            fb.className='mq-fb show no';fb.innerHTML=`<b>다시 생각해 볼까요.</b> ${q.why}`;
+            setTimeout(()=>{answered=false;b.classList.remove('wrong');},1600);}});
+        cw.appendChild(b);});
+      host.appendChild(qEl);});
+    const d=document.createElement('div');d.className='mq-done';d.innerHTML='🏅 개념 확인 완료!';host.appendChild(d);
+    function upd(){const p=host.querySelector('[data-prog]');if(p)p.textContent=done+'/'+total;
+      if(done>=total){host.classList.add('alldone');
+        if(!S.mini[key]){S.mini[key]=1;save();updateProgress();toast('개념 확인 완료! ✅','good');}}}
+  }
+  $$('.miniquiz').forEach(h=>build(h,h.dataset.quiz));
+})();
+
+/* 서술형 */
+(function(){
+  const ta=$('#essay'),mark=$('#essaySaved');let t;
+  ta.value=S.essay||'';
+  ta.addEventListener('input',()=>{S.essay=ta.value;save();updateProgress();
+    mark.classList.add('on');clearTimeout(t);t=setTimeout(()=>mark.classList.remove('on'),1400);});
+  $('#ansBtn').addEventListener('click',()=>{
+    const box=$('#modelAns'),open=box.classList.toggle('show');
+    $('#ansBtn').textContent=open?'모범 답안 접기':'모범 답안 확인하기';
+    if(open){A.pop();if((S.essay||'').trim().length<15)toast('먼저 <b>내 문장으로 써 본 뒤</b>에 보면 훨씬 남아요 ✍️');}});
+})();
+
+/* 확인 문제 */
+(function(){
+  const body=$('#gameBody');let i=0,score=0,lives=3,order=[];
+  function medal(k){if(S.medals[k])return;S.medals[k]=1;save();
+    const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');}
+  function paint(){Object.keys(S.medals).forEach(k=>{const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');});}
+  function hud(){$('#score').textContent=score;
+    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
+  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  function next(){
+    if(i>=order.length||lives<=0)return end();
+    hud();const q=GAME_QS[order[i]];
+    body.innerHTML=`<div class="mq-q" style="margin-top:0">
+      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
+      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
+    q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+      const c=q.ch[idx];
+      const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.addEventListener('click',()=>{
+        if(locked)return;locked=true;
+        $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+        if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
+          if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
+          fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;}
+        else{b.classList.add('wrong');A.wrong();lives--;
+          $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
+          fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
+        hud();setTimeout(()=>{i++;next();},1900);});
+      cw.appendChild(b);});}
+  function end(){
+    const perfect=score===GAME_QS.length*20;
+    if(perfect)medal('perfect');
+    if(score>(S.best||0)){S.best=score;save();}
+    updateProgress();perfect?A.win():A.pop();
+    body.innerHTML=`<div style="text-align:center;padding:26px 10px">
+      <div style="font-size:44px">${perfect?'🏆':(lives>0?'🎉':'💪')}</div>
+      <h3 class="card-t" style="margin:10px 0 6px">${perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?')}</h3>
+      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${GAME_QS.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
+      <button class="btn primary" id="gameAgain">다시 풀기</button></div>`;
+    $('#gameAgain').addEventListener('click',start);}
+  $('#gameStart').addEventListener('click',start);paint();
+})();
+
+/* 별 배경 */
+(function(){
+  const cv=$('#stars'),ctx=cv.getContext('2d');
+  let stars=[],w=0,h=0,t=0;
+  function build(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    w=innerWidth;h=innerHeight;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(130,w*h/10500));
+    stars=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.3,
+      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#cfe0ff','#ffe6c2','#c9d8ff'][i%4]}));}
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.65:(.38+.4*Math.sin(t*st.s+st.p));
+      ctx.fillStyle=st.c;ctx.shadowColor=st.c;ctx.shadowBlur=st.r*3.3;
+      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fill();});
+    ctx.globalAlpha=1;ctx.shadowBlur=0;
+    if(!reduceMotion){t+=.013;requestAnimationFrame(draw);}}
+  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{build();if(reduceMotion)draw();},200);});
+  build();draw();
+})();
+
+(function init(){
+  buildSeg('segA','a');buildSeg('segB','b');paintSeg();
+  updateProgress();
+  const start=TABS.includes(S.tab)?S.tab:'engage';
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+start).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===start));
+  S.tab=start;document.body.classList.add('cover-on');refreshCover();setBg('cover');
+  requestAnimationFrame(drawMag);
+})();
+</script>
+</body>
+</html>

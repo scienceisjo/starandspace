@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080d1a">
+<title>빛은 사라지지 않는다 · 빛의 밝기와 광원까지의 거리</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
+  --line:#2b3763; --line-soft:#222c54;
+  --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
+  --accent:#7c9cff; --accent2:#a9c0ff; --on-accent:#08112a;
+  --c1:#ffd166;  /* 광도 — 광원이 내보내는 빛 */
+  --c2:#67e8e0;  /* 조도 — 어떤 면이 받는 밝기 */
+  --c3:#9ae66e;  /* 비추는 면적 */
+  --c4:#ff8fb1;  /* 거리 */
+  --c5:#c4a7ff;  /* 별 */
+  --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
+  --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:var(--disp);
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --jua:"Jua",var(--disp);
+  --header-h:60px; --r:16px;
+  --shadow:0 18px 50px -22px rgba(0,0,0,.8);
+  --scrim:.82;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);color:var(--ink);line-height:1.62;
+  background:
+    radial-gradient(1150px 600px at 78% -8%, rgba(255,209,102,.10), transparent 60%),
+    radial-gradient(820px 520px at 10% 10%, rgba(124,156,255,.10), transparent 58%),
+    var(--abyss);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+::selection{background:rgba(255,209,102,.3);color:#fff}
+#bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;
+  background-repeat:no-repeat;transition:opacity .45s ease}
+#bgScrim{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,10,22,calc(var(--scrim)*.84)),rgba(6,10,22,var(--scrim)) 58%,rgba(6,10,22,calc(var(--scrim)*1.12)))}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+@media print{#bgLayer,#bgScrim,#stars{display:none}}
+
+#cover{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:26px 18px;
+  overflow-y:auto;background:linear-gradient(180deg,rgba(6,10,22,.5),rgba(6,10,22,.86))}
+#cover.hide{display:none}
+/* 표지가 떠 있는 동안엔 본문을 아예 감춘다 (뒤에 비쳐 보이지 않도록) */
+body.cover-on header.top,body.cover-on main,body.cover-on #app-credit,
+body.cover-on .prog-list,body.cover-on #toast{display:none!important}
+.cover-in{width:100%;max-width:720px;text-align:center;animation:coverUp .6s cubic-bezier(.22,1,.36,1)}
+@keyframes coverUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(255,209,102,.6))}
+.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(29px,6.6vw,52px);line-height:1.14;
+  margin:18px 0 10px;letter-spacing:-.6px;text-shadow:0 0 26px rgba(255,209,102,.35),0 2px 20px rgba(0,0,0,.75)}
+.cover-sub{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px)}
+.cover-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.steps-card{background:rgba(22,31,61,.85);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px 22px;margin:26px auto 0;max-width:540px;text-align:left;backdrop-filter:blur(8px);box-shadow:var(--shadow)}
+.steps-card h3{font-family:var(--jua);font-size:18px;text-align:center;color:var(--gold);margin-bottom:14px}
+.steps-card ol{list-style:none;display:grid;gap:11px}
+.steps-card li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--ink-dim);line-height:1.5}
+.steps-card li .sn{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+  font-size:12px;font-weight:800;background:var(--ok);color:#06210f;margin-top:2px}
+.steps-card li.opt .sn{background:#4a3a78;color:#d6c2ff}
+.steps-card li b{color:var(--ink)}
+.cover-cta{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:26px}
+.btn.xl{font-size:18px;padding:16px 34px;border-radius:16px}
+.cover-hint{font-size:12.5px;color:var(--ink-mute)}
+
+header.top{position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg,rgba(8,13,26,.96),rgba(8,13,26,.80) 70%,rgba(8,13,26,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.top-bar{max-width:1180px;margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:12px;padding:0 16px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;cursor:pointer;
+  font-family:var(--body);color:inherit;text-align:left;padding:0}
+.brand .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:18px;
+  background:radial-gradient(circle at 30% 30%,#3a3468,#0d1533);border:1px solid var(--line)}
+.brand b{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.2px;white-space:nowrap}
+.brand b span{color:var(--c1)}
+.brand .sub{font-size:11px;color:var(--ink-mute);white-space:nowrap}
+@media(max-width:560px){.brand .sub{display:none}}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:9px}
+.hbtn{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink-dim);cursor:pointer;transition:.18s;text-decoration:none}
+.hbtn:hover{border-color:var(--accent);color:var(--ink)}
+body.teacher #tmodeBtn{background:rgba(255,209,102,.14);border-color:var(--gold)}
+.progress-mini{display:flex;align-items:center;gap:9px;cursor:help}
+.progress-mini .bar{width:92px;height:7px;border-radius:99px;background:#16203d;overflow:hidden;border:1px solid var(--line)}
+.progress-mini .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),#ffe9ae);
+  transition:width .5s cubic-bezier(.22,1,.36,1);box-shadow:0 0 12px var(--c1)}
+.progress-mini .pct{font-family:var(--mono);font-size:12px;color:var(--c1);min-width:34px;text-align:right}
+@media(max-width:520px){.progress-mini .bar{width:48px}}
+
+nav.tabs{max-width:1180px;margin:0 auto;padding:0 8px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;align-items:center}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;display:flex;align-items:center;gap:7px;font-family:var(--body);font-size:14px;font-weight:700;
+  color:var(--ink-dim);background:transparent;border:1px solid transparent;padding:8px 13px;border-radius:999px;
+  cursor:pointer;white-space:nowrap;transition:.2s}
+nav.tabs button .sn{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-size:11px;font-weight:700;background:#0e1830;border:1px solid var(--line);color:var(--ink-mute)}
+nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+nav.tabs button.active{color:#2a1e04;background:linear-gradient(180deg,#ffe9ae,var(--c1));box-shadow:0 6px 18px -6px var(--c1)}
+nav.tabs button.active .sn{background:#2a1e04;color:var(--c1);border-color:transparent}
+nav.tabs button.done .sn{background:var(--ok);color:#06210f;border-color:transparent}
+nav.tabs button.done .sn i{display:none}
+nav.tabs button.done .sn::after{content:"✓"}
+nav.tabs .tab-sep{flex:none;width:1px;height:20px;background:var(--line);margin:0 4px}
+nav.tabs button.optional{color:#d6c2ff;border-color:#3a2f5e;background:rgba(74,58,120,.18)}
+nav.tabs button.optional.active{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff;box-shadow:0 6px 18px -6px #7358c9}
+
+main{max-width:1180px;margin:0 auto;padding:20px 16px 90px}
+.panel{display:none;animation:fade .45s cubic-bezier(.22,1,.36,1)}
+.panel.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.stepline{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stepline .sbadge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;
+  letter-spacing:1px;color:#2a1e04;background:linear-gradient(180deg,#ffe9ae,var(--c1));
+  padding:4px 12px;border-radius:999px;font-weight:700}
+.stepline .swhat{font-size:13px;color:var(--ink-mute)}
+.stepline.opt .sbadge{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
+
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--c1);margin-bottom:12px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--c1)}
+h1.big{font-family:var(--disp);font-weight:800;font-size:clamp(30px,7vw,58px);line-height:1.07;letter-spacing:-.6px;
+  text-shadow:0 2px 24px rgba(0,0,0,.65)}
+h2.sec{font-family:var(--disp);font-weight:800;font-size:clamp(22px,4.2vw,34px);letter-spacing:-.3px;line-height:1.16;
+  margin:0 0 6px;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+h3.card-t{font-family:var(--jua);font-size:20px;letter-spacing:.2px;color:var(--ink)}
+.lead{font-size:clamp(15px,2.4vw,18px);color:var(--ink-dim);max-width:64ch;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.muted{color:var(--ink-mute)}
+.help{font-size:13px;color:var(--ink-mute);margin-top:8px;line-height:1.55}
+b.k{color:var(--ink);font-weight:800}
+.t1{color:var(--c1)}.t2{color:var(--c2)}.t3{color:var(--c3)}.t4{color:var(--c4)}.t5{color:var(--c5)}
+
+.card{background:linear-gradient(180deg,var(--surface),var(--deep));border:1px solid var(--line);
+  border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.card+.card{margin-top:18px}
+.grid{display:grid;gap:18px}
+@media(min-width:760px){.grid.c2{grid-template-columns:1fr 1fr}.grid.c3{grid-template-columns:repeat(3,1fr)}}
+
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:5px 11px;
+  border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-dim)}
+.badge.beyond{background:linear-gradient(180deg,#241b3a,#1a1430);border-color:#4a3a78;color:#d6c2ff}
+.badge.gold{background:rgba(255,209,102,.1);border-color:#5a4a1e;color:var(--gold)}
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{font-size:13px;padding:6px 12px;border-radius:99px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.pill b{color:var(--ink)}
+
+.note{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);
+  background:rgba(124,156,255,.07);padding:13px 15px;border-radius:0 12px 12px 0;
+  margin-top:14px;font-size:14.5px;color:var(--ink-dim);position:relative}
+.note .ic{flex:none;font-size:17px;line-height:1.4}
+.note.myth{border-color:var(--danger);background:rgba(255,93,108,.07)}
+.note.myth b{color:#ff97a1}
+.note.class{display:none;border-color:var(--gold);background:rgba(255,209,102,.07)}
+.note.class b{color:var(--gold)}
+body.teacher .note.class{display:flex}
+.honest{font-size:12px;color:var(--ink-mute);margin-top:8px;display:flex;gap:6px;align-items:flex-start}
+
+.btn{font-family:var(--body);font-weight:800;font-size:15px;cursor:pointer;padding:12px 20px;border-radius:12px;
+  border:1px solid transparent;display:inline-flex;align-items:center;gap:9px;transition:.18s;user-select:none}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.primary{background:linear-gradient(180deg,#ffe9ae,var(--c1));color:#2a1e04;box-shadow:0 10px 24px -10px var(--c1)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{background:rgba(255,255,255,.08);border-color:var(--c1)}
+.btn.sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+
+.choices{display:grid;gap:10px;margin-top:14px}
+.choice{text-align:left;font-family:var(--body);font-size:15.5px;color:var(--ink);background:var(--surface2);
+  border:1.5px solid var(--line);border-radius:13px;padding:14px 16px;cursor:pointer;transition:.16s;
+  display:flex;gap:12px;align-items:center;line-height:1.4}
+.choice .key{flex:none;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);
+  font-weight:700;font-size:14px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.choice:hover:not(.done){border-color:var(--c1);background:#25325c;transform:translateX(3px)}
+.choice.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.choice.correct .key{background:var(--ok);color:#06210f}
+.choice.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.choice.wrong .key{background:var(--danger);color:#2a060b}
+.choice.dim{opacity:.5}
+.choice.done{cursor:default}
+.explain{margin-top:14px;border-radius:13px;padding:15px 17px;font-size:14.5px;line-height:1.6;border:1px solid var(--line);
+  background:rgba(255,209,102,.07);color:var(--ink-dim);display:none;animation:fade .35s ease}
+.explain.show{display:block}
+.explain.ok{border-color:#2e6e44;background:rgba(74,222,128,.09)}
+.explain.no{border-color:#7a2f38;background:rgba(255,93,108,.09)}
+.explain b{color:var(--ink)}
+.explain .why{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--c1);margin-bottom:5px}
+
+/* 실측 실험실 */
+.lab{background:linear-gradient(180deg,#1a2340,#111a34);border:1.5px solid #3a4a7d;border-radius:15px;padding:20px 22px;margin-top:16px}
+.lab h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.steps-how{margin:12px 0 0 20px;display:grid;gap:7px}
+.steps-how li{font-size:14.5px;color:var(--ink-dim);line-height:1.55}
+.steps-how li b{color:var(--ink)}
+.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:16px}
+table.dtable{width:100%;border-collapse:collapse;font-size:14px;min-width:400px}
+.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12.5px;
+  padding:10px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.dtable td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line-soft)}
+.dtable tr:last-child td{border-bottom:0}
+.dtable .dist{font-family:var(--mono);font-weight:700;color:var(--c4)}
+.dtable input{width:96px;font-family:var(--mono);font-size:15px;color:var(--ink);background:#16224a;
+  border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;text-align:center;outline:none;transition:.18s}
+.dtable input:focus{border-color:var(--c1);background:#1c2a56}
+.dtable .ratio{font-family:var(--mono);font-weight:700;color:var(--c2)}
+.dtable .ratio small{display:block;font-size:11px;color:var(--ink-mute);font-family:var(--body);font-weight:400}
+.graph-wrap{margin-top:14px;background:#0e1830;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.graph-wrap canvas{display:block;width:100%;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12.5px;color:var(--ink-mute)}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;vertical-align:3px;margin-right:6px}
+
+/* 🔦 빛 퍼짐 시뮬 */
+.simgrid{display:grid;gap:16px;grid-template-columns:1fr;margin-top:14px}
+@media(min-width:900px){.simgrid{grid-template-columns:minmax(0,1fr) 260px;align-items:start}}
+.simstage{background:#070d1c;border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.simstage canvas{display:block;width:100%;height:auto}
+.simctl{background:#0e1830;border:1px solid var(--line);border-radius:13px;padding:16px}
+.simctl h4{font-family:var(--jua);font-size:15px;margin-bottom:4px}
+.ctl{margin-top:14px}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-dim);font-weight:600;margin-bottom:7px}
+.ctl label .val{font-family:var(--mono);font-size:14px;color:var(--c1)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+  background:linear-gradient(90deg,var(--c1) 0%,var(--c1) var(--p,0%),#1b2b49 var(--p,0%));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff8e6;
+  border:3px solid var(--c1);box-shadow:0 2px 8px rgba(0,0,0,.5),0 0 10px var(--c1);cursor:grab}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff8e6;border:3px solid var(--c1);cursor:grab}
+.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.readout .r{flex:1;min-width:104px;background:#16224a;border:1px solid var(--line);border-radius:11px;padding:10px 12px;text-align:center}
+.readout .r .lab2{font-size:11px;color:var(--ink-mute)}
+.readout .r .v{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--c2);line-height:1.25}
+
+/* 그림 슬롯 */
+.fig{margin:16px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-size:12.5px;color:var(--ink-mute);padding:10px 14px;line-height:1.5;text-align:center;border-top:1px solid var(--line-soft)}
+.fig.slot{display:none;border-style:dashed;border-color:#3a4a7d;background:rgba(255,209,102,.045);padding:22px 18px;text-align:center}
+body.teacher .fig.slot{display:block}
+.fig.slot .fe{font-size:26px;opacity:.6}
+.fig.slot .fn{font-family:var(--mono);font-size:12px;color:var(--c1);margin-top:8px;word-break:break-all}
+.fig.slot .fd{font-size:12.5px;color:var(--ink-mute);margin-top:6px;line-height:1.5}
+.use .fig{margin:0 0 4px}
+
+.terms{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(min-width:760px){.terms{grid-template-columns:repeat(4,1fr)}}
+.term{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px;border-top:3px solid var(--c,var(--c1))}
+.term .nm{font-family:var(--jua);font-size:17px;margin-bottom:3px}
+.term .de{font-size:13px;color:var(--ink-mute);line-height:1.5}
+
+.use-grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:680px){.use-grid{grid-template-columns:1fr 1fr}}
+.use{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.use .u-t{font-family:var(--jua);font-size:17px;display:flex;align-items:center;gap:8px}
+.use .u-d{font-size:13.5px;color:var(--ink-dim);line-height:1.55}
+
+.cloze-line{font-size:15.5px;line-height:2.05;color:var(--ink-dim)}
+.cloze-line+.cloze-line{margin-top:6px}
+.cloze{display:inline-block;min-width:52px;text-align:center;padding:2px 11px;margin:0 2px;border-radius:8px;
+  background:#0e1830;border:1.5px dashed var(--line);color:transparent;cursor:pointer;font-weight:800;
+  transition:.16s;user-select:none;line-height:1.3}
+.cloze::after{content:"❓";font-size:12px}
+.cloze:hover{border-color:var(--c1);background:#16224a}
+.cloze.revealed{border-style:solid;cursor:default;animation:clozePop .42s}
+.cloze.revealed::after{content:none}
+@keyframes clozePop{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cloze-done{display:none;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ok)}
+.cloze-set.complete .cloze-done{display:inline-flex;animation:fade .4s}
+.cloze-hint{font-size:12.5px;color:var(--ink-mute);margin-top:10px}
+
+.miniquiz{background:linear-gradient(180deg,#152040,#0e1730);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.miniquiz .mq-head{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+.miniquiz .mq-badge{font-size:12px;font-weight:800;color:#2a1e04;background:linear-gradient(180deg,#ffe9ae,var(--c1));padding:4px 10px;border-radius:99px}
+.miniquiz .mq-prog{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+.mq-q{margin-top:14px}
+.mq-q .mq-text{font-size:15px;font-weight:600;margin-bottom:9px}
+.mq-q .mq-text .qn{font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-right:6px}
+.mq-choices{display:grid;gap:8px}
+.mq-opt{text-align:left;font-family:var(--body);font-size:14.5px;color:var(--ink);background:var(--surface2);
+  border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:center}
+.mq-opt .k{flex:none;width:23px;height:23px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);
+  font-weight:700;font-size:12px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.mq-opt:hover:not(.locked){border-color:var(--c1);background:#25325c}
+.mq-opt.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.mq-opt.correct .k{background:var(--ok);color:#06210f}
+.mq-opt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.mq-opt.wrong .k{background:var(--danger);color:#2a060b}
+.mq-opt.locked{cursor:default}
+.mq-fb{margin-top:9px;font-size:13.5px;line-height:1.55;border-radius:10px;padding:11px 13px;display:none}
+.mq-fb.show{display:block;animation:fade .3s}
+.mq-fb.ok{background:rgba(74,222,128,.09);border:1px solid #2e6e44;color:var(--ink-dim)}
+.mq-fb.no{background:rgba(255,93,108,.09);border:1px solid #7a2f38;color:var(--ink-dim)}
+.mq-fb b{color:var(--ink)}
+.mq-done{display:none;align-items:center;gap:8px;margin-top:14px;padding:11px 14px;border-radius:11px;
+  background:rgba(255,209,102,.08);border:1px solid #5a4a1e;color:var(--gold);font-weight:700;font-size:14px}
+.miniquiz.alldone .mq-done{display:flex;animation:fade .4s}
+
+.game-hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.lives{display:flex;gap:5px}
+.lives .h{font-size:22px;transition:.3s}
+.lives .h.gone{filter:grayscale(1) brightness(.5);transform:scale(.85)}
+.score-box{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;background:#0e1830;
+  border:1px solid var(--line);padding:7px 13px;border-radius:11px}
+.score-box .lab2{font-size:11px;color:var(--ink-mute);font-weight:400;font-family:var(--body)}
+.score-box .num{font-size:18px;color:var(--gold)}
+.earned{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.medal{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:8px 13px;border-radius:11px;
+  background:linear-gradient(180deg,#2a2410,#1c1808);border:1px solid #5a4a1e;color:var(--gold);opacity:.3;filter:grayscale(.6);transition:.4s}
+.medal.got{opacity:1;filter:none;box-shadow:0 0 16px -4px var(--gold)}
+.medal .e{font-size:18px}
+
+textarea{width:100%;font-family:var(--body);font-size:14.5px;color:var(--ink);background:#0e1830;
+  border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;min-height:88px;resize:vertical;
+  outline:none;margin-top:8px;line-height:1.55;transition:.18s}
+textarea:focus{border-color:var(--c1);background:#16224a}
+textarea::placeholder{color:var(--ink-mute)}
+.savemark{font-size:12px;color:var(--ok);margin-top:6px;display:inline-block;opacity:0;transition:.3s}
+.savemark.on{opacity:1}
+
+.prog-list{position:fixed;right:14px;top:calc(var(--header-h) + 8px);z-index:60;width:264px;
+  background:rgba(14,22,44,.97);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:none}
+.prog-list.show{display:block;animation:fade .3s}
+.prog-list h4{font-family:var(--jua);font-size:15px;margin-bottom:10px}
+.prog-list li{list-style:none;display:flex;gap:8px;font-size:13px;color:var(--ink-mute);padding:4px 0;line-height:1.45}
+.prog-list li.on{color:var(--ink-dim)}
+.prog-list li .mk{flex:none;color:var(--ink-mute)}
+.prog-list li.on .mk{color:var(--ok)}
+
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:200;
+  background:rgba(14,22,44,.96);border:1px solid var(--c1);color:var(--ink);padding:12px 20px;border-radius:13px;
+  font-weight:700;font-size:14.5px;box-shadow:0 16px 40px -12px rgba(0,0,0,.8);opacity:0;pointer-events:none;
+  transition:.3s;display:flex;align-items:center;gap:9px;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.good{border-color:var(--ok)}#toast.bad{border-color:var(--danger)}
+
+:focus-visible{outline:3px solid var(--c1);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.08s!important;scroll-behavior:auto}}
+@media print{
+  #cover,header.top,nav.tabs,#toast,.prog-list,.cta-row,.btn{display:none!important}
+  body{background:#fff;color:#111}
+  .panel{display:block!important;page-break-after:always}
+  .card,.lab{background:#fff;border-color:#ccc;box-shadow:none}
+  .lead,.muted,.note,.use .u-d{color:#333}
+  h1.big,h2.sec,h3.card-t{color:#111}
+  .note.class{display:flex!important}
+  .cloze{color:#111!important;border-style:solid}
+  .cloze::after{content:none}
+}
+</style>
+</head>
+<body>
+<div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
+
+<div id="cover">
+  <div class="cover-in">
+    <div class="cover-emoji">💡 📏 ⭐</div>
+    <h1 class="cover-title">빛은 사라지지 않는다</h1>
+    <p class="cover-sub">넓게 퍼질 뿐이다 — 빛의 밝기와 광원까지의 거리 ✨</p>
+    <div class="cover-meta">
+      <span class="badge">⏱️ 45분</span>
+      <span class="badge">📘 VIII. 별과 우주 · 1. 별 ② · 272~273쪽</span>
+      <span class="badge gold" id="coverSaved" style="display:none">🔖 이어서 하기</span>
+    </div>
+    <div class="steps-card">
+      <h3>💡 학습 단계 안내</h3>
+      <ol>
+        <li><span class="sn">1</span><div><b>생각 열기</b> — 응원봉이 멀수록 어두워 보이는 까닭</div></li>
+        <li><span class="sn">2</span><div><b>탐구하기</b> — 예측하고, 조도를 직접 재어 표와 그래프로 확인</div></li>
+        <li><span class="sn">3</span><div><b>개념 잡기</b> — 왜 하필 거리의 제곱에 반비례할까</div></li>
+        <li><span class="sn">4</span><div><b>적용하기</b> — 이 원리가 쓰이는 곳 찾기</div></li>
+        <li><span class="sn">5</span><div><b>확인하기</b> — 배운 것 점검하기</div></li>
+        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 소리도, 중력도 똑같은 법칙을 따른다</div></li>
+      </ol>
+    </div>
+    <div class="cover-cta">
+      <button class="btn primary xl" id="coverGo">빛 측정 시작하기 💡</button>
+      <span class="cover-hint">진행 상황은 이 기기에 자동 저장돼요 · 왼쪽 위 제목을 누르면 이 화면으로 돌아옵니다</span>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-bar">
+    <button class="brand" id="brandBtn" title="표지로 돌아가기">
+      <div class="logo">💡</div>
+      <div><b>빛은 <span>사라지지 않는다</span></b>
+        <div class="sub">VIII. 별과 우주 · 1. 별 ② · 중2 과학</div></div>
+    </button>
+    <div class="head-right">
+      <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
+      <button class="hbtn" id="tmodeBtn" title="교사 모드">🧑‍🏫</button>
+      <div class="progress-mini" id="progWrap" title="진행도 — 누르면 남은 활동이 보여요">
+        <div class="bar"><i id="progBar"></i></div><div class="pct" id="progPct">0%</div>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabNav">
+    <button data-tab="engage" class="active"><span class="sn"><i>1</i></span>생각 열기</button>
+    <button data-tab="explore"><span class="sn"><i>2</i></span>탐구하기</button>
+    <button data-tab="explain"><span class="sn"><i>3</i></span>개념 잡기</button>
+    <button data-tab="apply"><span class="sn"><i>4</i></span>적용하기</button>
+    <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
+    <span class="tab-sep"></span>
+    <button data-tab="beyond" class="optional"><span class="sn"><i>+</i></span>🌙 더 알아보기</button>
+  </nav>
+</header>
+
+<div class="prog-list" id="progList"><h4>남은 활동</h4><ul id="progItems"></ul></div>
+
+<main>
+
+<!-- 1단계 -->
+<section class="panel show" id="panel-engage">
+  <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">생각 열기 · 오늘의 수수께끼</span></div>
+  <h1 class="big">빛은 사라지지 않는다.<br><span class="t3">넓게 퍼질</span> 뿐이다.</h1>
+  <p class="lead" style="margin-top:16px">
+    콘서트장에서 무대 위 가수가 객석을 보면, 앞자리 응원봉은 눈부시게 밝고 뒷자리 응원봉은 아득하게 어둡습니다.
+    그런데 <b class="k">모든 응원봉은 똑같은 밝기</b>로 켜져 있어요. 응원봉이 약해진 게 아닙니다.
+    그럼 그 빛은 어디로 간 걸까요?
+  </p>
+  <figure class="fig" data-fig="lightstick"
+    data-alt="어두운 콘서트장 객석에 응원봉이 가득한 장면. 앞자리는 밝고 뒷자리로 갈수록 어둡게 보인다"
+    data-cap="같은 응원봉인데 거리에 따라 밝기가 다르게 보인다."></figure>
+
+  <div class="grid c2" style="margin-top:22px">
+    <div class="card">
+      <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🔦 손전등으로 벽 비추기</h2>
+      <p class="lead" style="font-size:16px">손전등을 벽에 바싹 대면 작고 밝은 원이 생깁니다.
+        뒤로 물러나면 원이 <b class="t3">점점 커지면서</b> 동시에 <b class="t2">점점 흐려지죠.</b>
+        커진 것과 흐려진 것 사이에 관계가 있을까요?</p>
+      <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 실제 손전등이나 스마트폰 플래시로 시범을 보이세요. "빛의 양이 줄었나요?"를 물어 <b>총량은 같은데 넓게 퍼졌다</b>는 말을 학생 입에서 끌어냅니다. 이게 오늘의 핵심 문장입니다.</div></div>
+    </div>
+    <div class="card">
+      <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">⭐ 그럼 별도?</h2>
+      <p class="lead" style="font-size:16px">밤하늘의 별도 밝기가 제각각입니다.
+        어떤 별이 어둡게 보이는 건 <b class="k">원래 어두운 별</b>이라서일까요,
+        아니면 <b class="k">그냥 멀리 있어서</b>일까요?</p>
+      <p class="help">이 질문의 답은 다음 차시(별의 등급)에서 완성됩니다. 오늘은 그 바탕이 되는 규칙을 찾습니다.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:22px">
+    <div class="eyebrow" style="margin-bottom:8px">오늘의 목표</div>
+    <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 말할 수 있다</h3>
+    <div class="grid c2">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
+        <div><b class="k">빛의 밝기와 거리의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">거리가 2배면 밝기는 몇 배가 되는지까지.</span></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c3);color:#0a2a10;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
+        <div><b class="k">왜 그렇게 되는지 이유를 댈 수 있다.</b><br><span class="muted" style="font-size:14px">빛이 비추는 넓이가 어떻게 변하는지로.</span></div>
+      </div>
+    </div>
+    <div class="pill-list">
+      <span class="pill">핵심어 · <b>빛의 세기</b></span><span class="pill"><b>조도(lx)</b></span>
+      <span class="pill"><b>광도</b></span><span class="pill"><b>거리의 제곱에 반비례</b></span>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="explore">2단계 · 직접 재어 보기 →</button></div>
+</section>
+
+<!-- 2단계 -->
+<section class="panel" id="panel-explore">
+  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">탐구하기 · 예측 → 측정 → 설명</span></div>
+  <h2 class="sec">거리를 2배로 하면, 밝기는 몇 배가 될까?</h2>
+  <p class="lead">재어 보기 전에 — 먼저 예측부터. 이 예측이 빗나가는 것이 오늘 수업의 핵심입니다.</p>
+
+  <div class="card" style="margin-top:20px">
+    <div class="badge" style="margin-bottom:12px">🔮 ① 예측 (Predict)</div>
+    <h3 class="card-t">광원에서 <span class="t4">거리를 2배</span>로 멀리하면, 그 자리의 <span class="t2">빛의 세기</span>는?</h3>
+    <div class="choices" id="poeChoices">
+      <button class="choice" data-poe="a"><span class="key">가</span>1/2배가 된다</button>
+      <button class="choice" data-poe="b"><span class="key">나</span>1/4배가 된다</button>
+      <button class="choice" data-poe="c"><span class="key">다</span>거의 변하지 않는다</button>
+    </div>
+    <div class="explain" id="poeExplain"></div>
+    <p class="help">대부분 '가'를 고릅니다. 그게 자연스러운 직관이에요. 이제 실제로 재어 봅시다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 손을 들어 예측을 <b>집계</b>하고 칠판에 적어 두세요. 측정 후 다시 그 숫자를 보게 하면 인지 갈등이 훨씬 강하게 남습니다.</div></div>
+  </div>
+
+  <!-- 실측 실험실 -->
+  <div class="card" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">📏 ② 측정 (Observe)</div>
+    <div class="lab">
+      <h3>🔬 광원으로부터의 거리에 따른 빛의 세기</h3>
+      <p class="lead" style="font-size:15px">교과서 272쪽 탐구입니다. 스마트 기기의 <b>조도 측정 앱</b>을 조도계로 씁니다.</p>
+      <ol class="steps-how">
+        <li>줄자 끝에 <b>광원 장치</b>를 놓고, 스마트 기기에서 <b>조도 측정 앱</b>을 실행합니다.</li>
+        <li><b>주변을 어둡게</b> 한 뒤, 광원에서 <b class="t4">20 cm</b> 거리에 기기를 두고 빛의 세기를 잽니다.</li>
+        <li>같은 방법으로 <b class="t4">40 cm</b>, <b class="t4">60 cm</b>에서도 재어 아래 표에 적습니다.</li>
+        <li>비율은 <b>자동으로 계산</b>됩니다. 20 cm에서 잰 값을 기준(1)으로 삼아요.</li>
+      </ol>
+      <div class="note" style="border-color:var(--danger);background:rgba(255,93,108,.07)">
+        <span class="ic">🥽</span><div><b>안전</b> — 주변을 어둡게 한 상태에서 밝은 광원을 켜므로 눈부심 사고가 날 수 있습니다.
+        광원을 직접 들여다보지 말고, 필요하면 보안경을 씁니다.</div></div>
+
+      <div class="dtable-wrap">
+        <table class="dtable" id="mTable">
+          <tr><th>거리</th><th>빛의 세기 (lx)</th><th>20 cm일 때에 대한 비</th></tr>
+        </table>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost sm" id="sampleBtn">예시 데이터 넣기</button>
+        <button class="btn ghost sm" id="clearBtn">지우기</button>
+        <button class="btn ghost sm" id="copyBtn">표 복사</button>
+      </div>
+      <p class="help">조도계 앱이 없거나 시간이 부족하면 <b class="k">예시 데이터</b>로 진행해도 됩니다(교과서 예시값).</p>
+
+      <div class="graph-wrap"><canvas id="gcv" height="240"></canvas></div>
+      <div class="legend">
+        <span><i style="background:#ffd166"></i>내가 잰 값</span>
+        <span><i style="background:#67e8e0"></i>거리의 제곱에 반비례할 때 예상되는 값</span>
+      </div>
+      <p class="help" id="fitMsg">값을 넣으면 두 선이 겹치는지 확인할 수 있어요.</p>
+
+      <div class="note class"><span class="ic">💬</span><div><b>탐구 지도 유의점</b> — ① 조도계가 없으면 조도 측정 앱을 설치한 스마트 기기를 씁니다. ② 다른 모둠 광원의 영향을 받지 않도록 자리를 배치하세요. ③ 광원은 점광원에 가까운 작은 것을, 광원과 조도계는 일직선상에 둡니다. ④ 여러 번 재어 평균을 내면 결과가 깔끔합니다.</div></div>
+    </div>
+
+    <!-- 다르게 해 보기 -->
+    <div class="card" style="margin-top:16px;background:rgba(154,230,110,.05);border-color:#3a5e3a">
+      <h3 class="card-t">🧪 다르게 해 보기 — 조도계 없이도 됩니다</h3>
+      <p class="lead" style="font-size:15.5px;margin-top:8px">
+        종이컵 바닥에 <b>작은 정사각형 구멍</b>을 뚫어 광원에 붙입니다.
+        그 빛이 모눈종이의 <b class="t3">1칸</b>, <b class="t3">4칸</b>, <b class="t3">9칸</b>을 비출 때
+        밝기가 어떻게 달라지는지 눈으로 관찰합니다.</p>
+      <figure class="fig" data-fig="grid"
+        data-alt="광원에서 나온 사각형 빛이 거리에 따라 모눈종이의 1칸, 4칸, 9칸을 비추는 모습"
+        data-cap="같은 양의 빛이 1칸 → 4칸 → 9칸으로 넓게 퍼진다. 한 칸이 받는 빛은 그만큼 줄어든다."></figure>
+      <p class="help">빛의 총량은 그대로인데 비추는 <b class="t3">면적</b>만 넓어집니다. 그래서 한 칸이 받는 밝기가 줄어드는 거예요.</p>
+      <div class="note class"><span class="ic">💬</span><div><b>지도 방안</b> — 검은색으로 감싼 종이컵 바닥에 정사각형 구멍을 작게 뚫어 스마트 기기 광원 부위에 붙입니다. 구멍 뚫을 때 다치지 않도록 주의시키세요. 면적과 밝기를 먼저 이야기하게 한 뒤 거리와 연결합니다.</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">💡 ③ 설명 (Explain)</div>
+    <p class="lead" style="font-size:16px">
+      전등이나 별 같은 광원에서 나온 빛은 멀어질수록 <b class="t3">사방으로 퍼지면서 더 넓은 영역을 비춥니다.</b>
+      거리가 <b class="t4">2배, 3배</b>로 멀어지면 빛이 비추는 면적은 <b class="t3">4배, 9배</b>가 되고,
+      그래서 같은 면적이 받는 밝기는 <b class="t2">1/4배, 1/9배</b>가 됩니다.
+      즉 <b class="k">빛의 밝기는 거리의 제곱에 반비례</b>합니다.
+    </p>
+    <div class="note myth"><span class="ic">⚠️</span><div><b>헷갈리기 쉬운 두 낱말</b><br>
+      <b class="t1">광도</b> — 광원이 <b>사방으로 내보내는</b> 빛의 세기. 광원의 성질이라 거리와 상관없이 일정합니다.<br>
+      <b class="t2">조도</b> — 광원에서 나온 빛이 <b>어떤 면에 도달해서</b> 만드는 밝은 정도. 단위는 럭스(lx).
+      우리가 잰 건 조도이고, <b>거리의 제곱에 반비례하는 것은 조도</b>입니다.</div></div>
+    <div class="miniquiz" data-quiz="explore"></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="explain">3단계 · 왜 하필 제곱일까 →</button></div>
+</section>
+
+<!-- 3단계 -->
+<section class="panel" id="panel-explain">
+  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">개념 잡기 · 용어와 규칙</span></div>
+  <h2 class="sec">면적이 답을 알고 있다</h2>
+  <p class="lead">"왜 하필 제곱이지?"라는 물음은 빛이 아니라 <b class="t3">넓이</b>를 보면 풀립니다.</p>
+
+  <div class="card" style="margin-top:20px">
+    <h3 class="card-t">📐 한 장으로 보는 규칙</h3>
+    <p class="lead" style="font-size:15.5px;margin-top:8px">
+      광원에서 나온 빛이 거리 1에서 정사각형 <b>1칸</b>을 비춘다면,
+      거리 2에서는 가로도 2배, 세로도 2배가 되어 <b class="t3">4칸</b>을,
+      거리 3에서는 <b class="t3">9칸</b>을 비춥니다. 빛의 총량은 그대로인데 나눠 가지는 칸 수만 늘어나는 거죠.</p>
+    <!-- 🔦 빛 퍼짐 시뮬레이터 -->
+    <div class="lab" style="margin-top:16px">
+      <h3>🔦 빛 퍼짐 시뮬레이터</h3>
+      <p class="lead" style="font-size:15px">거리를 밀어 보세요. 빛이 <b class="t3">몇 칸</b>을 비추는지,
+        한 칸이 받는 <b class="t2">밝기</b>가 어떻게 변하는지 동시에 보입니다.</p>
+      <div class="simgrid">
+        <div class="simstage"><canvas id="spreadcv" height="260"></canvas></div>
+        <div class="simctl">
+          <h4>조작판</h4>
+          <div class="ctl">
+            <label>광원으로부터의 거리 <span class="val" id="vSD">1배</span></label>
+            <input type="range" id="spreadD" min="1" max="4" step="1" value="1">
+          </div>
+          <div class="readout">
+            <div class="r"><div class="lab2">비추는 면적</div><div class="v" id="rArea">1칸</div></div>
+            <div class="r"><div class="lab2">한 칸이 받는 밝기</div><div class="v" id="rBright">1</div></div>
+          </div>
+          <p class="help" id="spreadMsg">거리 1배 — 기준입니다.</p>
+        </div>
+      </div>
+      <p class="honest"><span class="ic">📌</span>실제 빛은 사방으로 퍼지지만, 여기서는 이해를 돕기 위해 사각형 한 다발만 잘라 보여 줍니다.</p>
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>판서 팁</b> — 칠판에 정사각형을 그려 "가로 2배, 세로 2배"를 손으로 짚으며 4칸을 그려 보이세요. 제곱이 왜 나오는지 <b>수식이 아니라 그림으로</b> 납득시키는 게 목표입니다.</div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t" style="margin-bottom:14px">용어 지도</h3>
+    <div class="terms">
+      <div class="term" style="--c:var(--c1)"><div class="nm t1">광도</div><div class="de">광원이 사방으로 내보내는 빛의 세기. 광원 자체의 성질이라 거리와 무관하다.</div></div>
+      <div class="term" style="--c:var(--c2)"><div class="nm t2">조도</div><div class="de">빛이 어떤 면에 도달해 만드는 밝은 정도. 단위는 럭스(lx). 거리에 따라 변한다.</div></div>
+      <div class="term" style="--c:var(--c3)"><div class="nm t3">비추는 면적</div><div class="de">거리가 2배, 3배가 되면 4배, 9배로 넓어진다. 제곱이 나오는 이유.</div></div>
+      <div class="term" style="--c:var(--c4)"><div class="nm t4">거리</div><div class="de">광원에서 떨어진 정도. 이것 하나만 바꿔도 밝기가 크게 변한다.</div></div>
+    </div>
+  </div>
+
+  <!-- 빈칸 인출 -->
+  <div class="card cloze-set" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">✍️ 빈칸을 눌러 확인 — 먼저 머릿속으로 답한 뒤에</div>
+    <p class="cloze-line">
+      광원에서 나온 빛은 멀어질수록 사방으로 <span class="cloze" data-ans="퍼지면서" data-c="c3">　</span>
+      더 <span class="cloze" data-ans="넓은" data-c="c3">　</span> 영역을 비춘다.
+    </p>
+    <p class="cloze-line">
+      광원으로부터 거리가 2배, 3배로 멀어지면 빛이 비추는 면적은
+      <span class="cloze" data-ans="4배" data-c="c3">　</span>, <span class="cloze" data-ans="9배" data-c="c3">　</span>가 된다.
+    </p>
+    <p class="cloze-line">
+      따라서 같은 면적이 받는 빛의 밝기는 <span class="cloze" data-ans="1/4배" data-c="c2">　</span>,
+      <span class="cloze" data-ans="1/9배" data-c="c2">　</span>가 된다.
+    </p>
+    <p class="cloze-line">
+      한마디로, 빛의 밝기는 거리의 <span class="cloze" data-ans="제곱" data-c="c4">　</span>에
+      <span class="cloze" data-ans="반비례" data-c="c4">　</span>한다.
+    </p>
+    <p class="cloze-line">
+      광원이 사방으로 내는 빛의 세기는 <span class="cloze" data-ans="광도" data-c="c1">　</span>,
+      어떤 면이 받는 밝은 정도는 <span class="cloze" data-ans="조도" data-c="c2">　</span>이다.
+    </p>
+    <div class="cloze-done">✅ 이 문단은 다 채웠어요!</div>
+    <p class="cloze-hint">빈칸을 그냥 눌러 답만 보면 남지 않아요. 소리 내어 답해 보고 누르세요.</p>
+  </div>
+
+  <div class="miniquiz" data-quiz="explain"></div>
+  <div class="cta-row"><button class="btn primary" data-go="apply">4단계 · 이 규칙이 쓰이는 곳 →</button></div>
+</section>
+
+<!-- 4단계 -->
+<section class="panel" id="panel-apply">
+  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">적용하기 · 생활 속으로</span></div>
+  <h2 class="sec">한 발짝 물러섰을 뿐인데</h2>
+  <p class="lead">거리의 제곱에 반비례한다는 건, 조금만 멀어져도 확 줄어든다는 뜻입니다. 그 효과가 생각보다 큽니다.</p>
+
+  <div class="use-grid" style="margin-top:20px">
+    <div class="use">
+      <figure class="fig" data-fig="desk" data-alt="책상 위 스탠드를 가까이 놓았을 때와 멀리 놓았을 때 책이 받는 밝기 차이"></figure>
+      <div class="u-t">📖 스탠드를 30 cm만 당기면</div>
+      <div class="u-d">책에서 60 cm 떨어진 스탠드를 30 cm로 당기면 거리가 절반이 되니 밝기는 <b class="t2">4배</b>가 됩니다.
+        전구를 바꾸지 않아도 훨씬 밝아지는 이유예요.</div>
+    </div>
+    <div class="use">
+      <figure class="fig" data-fig="flash" data-alt="어두운 곳에서 스마트폰 플래시로 가까운 물체와 먼 물체를 찍었을 때의 밝기 차이"></figure>
+      <div class="u-t">📸 야간 촬영에서 뒤가 까맣게 나오는 이유</div>
+      <div class="u-d">플래시 빛이 앞사람에게는 강하게 닿지만 몇 미터 뒤 배경에는 거의 닿지 않습니다.
+        거리가 몇 배만 되어도 밝기가 수십 분의 일로 떨어지니까요.</div>
+    </div>
+    <div class="use">
+      <figure class="fig" data-fig="xray" data-alt="방사선 작업자가 선원에서 거리를 두고 서 있는 모습"></figure>
+      <div class="u-t">🏥 방사선실에서 '거리'가 곧 안전인 까닭</div>
+      <div class="u-d">방사선도 사방으로 퍼져 나가므로 같은 법칙을 따릅니다.
+        2배 물러서면 받는 양이 <b class="t2">1/4</b>로 줄기 때문에, 차폐만큼이나 거리가 중요한 안전 수칙이에요.</div>
+    </div>
+    <div class="use">
+      <figure class="fig" data-fig="wifi" data-alt="공유기에서 멀어질수록 약해지는 무선 신호"></figure>
+      <div class="u-t">📶 방 끝에서 와이파이가 느려지는 이유</div>
+      <div class="u-d">전파도 광원처럼 사방으로 퍼집니다. 공유기에서 멀어질수록 신호 세기가 거리의 제곱에 반비례해 떨어지죠.
+        (벽에 흡수되는 것까지 더해지면 더 나빠집니다.)</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🤔 생각해 보기</h3>
+    <p class="lead" style="font-size:16px;margin-top:10px">
+      똑같이 생긴 두 별 A와 B가 밤하늘에 있습니다. A가 B보다 <b class="k">4배 밝게</b> 보인다면,
+      두 별까지의 거리는 어떤 관계일까요? 그리고 이 추론이 성립하려면 <b class="k">어떤 조건</b>이 필요할까요?</p>
+    <textarea id="essay" placeholder="힌트: 밝기가 4배라면 거리는 몇 배 차이일까요? 그리고 '똑같이 생긴 두 별'이라는 말이 왜 중요할까요?"></textarea>
+    <span class="savemark" id="essaySaved">✔ 저장됨</span>
+    <div class="btn-row"><button class="btn ghost sm" id="ansBtn">모범 답안 확인하기</button></div>
+    <div class="explain" id="modelAns" style="margin-top:12px">
+      <div class="why">✍️ 모범 답안</div>
+      밝기가 4배라면 거리는 <b>1/2배</b>, 즉 A가 B보다 2배 가깝다.
+      다만 이 추론은 <b>두 별이 실제로 내는 빛의 양(광도)이 같을 때</b>만 성립한다.
+      실제 별들은 광도가 제각각이라, 보이는 밝기만으로는 거리를 알 수 없다.
+      그래서 다음 시간에 <b>등급</b>이라는 도구가 필요해진다.
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 이 문제는 <b>다음 차시로 넘어가는 다리</b>입니다. "조건이 필요하다"는 데까지 학생이 도달하면, 겉보기 등급과 절대 등급을 왜 나누는지 이미 절반은 이해한 셈입니다.</div></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="check">5단계 · 얼마나 알게 됐는지 확인 →</button></div>
+</section>
+
+<!-- 5단계 -->
+<section class="panel" id="panel-check">
+  <div class="stepline"><span class="sbadge">STEP 5</span><span class="swhat">확인하기 · 형성평가</span></div>
+  <h2 class="sec">배운 것을 확인해 봅시다</h2>
+  <p class="lead">점수에 들어가지 않습니다. 어디가 헷갈리는지 찾는 게 목적이에요.</p>
+  <div class="card" style="margin-top:20px">
+    <div class="game-hud">
+      <div class="lives" id="lives"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span></div>
+      <div class="score-box"><span class="lab2">점수</span><span class="num" id="score">0</span></div>
+      <div class="score-box"><span class="lab2">문항</span><span class="num" id="qno">0/0</span></div>
+    </div>
+    <div id="gameBody">
+      <div style="text-align:center;padding:30px 10px">
+        <p class="lead" style="margin:0 auto 18px">준비됐나요? 5문항입니다.</p>
+        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+      </div>
+    </div>
+    <div class="earned" id="medals">
+      <div class="medal" data-medal="first"><span class="e">🥉</span>첫 정답</div>
+      <div class="medal" data-medal="half"><span class="e">🥈</span>절반 돌파</div>
+      <div class="medal" data-medal="perfect"><span class="e">🥇</span>전부 정답</div>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn ghost" data-go="beyond">🌙 더 알아보기 (선택)</button></div>
+</section>
+
+<!-- + -->
+<section class="panel" id="panel-beyond">
+  <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
+  <h2 class="sec">이 법칙은 빛만의 것이 아니다</h2>
+  <p class="lead">여기서부터는 교과서 밖 이야기입니다. 외울 필요 없어요.</p>
+
+  <div class="grid c2" style="margin-top:20px">
+    <div class="card">
+      <h3 class="card-t">🔊 소리도, 중력도 똑같다</h3>
+      <p class="lead" style="font-size:16px;margin-top:8px">
+        한 점에서 사방으로 퍼져 나가는 것은 전부 같은 운명입니다.
+        소리의 세기도, 중력의 세기도, 전기력의 세기도 모두 <b class="k">거리의 제곱에 반비례</b>해요.
+        이유는 하나 — 우리가 사는 공간이 <b>3차원</b>이고, 퍼져 나간 구면의 넓이가 반지름의 제곱에 비례하기 때문입니다.</p>
+      <p class="help">그래서 이 규칙을 '역제곱 법칙'이라고 부릅니다. 물리에서 가장 자주 마주치는 모양이에요.</p>
+    </div>
+    <div class="card">
+      <h3 class="card-t">🌌 그런데 별빛은 왜 안 사라질까</h3>
+      <p class="lead" style="font-size:16px;margin-top:8px">
+        수백 광년 떨어진 별의 빛은 상상할 수 없을 만큼 옅어져 우리에게 도착합니다.
+        그런데도 보이는 이유는 별이 내는 빛의 양이 그만큼 어마어마하기 때문이에요.
+        망원경의 지름을 키우는 것도 결국 <b>더 넓은 면적으로 그 옅은 빛을 긁어모으기</b> 위해서입니다.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
+    <p class="lead" style="font-size:17px;margin-top:10px">
+      <b class="k">"빛은 사라지지 않는다. 넓게 퍼질 뿐이다."</b><br><br>
+      응원봉의 빛은 어디로도 사라지지 않았습니다. 다만 더 넓은 공간에 나뉘어,
+      내 눈에 들어오는 몫이 줄어들었을 뿐이죠. 그래서 밝기만 보고는
+      <b class="t1">원래 어두운 것</b>인지 <b class="t4">그저 멀리 있는 것</b>인지 알 수 없습니다.<br><br>
+      천문학자들이 바로 이 문제로 오래 고생했습니다. 그리고 그 해결책이
+      다음 시간에 배울 <b class="k">겉보기 등급과 절대 등급</b>이에요.
+    </p>
+    <div class="cta-row" style="justify-content:center">
+      <button class="btn ghost" data-go="engage">1단계로 돌아가기 ↑</button>
+      <a class="btn ghost" href="index.html">🌌 단원 허브로</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="toast"></div>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+
+<script>
+"use strict";
+/* ── 🖼️ 그림 자료 (img 폴더에 파일명대로 넣으면 자동 적용) ── */
+const FIGS={
+  lightstick:'img/b-lightstick.png', grid:'img/b-grid.png', inverse:'img/b-inverse.png',
+  desk:'img/b-desk.png', flash:'img/b-flash.png', xray:'img/b-xray.png', wifi:'img/b-wifi.png'
+};
+const BG_IMAGES={cover:'',engage:'',explore:'',explain:'',apply:'',check:'',beyond:''};
+const BG_FALLBACK={
+  cover:'radial-gradient(120% 90% at 50% 0%, #3a3050, #070c1a 68%)',
+  engage:'radial-gradient(110% 80% at 50% 0%, #3a3050, #070c1a 66%)',
+  explore:'radial-gradient(100% 80% at 50% 20%, #2e3352, #070c1a 70%)',
+  explain:'linear-gradient(180deg, #24284c, #070c1a 74%)',
+  apply:'radial-gradient(90% 80% at 68% 15%, #33285c, #070c1a 70%)',
+  check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
+  beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
+};
+const SAVE='star_brightness_v1';
+
+const POE_ANSWER='b';
+const POE_WHY={
+  right:'맞았어요! 거리가 2배가 되면 빛이 비추는 <b>면적이 4배</b>로 넓어지기 때문에, 같은 면적이 받는 밝기는 <b>1/4배</b>가 됩니다. 이제 직접 재어 확인해 봅시다.',
+  wrong:'많은 사람이 그렇게 생각해요. 하지만 실제로는 <b>1/4배</b>가 됩니다. 거리가 2배가 되면 빛이 <b>가로로도 2배, 세로로도 2배</b> 퍼져서 면적이 4배가 되거든요. 아래에서 직접 재어 확인해 봅시다.'
+};
+
+/* 실측 데이터 */
+const DISTS=[20,40,60];
+const SAMPLE=[136,37,14];   // 교과서 예시값
+
+const QUIZ_SETS={
+  explore:{title:'광도와 조도 구분', qs:[
+    {q:'우리가 조도계로 잰 값은 다음 중 무엇일까?',
+     ch:[{t:'조도 — 어떤 면이 받는 밝은 정도',ok:1},{t:'광도 — 광원이 사방으로 내는 빛의 세기',ok:0}],
+     why:'조도계는 <b>그 자리의 면</b>이 받는 밝기를 잽니다. 단위는 럭스(lx)예요.'},
+    {q:'광원을 그대로 두고 조도계만 멀리 옮기면, 광원의 광도는?',
+     ch:[{t:'변하지 않는다',ok:1},{t:'함께 작아진다',ok:0}],
+     why:'광도는 <b>광원 자체의 성질</b>이라 내가 어디서 재든 그대로입니다. 변하는 건 조도예요.'}
+  ]},
+  explain:{title:'거리와 밝기의 관계', qs:[
+    {q:'거리가 3배로 멀어지면 빛이 비추는 면적은?',
+     ch:[{t:'9배',ok:1},{t:'3배',ok:0},{t:'6배',ok:0}],
+     why:'가로 3배 × 세로 3배 = 넓이 9배입니다.'},
+    {q:'그때 같은 면적이 받는 밝기는?',
+     ch:[{t:'1/9배',ok:1},{t:'1/3배',ok:0},{t:'9배',ok:0}],
+     why:'같은 양의 빛을 9칸이 나눠 가지므로 한 칸이 받는 몫은 1/9입니다.'},
+    {q:'빛의 밝기는 거리와 어떤 관계인가?',
+     ch:[{t:'거리의 제곱에 반비례한다',ok:1},{t:'거리에 반비례한다',ok:0},{t:'거리에 비례한다',ok:0}],
+     why:'면적이 거리의 제곱으로 늘어나기 때문입니다.'}
+  ]}
+};
+
+const GAME_QS=[
+  {q:'광원으로부터 거리가 2배로 멀어질 때, 같은 면적이 받는 빛의 밝기는?',
+   ch:[{t:'1/4배',ok:1},{t:'1/2배',ok:0},{t:'2배',ok:0}],
+   why:'면적이 4배로 넓어지므로 밝기는 1/4배가 됩니다.'},
+  {q:'광원에서 나온 빛이 거리 3에서 비추는 면적은 거리 1에서의 몇 배인가?',
+   ch:[{t:'9배',ok:1},{t:'3배',ok:0},{t:'1/9배',ok:0}],
+   why:'가로 3배 × 세로 3배 = 9배입니다.'},
+  {q:'조도에 대한 설명으로 옳은 것은?',
+   ch:[{t:'어떤 면이 받는 빛의 밝은 정도이며 단위는 lx이다',ok:1},
+       {t:'광원이 사방으로 내는 빛의 세기이며 거리와 무관하다',ok:0},
+       {t:'별의 실제 밝기를 등급으로 나타낸 것이다',ok:0}],
+   why:'두 번째는 광도에 대한 설명입니다.'},
+  {q:'책상에서 60 cm 떨어져 있던 스탠드를 30 cm로 당겼다. 책이 받는 밝기는?',
+   ch:[{t:'약 4배가 된다',ok:1},{t:'약 2배가 된다',ok:0},{t:'변하지 않는다',ok:0}],
+   why:'거리가 1/2배가 되면 밝기는 (1/2)²의 역수인 4배가 됩니다.'},
+  {q:'빛의 밝기가 거리의 제곱에 반비례하는 근본적인 까닭은?',
+   ch:[{t:'거리가 멀어질수록 빛이 비추는 면적이 제곱으로 넓어지기 때문',ok:1},
+       {t:'빛이 공기에 흡수되어 사라지기 때문',ok:0},
+       {t:'광원의 밝기가 시간이 지나며 약해지기 때문',ok:0}],
+   why:'빛은 사라지는 게 아니라 <b>넓게 퍼지는</b> 겁니다. 오늘 수업의 한 문장이에요.'}
+];
+
+/* ── 엔진 ── */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TABS=['engage','explore','explain','apply','check','beyond'];
+const CS=getComputedStyle(document.documentElement);
+const CV=k=>CS.getPropertyValue('--'+k).trim();
+
+function setBg(tab){
+  const L=$('#bgLayer'); if(!L)return;
+  const img=BG_IMAGES[tab]||(tab==='cover'?BG_IMAGES.engage:'');
+  L.style.opacity='0';
+  setTimeout(()=>{L.style.backgroundImage=img?`url("${img}")`:(BG_FALLBACK[tab]||BG_FALLBACK.engage);L.style.opacity='1';},150);
+}
+function fit(cv){
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  const w=cv.clientWidth||cv.parentElement.clientWidth||320;
+  const h=parseInt(cv.getAttribute('height'))||240;
+  cv.style.height=h+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx,w,h};
+}
+const A={ctx:null,
+  ensure(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+    if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();return this.ctx;},
+  blip(f=600,d=.08,type='sine',vol=.15){const c=this.ensure();if(!c)return;
+    const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(c.destination);
+    const t=c.currentTime;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);
+    g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.03);},
+  correct(){this.blip(660,.11);setTimeout(()=>this.blip(880,.13),85);setTimeout(()=>this.blip(1170,.18),190);},
+  wrong(){this.blip(200,.2,'sawtooth',.1);setTimeout(()=>this.blip(150,.24,'sawtooth',.08),130);},
+  pop(){this.blip(440,.05,'triangle',.13);},
+  win(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.blip(f,.22,'sine',.15),i*110));}};
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
+
+let S=load()||{tab:'engage',visited:{},poe:null,meas:{},cloze:{},mini:{},essay:'',best:0,medals:{}};
+S.visited=S.visited||{};S.meas=S.meas||{};S.cloze=S.cloze||{};S.mini=S.mini||{};S.medals=S.medals||{};S.essay=S.essay||'';
+let CLOZE_TOTAL=0;
+function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
+
+function measCount(){return DISTS.filter(d=>+S.meas[d]>0).length;}
+function progChecks(){
+  return [
+    {label:'1단계 열어 보기',            ok:!!S.visited.engage},
+    {label:'2단계 · 결과 예측하기',      ok:!!S.poe},
+    {label:'2단계 · 세 거리 모두 측정',  ok:measCount()>=3},
+    {label:'2단계 · 광도·조도 퀴즈',     ok:!!S.mini.explore},
+    {label:'3단계 · 빈칸 모두 채우기',   ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
+    {label:'3단계 · 거리와 밝기 퀴즈',   ok:!!S.mini.explain},
+    {label:'4단계 · 생각해 보기 답쓰기', ok:(S.essay||'').trim().length>=15},
+    {label:'5단계 · 확인 문제 완주',     ok:S.best>0}
+  ];
+}
+function updateProgress(){
+  const c=progChecks(), pct=Math.round(c.filter(x=>x.ok).length/c.length*100);
+  $('#progBar').style.width=pct+'%'; $('#progPct').textContent=pct+'%';
+  const ul=$('#progItems');
+  if(ul)ul.innerHTML=c.map(x=>`<li class="${x.ok?'on':''}"><span class="mk">${x.ok?'✔':'○'}</span>${x.label}</li>`).join('');
+  const done={engage:!!S.visited.engage, explore:!!S.poe&&measCount()>=3&&!!S.mini.explore,
+    explain:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL&&!!S.mini.explain,
+    apply:(S.essay||'').trim().length>=15, check:S.best>0, beyond:!!S.visited.beyond};
+  $$('#tabNav button').forEach(b=>b.classList.toggle('done',!!done[b.dataset.tab]));
+}
+let toastT;
+function toast(msg,kind=''){const el=$('#toast');el.innerHTML=msg;el.className='show '+kind;
+  clearTimeout(toastT);toastT=setTimeout(()=>el.className='',2300);}
+
+function showTab(id,noScroll){
+  if(!TABS.includes(id))return;
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+id).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  setBg(id); S.tab=id; S.visited[id]=true; save(); updateProgress();
+  if(id==='explore')requestAnimationFrame(drawGraph);
+  if(id==='explain'&&window.__spreadResize)window.__spreadResize();
+  if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+}
+$('#tabNav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){A.ensure();showTab(b.dataset.go);}});
+
+function refreshCover(){
+  const any=progChecks().some(x=>x.ok);
+  $('#coverSaved').style.display=any?'inline-flex':'none';
+  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 💡`:'빛 측정 시작하기 💡';
+}
+$('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
+  document.body.classList.remove('cover-on');A.ensure();A.pop();showTab(S.tab||'engage',true);});
+$('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classList.remove('hide');
+  document.body.classList.add('cover-on');setBg('cover');});
+
+(function(){const KEY='teacherMode';
+  document.body.classList.toggle('teacher',localStorage.getItem(KEY)==='1');
+  $('#tmodeBtn').addEventListener('click',()=>{
+    const on=!document.body.classList.contains('teacher');
+    document.body.classList.toggle('teacher',on);localStorage.setItem(KEY,on?'1':'0');
+    toast(on?'교사 모드 ON — 교실 연결 노트가 보입니다 🧑‍🏫':'교사 모드 OFF — 학생 화면입니다 🎒');
+  });})();
+
+(function(){const wrap=$('#progWrap'),list=$('#progList');
+  wrap.addEventListener('click',()=>list.classList.toggle('show'));
+  document.addEventListener('click',e=>{if(!list.contains(e.target)&&!wrap.contains(e.target))list.classList.remove('show');});})();
+
+/* 그림 슬롯 */
+(function(){
+  $$('[data-fig]').forEach(el=>{
+    const key=el.dataset.fig, src=FIGS[key]||'', alt=el.dataset.alt||'', cap=el.dataset.cap||'';
+    const slot=()=>{el.classList.add('slot');
+      el.innerHTML=`<div class="fe">🖼️</div><div class="fn">${FIGS[key]||'img/'+key+'.png'}</div><div class="fd">${alt}</div>`;};
+    if(!src){slot();return;}
+    const im=new Image();
+    im.onload=()=>{el.classList.remove('slot');
+      el.innerHTML=`<img src="${src}" alt="${alt.replace(/"/g,'&quot;')}" loading="lazy">`+(cap?`<figcaption>${cap}</figcaption>`:'');};
+    im.onerror=slot; im.src=src;
+  });
+})();
+
+/* 예측 */
+(function(){
+  const wrap=$('#poeChoices'),exp=$('#poeExplain');
+  function lock(pick){
+    $$('.choice',wrap).forEach(b=>{b.classList.add('done');
+      if(b.dataset.poe===POE_ANSWER)b.classList.add('correct');
+      else if(b.dataset.poe===pick)b.classList.add('wrong'); else b.classList.add('dim');});
+    const ok=pick===POE_ANSWER;
+    exp.className='explain show '+(ok?'ok':'no');
+    exp.innerHTML=`<div class="why">${ok?'✅ 예측 성공':'🔍 다시 생각해 보기'}</div>${ok?POE_WHY.right:POE_WHY.wrong}`;
+  }
+  wrap.addEventListener('click',e=>{
+    const b=e.target.closest('.choice'); if(!b||S.poe)return;
+    S.poe=b.dataset.poe;save();updateProgress();
+    (S.poe===POE_ANSWER?A.correct:A.wrong).call(A); lock(S.poe);
+  });
+  if(S.poe)lock(S.poe);
+})();
+
+/* 실측 표 + 그래프 */
+function fracLabel(r){
+  if(!isFinite(r)||r<=0)return '';
+  const cands=[[1,1],[1,2],[1,3],[1,4],[1,6],[1,9],[1,16]];
+  let best=null,bd=1e9;
+  cands.forEach(([a,b])=>{const d=Math.abs(r-a/b); if(d<bd){bd=d;best=[a,b];}});
+  if(bd>0.09)return '';
+  return best[1]===1?'≈ 1':`≈ ${best[0]}/${best[1]}`;
+}
+function renderTable(){
+  const t=$('#mTable');
+  t.innerHTML='<tr><th>거리</th><th>빛의 세기 (lx)</th><th>20 cm일 때에 대한 비</th></tr>'+
+    DISTS.map(d=>`<tr><td class="dist">${d} cm</td>
+      <td><input type="number" inputmode="decimal" min="0" step="0.1" data-d="${d}" value="${S.meas[d]??''}" placeholder="—"></td>
+      <td class="ratio" data-r="${d}">—</td></tr>`).join('');
+  $$('#mTable input').forEach(inp=>{
+    inp.addEventListener('input',()=>{
+      const d=inp.dataset.d, v=parseFloat(inp.value);
+      if(isFinite(v)&&v>0)S.meas[d]=v; else delete S.meas[d];
+      save(); updateRatios(); drawGraph(); updateProgress();
+      if(measCount()===3)toast('세 거리 모두 측정 완료! 아래 그래프에서 두 선을 비교해 보세요 📈','good');
+    });
+  });
+  updateRatios();
+}
+function updateRatios(){
+  const base=+S.meas[DISTS[0]];
+  DISTS.forEach(d=>{
+    const cell=$(`[data-r="${d}"]`); if(!cell)return;
+    const v=+S.meas[d];
+    if(!base||!v){cell.innerHTML='—';return;}
+    const r=v/base;
+    cell.innerHTML=`${r.toFixed(2)}<small>${fracLabel(r)}</small>`;
+  });
+  const msg=$('#fitMsg');
+  if(measCount()<3){msg.textContent='값을 넣으면 두 선이 겹치는지 확인할 수 있어요.';return;}
+  const base2=+S.meas[20];
+  const dev=DISTS.map(d=>Math.abs((+S.meas[d]/base2)-(400/(d*d))));
+  const maxDev=Math.max(...dev);
+  msg.innerHTML= maxDev<0.12
+    ? '✅ 잰 값이 <b>거리의 제곱에 반비례</b>하는 예상값과 거의 겹칩니다. 규칙을 확인했어요!'
+    : '두 선이 조금 어긋났네요. 주변이 충분히 어두웠는지, 광원과 조도계가 일직선인지 확인하고 다시 재어 보세요.';
+}
+function drawGraph(){
+  const cv=$('#gcv'); if(!cv||!cv.clientWidth)return;
+  const {ctx,w,h}=fit(cv);
+  ctx.clearRect(0,0,w,h);
+  const pad={l:54,r:16,t:16,b:34};
+  const base=+S.meas[20];
+  const vals=DISTS.map(d=>+S.meas[d]||0);
+  const theory=DISTS.map(d=>base?base*400/(d*d):0);
+  const ymax=Math.max(10,...vals,...theory)*1.15;
+  const px=d=>pad.l+(d-10)/(70-10)*(w-pad.l-pad.r);
+  const py=v=>h-pad.b-(v/ymax)*(h-pad.t-pad.b);
+  /* 축 */
+  ctx.strokeStyle=CV('line');ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,h-pad.b);ctx.lineTo(w-pad.r,h-pad.b);ctx.stroke();
+  ctx.fillStyle=CV('ink-mute');ctx.font='600 11px "JetBrains Mono", monospace';ctx.textAlign='center';
+  DISTS.forEach(d=>{ctx.fillText(d,px(d),h-pad.b+16);});
+  ctx.fillText('cm',px(65),h-pad.b+16);
+  ctx.textAlign='right';
+  [0,ymax/2,ymax].forEach(v=>{
+    ctx.fillText(Math.round(v),pad.l-8,py(v)+4);
+    ctx.setLineDash([3,5]);ctx.strokeStyle=CV('line-soft');
+    ctx.beginPath();ctx.moveTo(pad.l,py(v));ctx.lineTo(w-pad.r,py(v));ctx.stroke();ctx.setLineDash([]);
+  });
+  ctx.save();ctx.translate(15,(pad.t+h-pad.b)/2);ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center';ctx.font='600 11px Pretendard, sans-serif';ctx.fillStyle=CV('ink-mute');
+  ctx.fillText('빛의 세기 (lx)',0,0);ctx.restore();
+  if(!base){
+    ctx.fillStyle=CV('ink-mute');ctx.font='600 13px Pretendard, sans-serif';ctx.textAlign='center';
+    ctx.fillText('20 cm에서 잰 값을 먼저 넣어 주세요',w/2,h/2);return;
+  }
+  /* 이론값 */
+  ctx.strokeStyle=CV('c2');ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.beginPath();
+  for(let d=20;d<=60;d+=1){const y=base*400/(d*d); d===20?ctx.moveTo(px(d),py(y)):ctx.lineTo(px(d),py(y));}
+  ctx.stroke();ctx.setLineDash([]);
+  DISTS.forEach((d,i)=>{if(theory[i]){ctx.beginPath();ctx.arc(px(d),py(theory[i]),4,0,Math.PI*2);
+    ctx.fillStyle=CV('c2');ctx.fill();}});
+  /* 실측값 */
+  const pts=DISTS.map((d,i)=>({d,v:vals[i]})).filter(p=>p.v>0);
+  if(pts.length>1){
+    ctx.strokeStyle=CV('c1');ctx.lineWidth=2.5;ctx.beginPath();
+    pts.forEach((p,i)=>i?ctx.lineTo(px(p.d),py(p.v)):ctx.moveTo(px(p.d),py(p.v)));ctx.stroke();
+  }
+  pts.forEach(p=>{ctx.beginPath();ctx.arc(px(p.d),py(p.v),5.5,0,Math.PI*2);
+    ctx.fillStyle=CV('c1');ctx.shadowColor=CV('c1');ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;});
+}
+$('#sampleBtn').addEventListener('click',()=>{
+  DISTS.forEach((d,i)=>S.meas[d]=SAMPLE[i]); save(); renderTable(); drawGraph(); updateProgress(); A.pop();
+  toast('교과서 예시 데이터를 넣었어요 📋','good');
+});
+$('#clearBtn').addEventListener('click',()=>{S.meas={};save();renderTable();drawGraph();updateProgress();A.pop();});
+$('#copyBtn').addEventListener('click',async()=>{
+  if(!measCount())return toast('아직 잰 값이 없어요','bad');
+  const base=+S.meas[20];
+  const text=['거리(cm)\t빛의 세기(lx)\t20cm 대비 비']
+    .concat(DISTS.map(d=>`${d}\t${S.meas[d]??''}\t${base&&S.meas[d]?(S.meas[d]/base).toFixed(2):''}`)).join('\n');
+  try{await navigator.clipboard.writeText(text);toast('표를 복사했어요 — 엑셀에 붙여넣기 📋','good');}
+  catch(e){toast('복사에 실패했어요','bad');}
+});
+let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGraph,180);});
+
+/* ═══════════ 🔦 빛 퍼짐 시뮬레이터 ═══════════
+   거리 n배 → 비추는 면적 n²칸, 한 칸이 받는 밝기 1/n² */
+(function(){
+  const cv=$('#spreadcv'), sl=$('#spreadD');
+  let ctx,w,h;
+  const FR=['1','1/4','1/9','1/16'];
+  function syncSlider(el){el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');}
+  function resize(){({ctx,w,h}=fit(cv)); draw();}
+  function draw(){
+    if(!ctx)return;
+    const n=+sl.value;
+    ctx.clearRect(0,0,w,h);
+    const srcX=42, cy=h/2;
+    const maxD=w-110, panelX=srcX+ (n/4)*maxD;
+    const base=Math.min(h*0.19,42);           // 거리 1배일 때 한 변
+    const side=base*n;
+    /* 빛 원뿔 */
+    ctx.beginPath();
+    ctx.moveTo(srcX,cy);
+    ctx.lineTo(panelX,cy-side/2);
+    ctx.lineTo(panelX,cy+side/2);
+    ctx.closePath();
+    const cg=ctx.createLinearGradient(srcX,0,panelX,0);
+    cg.addColorStop(0,'rgba(255,209,102,.42)'); cg.addColorStop(1,'rgba(255,209,102,.10)');
+    ctx.fillStyle=cg; ctx.fill();
+    /* 빛을 받는 판 — 옆에서 본 모습이라 세로로 n칸이 보인다.
+       (실제로는 가로도 n칸이라 전체 n²칸. 칸 수는 오른쪽에 숫자로 표시) */
+    const cell=side/n;
+    for(let r=0;r<n;r++){
+      const y=cy-side/2+r*cell;
+      ctx.fillStyle=`rgba(255,209,102,${0.85/(n*n)+0.06})`;
+      ctx.fillRect(panelX,y+1.5,26,cell-3);
+      ctx.strokeStyle='rgba(154,230,110,.75)'; ctx.lineWidth=1.2;
+      ctx.strokeRect(panelX,y+1.5,26,cell-3);
+    }
+    /* 광원 */
+    const sg=ctx.createRadialGradient(srcX,cy,0,srcX,cy,20);
+    sg.addColorStop(0,'#fff'); sg.addColorStop(.4,'#ffd166'); sg.addColorStop(1,'rgba(255,209,102,0)');
+    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(srcX,cy,20,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#ffd166'; ctx.beginPath(); ctx.arc(srcX,cy,7,0,Math.PI*2); ctx.fill();
+    /* 거리 표시선 */
+    ctx.strokeStyle=CV('line'); ctx.setLineDash([4,6]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(srcX,h-20); ctx.lineTo(panelX,h-20); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font='600 12px Pretendard, sans-serif'; ctx.fillStyle=CV('ink-mute'); ctx.textAlign='center';
+    ctx.fillText('거리 '+n+'배',(srcX+panelX)/2,h-7);
+    ctx.textAlign='left';
+    ctx.fillStyle=CV('c3'); ctx.font='700 13px Pretendard, sans-serif';
+    ctx.fillText(n*n+'칸',panelX+32,cy-side/2+14);
+  }
+  sl.addEventListener('input',()=>{
+    syncSlider(sl); const n=+sl.value;
+    $('#vSD').textContent=n+'배';
+    $('#rArea').textContent=(n*n)+'칸';
+    $('#rBright').textContent=FR[n-1];
+    $('#spreadMsg').innerHTML= n===1 ? '거리 1배 — 기준입니다.'
+      : `거리가 <b class="k">${n}배</b>가 되니 면적은 <b class="t3">${n*n}배</b>, 한 칸이 받는 밝기는 <b class="t2">${FR[n-1]}</b>이 됐어요.`;
+    draw(); A.blip(420+n*60,.05,'triangle',.09);
+  });
+  syncSlider(sl);
+  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(resize,180);});
+  window.__spreadResize=resize;
+  resize();
+})();
+
+/* 빈칸 */
+(function(){
+  const all=$$('.cloze'); CLOZE_TOTAL=all.length;
+  all.forEach((cz,i)=>{
+    const reveal=silent=>{
+      if(cz.classList.contains('revealed'))return;
+      cz.textContent=cz.dataset.ans;
+      const col=CV(cz.dataset.c||'c1'); cz.style.color=col; cz.style.borderColor=col;
+      cz.classList.add('revealed'); if(!silent)A.blip(720,.08);
+      S.cloze[i]=1;save();
+      const set=cz.closest('.cloze-set');
+      if(set&&$$('.cloze',set).every(x=>x.classList.contains('revealed'))){set.classList.add('complete');if(!silent)A.pop();}
+      updateProgress();
+    };
+    cz.addEventListener('click',()=>reveal(false));
+    if(S.cloze[i])reveal(true);
+  });
+})();
+
+/* 미니 퀴즈 */
+(function(){
+  function build(host,key){
+    const set=QUIZ_SETS[key];if(!set)return;
+    let done=0;const total=set.qs.length;
+    host.innerHTML=`<div class="mq-head"><span class="mq-badge">✅ 개념 확인</span>
+      <span style="font-weight:700">${set.title}</span><span class="mq-prog" data-prog>0/${total}</span></div>`;
+    set.qs.forEach((q,qi)=>{
+      const qEl=document.createElement('div');qEl.className='mq-q';
+      qEl.innerHTML=`<div class="mq-text"><span class="qn">Q${qi+1}.</span>${q.q}</div><div class="mq-choices"></div><div class="mq-fb"></div>`;
+      const cw=$('.mq-choices',qEl),fb=$('.mq-fb',qEl);
+      let answered=false,solved=false;
+      q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+        const c=q.ch[idx];
+        const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.addEventListener('click',()=>{
+          if(answered||solved)return;answered=true;
+          if(c.ok){solved=true;b.classList.add('correct');
+            $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+            A.correct();fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;done++;upd();}
+          else{b.classList.add('wrong');A.wrong();
+            fb.className='mq-fb show no';fb.innerHTML=`<b>다시 생각해 볼까요.</b> ${q.why}`;
+            setTimeout(()=>{answered=false;b.classList.remove('wrong');},1600);}
+        });
+        cw.appendChild(b);
+      });
+      host.appendChild(qEl);
+    });
+    const d=document.createElement('div');d.className='mq-done';d.innerHTML='🏅 개념 확인 완료!';host.appendChild(d);
+    function upd(){const p=host.querySelector('[data-prog]');if(p)p.textContent=done+'/'+total;
+      if(done>=total){host.classList.add('alldone');
+        if(!S.mini[key]){S.mini[key]=1;save();updateProgress();toast('개념 확인 완료! ✅','good');}}}
+  }
+  $$('.miniquiz').forEach(h=>build(h,h.dataset.quiz));
+})();
+
+/* 서술형 */
+(function(){
+  const ta=$('#essay'),mark=$('#essaySaved');let t;
+  ta.value=S.essay||'';
+  ta.addEventListener('input',()=>{S.essay=ta.value;save();updateProgress();
+    mark.classList.add('on');clearTimeout(t);t=setTimeout(()=>mark.classList.remove('on'),1400);});
+  $('#ansBtn').addEventListener('click',()=>{
+    const box=$('#modelAns'),open=box.classList.toggle('show');
+    $('#ansBtn').textContent=open?'모범 답안 접기':'모범 답안 확인하기';
+    if(open){A.pop();if((S.essay||'').trim().length<15)toast('먼저 <b>내 문장으로 써 본 뒤</b>에 보면 훨씬 남아요 ✍️');}
+  });
+})();
+
+/* 확인 문제 */
+(function(){
+  const body=$('#gameBody');let i=0,score=0,lives=3,order=[];
+  function medal(k){if(S.medals[k])return;S.medals[k]=1;save();
+    const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');}
+  function paint(){Object.keys(S.medals).forEach(k=>{const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');});}
+  function hud(){$('#score').textContent=score;
+    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
+  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  function next(){
+    if(i>=order.length||lives<=0)return end();
+    hud();const q=GAME_QS[order[i]];
+    body.innerHTML=`<div class="mq-q" style="margin-top:0">
+      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
+      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
+    q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+      const c=q.ch[idx];
+      const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.addEventListener('click',()=>{
+        if(locked)return;locked=true;
+        $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+        if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
+          if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
+          fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;}
+        else{b.classList.add('wrong');A.wrong();lives--;
+          $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
+          fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
+        hud();setTimeout(()=>{i++;next();},1900);
+      });
+      cw.appendChild(b);
+    });
+  }
+  function end(){
+    const perfect=score===GAME_QS.length*20;
+    if(perfect)medal('perfect');
+    if(score>(S.best||0)){S.best=score;save();}
+    updateProgress();perfect?A.win():A.pop();
+    body.innerHTML=`<div style="text-align:center;padding:26px 10px">
+      <div style="font-size:44px">${perfect?'🏆':(lives>0?'🎉':'💪')}</div>
+      <h3 class="card-t" style="margin:10px 0 6px">${perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?')}</h3>
+      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${GAME_QS.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
+      <button class="btn primary" id="gameAgain">다시 풀기</button></div>`;
+    $('#gameAgain').addEventListener('click',start);
+  }
+  $('#gameStart').addEventListener('click',start);paint();
+})();
+
+/* 별 배경 */
+(function(){
+  const cv=$('#stars'),ctx=cv.getContext('2d');
+  let stars=[],w=0,h=0,t=0,raf=null;
+  function build(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    w=innerWidth;h=innerHeight;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(120,w*h/11000));
+    stars=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.15+.3,
+      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#ffe6c2','#cfe0ff','#ffd9a0'][i%4]}));
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.6:(.35+.4*Math.sin(t*st.s+st.p));
+      ctx.fillStyle=st.c;ctx.shadowColor=st.c;ctx.shadowBlur=st.r*3.2;
+      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fill();});
+    ctx.globalAlpha=1;ctx.shadowBlur=0;
+    if(!reduceMotion){t+=.013;raf=requestAnimationFrame(draw);}
+  }
+  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{build();if(reduceMotion)draw();},200);});
+  build();draw();
+})();
+
+(function init(){
+  renderTable();
+  updateProgress();
+  const start=TABS.includes(S.tab)?S.tab:'engage';
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+start).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===start));
+  S.tab=start;document.body.classList.add('cover-on');refreshCover();setBg('cover');
+  requestAnimationFrame(drawGraph);
+})();
+</script>
+</body>
+</html>

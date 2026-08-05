@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080d1a">
+<title>가장 뜨거운 별은 빨갛지 않다 · 색으로 비교하는 별의 표면 온도</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
+  --line:#2b3763; --line-soft:#222c54;
+  --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
+  --accent:#ff9f6e; --accent2:#ffc79e; --on-accent:#2a1206;
+  --c1:#6ab8ff;  /* 청색 · 높은 온도 */
+  --c2:#ff6b5c;  /* 적색 · 낮은 온도 */
+  --c3:#ffd166;  /* 표면 온도 */
+  --c4:#c4a7ff;  /* 별의 색 */
+  --c5:#9ae66e;  /* 순서 */
+  --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
+  --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:var(--disp); --mono:"JetBrains Mono",ui-monospace,monospace; --jua:"Jua",var(--disp);
+  --header-h:60px; --r:16px; --shadow:0 18px 50px -22px rgba(0,0,0,.8); --scrim:.82;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);line-height:1.62;
+  background:radial-gradient(1150px 600px at 78% -8%, rgba(255,159,110,.12), transparent 60%),
+    radial-gradient(820px 520px at 10% 10%, rgba(106,184,255,.09), transparent 58%), var(--abyss);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
+::selection{background:rgba(255,159,110,.32);color:#fff}
+#bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .45s}
+#bgScrim{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,10,22,calc(var(--scrim)*.84)),rgba(6,10,22,var(--scrim)) 58%,rgba(6,10,22,calc(var(--scrim)*1.12)))}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+@media print{#bgLayer,#bgScrim,#stars{display:none}}
+
+#cover{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:26px 18px;overflow-y:auto;
+  background:linear-gradient(180deg,rgba(6,10,22,.5),rgba(6,10,22,.86))}
+#cover.hide{display:none}
+/* 표지가 떠 있는 동안엔 본문을 아예 감춘다 */
+body.cover-on header.top,body.cover-on main,body.cover-on #app-credit,
+body.cover-on .prog-list,body.cover-on #toast{display:none!important}
+.cover-in{width:100%;max-width:720px;text-align:center;animation:coverUp .6s cubic-bezier(.22,1,.36,1)}
+@keyframes coverUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(255,159,110,.65))}
+.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(28px,6.2vw,50px);line-height:1.16;margin:18px 0 10px;
+  letter-spacing:-.6px;text-shadow:0 0 26px rgba(255,159,110,.38),0 2px 20px rgba(0,0,0,.75)}
+.cover-sub{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px)}
+.cover-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.steps-card{background:rgba(22,31,61,.85);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;
+  margin:26px auto 0;max-width:540px;text-align:left;backdrop-filter:blur(8px);box-shadow:var(--shadow)}
+.steps-card h3{font-family:var(--jua);font-size:18px;text-align:center;color:var(--gold);margin-bottom:14px}
+.steps-card ol{list-style:none;display:grid;gap:11px}
+.steps-card li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--ink-dim);line-height:1.5}
+.steps-card li .sn{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;
+  font-weight:800;background:var(--ok);color:#06210f;margin-top:2px}
+.steps-card li.opt .sn{background:#4a3a78;color:#d6c2ff}
+.steps-card li b{color:var(--ink)}
+.cover-cta{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:26px}
+.btn.xl{font-size:18px;padding:16px 34px;border-radius:16px}
+.cover-hint{font-size:12.5px;color:var(--ink-mute)}
+
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(8,13,26,.96),rgba(8,13,26,.8) 70%,rgba(8,13,26,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.top-bar{max-width:1180px;margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:12px;padding:0 16px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;cursor:pointer;font-family:var(--body);color:inherit;text-align:left;padding:0}
+.brand .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:18px;
+  background:radial-gradient(circle at 30% 30%,#5a3a2e,#0d1533);border:1px solid var(--line)}
+.brand b{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.2px;white-space:nowrap}
+.brand b span{color:var(--accent)}
+.brand .sub{font-size:11px;color:var(--ink-mute);white-space:nowrap}
+@media(max-width:560px){.brand .sub{display:none}}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:9px}
+.hbtn{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink-dim);cursor:pointer;transition:.18s;text-decoration:none}
+.hbtn:hover{border-color:var(--accent);color:var(--ink)}
+body.teacher #tmodeBtn{background:rgba(255,209,102,.14);border-color:var(--gold)}
+.progress-mini{display:flex;align-items:center;gap:9px;cursor:help}
+.progress-mini .bar{width:92px;height:7px;border-radius:99px;background:#16203d;overflow:hidden;border:1px solid var(--line)}
+.progress-mini .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c2),var(--c3),var(--c1));
+  transition:width .5s cubic-bezier(.22,1,.36,1);box-shadow:0 0 12px var(--accent)}
+.progress-mini .pct{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:34px;text-align:right}
+@media(max-width:520px){.progress-mini .bar{width:48px}}
+
+nav.tabs{max-width:1180px;margin:0 auto;padding:0 8px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;align-items:center}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;display:flex;align-items:center;gap:7px;font-family:var(--body);font-size:14px;font-weight:700;
+  color:var(--ink-dim);background:transparent;border:1px solid transparent;padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.2s}
+nav.tabs button .sn{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);
+  font-size:11px;font-weight:700;background:#0e1830;border:1px solid var(--line);color:var(--ink-mute)}
+nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+nav.tabs button.active{color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));box-shadow:0 6px 18px -6px var(--accent)}
+nav.tabs button.active .sn{background:var(--on-accent);color:var(--accent2);border-color:transparent}
+nav.tabs button.done .sn{background:var(--ok);color:#06210f;border-color:transparent}
+nav.tabs button.done .sn i{display:none}
+nav.tabs button.done .sn::after{content:"✓"}
+nav.tabs .tab-sep{flex:none;width:1px;height:20px;background:var(--line);margin:0 4px}
+nav.tabs button.optional{color:#d6c2ff;border-color:#3a2f5e;background:rgba(74,58,120,.18)}
+nav.tabs button.optional.active{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
+
+main{max-width:1180px;margin:0 auto;padding:20px 16px 90px}
+.panel{display:none;animation:fade .45s cubic-bezier(.22,1,.36,1)}
+.panel.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.stepline{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stepline .sbadge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;letter-spacing:1px;
+  color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));padding:4px 12px;border-radius:999px;font-weight:700}
+.stepline .swhat{font-size:13px;color:var(--ink-mute)}
+.stepline.opt .sbadge{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
+h1.big{font-family:var(--disp);font-weight:800;font-size:clamp(29px,6.4vw,56px);line-height:1.08;letter-spacing:-.6px;text-shadow:0 2px 24px rgba(0,0,0,.65)}
+h2.sec{font-family:var(--disp);font-weight:800;font-size:clamp(22px,4.2vw,34px);letter-spacing:-.3px;line-height:1.16;margin:0 0 6px;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+h3.card-t{font-family:var(--jua);font-size:20px;letter-spacing:.2px;color:var(--ink)}
+.lead{font-size:clamp(15px,2.4vw,18px);color:var(--ink-dim);max-width:64ch;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.muted{color:var(--ink-mute)}
+.help{font-size:13px;color:var(--ink-mute);margin-top:8px;line-height:1.55}
+b.k{color:var(--ink);font-weight:800}
+.t1{color:var(--c1)}.t2{color:var(--c2)}.t3{color:var(--c3)}.t4{color:var(--c4)}.t5{color:var(--c5)}
+.card{background:linear-gradient(180deg,var(--surface),var(--deep));border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.card+.card{margin-top:18px}
+.grid{display:grid;gap:18px}
+@media(min-width:760px){.grid.c2{grid-template-columns:1fr 1fr}}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-dim)}
+.badge.beyond{background:linear-gradient(180deg,#241b3a,#1a1430);border-color:#4a3a78;color:#d6c2ff}
+.badge.gold{background:rgba(255,209,102,.1);border-color:#5a4a1e;color:var(--gold)}
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{font-size:13px;padding:6px 12px;border-radius:99px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.pill b{color:var(--ink)}
+.note{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);background:rgba(255,159,110,.07);
+  padding:13px 15px;border-radius:0 12px 12px 0;margin-top:14px;font-size:14.5px;color:var(--ink-dim)}
+.note .ic{flex:none;font-size:17px;line-height:1.4}
+.note.myth{border-color:var(--danger);background:rgba(255,93,108,.07)}
+.note.myth b{color:#ff97a1}
+.note.class{display:none;border-color:var(--gold);background:rgba(255,209,102,.07)}
+.note.class b{color:var(--gold)}
+body.teacher .note.class{display:flex}
+.honest{font-size:12px;color:var(--ink-mute);margin-top:8px;display:flex;gap:6px;align-items:flex-start}
+.btn{font-family:var(--body);font-weight:800;font-size:15px;cursor:pointer;padding:12px 20px;border-radius:12px;border:1px solid transparent;
+  display:inline-flex;align-items:center;gap:9px;transition:.18s;user-select:none}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent));color:var(--on-accent);box-shadow:0 10px 24px -10px var(--accent)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{background:rgba(255,255,255,.08);border-color:var(--accent)}
+.btn.sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.choices{display:grid;gap:10px;margin-top:14px}
+.choice{text-align:left;font-family:var(--body);font-size:15.5px;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);
+  border-radius:13px;padding:14px 16px;cursor:pointer;transition:.16s;display:flex;gap:12px;align-items:center;line-height:1.4}
+.choice .key{flex:none;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
+  font-size:14px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.choice:hover:not(.done){border-color:var(--accent);background:#2b2a4a;transform:translateX(3px)}
+.choice.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.choice.correct .key{background:var(--ok);color:#06210f}
+.choice.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.choice.wrong .key{background:var(--danger);color:#2a060b}
+.choice.dim{opacity:.5}.choice.done{cursor:default}
+.explain{margin-top:14px;border-radius:13px;padding:15px 17px;font-size:14.5px;line-height:1.6;border:1px solid var(--line);
+  background:rgba(255,159,110,.07);color:var(--ink-dim);display:none;animation:fade .35s}
+.explain.show{display:block}
+.explain.ok{border-color:#2e6e44;background:rgba(74,222,128,.09)}
+.explain.no{border-color:#7a2f38;background:rgba(255,93,108,.09)}
+.explain b{color:var(--ink)}
+.explain .why{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--accent2);margin-bottom:5px}
+
+/* 색 온도 다이얼 */
+.dial{background:linear-gradient(180deg,#1c2138,#111a34);border:1.5px solid #4a3a5e;border-radius:15px;padding:20px 22px;margin-top:16px}
+.dial h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.dialpick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.dialpick button{flex:1;min-width:66px;font-family:var(--body);font-weight:700;font-size:13px;color:#0b1020;
+  border:2px solid transparent;padding:10px 4px;border-radius:10px;cursor:pointer;transition:.16s;opacity:.55}
+.dialpick button:hover{opacity:.85}
+.dialpick button.on{opacity:1;border-color:#fff;transform:translateY(-2px);box-shadow:0 8px 18px -8px rgba(255,255,255,.5)}
+.dialpick button.seen::after{content:" ✓";font-size:11px}
+.dialstage{background:#080d1a;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.dialstage canvas{display:block;width:100%;height:auto}
+.dialinfo{display:grid;gap:10px;grid-template-columns:1fr;margin-top:14px}
+@media(min-width:640px){.dialinfo{grid-template-columns:1fr 1fr 1fr}}
+.dialinfo .di{background:#0e1830;border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-align:center}
+.dialinfo .di small{font-size:11px;color:var(--ink-mute);display:block}
+.dialinfo .di b{font-size:16px;display:block;margin-top:3px}
+
+/* 색 순서 맞추기 */
+.sortbox{background:linear-gradient(180deg,#1c2138,#111a34);border:1.5px solid #4a3a5e;border-radius:15px;padding:20px 22px;margin-top:16px}
+.sortbox h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.sortpool,.sortline{display:flex;gap:8px;flex-wrap:wrap;min-height:52px;padding:10px;border-radius:12px}
+.sortpool{background:rgba(255,255,255,.03);border:1px dashed var(--line);margin-top:12px}
+.sortline{background:rgba(154,230,110,.06);border:1px solid #3a5e3a;margin-top:10px;align-items:center}
+.chip{font-family:var(--body);font-weight:800;font-size:13.5px;color:#0b1020;border:2px solid transparent;
+  padding:10px 14px;border-radius:10px;cursor:pointer;transition:.16s;user-select:none}
+.chip:hover{transform:translateY(-2px)}
+.chip.placed{cursor:default;opacity:.95}
+.chip.bad{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.sortlabel{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-mute);margin-top:6px}
+.sortdone{display:none;align-items:center;gap:8px;margin-top:12px;padding:11px 14px;border-radius:11px;
+  background:rgba(74,222,128,.1);border:1px solid #2e6e44;color:var(--ok);font-weight:700;font-size:14px}
+.sortbox.done .sortdone{display:flex;animation:fade .4s}
+
+/* 스펙트럼 띠 */
+.spectrum{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-top:14px}
+.spectrum div{flex:1;padding:14px 4px;text-align:center;font-size:12.5px;font-weight:800;color:#0b1020;line-height:1.35}
+.spec-cap{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-mute);margin-top:8px}
+
+/* 그림 슬롯 */
+.fig{margin:16px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-size:12.5px;color:var(--ink-mute);padding:10px 14px;line-height:1.5;text-align:center;border-top:1px solid var(--line-soft)}
+.fig.slot{display:none;border-style:dashed;border-color:#4a3a5e;background:rgba(255,159,110,.045);padding:22px 18px;text-align:center}
+body.teacher .fig.slot{display:block}
+.fig.slot .fe{font-size:26px;opacity:.6}
+.fig.slot .fn{font-family:var(--mono);font-size:12px;color:var(--accent2);margin-top:8px;word-break:break-all}
+.fig.slot .fd{font-size:12.5px;color:var(--ink-mute);margin-top:6px;line-height:1.5}
+.use .fig{margin:0 0 4px}
+
+.terms{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(min-width:760px){.terms{grid-template-columns:repeat(4,1fr)}}
+.term{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px;border-top:3px solid var(--c,var(--accent))}
+.term .nm{font-family:var(--jua);font-size:17px;margin-bottom:3px}
+.term .de{font-size:13px;color:var(--ink-mute);line-height:1.5}
+.use-grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:680px){.use-grid{grid-template-columns:1fr 1fr}}
+.use{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.use .u-t{font-family:var(--jua);font-size:17px;display:flex;align-items:center;gap:8px}
+.use .u-d{font-size:13.5px;color:var(--ink-dim);line-height:1.55}
+
+.cloze-line{font-size:15.5px;line-height:2.05;color:var(--ink-dim)}
+.cloze-line+.cloze-line{margin-top:6px}
+.cloze{display:inline-block;min-width:52px;text-align:center;padding:2px 11px;margin:0 2px;border-radius:8px;background:#0e1830;
+  border:1.5px dashed var(--line);color:transparent;cursor:pointer;font-weight:800;transition:.16s;user-select:none;line-height:1.3}
+.cloze::after{content:"❓";font-size:12px}
+.cloze:hover{border-color:var(--accent);background:#221d33}
+.cloze.revealed{border-style:solid;cursor:default;animation:clozePop .42s}
+.cloze.revealed::after{content:none}
+@keyframes clozePop{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cloze-done{display:none;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ok)}
+.cloze-set.complete .cloze-done{display:inline-flex;animation:fade .4s}
+.cloze-hint{font-size:12.5px;color:var(--ink-mute);margin-top:10px}
+
+.miniquiz{background:linear-gradient(180deg,#1a2140,#0e1730);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.miniquiz .mq-head{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+.miniquiz .mq-badge{font-size:12px;font-weight:800;color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));padding:4px 10px;border-radius:99px}
+.miniquiz .mq-prog{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+.mq-q{margin-top:14px}
+.mq-q .mq-text{font-size:15px;font-weight:600;margin-bottom:9px}
+.mq-q .mq-text .qn{font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-right:6px}
+.mq-choices{display:grid;gap:8px}
+.mq-opt{text-align:left;font-family:var(--body);font-size:14.5px;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);
+  border-radius:11px;padding:11px 14px;cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:center}
+.mq-opt .k{flex:none;width:23px;height:23px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
+  font-size:12px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.mq-opt:hover:not(.locked){border-color:var(--accent);background:#2b2a4a}
+.mq-opt.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.mq-opt.correct .k{background:var(--ok);color:#06210f}
+.mq-opt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.mq-opt.wrong .k{background:var(--danger);color:#2a060b}
+.mq-opt.locked{cursor:default}
+.mq-fb{margin-top:9px;font-size:13.5px;line-height:1.55;border-radius:10px;padding:11px 13px;display:none}
+.mq-fb.show{display:block;animation:fade .3s}
+.mq-fb.ok{background:rgba(74,222,128,.09);border:1px solid #2e6e44;color:var(--ink-dim)}
+.mq-fb.no{background:rgba(255,93,108,.09);border:1px solid #7a2f38;color:var(--ink-dim)}
+.mq-fb b{color:var(--ink)}
+.mq-done{display:none;align-items:center;gap:8px;margin-top:14px;padding:11px 14px;border-radius:11px;background:rgba(255,209,102,.08);
+  border:1px solid #5a4a1e;color:var(--gold);font-weight:700;font-size:14px}
+.miniquiz.alldone .mq-done{display:flex;animation:fade .4s}
+
+.game-hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.lives{display:flex;gap:5px}.lives .h{font-size:22px;transition:.3s}
+.lives .h.gone{filter:grayscale(1) brightness(.5);transform:scale(.85)}
+.score-box{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;background:#0e1830;border:1px solid var(--line);padding:7px 13px;border-radius:11px}
+.score-box .lab2{font-size:11px;color:var(--ink-mute);font-weight:400;font-family:var(--body)}
+.score-box .num{font-size:18px;color:var(--gold)}
+.earned{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.medal{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:8px 13px;border-radius:11px;
+  background:linear-gradient(180deg,#2a2410,#1c1808);border:1px solid #5a4a1e;color:var(--gold);opacity:.3;filter:grayscale(.6);transition:.4s}
+.medal.got{opacity:1;filter:none;box-shadow:0 0 16px -4px var(--gold)}
+.medal .e{font-size:18px}
+textarea{width:100%;font-family:var(--body);font-size:14.5px;color:var(--ink);background:#0e1830;border:1.5px solid var(--line);
+  border-radius:12px;padding:12px 14px;min-height:88px;resize:vertical;outline:none;margin-top:8px;line-height:1.55;transition:.18s}
+textarea:focus{border-color:var(--accent);background:#221d33}
+textarea::placeholder{color:var(--ink-mute)}
+.savemark{font-size:12px;color:var(--ok);margin-top:6px;display:inline-block;opacity:0;transition:.3s}
+.savemark.on{opacity:1}
+.prog-list{position:fixed;right:14px;top:calc(var(--header-h) + 8px);z-index:60;width:264px;background:rgba(14,22,44,.97);
+  border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:none}
+.prog-list.show{display:block;animation:fade .3s}
+.prog-list h4{font-family:var(--jua);font-size:15px;margin-bottom:10px}
+.prog-list li{list-style:none;display:flex;gap:8px;font-size:13px;color:var(--ink-mute);padding:4px 0;line-height:1.45}
+.prog-list li.on{color:var(--ink-dim)}
+.prog-list li .mk{flex:none;color:var(--ink-mute)}
+.prog-list li.on .mk{color:var(--ok)}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:200;background:rgba(14,22,44,.96);
+  border:1px solid var(--accent);color:var(--ink);padding:12px 20px;border-radius:13px;font-weight:700;font-size:14.5px;
+  box-shadow:0 16px 40px -12px rgba(0,0,0,.8);opacity:0;pointer-events:none;transition:.3s;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.good{border-color:var(--ok)}#toast.bad{border-color:var(--danger)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.08s!important;scroll-behavior:auto}}
+@media print{
+  #cover,header.top,nav.tabs,#toast,.prog-list,.cta-row,.btn{display:none!important}
+  body{background:#fff;color:#111}
+  .panel{display:block!important;page-break-after:always}
+  .card,.dial,.sortbox{background:#fff;border-color:#ccc;box-shadow:none}
+  .lead,.muted,.note{color:#333}
+  h1.big,h2.sec,h3.card-t{color:#111}
+  .note.class{display:flex!important}
+  .cloze{color:#111!important;border-style:solid}.cloze::after{content:none}
+}
+</style>
+</head>
+<body>
+<div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
+
+<div id="cover">
+  <div class="cover-in">
+    <div class="cover-emoji">🔥 🎨 ⭐</div>
+    <h1 class="cover-title">가장 뜨거운 별은<br>빨갛지 않다</h1>
+    <p class="cover-sub">색으로 비교하는 별의 표면 온도 — 자연은 우리 직관과 반대다 ✨</p>
+    <div class="cover-meta">
+      <span class="badge">⏱️ 45분</span>
+      <span class="badge">📘 VIII. 별과 우주 · 1. 별 ④ · 276~277쪽</span>
+      <span class="badge gold" id="coverSaved" style="display:none">🔖 이어서 하기</span>
+    </div>
+    <div class="steps-card">
+      <h3>💡 학습 단계 안내</h3>
+      <ol>
+        <li><span class="sn">1</span><div><b>생각 열기</b> — 용광로 쇳물의 색은 왜 달라질까</div></li>
+        <li><span class="sn">2</span><div><b>관찰하기</b> — 색을 바꿔 가며 별의 온도를 살펴보기</div></li>
+        <li><span class="sn">3</span><div><b>개념 잡기</b> — 청색은 뜨겁고 적색은 차갑다</div></li>
+        <li><span class="sn">4</span><div><b>적용하기</b> — 색 순서 맞추기와 생활 속 불꽃</div></li>
+        <li><span class="sn">5</span><div><b>확인하기</b> — 배운 것 점검하기</div></li>
+        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 태양은 사실 노란색이 아니다</div></li>
+      </ol>
+    </div>
+    <div class="cover-cta">
+      <button class="btn primary xl" id="coverGo">별의 색 살펴보기 🔥</button>
+      <span class="cover-hint">진행 상황은 이 기기에 자동 저장돼요 · 왼쪽 위 제목을 누르면 이 화면으로 돌아옵니다</span>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-bar">
+    <button class="brand" id="brandBtn" title="표지로 돌아가기">
+      <div class="logo">🔥</div>
+      <div><b>가장 뜨거운 별은 <span>빨갛지 않다</span></b>
+        <div class="sub">VIII. 별과 우주 · 1. 별 ④ · 중2 과학</div></div>
+    </button>
+    <div class="head-right">
+      <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
+      <button class="hbtn" id="tmodeBtn" title="교사 모드">🧑‍🏫</button>
+      <div class="progress-mini" id="progWrap" title="진행도 — 누르면 남은 활동이 보여요">
+        <div class="bar"><i id="progBar"></i></div><div class="pct" id="progPct">0%</div>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabNav">
+    <button data-tab="engage" class="active"><span class="sn"><i>1</i></span>생각 열기</button>
+    <button data-tab="observe"><span class="sn"><i>2</i></span>관찰하기</button>
+    <button data-tab="explain"><span class="sn"><i>3</i></span>개념 잡기</button>
+    <button data-tab="apply"><span class="sn"><i>4</i></span>적용하기</button>
+    <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
+    <span class="tab-sep"></span>
+    <button data-tab="beyond" class="optional"><span class="sn"><i>+</i></span>🌙 더 알아보기</button>
+  </nav>
+</header>
+
+<div class="prog-list" id="progList"><h4>남은 활동</h4><ul id="progItems"></ul></div>
+
+<main>
+
+<!-- 1 -->
+<section class="panel show" id="panel-engage">
+  <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">생각 열기 · 오늘의 수수께끼</span></div>
+  <h1 class="big">가장 뜨거운 별은<br><span class="t2">빨갛지</span> 않다.</h1>
+  <p class="lead" style="margin-top:16px">
+    수도꼭지의 빨간 손잡이는 뜨거운 물, 파란 손잡이는 찬물입니다. 불은 빨갛고 얼음은 파랗죠.
+    우리는 <b class="t2">빨강=뜨거움</b>, <b class="t1">파랑=차가움</b>이라고 몸으로 알고 있습니다.
+    그런데 하늘에서는 <b class="k">정확히 반대의 일</b>이 벌어집니다.
+  </p>
+  <figure class="fig" data-fig="furnace"
+    data-alt="용광로에서 흘러나온 쇳물이 처음에는 흰색에 가깝다가 식으면서 노란색, 붉은색으로 변해 가는 장면"
+    data-cap="용광로에서 갓 나온 쇳물은 흰색에 가깝고, 식을수록 노란색 → 붉은색으로 변한다."></figure>
+
+  <div class="card" style="margin-top:20px">
+    <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🔥 쇳물이 알려 주는 것</h2>
+    <p class="lead" style="font-size:16px">
+      용광로에서 나온 쇳물은 처음에는 <b class="k">흰색에 가까운 색</b>을 띱니다.
+      그러다 식어 가면서 <b class="t3">노란색</b>, <b class="t2">붉은색</b>으로 점차 색이 달라지죠.
+      쇳물의 성분이 바뀐 게 아닙니다. 바뀐 건 <b class="k">온도</b>뿐이에요.
+      그러니까 색을 보면 온도를 짐작할 수 있다는 뜻입니다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>도입 들어가기</b> — "쇳물의 색이 달라진 까닭은?"으로 물체의 온도와 색의 관련성을 생각하게 하세요. 전열선, 전기난로, 용암 등 붉은색·노란색을 띠는 뜨거운 물체를 학생들이 말해 보게 한 뒤 별로 넘어갑니다. <b>예시 답안</b>: 쇳물의 온도가 변했기 때문이다.</div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">🔮 먼저 예측해 볼까요</div>
+    <h3 class="card-t">밤하늘의 <span class="t1">청색 별</span>과 <span class="t2">적색 별</span> 중, 표면이 더 뜨거운 쪽은?</h3>
+    <div class="choices" id="poeChoices">
+      <button class="choice" data-poe="a"><span class="key">가</span>적색 별 — 빨간 게 뜨거우니까</button>
+      <button class="choice" data-poe="b"><span class="key">나</span>청색 별 — 파란 게 뜨거우니까</button>
+      <button class="choice" data-poe="c"><span class="key">다</span>색과 온도는 관계없다</button>
+    </div>
+    <div class="explain" id="poeExplain"></div>
+    <p class="help">가스레인지 불꽃을 떠올려 보세요. 파란 부분과 노란 부분 중 어디가 더 뜨거울까요?</p>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 여기서 <b>거수로 집계</b>하고 칠판에 적어 두세요. '가'를 고른 학생이 많을수록 좋은 수업이 됩니다. 2단계에서 뒤집힌 뒤 다시 이 숫자를 보여 주면 인지 갈등이 오래 남습니다.</div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="eyebrow" style="margin-bottom:8px">오늘의 목표</div>
+    <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 말할 수 있다</h3>
+    <div class="grid c2">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c3);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
+        <div><b class="k">별의 색과 표면 온도의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">어느 색이 뜨겁고 어느 색이 차가운지.</span></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#04223a;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
+        <div><b class="k">별의 색을 온도 순서대로 늘어놓을 수 있다.</b><br><span class="muted" style="font-size:14px">청색부터 적색까지 일곱 단계로.</span></div>
+      </div>
+    </div>
+    <div class="pill-list">
+      <span class="pill">핵심어 · <b>표면 온도</b></span><span class="pill"><b>별의 색</b></span>
+      <span class="pill"><b>청색</b></span><span class="pill"><b>적색</b></span>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="observe">2단계 · 별의 색을 직접 살펴보기 →</button></div>
+</section>
+
+<!-- 2 -->
+<section class="panel" id="panel-observe">
+  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">관찰하기 · 색을 바꿔 가며 살펴보기</span></div>
+  <h2 class="sec">색을 하나씩 바꿔 보면 보이는 것</h2>
+  <p class="lead">아래에서 별의 색을 하나씩 눌러 보세요. 그 색을 띠는 실제 별과, 그때 표면 온도가 어느 정도인지 함께 나옵니다.
+    <b class="k">일곱 색을 모두 눌러 보는 게 오늘 활동입니다.</b></p>
+
+  <div class="card" style="margin-top:20px">
+    <div class="dial">
+      <h3>🎨 별의 색 다이얼</h3>
+      <div class="dialpick" id="dialPick"></div>
+      <div class="dialstage"><canvas id="dialcv" height="220"></canvas></div>
+      <div class="dialinfo">
+        <div class="di"><small>별의 색</small><b id="diColor">—</b></div>
+        <div class="di"><small>표면 온도</small><b id="diTemp">—</b></div>
+        <div class="di"><small>이런 별이 있어요</small><b id="diStar">—</b></div>
+      </div>
+      <p class="help" id="dialMsg" style="text-align:center">아직 살펴본 색: 0 / 7</p>
+    </div>
+    <p class="honest"><span class="ic">📌</span>화면의 색은 실제 별빛을 눈에 보이게 과장한 것입니다. 별의 크기와도 관계가 없어요.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>차시 지도상의 유의점</b> — 별의 표면 온도를 <b>정량적으로 다루지 않습니다.</b> 그래서 이 다이얼도 숫자(K) 대신 '아주 높음~아주 낮음'으로만 표시했습니다. 숫자가 궁금한 학생에게는 `+ 더 알아보기` 탭을 안내하세요.</div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">📘 해 보기 — 별자리 속 별들의 색 조사하기</h3>
+    <p class="lead" style="font-size:15.5px;margin-top:8px">
+      교과서 276쪽 활동입니다. 스마트 기기로 <b>별자리를 검색</b>해 그 별자리를 이루는 별들이
+      어떤 색을 띠는지 조사해 보세요.</p>
+    <ol style="margin:12px 0 0 20px;display:grid;gap:7px">
+      <li style="font-size:14.5px;color:var(--ink-dim)">검색어 예: <b class="k">천문우주지식정보 별자리 구성</b></li>
+      <li style="font-size:14.5px;color:var(--ink-dim)">별자리 그림을 내려받아 <b>별마다 색을 표시</b>합니다.</li>
+      <li style="font-size:14.5px;color:var(--ink-dim)">완성한 그림을 <b>공유 플랫폼에 올려</b> 친구들 것과 비교해 봅니다.</li>
+    </ol>
+    <div class="btn-row">
+      <a class="btn ghost sm" href="https://astro.kasi.re.kr/" target="_blank" rel="noopener">🇰🇷 한국천문연구원 열기</a>
+      <a class="btn ghost sm" href="https://stellarium-web.org/" target="_blank" rel="noopener">🔭 스텔라리움 웹 열기</a>
+    </div>
+    <p class="help">색을 표시할 때 별의 <b>크기나 밝기는 고려하지 않습니다.</b> 오늘은 색만 봅니다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>지도</b> — 오리온자리를 권하세요. 한 별자리 안에 <b>리겔(청백색)</b>과 <b>베텔게우스(적색)</b>가 같이 있어 색 차이가 한눈에 보입니다. 조사 결과를 모아 "같은 별자리인데 왜 색이 다를까?"로 이어 가면 3단계가 자연스럽습니다.</div></div>
+    <div class="miniquiz" data-quiz="observe"></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="explain">3단계 · 규칙을 정리하러 가기 →</button></div>
+</section>
+
+<!-- 3 -->
+<section class="panel" id="panel-explain">
+  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">개념 잡기 · 색과 온도의 규칙</span></div>
+  <h2 class="sec">청색이 뜨겁고, 적색이 차갑다</h2>
+  <p class="lead">별의 색이 저마다 다른 까닭은 <b class="t3">표면 온도</b>가 다르기 때문입니다. 규칙은 한 줄이에요.</p>
+
+  <div class="card" style="margin-top:20px">
+    <h3 class="card-t">🌡️ 한 줄로 보는 색과 온도</h3>
+    <div class="spectrum">
+      <div style="background:#6ab8ff">청색</div>
+      <div style="background:#a9ccff">청백색</div>
+      <div style="background:#f2f5ff">백색</div>
+      <div style="background:#ffeeb8">황백색</div>
+      <div style="background:#ffd166">황색</div>
+      <div style="background:#ff9f5c">주황색</div>
+      <div style="background:#ff6b5c">적색</div>
+    </div>
+    <div class="spec-cap"><span class="t1">← 표면 온도 높다</span><span class="t2">표면 온도 낮다 →</span></div>
+    <p class="lead" style="font-size:16px;margin-top:14px">
+      큰개자리의 가장 밝은 별 <b class="k">시리우스</b>는 백색을, 오리온자리의 <b class="k">베텔게우스</b>는 적색을,
+      같은 오리온자리의 <b class="k">리겔</b>은 청백색을 띱니다.
+      지구에서 가장 가까운 별인 <b class="k">태양</b>은 황색이에요.
+      이건 태양의 표면 온도가 적색 별보다는 높고 청색 별보다는 낮다는 뜻입니다.</p>
+    <figure class="fig" data-fig="orion"
+      data-alt="오리온자리에서 청백색을 띠는 리겔과 적색을 띠는 베텔게우스가 함께 보이는 장면"
+      data-cap="같은 오리온자리 안에서도 리겔은 청백색, 베텔게우스는 적색이다."></figure>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="note myth"><span class="ic">⚠️</span><div><b>가장 흔한 오해</b> — "청색 별은 차갑고 적색 별은 뜨겁다."<br>
+      → <b class="k">정반대입니다.</b> 일상에서 빨강을 따뜻한 색, 파랑을 차가운 색이라 부르다 보니 생기는 착각이에요.
+      그건 <b>사람의 감각</b>이지 온도가 아닙니다. 별은 <b class="t1">뜨거울수록 청색</b>, <b class="t2">차가울수록 적색</b>입니다.</div></div>
+    <p class="help">기억 장치 하나 — <b class="k">가스레인지의 파란 불꽃</b>이 촛불의 노란 불꽃보다 뜨겁습니다. 이건 여러분도 아는 사실이죠.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t" style="margin-bottom:14px">용어 지도</h3>
+    <div class="terms">
+      <div class="term" style="--c:var(--c3)"><div class="nm t3">표면 온도</div><div class="de">별의 겉면 온도. 별마다 다르고, 이것이 별의 색을 결정한다.</div></div>
+      <div class="term" style="--c:var(--c4)"><div class="nm t4">별의 색</div><div class="de">청색·청백색·백색·황백색·황색·주황색·적색. 온도의 단서다.</div></div>
+      <div class="term" style="--c:var(--c1)"><div class="nm t1">청색</div><div class="de">표면 온도가 <b>높은</b> 별. 리겔은 청백색을 띤다.</div></div>
+      <div class="term" style="--c:var(--c2)"><div class="nm t2">적색</div><div class="de">표면 온도가 <b>낮은</b> 별. 베텔게우스가 적색이다.</div></div>
+    </div>
+  </div>
+
+  <!-- 빈칸 -->
+  <div class="card cloze-set" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">✍️ 빈칸을 눌러 확인 — 먼저 머릿속으로 답한 뒤에</div>
+    <p class="cloze-line">
+      용광로에서 나온 쇳물의 색이 달라지는 까닭은 쇳물의 <span class="cloze" data-ans="온도" data-c="c3">　</span>가 변했기 때문이다.
+    </p>
+    <p class="cloze-line">
+      별의 색이 다양한 까닭은 별마다 <span class="cloze" data-ans="표면 온도" data-c="c3">　</span>가 다르기 때문이다.
+    </p>
+    <p class="cloze-line">
+      <span class="cloze" data-ans="청색" data-c="c1">　</span>을 띠는 별은 표면 온도가
+      <span class="cloze" data-ans="높고" data-c="c1">　</span>,
+      <span class="cloze" data-ans="적색" data-c="c2">　</span>을 띠는 별은 표면 온도가
+      <span class="cloze" data-ans="낮다" data-c="c2">　</span>.
+    </p>
+    <p class="cloze-line">
+      태양은 <span class="cloze" data-ans="황색" data-c="c3">　</span>을 띠므로, 표면 온도가 적색 별보다는
+      <span class="cloze" data-ans="높고" data-c="c1">　</span> 청색 별보다는
+      <span class="cloze" data-ans="낮다" data-c="c2">　</span>.
+    </p>
+    <div class="cloze-done">✅ 이 문단은 다 채웠어요!</div>
+    <p class="cloze-hint">빈칸을 그냥 눌러 답만 보면 남지 않아요. 소리 내어 답해 보고 누르세요.</p>
+  </div>
+
+  <div class="miniquiz" data-quiz="explain"></div>
+  <div class="cta-row"><button class="btn primary" data-go="apply">4단계 · 순서 맞추기와 생활 속 불꽃 →</button></div>
+</section>
+
+<!-- 4 -->
+<section class="panel" id="panel-apply">
+  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">적용하기 · 순서 짓고 생활에서 찾기</span></div>
+  <h2 class="sec">뜨거운 순서대로 늘어놓을 수 있나요?</h2>
+  <p class="lead">일곱 가지 색을 <b class="t1">표면 온도가 높은 것부터</b> 차례로 눌러 보세요.</p>
+
+  <div class="card" style="margin-top:20px">
+    <div class="sortbox" id="sortBox">
+      <h3>🎯 색 순서 맞추기</h3>
+      <p class="help" style="margin-top:0">가장 뜨거운 색부터 하나씩 누르면 아래 줄에 쌓입니다. 틀리면 흔들려요.</p>
+      <div class="sortpool" id="sortPool"></div>
+      <div class="sortline" id="sortLine"><span class="muted" style="font-size:13px" id="sortEmpty">여기에 순서대로 쌓입니다</span></div>
+      <div class="sortlabel"><span class="t1">뜨거움</span><span class="t2">차가움</span></div>
+      <div class="sortdone">🏅 순서를 완성했어요! 청색 → 적색이 곧 뜨거움 → 차가움입니다.</div>
+      <div class="btn-row"><button class="btn ghost sm" id="sortReset">다시 하기</button></div>
+    </div>
+  </div>
+
+  <h3 class="card-t" style="margin-top:26px">🔥 생활 속에서 찾기</h3>
+  <div class="use-grid" style="margin-top:14px">
+    <div class="use">
+      <figure class="fig" data-fig="flame" data-alt="가스레인지의 파란 불꽃과 촛불의 노란 불꽃 비교"></figure>
+      <div class="u-t">🔵 가스레인지의 파란 불꽃</div>
+      <div class="u-d">공기가 잘 섞여 완전 연소하면 <b class="t1">파란 불꽃</b>이 되고, 그게 더 뜨겁습니다.
+        노란 불꽃이 나오면 불완전 연소라 온도가 낮아요. 별과 똑같은 규칙입니다.</div>
+    </div>
+    <div class="use">
+      <figure class="fig" data-fig="heater" data-alt="전기난로 열선이 붉게 달아오른 모습"></figure>
+      <div class="u-t">🟥 붉게 달아오르는 열선</div>
+      <div class="u-d">전기난로나 토스터의 열선은 <b class="t2">붉은색</b>으로 빛납니다.
+        뜨겁긴 하지만 별에 견주면 아주 낮은 온도라 붉은색까지만 올라간 거예요.</div>
+    </div>
+    <div class="use">
+      <figure class="fig" data-fig="lava" data-alt="흘러내리는 용암이 안쪽은 밝고 겉은 어두운 붉은색인 모습"></figure>
+      <div class="u-d" style="order:2">막 흘러나온 용암 안쪽은 <b class="t3">밝은 주황</b>, 겉으로 갈수록 <b class="t2">어두운 붉은색</b>입니다.
+        식은 만큼 색이 내려간 거죠. 쇳물과 완전히 같은 이야기입니다.</div>
+      <div class="u-t" style="order:1">🌋 용암의 안과 겉</div>
+    </div>
+    <div class="use">
+      <figure class="fig" data-fig="bulb" data-alt="전구색 조명과 주광색 조명이 켜진 방 비교"></figure>
+      <div class="u-t">💡 전구색과 주광색</div>
+      <div class="u-d">조명을 살 때 '전구색(누런빛)'과 '주광색(흰빛)'을 고르죠.
+        포장에 적힌 숫자가 클수록 흰빛·푸른빛이 됩니다. 조명 회사도 <b class="k">색으로 온도를 표시</b>하고 있는 거예요.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">교과서 277쪽 · 사고력</span></h3>
+    <p class="lead" style="font-size:16px;margin-top:10px">
+      유리 공예를 하는 모습입니다. 녹은 유리에서 <b class="k">(가)</b> 부분은 흰색에 가깝게,
+      <b class="k">(나)</b> 부분은 붉게 빛나고 있습니다. 두 부분의 온도를 비교하고, 그렇게 생각한 까닭을 써 보세요.</p>
+    <figure class="fig" data-fig="glass"
+      data-alt="유리 공예 작업에서 녹은 유리의 안쪽은 흰색에 가깝고 바깥쪽은 붉게 빛나는 모습"></figure>
+    <textarea id="essay" placeholder="힌트: 물체는 온도가 높아질수록 어떤 색으로 변해 갔나요? 쇳물을 떠올려 보세요."></textarea>
+    <span class="savemark" id="essaySaved">✔ 저장됨</span>
+    <div class="btn-row"><button class="btn ghost sm" id="ansBtn">모범 답안 확인하기</button></div>
+    <div class="explain" id="modelAns" style="margin-top:12px">
+      <div class="why">✍️ 모범 답안</div>
+      물체는 온도가 높아짐에 따라 적색에서 점차 백색을 띤다.
+      따라서 흰색에 가까운 <b>(가) 부분의 온도가 (나) 부분보다 더 높을 것</b>이다.
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — "색이 다르다"까지만 쓰고 끝내는 학생이 많습니다. <b>"그래서 어느 쪽이 더 뜨거운가"</b>와 <b>"왜 그렇게 판단했는가"</b> 두 가지가 문장에 들어갔는지 서로 점검하게 하세요.</div></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="check">5단계 · 얼마나 알게 됐는지 확인 →</button></div>
+</section>
+
+<!-- 5 -->
+<section class="panel" id="panel-check">
+  <div class="stepline"><span class="sbadge">STEP 5</span><span class="swhat">확인하기 · 형성평가</span></div>
+  <h2 class="sec">배운 것을 확인해 봅시다</h2>
+  <p class="lead">점수에 들어가지 않습니다. 어디가 헷갈리는지 찾는 게 목적이에요.</p>
+  <div class="card" style="margin-top:20px">
+    <div class="game-hud">
+      <div class="lives" id="lives"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span></div>
+      <div class="score-box"><span class="lab2">점수</span><span class="num" id="score">0</span></div>
+      <div class="score-box"><span class="lab2">문항</span><span class="num" id="qno">0/0</span></div>
+    </div>
+    <div id="gameBody">
+      <div style="text-align:center;padding:30px 10px">
+        <p class="lead" style="margin:0 auto 18px">준비됐나요? 5문항입니다.</p>
+        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+      </div>
+    </div>
+    <div class="earned" id="medals">
+      <div class="medal" data-medal="first"><span class="e">🥉</span>첫 정답</div>
+      <div class="medal" data-medal="half"><span class="e">🥈</span>절반 돌파</div>
+      <div class="medal" data-medal="perfect"><span class="e">🥇</span>전부 정답</div>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn ghost" data-go="beyond">🌙 더 알아보기 (선택)</button></div>
+</section>
+
+<!-- + -->
+<section class="panel" id="panel-beyond">
+  <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
+  <h2 class="sec">태양은 사실 노란색이 아니다</h2>
+  <p class="lead">여기서부터는 교과서 밖 이야기입니다. 외울 필요 없어요.</p>
+
+  <div class="grid c2" style="margin-top:20px">
+    <div class="card">
+      <h3 class="card-t">☀️ 우주에서 본 태양은 흰색</h3>
+      <p class="lead" style="font-size:16px;margin-top:8px">
+        우주정거장에서 찍은 태양 사진은 <b class="k">하얗습니다.</b>
+        태양이 노랗게 보이는 건 지구 대기가 <b class="t1">파란빛을 더 많이 흩뿌려</b> 하늘 전체로 퍼뜨리기 때문이에요.
+        파란색을 빼앗긴 나머지 빛이 우리 눈에 닿으니 노랗게 보이는 거죠.
+        하늘이 파란 이유와 태양이 노란 이유는 <b>같은 현상의 앞뒷면</b>입니다.</p>
+      <p class="help">노을이 붉은 것도 같은 이유예요. 해 질 무렵엔 빛이 대기를 훨씬 길게 지나오거든요.</p>
+    </div>
+    <div class="card">
+      <h3 class="card-t">🔢 궁금한 사람만 — 실제 온도</h3>
+      <p class="lead" style="font-size:16px;margin-top:8px">교과서에서는 숫자를 다루지 않지만, 대략 이 정도입니다.</p>
+      <div style="display:grid;gap:7px;margin-top:12px">
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#6ab8ff;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">청색 — 3만 ℃ 안팎까지</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#f2f5ff;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">백색 — 1만 ℃ 안팎</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#ffd166;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">황색 — 6천 ℃ 안팎 (태양)</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#ff6b5c;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">적색 — 3천 ℃ 안팎</span></div>
+      </div>
+      <p class="help">쇳물이 하얗게 보이려면 1,500 ℃쯤 되어야 합니다. 별은 그보다 훨씬 뜨겁죠.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
+    <p class="lead" style="font-size:17px;margin-top:10px">
+      <b class="k">"가장 뜨거운 별은 빨갛지 않다."</b><br><br>
+      우리는 빨강을 <b>따뜻한 색</b>, 파랑을 <b>차가운 색</b>이라고 부릅니다.
+      그런데 그건 온도가 아니라 <b class="k">사람의 감정</b>에 붙인 이름이었어요.
+      불을 보면 따뜻하다고 느끼고 물을 보면 차갑다고 느낀 경험이 만든 말이죠.
+      자연은 그 이름표에 관심이 없습니다.<br><br>
+      이 단원에서 우리는 세 번 속았습니다.
+      별이 움직이는 줄 알았지만 <b class="t1">지구가 움직였고</b>,
+      밝게 보이는 별이 밝은 별인 줄 알았지만 <b class="t3">그냥 가까웠고</b>,
+      빨간 별이 뜨거운 줄 알았지만 <b class="t2">가장 차가운 별</b>이었습니다.<br><br>
+      <b class="k">보이는 것과 실제를 갈라내는 일</b> — 이 단원 전체가 그 연습이었던 셈입니다.
+    </p>
+    <div class="cta-row" style="justify-content:center">
+      <button class="btn ghost" data-go="engage">1단계로 돌아가기 ↑</button>
+      <a class="btn ghost" href="index.html">🌌 단원 허브로</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="toast"></div>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+
+<script>
+"use strict";
+const FIGS={
+  furnace:'img/c-furnace.png', orion:'img/c-orion.png', flame:'img/c-flame.png',
+  heater:'img/c-heater.png', lava:'img/c-lava.png', bulb:'img/c-bulb.png', glass:'img/c-glass.png'
+};
+const BG_IMAGES={cover:'',engage:'',observe:'',explain:'',apply:'',check:'',beyond:''};
+const BG_FALLBACK={
+  cover:'radial-gradient(120% 90% at 50% 0%, #4a2f30, #070c1a 68%)',
+  engage:'radial-gradient(110% 80% at 50% 0%, #4a2f30, #070c1a 66%)',
+  observe:'radial-gradient(100% 80% at 50% 20%, #2f3a5e, #070c1a 70%)',
+  explain:'linear-gradient(180deg, #2a2f52, #070c1a 74%)',
+  apply:'radial-gradient(90% 80% at 68% 15%, #43304a, #070c1a 70%)',
+  check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
+  beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
+};
+const SAVE='star_color_v1';
+const POE_ANSWER='b';
+const POE_WHY={
+  right:'맞았어요! 별은 <b>뜨거울수록 청색</b>, 차가울수록 적색을 띱니다. 가스레인지의 파란 불꽃이 촛불의 노란 불꽃보다 뜨거운 것과 같은 이치예요.',
+  wrong:'많은 사람이 그렇게 생각해요 — 일상에서 빨강을 따뜻한 색이라 부르니까요. 하지만 <b>정반대입니다.</b> 별은 뜨거울수록 <b>청색</b>을 띱니다. 가스레인지의 파란 불꽃을 떠올려 보세요. 아래에서 직접 확인해 봅시다.'
+};
+
+/* 색 다이얼 — 온도 높은 순 */
+const COLORS=[
+  {k:'blue',   nm:'청색',   hex:'#6ab8ff', temp:'아주 높다', star:'가장 뜨거운 별들'},
+  {k:'bwhite', nm:'청백색', hex:'#a9ccff', temp:'매우 높다', star:'리겔 (오리온자리)'},
+  {k:'white',  nm:'백색',   hex:'#f2f5ff', temp:'높다',     star:'시리우스 (큰개자리)'},
+  {k:'ywhite', nm:'황백색', hex:'#ffeeb8', temp:'조금 높다', star:'프로키온 (작은개자리)'},
+  {k:'yellow', nm:'황색',   hex:'#ffd166', temp:'중간',     star:'태양'},
+  {k:'orange', nm:'주황색', hex:'#ff9f5c', temp:'낮다',     star:'알데바란 (황소자리)'},
+  {k:'red',    nm:'적색',   hex:'#ff6b5c', temp:'아주 낮다', star:'베텔게우스 (오리온자리)'}
+];
+
+const QUIZ_SETS={
+  observe:{title:'색과 온도 살펴보기', qs:[
+    {q:'같은 오리온자리 안에 있는 리겔과 베텔게우스의 색이 다른 까닭은?',
+     ch:[{t:'두 별의 표면 온도가 다르기 때문',ok:1},
+         {t:'두 별까지의 거리가 다르기 때문',ok:0},
+         {t:'두 별의 크기가 다르기 때문',ok:0}],
+     why:'별의 색을 결정하는 것은 <b>표면 온도</b>입니다.'},
+    {q:'쇳물이 식어 가면서 색이 흰색 → 노란색 → 붉은색으로 변한 까닭은?',
+     ch:[{t:'온도가 점점 낮아졌기 때문',ok:1},
+         {t:'쇳물의 성분이 바뀌었기 때문',ok:0}],
+     why:'성분은 그대로입니다. 바뀐 건 온도뿐이에요.'}
+  ]},
+  explain:{title:'색과 온도의 규칙', qs:[
+    {q:'별은 표면 온도가 어떨 때 청색을 띨까?',
+     ch:[{t:'높을수록',ok:1},{t:'낮을수록',ok:0}],
+     why:'뜨거울수록 청색, 차가울수록 적색입니다.'},
+    {q:'태양은 황색을 띤다. 태양의 표면 온도는?',
+     ch:[{t:'적색 별보다 높고 청색 별보다 낮다',ok:1},
+         {t:'적색 별보다 낮고 청색 별보다 높다',ok:0},
+         {t:'모든 별 중 가장 높다',ok:0}],
+     why:'황색은 스펙트럼의 가운데쯤입니다.'}
+  ]}
+};
+
+const GAME_QS=[
+  {q:'별의 색이 다양한 까닭으로 옳은 것은?',
+   ch:[{t:'별마다 표면 온도가 다르기 때문',ok:1},
+       {t:'별마다 지구로부터의 거리가 다르기 때문',ok:0},
+       {t:'별마다 밝기가 다르기 때문',ok:0}],
+   why:'색을 결정하는 것은 표면 온도입니다.'},
+  {q:'다음 중 표면 온도가 가장 높은 별의 색은?',
+   ch:[{t:'청색',ok:1},{t:'황색',ok:0},{t:'적색',ok:0}],
+   why:'청색 → 백색 → 황색 → 적색 순으로 온도가 낮아집니다.'},
+  {q:'베텔게우스는 적색을 띤다. 이 별의 표면 온도는?',
+   ch:[{t:'태양보다 낮다',ok:1},{t:'태양보다 높다',ok:0},{t:'태양과 같다',ok:0}],
+   why:'적색은 황색(태양)보다 온도가 낮습니다.'},
+  {q:'용광로 쇳물이 식으면서 색이 달라지는 현상이 알려 주는 것은?',
+   ch:[{t:'물체의 색으로 온도를 짐작할 수 있다',ok:1},
+       {t:'물체의 색으로 크기를 짐작할 수 있다',ok:0},
+       {t:'물체의 색으로 무게를 짐작할 수 있다',ok:0}],
+   why:'별의 표면 온도를 색으로 알아내는 것과 똑같은 원리입니다.'},
+  {q:'별의 색을 표면 온도가 높은 것부터 바르게 나열한 것은?',
+   ch:[{t:'청색 – 백색 – 황색 – 적색',ok:1},
+       {t:'적색 – 황색 – 백색 – 청색',ok:0},
+       {t:'황색 – 청색 – 적색 – 백색',ok:0}],
+   why:'청색 쪽이 뜨겁고 적색 쪽이 차갑습니다.'}
+];
+
+/* 엔진 */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TABS=['engage','observe','explain','apply','check','beyond'];
+const CS=getComputedStyle(document.documentElement);
+const CV=k=>CS.getPropertyValue('--'+k).trim();
+
+function setBg(tab){
+  const L=$('#bgLayer'); if(!L)return;
+  const img=BG_IMAGES[tab]||(tab==='cover'?BG_IMAGES.engage:'');
+  L.style.opacity='0';
+  setTimeout(()=>{L.style.backgroundImage=img?`url("${img}")`:(BG_FALLBACK[tab]||BG_FALLBACK.engage);L.style.opacity='1';},150);
+}
+function fit(cv){
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  const w=cv.clientWidth||cv.parentElement.clientWidth||320;
+  const h=parseInt(cv.getAttribute('height'))||220;
+  cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};
+}
+const A={ctx:null,
+  ensure(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+    if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();return this.ctx;},
+  blip(f=600,d=.08,type='sine',vol=.15){const c=this.ensure();if(!c)return;
+    const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(c.destination);
+    const t=c.currentTime;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);
+    g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.03);},
+  correct(){this.blip(660,.11);setTimeout(()=>this.blip(880,.13),85);setTimeout(()=>this.blip(1170,.18),190);},
+  wrong(){this.blip(200,.2,'sawtooth',.1);setTimeout(()=>this.blip(150,.24,'sawtooth',.08),130);},
+  pop(){this.blip(440,.05,'triangle',.13);},
+  win(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.blip(f,.22,'sine',.15),i*110));}};
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
+
+let S=load()||{tab:'engage',visited:{},poe:null,dial:'yellow',seen:{},sort:0,cloze:{},mini:{},essay:'',best:0,medals:{}};
+S.visited=S.visited||{};S.seen=S.seen||{};S.cloze=S.cloze||{};S.mini=S.mini||{};S.medals=S.medals||{};
+S.essay=S.essay||'';S.dial=S.dial||'yellow';S.sort=S.sort||0;
+let CLOZE_TOTAL=0;
+function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
+
+function progChecks(){
+  return [
+    {label:'1단계 · 결과 예측하기',       ok:!!S.poe},
+    {label:'2단계 · 일곱 색 모두 살펴보기', ok:Object.keys(S.seen).length>=COLORS.length},
+    {label:'2단계 · 색과 온도 퀴즈',      ok:!!S.mini.observe},
+    {label:'3단계 · 빈칸 모두 채우기',    ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
+    {label:'3단계 · 규칙 확인 퀴즈',      ok:!!S.mini.explain},
+    {label:'4단계 · 색 순서 맞추기',      ok:!!S.sort},
+    {label:'4단계 · 사고력 문제 답쓰기',  ok:(S.essay||'').trim().length>=15},
+    {label:'5단계 · 확인 문제 완주',      ok:S.best>0}
+  ];
+}
+function updateProgress(){
+  const c=progChecks(), pct=Math.round(c.filter(x=>x.ok).length/c.length*100);
+  $('#progBar').style.width=pct+'%';$('#progPct').textContent=pct+'%';
+  const ul=$('#progItems');
+  if(ul)ul.innerHTML=c.map(x=>`<li class="${x.ok?'on':''}"><span class="mk">${x.ok?'✔':'○'}</span>${x.label}</li>`).join('');
+  const done={engage:!!S.poe, observe:Object.keys(S.seen).length>=COLORS.length&&!!S.mini.observe,
+    explain:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL&&!!S.mini.explain,
+    apply:!!S.sort&&(S.essay||'').trim().length>=15, check:S.best>0, beyond:!!S.visited.beyond};
+  $$('#tabNav button').forEach(b=>b.classList.toggle('done',!!done[b.dataset.tab]));
+}
+let toastT;
+function toast(msg,kind=''){const el=$('#toast');el.innerHTML=msg;el.className='show '+kind;
+  clearTimeout(toastT);toastT=setTimeout(()=>el.className='',2300);}
+
+function showTab(id,noScroll){
+  if(!TABS.includes(id))return;
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+id).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  setBg(id);S.tab=id;S.visited[id]=true;save();updateProgress();
+  if(id==='observe')requestAnimationFrame(drawDial);
+  if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+}
+$('#tabNav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){A.ensure();showTab(b.dataset.go);}});
+
+function refreshCover(){
+  const any=progChecks().some(x=>x.ok);
+  $('#coverSaved').style.display=any?'inline-flex':'none';
+  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 🔥`:'별의 색 살펴보기 🔥';
+}
+$('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
+  document.body.classList.remove('cover-on');A.ensure();A.pop();showTab(S.tab||'engage',true);});
+$('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classList.remove('hide');
+  document.body.classList.add('cover-on');setBg('cover');});
+
+(function(){const KEY='teacherMode';
+  document.body.classList.toggle('teacher',localStorage.getItem(KEY)==='1');
+  $('#tmodeBtn').addEventListener('click',()=>{
+    const on=!document.body.classList.contains('teacher');
+    document.body.classList.toggle('teacher',on);localStorage.setItem(KEY,on?'1':'0');
+    toast(on?'교사 모드 ON — 교실 연결 노트가 보입니다 🧑‍🏫':'교사 모드 OFF — 학생 화면입니다 🎒');});})();
+
+(function(){const wrap=$('#progWrap'),list=$('#progList');
+  wrap.addEventListener('click',()=>list.classList.toggle('show'));
+  document.addEventListener('click',e=>{if(!list.contains(e.target)&&!wrap.contains(e.target))list.classList.remove('show');});})();
+
+/* 그림 슬롯 */
+(function(){
+  $$('[data-fig]').forEach(el=>{
+    const key=el.dataset.fig,src=FIGS[key]||'',alt=el.dataset.alt||'',cap=el.dataset.cap||'';
+    const slot=()=>{el.classList.add('slot');
+      el.innerHTML=`<div class="fe">🖼️</div><div class="fn">${FIGS[key]||'img/'+key+'.png'}</div><div class="fd">${alt}</div>`;};
+    if(!src){slot();return;}
+    const im=new Image();
+    im.onload=()=>{el.classList.remove('slot');
+      el.innerHTML=`<img src="${src}" alt="${alt.replace(/"/g,'&quot;')}" loading="lazy">`+(cap?`<figcaption>${cap}</figcaption>`:'');};
+    im.onerror=slot;im.src=src;
+  });
+})();
+
+/* 예측 */
+(function(){
+  const wrap=$('#poeChoices'),exp=$('#poeExplain');
+  function lock(pick){
+    $$('.choice',wrap).forEach(b=>{b.classList.add('done');
+      if(b.dataset.poe===POE_ANSWER)b.classList.add('correct');
+      else if(b.dataset.poe===pick)b.classList.add('wrong');else b.classList.add('dim');});
+    const ok=pick===POE_ANSWER;
+    exp.className='explain show '+(ok?'ok':'no');
+    exp.innerHTML=`<div class="why">${ok?'✅ 예측 성공':'🔍 다시 생각해 보기'}</div>${ok?POE_WHY.right:POE_WHY.wrong}`;}
+  wrap.addEventListener('click',e=>{
+    const b=e.target.closest('.choice');if(!b||S.poe)return;
+    S.poe=b.dataset.poe;save();updateProgress();
+    (S.poe===POE_ANSWER?A.correct:A.wrong).call(A);lock(S.poe);});
+  if(S.poe)lock(S.poe);
+})();
+
+/* 색 다이얼 */
+function buildDial(){
+  $('#dialPick').innerHTML=COLORS.map(c=>
+    `<button data-k="${c.k}" style="background:${c.hex}">${c.nm}</button>`).join('');
+  $('#dialPick').addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    S.dial=b.dataset.k;S.seen[b.dataset.k]=1;save();
+    A.blip(520+COLORS.findIndex(c=>c.k===b.dataset.k)*60,.06,'triangle',.11);
+    paintDial();drawDial();updateProgress();
+    const n=Object.keys(S.seen).length;
+    if(n===COLORS.length)toast('일곱 색을 모두 살펴봤어요! 규칙이 보이나요? 🎨','good');
+  });
+}
+function paintDial(){
+  $$('#dialPick button').forEach(b=>{
+    b.classList.toggle('on',b.dataset.k===S.dial);
+    b.classList.toggle('seen',!!S.seen[b.dataset.k]);});
+  const c=COLORS.find(x=>x.k===S.dial)||COLORS[4];
+  $('#diColor').textContent=c.nm; $('#diColor').style.color=c.hex;
+  $('#diTemp').textContent=c.temp; $('#diTemp').style.color=CV('c3');
+  $('#diStar').textContent=c.star; $('#diStar').style.color=CV('ink');
+  $('#dialMsg').textContent='아직 살펴본 색: '+Object.keys(S.seen).length+' / '+COLORS.length;
+}
+function drawDial(){
+  const cv=$('#dialcv'); if(!cv||!cv.clientWidth)return;
+  const {ctx,w,h}=fit(cv);
+  ctx.clearRect(0,0,w,h);
+  const c=COLORS.find(x=>x.k===S.dial)||COLORS[4];
+  /* 배경 별 */
+  for(let i=0;i<40;i++){
+    const x=(i*97)%w, y=(i*53)%h;
+    ctx.globalAlpha=.25+((i*37)%40)/120; ctx.fillStyle='#cfd8ff';
+    ctx.beginPath();ctx.arc(x,y,.9,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  /* 별 */
+  const cx=w/2, cy=h/2, r=Math.min(54,h*0.26);
+  ctx.save();
+  ctx.shadowColor=c.hex; ctx.shadowBlur=r*1.5;
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r*1.9);
+  g.addColorStop(0,'#ffffff'); g.addColorStop(.32,c.hex); g.addColorStop(1,c.hex+'00');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r*1.9,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+  /* 온도 눈금 막대 */
+  const bw=Math.min(w-60,420), bx=(w-bw)/2, by=h-26;
+  const grad=ctx.createLinearGradient(bx,0,bx+bw,0);
+  COLORS.forEach((cc,i)=>grad.addColorStop(i/(COLORS.length-1),cc.hex));
+  ctx.fillStyle=grad; ctx.beginPath();
+  const rr=6; ctx.moveTo(bx+rr,by); ctx.arcTo(bx+bw,by,bx+bw,by+12,rr);
+  ctx.arcTo(bx+bw,by+12,bx,by+12,rr); ctx.arcTo(bx,by+12,bx,by,rr); ctx.arcTo(bx,by,bx+bw,by,rr);
+  ctx.closePath(); ctx.fill();
+  const idx=COLORS.findIndex(x=>x.k===S.dial);
+  const mx=bx+bw*(idx/(COLORS.length-1));
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.moveTo(mx,by-8); ctx.lineTo(mx-6,by-16); ctx.lineTo(mx+6,by-16); ctx.closePath(); ctx.fill();
+  ctx.font='600 11px Pretendard, sans-serif'; ctx.fillStyle=CV('ink-mute');
+  ctx.textAlign='left'; ctx.fillText('뜨겁다', bx, by-22);
+  ctx.textAlign='right'; ctx.fillText('차갑다', bx+bw, by-22);
+}
+addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(drawDial,180);});
+
+/* 색 순서 맞추기 */
+(function(){
+  const box=$('#sortBox'), pool=$('#sortPool'), line=$('#sortLine');
+  let next=0;
+  function build(){
+    next=0; box.classList.remove('done');
+    line.innerHTML='<span class="muted" style="font-size:13px" id="sortEmpty">여기에 순서대로 쌓입니다</span>';
+    const shuffled=COLORS.map((c,i)=>({c,i})).sort(()=>Math.random()-.5);
+    pool.innerHTML=shuffled.map(({c,i})=>
+      `<button class="chip" data-i="${i}" style="background:${c.hex}">${c.nm}</button>`).join('');
+  }
+  pool.addEventListener('click',e=>{
+    const b=e.target.closest('.chip'); if(!b)return;
+    if(+b.dataset.i===next){
+      const em=$('#sortEmpty'); if(em)em.remove();
+      b.classList.add('placed'); b.disabled=true; line.appendChild(b);
+      A.blip(480+next*70,.07,'triangle',.12); next++;
+      if(next>=COLORS.length){
+        box.classList.add('done'); A.win();
+        if(!S.sort){S.sort=1;save();updateProgress();}
+        toast('색 순서 완성! 청색 → 적색 = 뜨거움 → 차가움 🎯','good');
+      }
+    }else{
+      b.classList.add('bad'); A.wrong();
+      setTimeout(()=>b.classList.remove('bad'),420);
+      toast('아직이에요 — 남은 것 중 <b>가장 뜨거운</b> 색을 골라 보세요','bad');
+    }
+  });
+  $('#sortReset').addEventListener('click',()=>{build();A.pop();});
+  build();
+  if(S.sort){/* 이미 완료한 학생도 다시 해 볼 수 있게 초기 상태로 둔다 */}
+})();
+
+/* 빈칸 */
+(function(){
+  const all=$$('.cloze');CLOZE_TOTAL=all.length;
+  all.forEach((cz,i)=>{
+    const reveal=silent=>{
+      if(cz.classList.contains('revealed'))return;
+      cz.textContent=cz.dataset.ans;
+      const col=CV(cz.dataset.c||'accent');cz.style.color=col;cz.style.borderColor=col;
+      cz.classList.add('revealed');if(!silent)A.blip(720,.08);
+      S.cloze[i]=1;save();
+      const set=cz.closest('.cloze-set');
+      if(set&&$$('.cloze',set).every(x=>x.classList.contains('revealed'))){set.classList.add('complete');if(!silent)A.pop();}
+      updateProgress();};
+    cz.addEventListener('click',()=>reveal(false));
+    if(S.cloze[i])reveal(true);
+  });
+})();
+
+/* 미니 퀴즈 */
+(function(){
+  function build(host,key){
+    const set=QUIZ_SETS[key];if(!set)return;
+    let done=0;const total=set.qs.length;
+    host.innerHTML=`<div class="mq-head"><span class="mq-badge">✅ 개념 확인</span>
+      <span style="font-weight:700">${set.title}</span><span class="mq-prog" data-prog>0/${total}</span></div>`;
+    set.qs.forEach((q,qi)=>{
+      const qEl=document.createElement('div');qEl.className='mq-q';
+      qEl.innerHTML=`<div class="mq-text"><span class="qn">Q${qi+1}.</span>${q.q}</div><div class="mq-choices"></div><div class="mq-fb"></div>`;
+      const cw=$('.mq-choices',qEl),fb=$('.mq-fb',qEl);
+      let answered=false,solved=false;
+      q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+        const c=q.ch[idx];
+        const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.addEventListener('click',()=>{
+          if(answered||solved)return;answered=true;
+          if(c.ok){solved=true;b.classList.add('correct');
+            $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+            A.correct();fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;done++;upd();}
+          else{b.classList.add('wrong');A.wrong();
+            fb.className='mq-fb show no';fb.innerHTML=`<b>다시 생각해 볼까요.</b> ${q.why}`;
+            setTimeout(()=>{answered=false;b.classList.remove('wrong');},1600);}});
+        cw.appendChild(b);});
+      host.appendChild(qEl);});
+    const d=document.createElement('div');d.className='mq-done';d.innerHTML='🏅 개념 확인 완료!';host.appendChild(d);
+    function upd(){const p=host.querySelector('[data-prog]');if(p)p.textContent=done+'/'+total;
+      if(done>=total){host.classList.add('alldone');
+        if(!S.mini[key]){S.mini[key]=1;save();updateProgress();toast('개념 확인 완료! ✅','good');}}}
+  }
+  $$('.miniquiz').forEach(h=>build(h,h.dataset.quiz));
+})();
+
+/* 서술형 */
+(function(){
+  const ta=$('#essay'),mark=$('#essaySaved');let t;
+  ta.value=S.essay||'';
+  ta.addEventListener('input',()=>{S.essay=ta.value;save();updateProgress();
+    mark.classList.add('on');clearTimeout(t);t=setTimeout(()=>mark.classList.remove('on'),1400);});
+  $('#ansBtn').addEventListener('click',()=>{
+    const box=$('#modelAns'),open=box.classList.toggle('show');
+    $('#ansBtn').textContent=open?'모범 답안 접기':'모범 답안 확인하기';
+    if(open){A.pop();if((S.essay||'').trim().length<15)toast('먼저 <b>내 문장으로 써 본 뒤</b>에 보면 훨씬 남아요 ✍️');}});
+})();
+
+/* 확인 문제 */
+(function(){
+  const body=$('#gameBody');let i=0,score=0,lives=3,order=[];
+  function medal(k){if(S.medals[k])return;S.medals[k]=1;save();
+    const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');}
+  function paint(){Object.keys(S.medals).forEach(k=>{const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');});}
+  function hud(){$('#score').textContent=score;
+    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
+  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  function next(){
+    if(i>=order.length||lives<=0)return end();
+    hud();const q=GAME_QS[order[i]];
+    body.innerHTML=`<div class="mq-q" style="margin-top:0">
+      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
+      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
+    q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+      const c=q.ch[idx];
+      const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.addEventListener('click',()=>{
+        if(locked)return;locked=true;
+        $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+        if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
+          if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
+          fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;}
+        else{b.classList.add('wrong');A.wrong();lives--;
+          $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
+          fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
+        hud();setTimeout(()=>{i++;next();},1900);});
+      cw.appendChild(b);});}
+  function end(){
+    const perfect=score===GAME_QS.length*20;
+    if(perfect)medal('perfect');
+    if(score>(S.best||0)){S.best=score;save();}
+    updateProgress();perfect?A.win():A.pop();
+    body.innerHTML=`<div style="text-align:center;padding:26px 10px">
+      <div style="font-size:44px">${perfect?'🏆':(lives>0?'🎉':'💪')}</div>
+      <h3 class="card-t" style="margin:10px 0 6px">${perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?')}</h3>
+      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${GAME_QS.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
+      <button class="btn primary" id="gameAgain">다시 풀기</button></div>`;
+    $('#gameAgain').addEventListener('click',start);}
+  $('#gameStart').addEventListener('click',start);paint();
+})();
+
+/* 별 배경 */
+(function(){
+  const cv=$('#stars'),ctx=cv.getContext('2d');
+  let stars=[],w=0,h=0,t=0;
+  function build(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    w=innerWidth;h=innerHeight;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(130,w*h/10500));
+    stars=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.3,
+      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,
+      c:['#ffffff','#ffd9a0','#a9ccff','#ff9f5c'][i%4]}));}
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.6:(.35+.4*Math.sin(t*st.s+st.p));
+      ctx.fillStyle=st.c;ctx.shadowColor=st.c;ctx.shadowBlur=st.r*3.3;
+      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fill();});
+    ctx.globalAlpha=1;ctx.shadowBlur=0;
+    if(!reduceMotion){t+=.013;requestAnimationFrame(draw);}}
+  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{build();if(reduceMotion)draw();},200);});
+  build();draw();
+})();
+
+(function init(){
+  buildDial();paintDial();
+  updateProgress();
+  const start=TABS.includes(S.tab)?S.tab:'engage';
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+start).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===start));
+  S.tab=start;document.body.classList.add('cover-on');refreshCover();setBg('cover');
+  requestAnimationFrame(drawDial);
+})();
+</script>
+</body>
+</html>
