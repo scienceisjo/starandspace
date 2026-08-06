@@ -313,8 +313,133 @@ textarea::placeholder{color:var(--ink-mute)}
   .cloze{color:#111!important;border-style:solid}.cloze::after{content:none}
 }
 </style>
+
+<style id="board-v2">
+/* ═══════════════════════════════════════════════════════════
+   전자칠판 판 v2 — 글자 크기·명암비 상향
+   교실 앞 화면에서 뒷자리까지 읽히도록 본문을 키우고,
+   배경과 붙어 보이던 회색 계열 글자색의 명암비를 올렸습니다.
+   (--ink-mute 4.0:1 → 7.7:1 / --ink-dim 8.6:1 → 12.0:1)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --line:#33406e; --line-soft:#28345e;
+  --ink:#f2f6ff; --ink-dim:#c6d2ee; --ink-mute:#9aa8cf;
+  --ok:#5eec92; --danger:#ff7a86;
+}
+body{line-height:1.68}
+b.k{color:#fff}
+
+/* 본문 계열 */
+.lead{font-size:clamp(17px,2.5vw,20px)}
+.help{font-size:15px;line-height:1.6}
+.honest{font-size:14px;line-height:1.6}
+.note{font-size:16px;line-height:1.65;padding:15px 17px;border-left-width:4px}
+.note .ic{font-size:19px}
+.badge{font-size:14px;padding:6px 13px}
+.pill{font-size:15px;padding:7px 14px}
+.term .nm{font-size:19px}
+.term .de{font-size:15px;line-height:1.6}
+.use .u-t{font-size:19px}
+.use .u-d{font-size:15.5px;line-height:1.6}
+h3.card-t{font-size:22px}
+.stepline .swhat{font-size:14.5px}
+.stepline .sbadge{font-size:13px}
+.eyebrow{font-size:13px}
+.fig figcaption{font-size:14.5px;line-height:1.6}
+.fig.slot .fn{font-size:13px}
+.fig.slot .fd{font-size:14px}
+
+/* 상호작용 */
+.btn{font-size:16.5px;padding:13px 22px}
+.btn.sm{font-size:15px;padding:9px 16px}
+nav.tabs button{font-size:15.5px;padding:9px 15px}
+nav.tabs button .sn{width:21px;height:21px;font-size:12px}
+.brand b{font-size:18px}
+.brand .sub{font-size:12.5px}
+.progress-mini .pct{font-size:13.5px}
+.choice{font-size:17px;border-width:2px;padding:15px 17px}
+.choice .key{width:30px;height:30px;font-size:15px}
+.explain{font-size:16px;line-height:1.68}
+.explain .why{font-size:14.5px}
+.cloze-line{font-size:17.5px;line-height:2.1}
+.cloze{border-width:2px;padding:3px 12px;min-width:56px}
+.cloze-hint{font-size:14.5px}
+.cloze-done{font-size:15px}
+textarea{font-size:16.5px;border-width:2px}
+.savemark{font-size:14px}
+.checkline{font-size:16.5px}
+.doit li{font-size:16.5px;line-height:1.6}
+.dtable{font-size:15.5px}
+.dtable th{font-size:14px;padding:11px 12px}
+.dtable td{padding:10px 12px}
+.dtable .empty{font-size:15px}
+.prog-list{width:290px}
+.prog-list li{font-size:14.5px}
+.prog-list h4{font-size:17px}
+#toast{font-size:16px;padding:14px 22px;border-width:2px}
+.medal{font-size:14.5px}
+.medal .e{font-size:20px}
+.score-box .num{font-size:20px}
+.score-box .lab2{font-size:13px}
+.lives .h{font-size:24px}
+.steps-card li{font-size:16.5px}
+.steps-card h3{font-size:20px}
+.cover-sub{font-size:clamp(16px,2.7vw,19px)}
+.cover-hint{font-size:14px}
+
+/* 실험실 조작판 */
+.simctl h4,.lab h3,.simlab h3{font-size:18px}
+.ctl label{font-size:15px}
+.ctl label .val{font-size:16px}
+.readout .r .lab2{font-size:13px}
+.readout .r .v{font-size:22px}
+.readout .r .v small{font-size:13px}
+.dl-head h4{font-size:18px}
+input[type=range]{height:8px}
+input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
+
+/* 문항 */
+.miniquiz .mq-badge{font-size:13.5px;padding:5px 12px}
+.miniquiz .mq-prog{font-size:13.5px}
+.mq-q .mq-text{font-size:17px;line-height:1.6}
+.mq-q .mq-text .qn{font-size:12.5px}
+.mq-opt{font-size:16.5px;padding:13px 16px;border-width:2px;line-height:1.5}
+.mq-opt .k{width:26px;height:26px;font-size:13.5px}
+.mq-fb{font-size:15.5px;line-height:1.65;padding:13px 15px}
+.mq-done{font-size:16px}
+
+/* ── 수능형 문항 — 자료 · <보기> · 다음 버튼 ── */
+.qfig{background:#04070f;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;overflow-x:auto}
+.qfig svg{width:100%;height:auto;display:block;max-width:600px;margin:0 auto}
+.bogi{background:#101c38;border:1.5px solid var(--line);border-radius:12px;padding:15px 18px;margin:0 0 14px}
+.bogi-t{display:inline-block;font-weight:800;font-size:14px;color:var(--ink-dim);border:1px solid var(--line);
+  border-radius:7px;padding:2px 14px;margin-bottom:11px;letter-spacing:3px}
+.bogi ul{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.bogi li{display:flex;gap:11px;align-items:flex-start;font-size:16.5px;line-height:1.62;color:var(--ink)}
+.bogi li .bk{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:14px;
+  font-weight:800;background:#22315c;border:1px solid var(--line);color:var(--ink-dim);margin-top:2px;transition:.25s}
+.bogi li .bv{display:none;margin-left:auto;flex:none;font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:99px}
+.bogi.reveal li.t .bk{background:var(--ok);color:#06210f;border-color:transparent}
+.bogi.reveal li.f .bk{background:var(--danger);color:#2a060b;border-color:transparent}
+.bogi.reveal li .bv{display:inline-block;animation:fade .3s}
+.bogi.reveal li.t .bv{background:rgba(94,236,146,.16);color:var(--ok)}
+.bogi.reveal li.f .bv{background:rgba(255,122,134,.16);color:var(--danger)}
+.mq-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.mq-lv{font-size:13px;font-weight:800;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:#101c38}
+.mq-lv[data-lv="하"]{color:#5eec92;border-color:#2f7d51}
+.mq-lv[data-lv="중"]{color:#ffd166;border-color:#6b5a26}
+.mq-lv[data-lv="상"]{color:#ff9fbe;border-color:#8b3742}
+.mq-next{display:none;margin-top:18px;justify-content:flex-end}
+.mq-next.show{display:flex;animation:fade .3s}
+@media print{
+  .mq-next{display:none!important}
+  .qfig{background:#fff}
+  .bogi{background:#fff;border-color:#ccc}
+  .bogi li{color:#111}
+}
+</style>
 </head>
-<body>
+<body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
 
 <div id="cover">
@@ -406,11 +531,11 @@ textarea::placeholder{color:var(--ink-mute)}
     <div class="grid c2">
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
-        <div><b class="k">별의 등급과 밝기의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">등급이 작을수록 밝고, 1등급 차이는 약 2.5배.</span></div>
+        <div><b class="k">별의 등급과 밝기의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">등급이 작을수록 밝고, 1등급 차이는 약 2.5배.</span></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c2);color:#062a28;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
-        <div><b class="k">겉보기 등급과 절대 등급을 구별할 수 있다.</b><br><span class="muted" style="font-size:14px">그리고 두 값을 견주어 거리까지 짐작할 수 있다.</span></div>
+        <div><b class="k">겉보기 등급과 절대 등급을 구별할 수 있다.</b><br><span class="muted" style="font-size:16px">그리고 두 값을 견주어 거리까지 짐작할 수 있다.</span></div>
       </div>
     </div>
     <div class="pill-list">
@@ -430,7 +555,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:20px">
     <h3 class="card-t">📏 1등급 차이는 얼마나 큰 차이일까?</h3>
-    <p class="lead" style="font-size:15.5px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       1등급 별은 6등급 별보다 약 <b class="t5">100배</b> 밝습니다. 그 사이가 5칸이니,
       한 칸(1등급 차)마다 약 <b class="t5">2.5배</b>씩 차이가 나는 셈이죠.
       아래에서 두 등급을 골라 직접 비교해 보세요.</p>
@@ -457,7 +582,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">👀 그런데 이 등급은 '보이는' 밝기입니다</h3>
-    <p class="lead" style="font-size:16px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       밤하늘을 올려다보고 매긴 등급은 <b class="t1">별까지의 거리를 전혀 고려하지 않은</b> 값입니다.
       실제로 어두운 별이라도 가까이 있으면 밝게 보이고, 실제로 밝은 별이라도 멀면 어둡게 보이죠.
       그래서 이 값만으로는 <b class="k">별들의 진짜 밝기를 겨룰 수 없습니다.</b></p>
@@ -522,7 +647,7 @@ textarea::placeholder{color:var(--ink-mute)}
         <tr><td>베텔게우스</td><td>더 어둡게 보임</td><td>약 −6.0</td></tr>
       </table>
     </div>
-    <p class="lead" style="font-size:16px;margin-top:12px">
+    <p class="lead" style="font-size:17.5px;margin-top:12px">
       절대 등급을 보면 베텔게우스가 <b class="t2">−6.0</b>, 시리우스가 <b class="t2">1.4</b>입니다.
       등급은 작을수록 밝으니 <b class="k">실제로는 베텔게우스가 시리우스보다 훨씬 밝은 별</b>이에요.
       그런데도 어둡게 보이는 건 그만큼 <b class="t4">멀리 있기</b> 때문입니다.</p>
@@ -542,7 +667,7 @@ textarea::placeholder{color:var(--ink-mute)}
     <div class="grid c2">
       <div>
         <h3 class="card-t" style="margin-bottom:10px">📐 판별 규칙</h3>
-        <p class="lead" style="font-size:15.5px">
+        <p class="lead" style="font-size:17.5px">
           ① <b class="t1">겉보기</b> = <b class="t2">절대</b> → 그 별까지의 거리는 <b class="t3">딱 10 pc</b><br>
           ② <b class="t1">겉보기</b> &lt; <b class="t2">절대</b> → <b class="t3">10 pc보다 가까움</b><br>
           ③ <b class="t1">겉보기</b> &gt; <b class="t2">절대</b> → <b class="t3">10 pc보다 멂</b>
@@ -558,14 +683,14 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">📘 해 보기 — 별 (가)·(나)·(다)는 어디에 있을까?</h3>
-    <p class="lead" style="font-size:15.5px;margin-top:8px">교과서 275쪽 활동입니다. 세 별의 두 등급을 견주어 위치를 판별해 보세요.</p>
+    <p class="lead" style="font-size:17.5px;margin-top:8px">교과서 275쪽 활동입니다. 세 별의 두 등급을 견주어 위치를 판별해 보세요.</p>
     <div class="judge" id="judgeWrap"></div>
     <div class="note class"><span class="ic">💬</span><div><b>지도 방향</b> — 첫 번째 블록 질문에 대한 <b>두 번째 단서</b>입니다. 연주 시차(1차시)로는 100 pc 안쪽만 잴 수 있었는데, 등급을 쓰면 더 먼 별까지 거리를 짐작할 수 있다는 점을 연결해 주세요. <b>거리를 구하는 공식은 도입하지 않습니다.</b></div></div>
   </div>
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">교과서 275쪽 · 사고력</span></h3>
-    <p class="lead" style="font-size:16px;margin-top:10px">
+    <p class="lead" style="font-size:17.5px;margin-top:10px">
       <b class="k">화성</b>에서 태양의 겉보기 등급과 절대 등급을 잰다면, 지구에서 잰 값과 어떻게 다를까요?
       두 값을 각각 따져 설명해 보세요.</p>
     <textarea id="essay" placeholder="힌트: 화성은 지구보다 태양에서 멀죠. 겉보기 등급은 '보이는 밝기'이고, 절대 등급은 '10 pc에 놓았다고 가정한 밝기'입니다."></textarea>
@@ -617,7 +742,7 @@ textarea::placeholder{color:var(--ink-mute)}
   <div class="grid c2" style="margin-top:20px">
     <div class="card">
       <h3 class="card-t">📜 왜 하필 '작을수록 밝다'일까</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         기원전 2세기 그리스의 천문학자 <b class="k">히파르코스</b>가 밤하늘의 별을 눈으로 보고
         <b>가장 밝은 것부터 1등성, 2등성…</b> 하고 순위를 매긴 데서 시작했습니다.
         1등이 가장 밝은 거죠. 그 뒤 2,000년이 지나 정밀 측정이 가능해졌을 때,
@@ -627,7 +752,7 @@ textarea::placeholder{color:var(--ink-mute)}
     </div>
     <div class="card">
       <h3 class="card-t">🌕 등급이 음수인 것들</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">우리 눈에 아주 밝게 보이는 천체들의 겉보기 등급입니다.</p>
+      <p class="lead" style="font-size:17.5px;margin-top:8px">우리 눈에 아주 밝게 보이는 천체들의 겉보기 등급입니다.</p>
       <div class="dtable-wrap">
         <table class="dtable">
           <tr><th>천체</th><th>겉보기 등급</th></tr>
@@ -644,7 +769,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
-    <p class="lead" style="font-size:17px;margin-top:10px">
+    <p class="lead" style="font-size:18.5px;margin-top:10px">
       <b class="k">"밝게 보이는 별이 밝은 별은 아니다."</b><br><br>
       시리우스가 밝게 보이는 건 뛰어나서가 아니라 <b class="t4">가까이 있어서</b>입니다.
       베텔게우스는 훨씬 밝게 타오르면서도 멀리 있다는 이유로 밤하늘에서 손해를 보고 있죠.<br><br>
@@ -662,7 +787,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
 </main>
 <div id="toast"></div>
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
 <script>
 "use strict";
@@ -679,7 +804,7 @@ const BG_FALLBACK={
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
-const SAVE='star_magnitude_v1';
+const SAVE='star_magnitude_v2';
 const POE_ANSWER='b';
 const POE_WHY={
   right:'맞았어요! 베텔게우스는 시리우스보다 훨씬 멀리 있는데도 저 정도로 보입니다. 같은 거리에 세워 놓으면 <b>비교가 안 될 만큼 베텔게우스가 밝아요.</b> 오늘은 이 "같은 거리에 세워 놓기"를 배웁니다.',
@@ -719,23 +844,51 @@ const QUIZ_SETS={
 };
 
 const GAME_QS=[
-  {q:'우리 눈에 보이는 별의 밝기를 등급으로 나타낸 것은?',
-   ch:[{t:'겉보기 등급',ok:1},{t:'절대 등급',ok:0},{t:'연주 시차',ok:0}],
-   why:'거리를 고려하지 않은, 그냥 보이는 밝기입니다.'},
-  {q:'어떤 별의 겉보기 등급이 절대 등급보다 크다면, 이 별까지의 거리는?',
-   ch:[{t:'10 pc보다 멀다',ok:1},{t:'10 pc보다 가깝다',ok:0},{t:'정확히 10 pc이다',ok:0}],
-   why:'멀리 있어서 실제보다 어둡게(등급이 크게) 보이는 경우입니다.'},
-  {q:'별 A는 2등급, 별 B는 7등급이다. 옳은 설명은?',
-   ch:[{t:'A가 B보다 약 100배 밝게 보인다',ok:1},
-       {t:'B가 A보다 약 100배 밝게 보인다',ok:0},
-       {t:'A가 B보다 약 5배 밝게 보인다',ok:0}],
-   why:'5등급 차이는 약 100배 차이입니다. 등급이 작은 A가 더 밝아요.'},
-  {q:'시리우스(절대 −1.4 수준이 아닌 약 1.4)와 베텔게우스(절대 약 −6.0) 중 실제로 더 밝은 별은?',
-   ch:[{t:'베텔게우스',ok:1},{t:'시리우스',ok:0},{t:'둘이 같다',ok:0}],
-   why:'절대 등급이 <b>작을수록</b> 밝습니다. −6.0 < 1.4 이므로 베텔게우스가 훨씬 밝아요.'},
-  {q:'겉보기 등급과 절대 등급이 같은 별까지의 거리는?',
-   ch:[{t:'10 pc',ok:1},{t:'1 pc',ok:0},{t:'알 수 없다',ok:0}],
-   why:'절대 등급의 정의가 "10 pc에 있다고 가정했을 때의 밝기"이기 때문입니다.'}
+  {id:"q1",
+   difficulty:"하",
+   intent:"겉보기 등급 값만 주어진 표에서 '등급이 작을수록 밝다'는 방향을 정확히 적용하고, 보이는 밝기로 거리·실제 밝기를 단정하는 오개념을 걸러 내는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 190\" role=\"img\" aria-label=\"표: 밤하늘에서 관측한 별 A, B, C의 겉보기 등급. 별 A는 마이너스 1.5, 별 B는 0.5, 별 C는 3.5이다.\"><rect x=\"40\" y=\"58\" width=\"480\" height=\"80\" fill=\"#0b1226\" stroke=\"#5b6a99\" stroke-width=\"2\"/><rect x=\"41\" y=\"59\" width=\"478\" height=\"39\" fill=\"#18224a\"/><line x1=\"40\" y1=\"98\" x2=\"520\" y2=\"98\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"190\" y1=\"58\" x2=\"190\" y2=\"138\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"300\" y1=\"58\" x2=\"300\" y2=\"138\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"410\" y1=\"58\" x2=\"410\" y2=\"138\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"280\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">밤하늘에서 관측한 별 A~C의 겉보기 등급</text><text x=\"115\" y=\"84\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#c6d2ee\">별</text><text x=\"245\" y=\"84\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">A</text><text x=\"355\" y=\"84\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">B</text><text x=\"465\" y=\"84\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">C</text><text x=\"115\" y=\"124\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">겉보기 등급</text><text x=\"245\" y=\"124\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">−1.5</text><text x=\"355\" y=\"124\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">0.5</text><text x=\"465\" y=\"124\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">3.5</text><text x=\"280\" y=\"168\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">※ 세 별은 같은 밤하늘에서 관측한 것이다.</text></svg>",
+   stem:"표는 어느 맑은 날 밤하늘에서 관측한 별 A~C의 <b>겉보기 등급</b>을 나타낸 것이다. 이에 대한 설명으로 옳은 것은?",
+   ch:[{t:"B는 A보다 밝게 보인다.",ok:0},{t:"세 별 중 실제 밝기가 가장 큰 별은 A이다.",ok:0},{t:"C는 A보다 지구에서 멀리 있다.",ok:0},{t:"밤하늘에서 가장 밝게 보이는 별은 A이다.",ok:1},{t:"밤하늘에서 가장 어둡게 보이는 별은 B이다.",ok:0}],
+   why:"<b>정답 ④</b> — 겉보기 등급은 우리 눈에 보이는 밝기를 나타낸 값이고, 등급은 <b>작을수록 밝다</b>. 세 값 중 가장 작은 것은 A(−1.5)이므로 밤하늘에서 가장 밝게 보이는 별은 A이다.<br><br><b>① 오답</b> — B(0.5)는 A(−1.5)보다 등급이 <b>크므로</b> 오히려 더 어둡게 보인다. 등급이 클수록 밝다고 자를 거꾸로 읽은 것이다.<br><b>② 오답</b> — 겉보기 등급에는 별의 실제 밝기와 거리가 함께 섞여 있어 <b>실제 밝기를 비교할 수 없다</b>. 실제 밝기를 겨루려면 절대 등급이 필요하다.<br><b>③ 오답</b> — \"어둡게 보이면 먼 별\"은 대표적인 오개념이다. C는 멀어서 어두울 수도, 원래 어두운 별일 수도 있어 이 자료만으로는 거리를 판단할 수 없다.<br><b>⑤ 오답</b> — 가장 어둡게 보이는 별은 등급이 가장 <b>큰</b> C(3.5)이다. B는 세 별 중 가운데이다."},
+
+  {id:"q2",
+   difficulty:"중",
+   intent:"등급 눈금에서 두 별의 등급 차를 읽어 밝기비로 환산하되, 1등급 차는 약 2.5배·5등급 차는 약 100배임을 적용하고 '등급 차 숫자를 그대로 배수로 읽는' 오류를 걸러 내는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 210\" role=\"img\" aria-label=\"등급 눈금 그림. 0부터 8까지 눈금이 있는 가로선 위에 별 P는 3등급 자리, 별 Q는 4등급 자리, 별 R는 8등급 자리에 표시되어 있다.\"><text x=\"280\" y=\"28\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">별 P, Q, R의 겉보기 등급</text><text x=\"235\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ffd166\">별 P</text><text x=\"290\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#a9f07a\">별 Q</text><text x=\"510\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ff9fbe\">별 R</text><circle cx=\"235\" cy=\"94\" r=\"11\" fill=\"#ffd166\"/><circle cx=\"290\" cy=\"94\" r=\"11\" fill=\"#a9f07a\"/><circle cx=\"510\" cy=\"94\" r=\"11\" fill=\"#ff9fbe\"/><line x1=\"235\" y1=\"107\" x2=\"235\" y2=\"130\" stroke=\"#5b6a99\" stroke-width=\"1.4\" stroke-dasharray=\"4 4\"/><line x1=\"290\" y1=\"107\" x2=\"290\" y2=\"130\" stroke=\"#5b6a99\" stroke-width=\"1.4\" stroke-dasharray=\"4 4\"/><line x1=\"510\" y1=\"107\" x2=\"510\" y2=\"130\" stroke=\"#5b6a99\" stroke-width=\"1.4\" stroke-dasharray=\"4 4\"/><line x1=\"45\" y1=\"134\" x2=\"535\" y2=\"134\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"70\" y1=\"134\" x2=\"70\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"125\" y1=\"134\" x2=\"125\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"180\" y1=\"134\" x2=\"180\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"235\" y1=\"134\" x2=\"235\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"290\" y1=\"134\" x2=\"290\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"345\" y1=\"134\" x2=\"345\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"400\" y1=\"134\" x2=\"400\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"455\" y1=\"134\" x2=\"455\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><line x1=\"510\" y1=\"134\" x2=\"510\" y2=\"143\" stroke=\"#5b6a99\" stroke-width=\"1.4\"/><text x=\"70\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">0</text><text x=\"125\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">1</text><text x=\"180\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">2</text><text x=\"235\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">3</text><text x=\"290\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">4</text><text x=\"345\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">5</text><text x=\"400\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">6</text><text x=\"455\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">7</text><text x=\"510\" y=\"162\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">8</text><text x=\"280\" y=\"192\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">겉보기 등급</text></svg>",
+   stem:"그림은 별 P, Q, R의 <b>겉보기 등급</b>을 등급 눈금 위에 나타낸 것이다. 세 별에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["ㄱ. P는 Q보다 약 2.5배 밝게 보인다.", "ㄴ. P는 R보다 약 100배 밝게 보인다.", "ㄷ. R는 Q보다 등급이 4만큼 크므로, Q보다 약 4배 어둡게 보인다."],
+   boxVerdicts:[true, true, false],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄷ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>정답 ③ (ㄱ, ㄴ)</b> — 먼저 눈금을 읽으면 P는 3등급, Q는 4등급, R는 8등급이다.<br><br><b>ㄱ. 옳다</b> — P와 Q의 등급 차는 4−3=1이다. <b>1등급 차이는 약 2.5배</b>이고, 등급이 작은 P가 더 밝게 보인다.<br><b>ㄴ. 옳다</b> — P와 R의 등급 차는 8−3=5이다. 1등급과 6등급이 약 100배 차이였던 것처럼 <b>5등급 차이는 약 100배</b>이다. 등급이 작은 P가 R보다 약 100배 밝게 보인다.<br><b>ㄷ. 옳지 않다</b> — 등급 차 숫자를 그대로 배수로 옮기는 것은 흔한 실수이다. <b>한 칸(1등급) 차이가 이미 약 2.5배</b>이므로, 네 칸 차이는 2.5배가 네 번 겹친 만큼 벌어져 4배보다 훨씬 큰 차이가 된다.<br><br><b>덧붙임</b> — 이 눈금은 <b>겉보기</b> 등급이므로, 세 별 중 어느 별이 실제로 더 밝은 별인지는 여기서 알 수 없다."},
+
+  {id:"q3",
+   difficulty:"중",
+   intent:"겉보기 등급과 절대 등급의 대소 관계로 10 pc 기준 거리를 판별하고, 두 등급 각각이 무엇을 비교하는 값인지 구분하는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 235\" role=\"img\" aria-label=\"표: 별 A는 겉보기 등급 마이너스 0.7, 절대 등급 2.2. 별 B는 겉보기 등급 3.0, 절대 등급 3.0. 별 C는 겉보기 등급 1.8, 절대 등급 마이너스 4.6이다.\"><text x=\"280\" y=\"30\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">별 A~C의 겉보기 등급과 절대 등급</text><rect x=\"60\" y=\"50\" width=\"440\" height=\"144\" fill=\"#0b1226\" stroke=\"#5b6a99\" stroke-width=\"2\"/><rect x=\"61\" y=\"51\" width=\"438\" height=\"35\" fill=\"#18224a\"/><line x1=\"60\" y1=\"86\" x2=\"500\" y2=\"86\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"60\" y1=\"122\" x2=\"500\" y2=\"122\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"60\" y1=\"158\" x2=\"500\" y2=\"158\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"180\" y1=\"50\" x2=\"180\" y2=\"194\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"340\" y1=\"50\" x2=\"340\" y2=\"194\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"120\" y=\"74\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#c6d2ee\">별</text><text x=\"260\" y=\"74\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ffd166\">겉보기 등급</text><text x=\"420\" y=\"74\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#6ef0e6\">절대 등급</text><text x=\"120\" y=\"110\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ffffff\">별 A</text><text x=\"260\" y=\"110\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#ffd166\">−0.7</text><text x=\"420\" y=\"110\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#6ef0e6\">2.2</text><text x=\"120\" y=\"146\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ffffff\">별 B</text><text x=\"260\" y=\"146\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#ffd166\">3.0</text><text x=\"420\" y=\"146\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#6ef0e6\">3.0</text><text x=\"120\" y=\"182\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ffffff\">별 C</text><text x=\"260\" y=\"182\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#ffd166\">1.8</text><text x=\"420\" y=\"182\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#6ef0e6\">−4.6</text><text x=\"280\" y=\"218\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">※ 등급은 소수 첫째 자리까지 나타낸 값이다.</text></svg>",
+   stem:"표는 별 A~C의 <b>겉보기 등급</b>과 <b>절대 등급</b>을 나타낸 것이다. 이에 대한 설명으로 옳은 것은?",
+   ch:[{t:"A까지의 거리는 10 pc보다 멀다.",ok:0},{t:"세 별 중 실제 밝기가 가장 큰 별은 A이다.",ok:0},{t:"B까지의 거리는 10 pc이다.",ok:1},{t:"C는 10 pc보다 가까이 있다.",ok:0},{t:"밤하늘에서 가장 밝게 보이는 별은 C이다.",ok:0}],
+   why:"<b>정답 ③</b> — 판별 규칙은 셋뿐이다. <b>겉보기 = 절대</b>면 거리는 딱 10 pc, <b>겉보기 &lt; 절대</b>면 10 pc보다 가깝고, <b>겉보기 &gt; 절대</b>면 10 pc보다 멀다. B는 3.0 = 3.0이므로 거리가 정확히 10 pc이다.<br><br><b>① 오답</b> — A는 −0.7 &lt; 2.2, 즉 겉보기가 절대보다 <b>작다</b>. 10 pc보다 가까이 끌어와 있어 원래보다 밝게 보이는 별이므로 '멀다'는 부등호 방향을 뒤집은 오답이다.<br><b>② 오답</b> — 실제 밝기는 <b>절대 등급</b>으로만 비교한다. 절대 등급이 가장 작은(=가장 밝은) 별은 C(−4.6)이다. 겉보기 등급이 가장 작다고 실제로 가장 밝은 별은 아니다.<br><b>④ 오답</b> — C는 1.8 &gt; −4.6, 즉 겉보기가 절대보다 <b>크므로</b> 10 pc보다 <b>멀다</b>. 실제로는 아주 밝은 별인데 멀어서 어둡게 보이는 경우다.<br><b>⑤ 오답</b> — 보이는 밝기는 <b>겉보기 등급</b>으로 판단한다. 겉보기 등급이 가장 작은 A(−0.7)가 가장 밝게 보인다. 절대 등급으로 보이는 밝기를 판단한 오답이다."},
+
+  {id:"q4",
+   difficulty:"상",
+   intent:"절대 등급이 모두 같은 세 별의 위치가 10 pc 원의 안·위·밖일 때, 절대 등급의 정의(10 pc에 두었다는 가정)를 적용하고 거리에 따라 겉보기 등급이 어느 쪽으로 움직이는지 추론하는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 300\" role=\"img\" aria-label=\"그림: 지구를 중심으로 반지름 10 pc인 점선 원이 있고, 별 (가)는 원 안쪽, 별 (나)는 원 위, 별 (다)는 원 바깥쪽 멀리에 놓여 있다. 아래 표에는 세 별의 절대 등급이 모두 2.0으로 적혀 있다.\"><text x=\"280\" y=\"28\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">지구와 별 (가)~(다)의 위치</text><circle cx=\"120\" cy=\"128\" r=\"66\" fill=\"none\" stroke=\"#6ef0e6\" stroke-width=\"1.6\" stroke-dasharray=\"7 6\"/><line x1=\"120\" y1=\"128\" x2=\"54\" y2=\"128\" stroke=\"#6ef0e6\" stroke-width=\"1.4\"/><text x=\"87\" y=\"120\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" font-weight=\"700\" fill=\"#6ef0e6\">10 pc</text><circle cx=\"120\" cy=\"128\" r=\"7\" fill=\"#a9dcff\"/><text x=\"120\" y=\"150\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">지구</text><circle cx=\"148\" cy=\"104\" r=\"6\" fill=\"#ffd166\"/><text x=\"148\" y=\"88\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffd166\">(가)</text><circle cx=\"177\" cy=\"95\" r=\"6\" fill=\"#a9f07a\"/><text x=\"189\" y=\"89\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#a9f07a\">(나)</text><circle cx=\"320\" cy=\"150\" r=\"6\" fill=\"#ff9fbe\"/><text x=\"320\" y=\"132\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ff9fbe\">(다)</text><text x=\"280\" y=\"214\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">※ 점선 원은 지구로부터 거리가 10 pc인 지점을 이은 것이다.</text><rect x=\"60\" y=\"225\" width=\"440\" height=\"64\" fill=\"#0b1226\" stroke=\"#5b6a99\" stroke-width=\"2\"/><rect x=\"61\" y=\"226\" width=\"438\" height=\"31\" fill=\"#18224a\"/><line x1=\"60\" y1=\"257\" x2=\"500\" y2=\"257\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"180\" y1=\"225\" x2=\"180\" y2=\"289\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"287\" y1=\"225\" x2=\"287\" y2=\"289\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"394\" y1=\"225\" x2=\"394\" y2=\"289\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"120\" y=\"247\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#c6d2ee\">별</text><text x=\"233\" y=\"247\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ffd166\">(가)</text><text x=\"340\" y=\"247\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#a9f07a\">(나)</text><text x=\"447\" y=\"247\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#ff9fbe\">(다)</text><text x=\"120\" y=\"279\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">절대 등급</text><text x=\"233\" y=\"279\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#6ef0e6\">2.0</text><text x=\"340\" y=\"279\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#6ef0e6\">2.0</text><text x=\"447\" y=\"279\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#6ef0e6\">2.0</text></svg>",
+   stem:"그림은 지구를 중심으로 반지름이 10 pc인 원을 그리고 별 (가)~(다)의 위치를 나타낸 것이고, 표는 세 별의 <b>절대 등급</b>을 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["ㄱ. (가)의 겉보기 등급은 2.0보다 크다.", "ㄴ. (나)의 겉보기 등급은 2.0이다.", "ㄷ. 밤하늘에서 (다)는 (가)보다 어둡게 보인다."],
+   boxVerdicts:[false, true, true],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄷ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄴ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>정답 ④ (ㄴ, ㄷ)</b> — 먼저 표에서 세 별의 절대 등급이 모두 2.0으로 <b>같다</b>는 것을 읽어야 한다. 즉 세 별의 <b>실제 밝기는 서로 같고</b>, 남은 차이는 오직 <b>거리</b>뿐이다.<br><br><b>ㄱ. 옳지 않다</b> — (가)는 원 안쪽, 즉 10 pc보다 <b>가까이</b> 있다. 가까이 끌어오면 더 밝아 보이고, 밝을수록 등급은 <b>작아진다</b>. 따라서 (가)의 겉보기 등급은 2.0보다 <b>작다</b>. 부등호 방향을 반대로 잡은 것이 이 보기의 함정이다.<br><b>ㄴ. 옳다</b> — (나)는 원 위에 있으므로 지구로부터의 거리가 정확히 10 pc이다. 절대 등급이 바로 '10 pc에 두었다고 가정했을 때의 밝기'이므로, 이 별은 겉보기 등급과 절대 등급이 같아 2.0이다.<br><b>ㄷ. 옳다</b> — 실제 밝기가 같은 세 별 중 (다)는 원 바깥, (가)는 원 안쪽이므로 <b>(다)가 훨씬 멀다</b>. 실제 밝기가 같다면 멀리 있는 쪽이 더 어둡게 보이므로 (다)가 (가)보다 어둡게 보인다.<br><br><b>정리</b> — (다)가 어둡게 보이는 것은 원래 어두운 별이어서가 <b>아니라</b> 멀리 있기 때문이다. 이것이 절대 등급이 필요한 이유다."},
+
+  {id:"q5",
+   difficulty:"상",
+   intent:"관측 지점이 바뀌었을 때 겉보기 등급은 변하지만 절대 등급과 별이 실제로 내는 빛의 양은 변하지 않는다는 것을, 태양-지구-화성 모식도를 근거로 추론하는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 250\" role=\"img\" aria-label=\"그림: 태양을 중심으로 안쪽에 지구 궤도, 바깥쪽에 화성 궤도가 점선 타원으로 그려져 있다. 지구 궤도 위에 관측 지점 P가, 화성 궤도 위에 관측 지점 Q가 표시되어 있다.\"><text x=\"280\" y=\"28\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">태양 주위를 도는 지구와 화성</text><ellipse cx=\"180\" cy=\"150\" rx=\"125\" ry=\"70\" fill=\"none\" stroke=\"#ffab4d\" stroke-width=\"1.6\" stroke-dasharray=\"7 6\"/><ellipse cx=\"180\" cy=\"150\" rx=\"75\" ry=\"42\" fill=\"none\" stroke=\"#a9dcff\" stroke-width=\"1.6\" stroke-dasharray=\"7 6\"/><circle cx=\"180\" cy=\"150\" r=\"19\" fill=\"#ffd166\"/><text x=\"180\" y=\"186\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffd166\">태양</text><circle cx=\"255\" cy=\"150\" r=\"8\" fill=\"#a9dcff\"/><rect x=\"266\" y=\"137\" width=\"108\" height=\"24\" rx=\"6\" fill=\"#0b1226\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"274\" y=\"154\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#a9dcff\">지구 · 지점 P</text><circle cx=\"276\" cy=\"105\" r=\"8\" fill=\"#ffab4d\"/><rect x=\"288\" y=\"88\" width=\"108\" height=\"24\" rx=\"6\" fill=\"#0b1226\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"296\" y=\"105\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffab4d\">화성 · 지점 Q</text><line x1=\"380\" y1=\"178\" x2=\"410\" y2=\"178\" stroke=\"#a9dcff\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><text x=\"418\" y=\"183\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">지구 궤도</text><line x1=\"380\" y1=\"206\" x2=\"410\" y2=\"206\" stroke=\"#ffab4d\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><text x=\"418\" y=\"211\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">화성 궤도</text><text x=\"280\" y=\"238\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">※ 지점 P는 지구 위, 지점 Q는 화성 위의 관측 지점이다.</text></svg>",
+   stem:"그림은 태양 주위를 도는 지구와 화성의 궤도를 나타낸 것이다. 지구 위의 <b>지점 P</b>와 화성 위의 <b>지점 Q</b>에서 각각 태양의 <b>겉보기 등급</b>을 측정하고 태양의 <b>절대 등급</b>을 구하였다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["ㄱ. 태양의 겉보기 등급은 P에서 구한 값이 Q에서 구한 값보다 작다.", "ㄴ. 태양의 절대 등급은 P에서 구한 값과 Q에서 구한 값이 서로 같다.", "ㄷ. Q에서 태양이 더 어둡게 보이는 것은 태양이 내는 빛의 양이 줄어들었기 때문이다."],
+   boxVerdicts:[true, true, false],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄴ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>정답 ③ (ㄱ, ㄴ)</b> — 그림에서 화성 궤도가 지구 궤도보다 바깥에 있으므로, <b>Q는 P보다 태양에서 멀다</b>는 것이 출발점이다.<br><br><b>ㄱ. 옳다</b> — 겉보기 등급은 거리를 고려하지 않고 '보이는 밝기'를 그대로 나타낸 값이다. 멀수록 어둡게 보이고, 어두울수록 등급은 <b>커진다</b>. 따라서 먼 Q에서 구한 값이 더 크고, 가까운 P에서 구한 값이 더 작다.<br><b>ㄴ. 옳다</b> — 절대 등급은 '태양을 <b>10 pc에 두었다고 가정</b>했을 때의 밝기'이다. 가정하는 거리가 처음부터 정해져 있으므로, 관측 지점을 지구에서 화성으로 옮겨도 값은 달라지지 않는다. 학생들이 가장 많이 틀리는 지점이 바로 '절대 등급도 함께 커진다'고 답하는 것이다.<br><b>ㄷ. 옳지 않다</b> — Q에서 어둡게 보이는 것은 오직 <b>거리가 멀기 때문</b>이다. 태양이 실제로 내는 빛의 양은 어디서 보든 그대로이며, 바로 그 때문에 절대 등급도 변하지 않는다."}
 ];
 
 /* 엔진 */
@@ -994,7 +1147,7 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
       q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
         const c=q.ch[idx];
         const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
         b.addEventListener('click',()=>{
           if(answered||solved)return;answered=true;
           if(c.ok){solved=true;b.classList.add('correct');
@@ -1038,14 +1191,25 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
-    body.innerHTML=`<div class="mq-q" style="margin-top:0">
-      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
-      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const bg=(q.boxes&&q.boxes.length)
+      ? '<div class="bogi" id="bogiBox"><div class="bogi-t">보 기</div><ul>'
+        + q.boxes.map(function(b,n){return '<li data-bi="'+n+'"><span class="bk">'+'\u3131\u3134\u3137\u3139'[n]+'</span><span>'+b+'</span><span class="bv"></span></li>';}).join('')
+        + '</ul></div>'
+      : '';
+    body.innerHTML='<div class="mq-q" style="margin-top:0">'
+      + '<div class="mq-meta"><span class="mq-lv" data-lv="'+(q.difficulty||'중')+'">난이도 '+(q.difficulty||'중')+'</span>'
+      + (q.boxes&&q.boxes.length?'<span class="mq-lv" style="color:var(--accent2)">&lt;보기&gt;형</span>':'')
+      + (q.svg?'<span class="mq-lv" style="color:var(--ink-mute)">자료 해석</span>':'') + '</div>'
+      + (q.svg?'<div class="qfig">'+q.svg+'</div>':'')
+      + '<div class="mq-text" style="font-size:18px"><span class="qn">Q'+(i+1)+'.</span>'+(q.stem||q.q)+'</div>'
+      + bg
+      + '<div class="mq-choices"></div><div class="mq-fb"></div>'
+      + '<div class="mq-next"><button class="btn primary sm" id="qNext">다음 문항 →</button></div></div>';
     const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
     q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
       const c=q.ch[idx];
       const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
       b.addEventListener('click',()=>{
         if(locked)return;locked=true;
         $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
@@ -1055,7 +1219,15 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
         else{b.classList.add('wrong');A.wrong();lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
-        hud();setTimeout(()=>{i++;next();},1900);});
+        const bx=$('#bogiBox');
+        if(bx&&q.boxVerdicts){$$('li',bx).forEach(function(li,n){
+          const t=!!q.boxVerdicts[n];li.classList.add(t?'t':'f');
+          const v=$('.bv',li);if(v)v.textContent=t?'옳음':'옳지 않음';});bx.classList.add('reveal');}
+        const nx=$('.mq-next',body);if(nx){nx.classList.add('show');
+          const nb=$('#qNext');if(nb){nb.textContent=(i+1>=order.length||lives<=0)?'결과 보기 →':'다음 문항 →';
+            nb.addEventListener('click',function(){A.pop();i++;next();
+              scrollTo({top:document.querySelector('#panel-check').offsetTop-70,behavior:reduceMotion?'auto':'smooth'});});}}
+        hud();});
       cw.appendChild(b);});}
   function end(){
     const perfect=score===GAME_QS.length*20;

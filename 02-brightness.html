@@ -356,8 +356,133 @@ textarea::placeholder{color:var(--ink-mute)}
   .cloze::after{content:none}
 }
 </style>
+
+<style id="board-v2">
+/* ═══════════════════════════════════════════════════════════
+   전자칠판 판 v2 — 글자 크기·명암비 상향
+   교실 앞 화면에서 뒷자리까지 읽히도록 본문을 키우고,
+   배경과 붙어 보이던 회색 계열 글자색의 명암비를 올렸습니다.
+   (--ink-mute 4.0:1 → 7.7:1 / --ink-dim 8.6:1 → 12.0:1)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --line:#33406e; --line-soft:#28345e;
+  --ink:#f2f6ff; --ink-dim:#c6d2ee; --ink-mute:#9aa8cf;
+  --ok:#5eec92; --danger:#ff7a86;
+}
+body{line-height:1.68}
+b.k{color:#fff}
+
+/* 본문 계열 */
+.lead{font-size:clamp(17px,2.5vw,20px)}
+.help{font-size:15px;line-height:1.6}
+.honest{font-size:14px;line-height:1.6}
+.note{font-size:16px;line-height:1.65;padding:15px 17px;border-left-width:4px}
+.note .ic{font-size:19px}
+.badge{font-size:14px;padding:6px 13px}
+.pill{font-size:15px;padding:7px 14px}
+.term .nm{font-size:19px}
+.term .de{font-size:15px;line-height:1.6}
+.use .u-t{font-size:19px}
+.use .u-d{font-size:15.5px;line-height:1.6}
+h3.card-t{font-size:22px}
+.stepline .swhat{font-size:14.5px}
+.stepline .sbadge{font-size:13px}
+.eyebrow{font-size:13px}
+.fig figcaption{font-size:14.5px;line-height:1.6}
+.fig.slot .fn{font-size:13px}
+.fig.slot .fd{font-size:14px}
+
+/* 상호작용 */
+.btn{font-size:16.5px;padding:13px 22px}
+.btn.sm{font-size:15px;padding:9px 16px}
+nav.tabs button{font-size:15.5px;padding:9px 15px}
+nav.tabs button .sn{width:21px;height:21px;font-size:12px}
+.brand b{font-size:18px}
+.brand .sub{font-size:12.5px}
+.progress-mini .pct{font-size:13.5px}
+.choice{font-size:17px;border-width:2px;padding:15px 17px}
+.choice .key{width:30px;height:30px;font-size:15px}
+.explain{font-size:16px;line-height:1.68}
+.explain .why{font-size:14.5px}
+.cloze-line{font-size:17.5px;line-height:2.1}
+.cloze{border-width:2px;padding:3px 12px;min-width:56px}
+.cloze-hint{font-size:14.5px}
+.cloze-done{font-size:15px}
+textarea{font-size:16.5px;border-width:2px}
+.savemark{font-size:14px}
+.checkline{font-size:16.5px}
+.doit li{font-size:16.5px;line-height:1.6}
+.dtable{font-size:15.5px}
+.dtable th{font-size:14px;padding:11px 12px}
+.dtable td{padding:10px 12px}
+.dtable .empty{font-size:15px}
+.prog-list{width:290px}
+.prog-list li{font-size:14.5px}
+.prog-list h4{font-size:17px}
+#toast{font-size:16px;padding:14px 22px;border-width:2px}
+.medal{font-size:14.5px}
+.medal .e{font-size:20px}
+.score-box .num{font-size:20px}
+.score-box .lab2{font-size:13px}
+.lives .h{font-size:24px}
+.steps-card li{font-size:16.5px}
+.steps-card h3{font-size:20px}
+.cover-sub{font-size:clamp(16px,2.7vw,19px)}
+.cover-hint{font-size:14px}
+
+/* 실험실 조작판 */
+.simctl h4,.lab h3,.simlab h3{font-size:18px}
+.ctl label{font-size:15px}
+.ctl label .val{font-size:16px}
+.readout .r .lab2{font-size:13px}
+.readout .r .v{font-size:22px}
+.readout .r .v small{font-size:13px}
+.dl-head h4{font-size:18px}
+input[type=range]{height:8px}
+input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
+
+/* 문항 */
+.miniquiz .mq-badge{font-size:13.5px;padding:5px 12px}
+.miniquiz .mq-prog{font-size:13.5px}
+.mq-q .mq-text{font-size:17px;line-height:1.6}
+.mq-q .mq-text .qn{font-size:12.5px}
+.mq-opt{font-size:16.5px;padding:13px 16px;border-width:2px;line-height:1.5}
+.mq-opt .k{width:26px;height:26px;font-size:13.5px}
+.mq-fb{font-size:15.5px;line-height:1.65;padding:13px 15px}
+.mq-done{font-size:16px}
+
+/* ── 수능형 문항 — 자료 · <보기> · 다음 버튼 ── */
+.qfig{background:#04070f;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;overflow-x:auto}
+.qfig svg{width:100%;height:auto;display:block;max-width:600px;margin:0 auto}
+.bogi{background:#101c38;border:1.5px solid var(--line);border-radius:12px;padding:15px 18px;margin:0 0 14px}
+.bogi-t{display:inline-block;font-weight:800;font-size:14px;color:var(--ink-dim);border:1px solid var(--line);
+  border-radius:7px;padding:2px 14px;margin-bottom:11px;letter-spacing:3px}
+.bogi ul{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.bogi li{display:flex;gap:11px;align-items:flex-start;font-size:16.5px;line-height:1.62;color:var(--ink)}
+.bogi li .bk{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:14px;
+  font-weight:800;background:#22315c;border:1px solid var(--line);color:var(--ink-dim);margin-top:2px;transition:.25s}
+.bogi li .bv{display:none;margin-left:auto;flex:none;font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:99px}
+.bogi.reveal li.t .bk{background:var(--ok);color:#06210f;border-color:transparent}
+.bogi.reveal li.f .bk{background:var(--danger);color:#2a060b;border-color:transparent}
+.bogi.reveal li .bv{display:inline-block;animation:fade .3s}
+.bogi.reveal li.t .bv{background:rgba(94,236,146,.16);color:var(--ok)}
+.bogi.reveal li.f .bv{background:rgba(255,122,134,.16);color:var(--danger)}
+.mq-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.mq-lv{font-size:13px;font-weight:800;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:#101c38}
+.mq-lv[data-lv="하"]{color:#5eec92;border-color:#2f7d51}
+.mq-lv[data-lv="중"]{color:#ffd166;border-color:#6b5a26}
+.mq-lv[data-lv="상"]{color:#ff9fbe;border-color:#8b3742}
+.mq-next{display:none;margin-top:18px;justify-content:flex-end}
+.mq-next.show{display:flex;animation:fade .3s}
+@media print{
+  .mq-next{display:none!important}
+  .qfig{background:#fff}
+  .bogi{background:#fff;border-color:#ccc}
+  .bogi li{color:#111}
+}
+</style>
 </head>
-<body>
+<body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
 
 <div id="cover">
@@ -434,14 +559,14 @@ textarea::placeholder{color:var(--ink-mute)}
   <div class="grid c2" style="margin-top:22px">
     <div class="card">
       <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🔦 손전등으로 벽 비추기</h2>
-      <p class="lead" style="font-size:16px">손전등을 벽에 바싹 대면 작고 밝은 원이 생깁니다.
+      <p class="lead" style="font-size:17.5px">손전등을 벽에 바싹 대면 작고 밝은 원이 생깁니다.
         뒤로 물러나면 원이 <b class="t3">점점 커지면서</b> 동시에 <b class="t2">점점 흐려지죠.</b>
         커진 것과 흐려진 것 사이에 관계가 있을까요?</p>
       <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 실제 손전등이나 스마트폰 플래시로 시범을 보이세요. "빛의 양이 줄었나요?"를 물어 <b>총량은 같은데 넓게 퍼졌다</b>는 말을 학생 입에서 끌어냅니다. 이게 오늘의 핵심 문장입니다.</div></div>
     </div>
     <div class="card">
       <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">⭐ 그럼 별도?</h2>
-      <p class="lead" style="font-size:16px">밤하늘의 별도 밝기가 제각각입니다.
+      <p class="lead" style="font-size:17.5px">밤하늘의 별도 밝기가 제각각입니다.
         어떤 별이 어둡게 보이는 건 <b class="k">원래 어두운 별</b>이라서일까요,
         아니면 <b class="k">그냥 멀리 있어서</b>일까요?</p>
       <p class="help">이 질문의 답은 다음 차시(별의 등급)에서 완성됩니다. 오늘은 그 바탕이 되는 규칙을 찾습니다.</p>
@@ -454,11 +579,11 @@ textarea::placeholder{color:var(--ink-mute)}
     <div class="grid c2">
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
-        <div><b class="k">빛의 밝기와 거리의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">거리가 2배면 밝기는 몇 배가 되는지까지.</span></div>
+        <div><b class="k">빛의 밝기와 거리의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">거리가 2배면 밝기는 몇 배가 되는지까지.</span></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c3);color:#0a2a10;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
-        <div><b class="k">왜 그렇게 되는지 이유를 댈 수 있다.</b><br><span class="muted" style="font-size:14px">빛이 비추는 넓이가 어떻게 변하는지로.</span></div>
+        <div><b class="k">왜 그렇게 되는지 이유를 댈 수 있다.</b><br><span class="muted" style="font-size:16px">빛이 비추는 넓이가 어떻게 변하는지로.</span></div>
       </div>
     </div>
     <div class="pill-list">
@@ -493,7 +618,7 @@ textarea::placeholder{color:var(--ink-mute)}
     <div class="badge" style="margin-bottom:12px">📏 ② 측정 (Observe)</div>
     <div class="lab">
       <h3>🔬 광원으로부터의 거리에 따른 빛의 세기</h3>
-      <p class="lead" style="font-size:15px">교과서 272쪽 탐구입니다. 스마트 기기의 <b>조도 측정 앱</b>을 조도계로 씁니다.</p>
+      <p class="lead" style="font-size:17px">교과서 272쪽 탐구입니다. 스마트 기기의 <b>조도 측정 앱</b>을 조도계로 씁니다.</p>
       <ol class="steps-how">
         <li>줄자 끝에 <b>광원 장치</b>를 놓고, 스마트 기기에서 <b>조도 측정 앱</b>을 실행합니다.</li>
         <li><b>주변을 어둡게</b> 한 뒤, 광원에서 <b class="t4">20 cm</b> 거리에 기기를 두고 빛의 세기를 잽니다.</li>
@@ -529,7 +654,7 @@ textarea::placeholder{color:var(--ink-mute)}
     <!-- 다르게 해 보기 -->
     <div class="card" style="margin-top:16px;background:rgba(154,230,110,.05);border-color:#3a5e3a">
       <h3 class="card-t">🧪 다르게 해 보기 — 조도계 없이도 됩니다</h3>
-      <p class="lead" style="font-size:15.5px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         종이컵 바닥에 <b>작은 정사각형 구멍</b>을 뚫어 광원에 붙입니다.
         그 빛이 모눈종이의 <b class="t3">1칸</b>, <b class="t3">4칸</b>, <b class="t3">9칸</b>을 비출 때
         밝기가 어떻게 달라지는지 눈으로 관찰합니다.</p>
@@ -543,7 +668,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <div class="badge" style="margin-bottom:12px">💡 ③ 설명 (Explain)</div>
-    <p class="lead" style="font-size:16px">
+    <p class="lead" style="font-size:17.5px">
       전등이나 별 같은 광원에서 나온 빛은 멀어질수록 <b class="t3">사방으로 퍼지면서 더 넓은 영역을 비춥니다.</b>
       거리가 <b class="t4">2배, 3배</b>로 멀어지면 빛이 비추는 면적은 <b class="t3">4배, 9배</b>가 되고,
       그래서 같은 면적이 받는 밝기는 <b class="t2">1/4배, 1/9배</b>가 됩니다.
@@ -566,14 +691,14 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:20px">
     <h3 class="card-t">📐 한 장으로 보는 규칙</h3>
-    <p class="lead" style="font-size:15.5px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       광원에서 나온 빛이 거리 1에서 정사각형 <b>1칸</b>을 비춘다면,
       거리 2에서는 가로도 2배, 세로도 2배가 되어 <b class="t3">4칸</b>을,
       거리 3에서는 <b class="t3">9칸</b>을 비춥니다. 빛의 총량은 그대로인데 나눠 가지는 칸 수만 늘어나는 거죠.</p>
     <!-- 🔦 빛 퍼짐 시뮬레이터 -->
     <div class="lab" style="margin-top:16px">
       <h3>🔦 빛 퍼짐 시뮬레이터</h3>
-      <p class="lead" style="font-size:15px">거리를 밀어 보세요. 빛이 <b class="t3">몇 칸</b>을 비추는지,
+      <p class="lead" style="font-size:17px">거리를 밀어 보세요. 빛이 <b class="t3">몇 칸</b>을 비추는지,
         한 칸이 받는 <b class="t2">밝기</b>가 어떻게 변하는지 동시에 보입니다.</p>
       <div class="simgrid">
         <div class="simstage"><canvas id="spreadcv" height="260"></canvas></div>
@@ -671,7 +796,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🤔 생각해 보기</h3>
-    <p class="lead" style="font-size:16px;margin-top:10px">
+    <p class="lead" style="font-size:17.5px;margin-top:10px">
       똑같이 생긴 두 별 A와 B가 밤하늘에 있습니다. A가 B보다 <b class="k">4배 밝게</b> 보인다면,
       두 별까지의 거리는 어떤 관계일까요? 그리고 이 추론이 성립하려면 <b class="k">어떤 조건</b>이 필요할까요?</p>
     <textarea id="essay" placeholder="힌트: 밝기가 4배라면 거리는 몇 배 차이일까요? 그리고 '똑같이 생긴 두 별'이라는 말이 왜 중요할까요?"></textarea>
@@ -724,7 +849,7 @@ textarea::placeholder{color:var(--ink-mute)}
   <div class="grid c2" style="margin-top:20px">
     <div class="card">
       <h3 class="card-t">🔊 소리도, 중력도 똑같다</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         한 점에서 사방으로 퍼져 나가는 것은 전부 같은 운명입니다.
         소리의 세기도, 중력의 세기도, 전기력의 세기도 모두 <b class="k">거리의 제곱에 반비례</b>해요.
         이유는 하나 — 우리가 사는 공간이 <b>3차원</b>이고, 퍼져 나간 구면의 넓이가 반지름의 제곱에 비례하기 때문입니다.</p>
@@ -732,7 +857,7 @@ textarea::placeholder{color:var(--ink-mute)}
     </div>
     <div class="card">
       <h3 class="card-t">🌌 그런데 별빛은 왜 안 사라질까</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         수백 광년 떨어진 별의 빛은 상상할 수 없을 만큼 옅어져 우리에게 도착합니다.
         그런데도 보이는 이유는 별이 내는 빛의 양이 그만큼 어마어마하기 때문이에요.
         망원경의 지름을 키우는 것도 결국 <b>더 넓은 면적으로 그 옅은 빛을 긁어모으기</b> 위해서입니다.</p>
@@ -741,7 +866,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
-    <p class="lead" style="font-size:17px;margin-top:10px">
+    <p class="lead" style="font-size:18.5px;margin-top:10px">
       <b class="k">"빛은 사라지지 않는다. 넓게 퍼질 뿐이다."</b><br><br>
       응원봉의 빛은 어디로도 사라지지 않았습니다. 다만 더 넓은 공간에 나뉘어,
       내 눈에 들어오는 몫이 줄어들었을 뿐이죠. 그래서 밝기만 보고는
@@ -758,7 +883,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
 </main>
 <div id="toast"></div>
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
 <script>
 "use strict";
@@ -777,7 +902,7 @@ const BG_FALLBACK={
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
-const SAVE='star_brightness_v1';
+const SAVE='star_brightness_v2';
 
 const POE_ANSWER='b';
 const POE_WHY={
@@ -812,25 +937,49 @@ const QUIZ_SETS={
 };
 
 const GAME_QS=[
-  {q:'광원으로부터 거리가 2배로 멀어질 때, 같은 면적이 받는 빛의 밝기는?',
-   ch:[{t:'1/4배',ok:1},{t:'1/2배',ok:0},{t:'2배',ok:0}],
-   why:'면적이 4배로 넓어지므로 밝기는 1/4배가 됩니다.'},
-  {q:'광원에서 나온 빛이 거리 3에서 비추는 면적은 거리 1에서의 몇 배인가?',
-   ch:[{t:'9배',ok:1},{t:'3배',ok:0},{t:'1/9배',ok:0}],
-   why:'가로 3배 × 세로 3배 = 9배입니다.'},
-  {q:'조도에 대한 설명으로 옳은 것은?',
-   ch:[{t:'어떤 면이 받는 빛의 밝은 정도이며 단위는 lx이다',ok:1},
-       {t:'광원이 사방으로 내는 빛의 세기이며 거리와 무관하다',ok:0},
-       {t:'별의 실제 밝기를 등급으로 나타낸 것이다',ok:0}],
-   why:'두 번째는 광도에 대한 설명입니다.'},
-  {q:'책상에서 60 cm 떨어져 있던 스탠드를 30 cm로 당겼다. 책이 받는 밝기는?',
-   ch:[{t:'약 4배가 된다',ok:1},{t:'약 2배가 된다',ok:0},{t:'변하지 않는다',ok:0}],
-   why:'거리가 1/2배가 되면 밝기는 (1/2)²의 역수인 4배가 됩니다.'},
-  {q:'빛의 밝기가 거리의 제곱에 반비례하는 근본적인 까닭은?',
-   ch:[{t:'거리가 멀어질수록 빛이 비추는 면적이 제곱으로 넓어지기 때문',ok:1},
-       {t:'빛이 공기에 흡수되어 사라지기 때문',ok:0},
-       {t:'광원의 밝기가 시간이 지나며 약해지기 때문',ok:0}],
-   why:'빛은 사라지는 게 아니라 <b>넓게 퍼지는</b> 겁니다. 오늘 수업의 한 문장이에요.'}
+  {id:"q1",
+   difficulty:"하",
+   intent:"광원에서 나온 빛의 총량은 일정한데 거리가 2배가 되면 비추는 면적이 4배로 넓어져 같은 넓이가 받는 밝기가 1/4배가 됨을, 그림 자료를 읽어 판단할 수 있는지 평가한다. 아울러 '한 변의 길이'와 '면적'의 배율을 혼동하지 않는지 확인한다.",
+   svg:"<svg viewBox=\"0 0 560 250\" role=\"img\" aria-label=\"광원 S에서 나온 하나의 빛다발이 원뿔처럼 퍼지면서, 광원에서 거리 d만큼 떨어진 곳에 놓인 정사각형 화면 (가)와 거리 2d만큼 떨어진 곳에 놓인 정사각형 화면 (나)를 차례로 비추는 모습. (나)는 (가)보다 크고 더 흐리게 그려져 있다.\"><defs><linearGradient id=\"q1cone\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".45\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\".10\"/></linearGradient><radialGradient id=\"q1src\"><stop offset=\"0\" stop-color=\"#ffffff\"/><stop offset=\".45\" stop-color=\"#ffd166\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><polygon points=\"62,110 382,50 382,170\" fill=\"url(#q1cone)\"/><polygon points=\"216,80 236,68 236,128 216,140\" fill=\"#ffd166\" fill-opacity=\".5\" stroke=\"#ffd166\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><polygon points=\"376,50 416,26 416,146 376,170\" fill=\"#ffd166\" fill-opacity=\".14\" stroke=\"#ffd166\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><circle cx=\"62\" cy=\"110\" r=\"24\" fill=\"url(#q1src)\"/><circle cx=\"62\" cy=\"110\" r=\"7\" fill=\"#ffffff\"/><text x=\"62\" y=\"72\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" fill=\"#ffd166\">광원 S</text><text x=\"226\" y=\"58\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" fill=\"#ffffff\">(가)</text><text x=\"396\" y=\"18\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" fill=\"#ffffff\">(나)</text><line x1=\"62\" y1=\"196\" x2=\"221\" y2=\"196\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"5 5\"/><line x1=\"62\" y1=\"190\" x2=\"62\" y2=\"202\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"221\" y1=\"190\" x2=\"221\" y2=\"202\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"141\" y=\"186\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">거리 d</text><line x1=\"62\" y1=\"232\" x2=\"381\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"5 5\"/><line x1=\"62\" y1=\"226\" x2=\"62\" y2=\"238\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"381\" y1=\"226\" x2=\"381\" y2=\"238\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"221\" y=\"222\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">거리 2d</text></svg>",
+   stem:"그림은 광원 S에서 나온 <b>하나의 빛다발</b>이 거리가 <b>d</b>인 곳에 놓인 정사각형 화면 (가)와, 거리가 <b>2d</b>인 곳에 놓인 정사각형 화면 (나)를 비추는 모습을 나타낸 것이다. (가)와 (나)에 대한 설명으로 옳은 것은?",
+   ch:[{t:"(나)에서 빛이 비추는 면적은 (가)에서의 2배이다.",ok:0},{t:"(나)에서 같은 넓이가 받는 빛의 밝기는 (가)에서의 1/2배이다.",ok:0},{t:"(나)에서 같은 넓이가 받는 빛의 밝기는 (가)에서의 1/4배이다.",ok:1},{t:"(나)가 (가)보다 어두운 것은 빛이 오는 도중에 없어졌기 때문이다.",ok:0},{t:"(나)에 놓인 화면의 한 변의 길이는 (가)에 놓인 화면의 4배이다.",ok:0}],
+   why:"빛다발의 <b>총량은 (가)와 (나)에서 똑같다</b>. 거리가 d에서 2d로 2배가 되면 빛이 비추는 정사각형은 가로도 2배, 세로도 2배가 되므로 면적은 <b>4배</b>가 된다. 같은 양의 빛을 4배 넓은 면적이 나누어 받으므로, 같은 넓이가 받는 밝기는 <b>1/4배</b>가 된다. → 정답 ③<br>① 면적은 2배가 아니라 4배다. 가로·세로 <b>두 방향 모두</b> 늘어난다는 점을 빠뜨린 답이다.<br>② '거리가 2배면 밝기도 반으로'라는 예측은 가장 흔한 오답이지만, 실제 측정값은 1/4배다.<br>④ 빛은 도중에 없어진 것이 아니라 <b>더 넓은 면적으로 퍼진</b> 것이다.<br>⑤ 그림에서 (나)의 한 변은 (가)의 <b>2배</b>다. 한 변이 2배이기 때문에 면적이 4배가 되는 것이지, 한 변까지 4배가 되는 것은 아니다. 배율을 붙일 때 무엇에 붙이는 배율인지 구별해야 한다."},
+
+  {id:"q2",
+   difficulty:"중",
+   intent:"실제 측정 자료에서 거리와 빛의 세기의 비를 계산해 거리가 2배·3배일 때 밝기가 1/4배·1/9배가 되는 관계를 확인하고, 거리에 따라 변하는 것은 어떤 면이 받는 밝기이지 광원이 내보내는 빛의 양이 아니라는 점을 구분할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 210\" role=\"img\" aria-label=\"표. 같은 광원으로부터의 거리를 20센티미터, 40센티미터, 60센티미터로 바꾸며 조도계로 잰 빛의 세기가 각각 136럭스, 37럭스, 14럭스로 기록되어 있다.\"><text x=\"280\" y=\"22\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">표. 광원으로부터의 거리에 따라 잰 빛의 세기</text><rect x=\"100\" y=\"36\" width=\"360\" height=\"154\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"280\" y1=\"36\" x2=\"280\" y2=\"190\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"100\" y1=\"82\" x2=\"460\" y2=\"82\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"100\" y1=\"118\" x2=\"460\" y2=\"118\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"100\" y1=\"154\" x2=\"460\" y2=\"154\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"190\" y=\"56\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">광원으로부터의</text><text x=\"190\" y=\"74\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">거리 (cm)</text><text x=\"370\" y=\"56\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">잰 빛의 세기</text><text x=\"370\" y=\"74\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">(lx)</text><text x=\"190\" y=\"106\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ff9fbe\">20</text><text x=\"370\" y=\"106\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">136</text><text x=\"190\" y=\"142\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ff9fbe\">40</text><text x=\"370\" y=\"142\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">37</text><text x=\"190\" y=\"178\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ff9fbe\">60</text><text x=\"370\" y=\"178\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">14</text><text x=\"100\" y=\"204\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">※ 주변을 어둡게 하고, 같은 광원으로 세 거리에서 측정하였다.</text></svg>",
+   stem:"표는 어느 모둠이 주변을 어둡게 한 뒤, <b>같은 광원</b>으로부터의 거리를 바꾸어 가며 조도계로 잰 빛의 세기이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["거리가 20 cm에서 40 cm로 2배가 되자, 잰 값은 약 1/4배가 되었다.", "조도계를 멀리 옮기는 동안 광원이 내보내는 빛의 양도 함께 줄어들었다.", "60 cm에서 잰 값이 20 cm에서의 약 1/9배인 것은, 빛이 비추는 면적이 9배로 넓어졌기 때문이다."],
+   boxVerdicts:[true, false, true],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>ㄱ. 옳다</b> — 20 cm에서 136 lx, 40 cm에서 37 lx이므로 37 ÷ 136 ≈ 0.27, 즉 약 1/4배다. 거리가 2배가 되면 비추는 면적이 4배가 되어 밝기가 1/4배가 된다는 규칙과 맞는다.<br><b>ㄴ. 옳지 않다</b> — 조도계를 어디로 옮기든 <b>광원이 내보내는 빛의 양은 광원 자체의 성질</b>이므로 변하지 않는다. 거리에 따라 변한 것은 조도계가 놓인 면이 받는 밝기다. 표의 값이 작아진 것을 광원이 약해진 것으로 읽으면 안 된다.<br><b>ㄷ. 옳다</b> — 14 ÷ 136 ≈ 0.10, 즉 약 1/9배다. 거리가 20 cm → 60 cm로 3배가 되면 빛이 비추는 면적이 가로 3배 × 세로 3배 = 9배가 되므로, 같은 넓이가 받는 빛은 1/9로 줄어든다.<br>따라서 옳은 것은 <b>ㄱ, ㄷ</b>이다."},
+
+  {id:"q3",
+   difficulty:"중",
+   intent:"그래프에서 두 지점의 거리와 빛의 세기를 읽어 낸 뒤, 밝기가 1/4이 된 까닭을 '비추는 면적 4배'로 되돌려 설명하고, 다른 거리의 값과 곡선이 완만해지는 까닭까지 추론할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 270\" role=\"img\" aria-label=\"가로축이 광원으로부터의 거리(센티미터), 세로축이 빛의 세기(럭스)인 그래프. 거리가 멀어질수록 처음에는 가파르게, 나중에는 완만하게 낮아지는 곡선이다. 지점 P는 거리 10센티미터에서 400럭스, 지점 Q는 거리 20센티미터에서 100럭스 자리에 표시되어 있다.\"><text x=\"285\" y=\"20\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">그래프. 광원으로부터의 거리에 따른 빛의 세기</text><line x1=\"80\" y1=\"68\" x2=\"520\" y2=\"68\" stroke=\"#33406e\" stroke-width=\"1.2\" stroke-dasharray=\"4 6\"/><line x1=\"80\" y1=\"103\" x2=\"520\" y2=\"103\" stroke=\"#33406e\" stroke-width=\"1.2\" stroke-dasharray=\"4 6\"/><line x1=\"80\" y1=\"139\" x2=\"520\" y2=\"139\" stroke=\"#33406e\" stroke-width=\"1.2\" stroke-dasharray=\"4 6\"/><line x1=\"80\" y1=\"174\" x2=\"520\" y2=\"174\" stroke=\"#33406e\" stroke-width=\"1.2\" stroke-dasharray=\"4 6\"/><line x1=\"80\" y1=\"44\" x2=\"80\" y2=\"210\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"80\" y1=\"210\" x2=\"528\" y2=\"210\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"160\" y1=\"210\" x2=\"160\" y2=\"216\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"240\" y1=\"210\" x2=\"240\" y2=\"216\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"320\" y1=\"210\" x2=\"320\" y2=\"216\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"400\" y1=\"210\" x2=\"400\" y2=\"216\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"480\" y1=\"210\" x2=\"480\" y2=\"216\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"160\" y=\"234\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">10</text><text x=\"240\" y=\"234\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">20</text><text x=\"320\" y=\"234\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">30</text><text x=\"400\" y=\"234\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">40</text><text x=\"480\" y=\"234\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">50</text><text x=\"70\" y=\"72\" text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">400</text><text x=\"70\" y=\"107\" text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">300</text><text x=\"70\" y=\"143\" text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">200</text><text x=\"70\" y=\"178\" text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">100</text><text x=\"70\" y=\"214\" text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">0</text><polyline points=\"160,68 168,92 176,111 184,126 192,137 200,147 208,154 224,166 240,174 264,183 288,189 320,194 360,198 400,201 440,203 480,204\" fill=\"none\" stroke=\"#ffd166\" stroke-width=\"2.4\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><line x1=\"160\" y1=\"68\" x2=\"160\" y2=\"210\" stroke=\"#5b6a99\" stroke-width=\"1.2\" stroke-dasharray=\"4 5\"/><line x1=\"240\" y1=\"174\" x2=\"240\" y2=\"210\" stroke=\"#5b6a99\" stroke-width=\"1.2\" stroke-dasharray=\"4 5\"/><circle cx=\"160\" cy=\"68\" r=\"6\" fill=\"#ffd166\"/><circle cx=\"240\" cy=\"174\" r=\"6\" fill=\"#6ef0e6\"/><text x=\"172\" y=\"60\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ffffff\">P</text><text x=\"252\" y=\"168\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ffffff\">Q</text><text x=\"28\" y=\"127\" transform=\"rotate(-90 28 127)\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">빛의 세기 (lx)</text><text x=\"300\" y=\"258\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">광원으로부터의 거리 (cm)</text></svg>",
+   stem:"그래프는 어떤 광원으로부터의 거리에 따라 잰 빛의 세기를 나타낸 것이다. 그래프 위의 두 지점 <b>P</b>와 <b>Q</b>에 대한 설명으로 옳은 것은?",
+   ch:[{t:"Q에서 잰 빛의 세기는 P에서의 1/2배이다.",ok:0},{t:"P를 지난 빛다발이 Q에 이르면 비추는 면적이 2배가 된다.",ok:0},{t:"P를 지난 빛다발이 Q에 이르면 비추는 면적이 4배가 된다.",ok:1},{t:"이 광원으로부터 40 cm 떨어진 지점에서 잰 빛의 세기는 50 lx이다.",ok:0},{t:"거리가 10 cm 멀어질 때 줄어드는 빛의 세기는 광원에서 멀수록 더 커진다.",ok:0}],
+   why:"그래프를 읽으면 <b>P는 거리 10 cm에서 400 lx</b>, <b>Q는 거리 20 cm에서 100 lx</b>이다.<br>③ <b>정답</b> — 거리가 10 cm → 20 cm로 2배가 되었으므로 빛다발이 비추는 면적은 가로 2배 × 세로 2배 = <b>4배</b>가 된다. 실제로 밝기도 400 → 100으로 1/4이 되어 서로 딱 들어맞는다.<br>① 100 ÷ 400 = 1/4이므로 1/2배가 아니다. 거리와 밝기를 그대로 반비례로 본 오답이다.<br>② 면적이 2배라면 밝기가 1/2이 되어야 하는데 그래프의 값과 맞지 않는다.<br>④ 40 cm는 P(10 cm)의 4배 거리이므로 면적이 16배가 되어 400 lx의 1/16인 <b>약 25 lx</b>이다. 20 cm 값의 절반으로 어림해 50 lx로 본 오답이다.<br>⑤ 그래프의 곡선은 멀어질수록 <b>완만해진다</b>. 10 cm → 20 cm에서는 400 lx가 100 lx로 300 lx나 줄지만, 30 cm → 40 cm에서는 약 44 lx가 약 25 lx로 20 lx도 채 줄지 않는다. 줄어드는 양은 멀수록 오히려 <b>작아진다</b>."},
+
+  {id:"q4",
+   difficulty:"상",
+   intent:"'내보내는 빛의 양이 같다'는 조건이 주어졌을 때 밝기 비로부터 거리 비를 거꾸로 추론할 수 있는지, 그리고 제곱 관계를 빠뜨리거나 조건을 무시하는 오류를 피할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 250\" role=\"img\" aria-label=\"왼쪽에 지구가 있고 오른쪽 위에 크고 밝게 그려진 별 A, 오른쪽 아래에 작고 어둡게 그려진 별 B가 있다. 지구에서 두 별로 그은 점선의 길이는 서로 비슷하게 그려져 있으며, 거리는 물음표로만 표시되어 있다. 오른쪽 표에는 지구에서 본 밝기가 별 A는 9, 별 B는 1로 적혀 있다.\"><defs><radialGradient id=\"q4ga\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".55\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><line x1=\"76\" y1=\"119\" x2=\"216\" y2=\"69\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"76\" y1=\"130\" x2=\"227\" y2=\"182\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><text x=\"146\" y=\"84\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#ff9fbe\">거리 ?</text><text x=\"158\" y=\"150\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#ff9fbe\">거리 ?</text><circle cx=\"60\" cy=\"125\" r=\"15\" fill=\"#a9dcff\"/><text x=\"60\" y=\"158\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">지구</text><circle cx=\"235\" cy=\"62\" r=\"18\" fill=\"url(#q4ga)\"/><circle cx=\"235\" cy=\"62\" r=\"8\" fill=\"#ffd166\"/><text x=\"235\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">별 A</text><circle cx=\"240\" cy=\"186\" r=\"11\" fill=\"url(#q4ga)\" opacity=\".5\"/><circle cx=\"240\" cy=\"186\" r=\"4.5\" fill=\"#ffd166\"/><text x=\"240\" y=\"214\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">별 B</text><rect x=\"330\" y=\"48\" width=\"215\" height=\"112\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"396\" y1=\"48\" x2=\"396\" y2=\"160\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"330\" y1=\"92\" x2=\"545\" y2=\"92\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"330\" y1=\"126\" x2=\"545\" y2=\"126\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"363\" y=\"78\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">별</text><text x=\"470\" y=\"68\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">지구에서 본</text><text x=\"470\" y=\"86\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">밝기 (상댓값)</text><text x=\"363\" y=\"114\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">A</text><text x=\"470\" y=\"114\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ffffff\">9</text><text x=\"363\" y=\"148\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">B</text><text x=\"470\" y=\"148\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ffffff\">1</text><text x=\"24\" y=\"240\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">※ 그림에 그려진 두 별의 위치와 간격은 실제 거리와 관계없다.</text></svg>",
+   stem:"그림과 표는 지구에서 관측한 별 <b>A</b>와 별 <b>B</b>를 나타낸 것이다. 표의 밝기는 별 B를 1로 놓았을 때의 값이며, 두 별이 <b>실제로 내보내는 빛의 양은 서로 같다</b>. 지구로부터 두 별까지의 거리에 대한 설명으로 옳은 것은?",
+   ch:[{t:"별 A까지의 거리는 별 B까지의 거리의 3배이다.",ok:0},{t:"별 A까지의 거리는 별 B까지의 거리의 9배이다.",ok:0},{t:"별 A까지의 거리는 별 B까지의 거리의 1/3배이다.",ok:1},{t:"별 A까지의 거리는 별 B까지의 거리의 1/9배이다.",ok:0},{t:"두 별까지의 거리는 같고, 별 A가 내보내는 빛의 양이 더 많다.",ok:0}],
+   why:"두 별이 실제로 내보내는 빛의 양이 같으므로, 지구에서 본 밝기 차이는 <b>오직 거리 차이 때문</b>이다.<br>거리가 1/3배가 되면 빛이 비추는 면적이 1/9로 줄어들어 같은 넓이가 받는 빛은 <b>9배</b>가 된다. 표에서 A가 B보다 9배 밝게 보이므로 A까지의 거리는 B까지의 거리의 <b>1/3배</b>다. → 정답 ③<br>① 더 밝게 보이는 별이 더 멀다는 것은 관계가 거꾸로다. 멀수록 어두워 보인다.<br>② 거리가 9배 멀다면 밝기는 1/81배가 되어 훨씬 어둡게 보여야 한다.<br>④ 밝기 9배를 거리 1/9배로 그대로 옮긴 답으로, <b>제곱 관계</b>를 빠뜨린 잘못이다. 거리가 1/9배라면 밝기는 81배가 된다.<br>⑤ '두 별이 내보내는 빛의 양이 같다'는 문제의 조건을 무시한 답이다. 거꾸로 말하면, 이 조건이 없을 때에는 보이는 밝기만으로 거리를 판단할 수 없다."},
+
+  {id:"q5",
+   difficulty:"상",
+   intent:"광원이 내보내는 빛의 양과 거리라는 두 요인을 동시에 다루어, 조건이 다른 두 상황의 밝기를 비교하고 '밝기만으로는 거리를 알 수 없다'는 한계까지 추론할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 258\" role=\"img\" aria-label=\"위쪽에는 크고 밝은 전구 X와 그로부터 20센티미터 떨어진 지점 P가, 아래쪽에는 작은 전구 Y와 그로부터 10센티미터 떨어진 지점 Q가 그려져 있다. 두 거리는 실제 비율대로 그려져 있다. 오른쪽 상자에는 전구 X가 내보내는 빛의 양은 전구 Y의 4배라고 적혀 있다.\"><defs><radialGradient id=\"q5glow\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".5\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><circle cx=\"95\" cy=\"72\" r=\"28\" fill=\"url(#q5glow)\"/><circle cx=\"95\" cy=\"72\" r=\"11\" fill=\"#ffd166\"/><text x=\"95\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">전구 X</text><rect x=\"320\" y=\"50\" width=\"10\" height=\"44\" fill=\"#6ef0e6\" fill-opacity=\".3\" stroke=\"#6ef0e6\" stroke-width=\"1.8\"/><text x=\"325\" y=\"40\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">P</text><line x1=\"95\" y1=\"116\" x2=\"325\" y2=\"116\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"95\" y1=\"110\" x2=\"95\" y2=\"122\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"325\" y1=\"110\" x2=\"325\" y2=\"122\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"210\" y=\"138\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">20 cm</text><circle cx=\"95\" cy=\"190\" r=\"16\" fill=\"url(#q5glow)\" opacity=\".55\"/><circle cx=\"95\" cy=\"190\" r=\"6\" fill=\"#ffd166\"/><text x=\"95\" y=\"160\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">전구 Y</text><rect x=\"205\" y=\"170\" width=\"10\" height=\"40\" fill=\"#6ef0e6\" fill-opacity=\".3\" stroke=\"#6ef0e6\" stroke-width=\"1.8\"/><text x=\"210\" y=\"160\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">Q</text><line x1=\"95\" y1=\"226\" x2=\"210\" y2=\"226\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"95\" y1=\"220\" x2=\"95\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"210\" y1=\"220\" x2=\"210\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"152\" y=\"246\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">10 cm</text><rect x=\"350\" y=\"150\" width=\"195\" height=\"86\" rx=\"12\" fill=\"#ffffff\" fill-opacity=\".04\" stroke=\"#33406e\" stroke-width=\"1.6\"/><text x=\"364\" y=\"176\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">전구 X가 내보내는</text><text x=\"364\" y=\"198\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">빛의 양은 전구 Y의</text><text x=\"364\" y=\"220\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffd166\">4배이다.</text></svg>",
+   stem:"그림은 두 전구 <b>X</b>, <b>Y</b>와 각 전구로부터 떨어진 지점 <b>P</b>, <b>Q</b>를 나타낸 것이다. 전구 X가 내보내는 빛의 양은 전구 Y의 <b>4배</b>이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은? (단, 주변은 충분히 어둡고 다른 빛의 영향은 없다.)",
+   boxes:["P에서 잰 빛의 세기는 Q에서 잰 빛의 세기와 같다.", "지점 P를 전구 X로부터 40 cm 떨어진 곳으로 옮기면, 그곳에서 잰 빛의 세기는 지금의 1/4배가 된다.", "어떤 지점에서 잰 빛의 세기만 알면, 그 지점에서 광원까지의 거리를 언제나 알아낼 수 있다."],
+   boxVerdicts:[true, true, false],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄷ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>ㄱ. 옳다</b> — 두 가지를 함께 따져야 한다. X는 Y보다 빛을 <b>4배</b> 많이 내지만, P는 Q보다 <b>2배 멀다</b>(20 cm 대 10 cm). 거리가 2배가 되면 빛이 비추는 면적이 4배가 되어 밝기는 1/4배가 되므로, 4배 × 1/4배 = <b>1배</b>. 즉 두 지점에서 잰 빛의 세기는 같다.<br><b>ㄴ. 옳다</b> — 20 cm에서 40 cm로 거리가 2배가 되면 빛이 비추는 면적이 4배로 넓어지므로, 같은 넓이가 받는 밝기는 <b>1/4배</b>가 된다.<br><b>ㄷ. 옳지 않다</b> — ㄱ에서 본 것처럼 P와 Q는 밝기가 같은데도 거리는 20 cm와 10 cm로 전혀 다르다. <b>광원이 내보내는 빛의 양이 다르면</b> 같은 밝기라도 거리가 같지 않다. 밝기만으로 거리를 알아내려면 '두 광원이 내보내는 빛의 양이 같다'는 조건이 반드시 필요하다.<br>따라서 옳은 것은 <b>ㄱ, ㄴ</b>이다."}
 ];
 
 /* ── 엔진 ── */
@@ -1169,7 +1318,7 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
       q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
         const c=q.ch[idx];
         const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
         b.addEventListener('click',()=>{
           if(answered||solved)return;answered=true;
           if(c.ok){solved=true;b.classList.add('correct');
@@ -1217,14 +1366,25 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
-    body.innerHTML=`<div class="mq-q" style="margin-top:0">
-      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
-      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const bg=(q.boxes&&q.boxes.length)
+      ? '<div class="bogi" id="bogiBox"><div class="bogi-t">보 기</div><ul>'
+        + q.boxes.map(function(b,n){return '<li data-bi="'+n+'"><span class="bk">'+'\u3131\u3134\u3137\u3139'[n]+'</span><span>'+b+'</span><span class="bv"></span></li>';}).join('')
+        + '</ul></div>'
+      : '';
+    body.innerHTML='<div class="mq-q" style="margin-top:0">'
+      + '<div class="mq-meta"><span class="mq-lv" data-lv="'+(q.difficulty||'중')+'">난이도 '+(q.difficulty||'중')+'</span>'
+      + (q.boxes&&q.boxes.length?'<span class="mq-lv" style="color:var(--accent2)">&lt;보기&gt;형</span>':'')
+      + (q.svg?'<span class="mq-lv" style="color:var(--ink-mute)">자료 해석</span>':'') + '</div>'
+      + (q.svg?'<div class="qfig">'+q.svg+'</div>':'')
+      + '<div class="mq-text" style="font-size:18px"><span class="qn">Q'+(i+1)+'.</span>'+(q.stem||q.q)+'</div>'
+      + bg
+      + '<div class="mq-choices"></div><div class="mq-fb"></div>'
+      + '<div class="mq-next"><button class="btn primary sm" id="qNext">다음 문항 →</button></div></div>';
     const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
     q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
       const c=q.ch[idx];
       const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
       b.addEventListener('click',()=>{
         if(locked)return;locked=true;
         $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
@@ -1234,8 +1394,15 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
         else{b.classList.add('wrong');A.wrong();lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
-        hud();setTimeout(()=>{i++;next();},1900);
-      });
+        const bx=$('#bogiBox');
+        if(bx&&q.boxVerdicts){$$('li',bx).forEach(function(li,n){
+          const t=!!q.boxVerdicts[n];li.classList.add(t?'t':'f');
+          const v=$('.bv',li);if(v)v.textContent=t?'옳음':'옳지 않음';});bx.classList.add('reveal');}
+        const nx=$('.mq-next',body);if(nx){nx.classList.add('show');
+          const nb=$('#qNext');if(nb){nb.textContent=(i+1>=order.length||lives<=0)?'결과 보기 →':'다음 문항 →';
+            nb.addEventListener('click',function(){A.pop();i++;next();
+              scrollTo({top:document.querySelector('#panel-check').offsetTop-70,behavior:reduceMotion?'auto':'smooth'});});}}
+        hud();});
       cw.appendChild(b);
     });
   }

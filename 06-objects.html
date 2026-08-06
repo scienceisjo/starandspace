@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080d1a">
+<title>별과 별 사이는 비어 있지 않다 · 우리은하를 이루는 천체 관측하기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
+  --line:#2b3763; --line-soft:#222c54;
+  --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
+  --accent:#a98bff; --accent2:#c9b6ff; --on-accent:#12082a;
+  --c1:#ff8fb1;  /* 성운 */
+  --c2:#ffd166;  /* 성단 */
+  --c3:#67e8e0;  /* 성간 물질 */
+  --c4:#9ae66e;  /* 별자리(관측 자리) */
+  --c5:#c4a7ff;  /* 우리은하 */
+  --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
+  --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:var(--disp); --mono:"JetBrains Mono",ui-monospace,monospace; --jua:"Jua",var(--disp);
+  --header-h:60px; --r:16px; --shadow:0 18px 50px -22px rgba(0,0,0,.8); --scrim:.82;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);line-height:1.62;
+  background:radial-gradient(1150px 600px at 78% -8%, rgba(169,139,255,.13), transparent 60%),
+    radial-gradient(820px 520px at 10% 10%, rgba(255,143,177,.07), transparent 58%), var(--abyss);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
+::selection{background:rgba(169,139,255,.32);color:#fff}
+#bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .45s}
+#bgScrim{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,10,22,calc(var(--scrim)*.84)),rgba(6,10,22,var(--scrim)) 58%,rgba(6,10,22,calc(var(--scrim)*1.12)))}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+@media print{#bgLayer,#bgScrim,#stars{display:none}}
+
+#cover{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:26px 18px;overflow-y:auto;
+  background:linear-gradient(180deg,rgba(6,10,22,.5),rgba(6,10,22,.86))}
+#cover.hide{display:none}
+body.cover-on header.top,body.cover-on main,body.cover-on #app-credit,
+body.cover-on .prog-list,body.cover-on #toast{display:none!important}
+.cover-in{width:100%;max-width:720px;text-align:center;animation:coverUp .6s cubic-bezier(.22,1,.36,1)}
+@keyframes coverUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(169,139,255,.7))}
+.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(26px,5.4vw,46px);line-height:1.16;margin:18px 0 10px;
+  letter-spacing:-.6px;text-shadow:0 0 26px rgba(169,139,255,.4),0 2px 20px rgba(0,0,0,.75)}
+.cover-sub{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px)}
+.cover-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.steps-card{background:rgba(22,31,61,.85);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;
+  margin:26px auto 0;max-width:540px;text-align:left;backdrop-filter:blur(8px);box-shadow:var(--shadow)}
+.steps-card h3{font-family:var(--jua);font-size:18px;text-align:center;color:var(--gold);margin-bottom:14px}
+.steps-card ol{list-style:none;display:grid;gap:11px}
+.steps-card li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--ink-dim);line-height:1.5}
+.steps-card li .sn{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;
+  font-weight:800;background:var(--ok);color:#06210f;margin-top:2px}
+.steps-card li.opt .sn{background:#4a3a78;color:#d6c2ff}
+.steps-card li b{color:var(--ink)}
+.cover-cta{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:26px}
+.btn.xl{font-size:18px;padding:16px 34px;border-radius:16px}
+.cover-hint{font-size:12.5px;color:var(--ink-mute)}
+
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(8,13,26,.96),rgba(8,13,26,.8) 70%,rgba(8,13,26,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.top-bar{max-width:1180px;margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:12px;padding:0 16px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;cursor:pointer;font-family:var(--body);color:inherit;text-align:left;padding:0}
+.brand .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:18px;
+  background:radial-gradient(circle at 30% 30%,#453168,#0d1533);border:1px solid var(--line)}
+.brand b{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.2px;white-space:nowrap}
+.brand b span{color:var(--accent2)}
+.brand .sub{font-size:11px;color:var(--ink-mute);white-space:nowrap}
+@media(max-width:560px){.brand .sub{display:none}}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:9px}
+.hbtn{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink-dim);cursor:pointer;transition:.18s;text-decoration:none}
+.hbtn:hover{border-color:var(--accent);color:var(--ink)}
+body.teacher #tmodeBtn{background:rgba(255,209,102,.14);border-color:var(--gold)}
+.progress-mini{display:flex;align-items:center;gap:9px;cursor:help}
+.progress-mini .bar{width:92px;height:7px;border-radius:99px;background:#16203d;overflow:hidden;border:1px solid var(--line)}
+.progress-mini .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .5s cubic-bezier(.22,1,.36,1);box-shadow:0 0 12px var(--accent)}
+.progress-mini .pct{font-family:var(--mono);font-size:12px;color:var(--accent2);min-width:34px;text-align:right}
+@media(max-width:520px){.progress-mini .bar{width:48px}}
+
+nav.tabs{max-width:1180px;margin:0 auto;padding:0 8px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;align-items:center}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;display:flex;align-items:center;gap:7px;font-family:var(--body);font-size:14px;font-weight:700;
+  color:var(--ink-dim);background:transparent;border:1px solid transparent;padding:8px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.2s}
+nav.tabs button .sn{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);
+  font-size:11px;font-weight:700;background:#0e1830;border:1px solid var(--line);color:var(--ink-mute)}
+nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+nav.tabs button.active{color:#fff;background:linear-gradient(180deg,#b79cff,var(--accent));box-shadow:0 6px 18px -6px var(--accent)}
+nav.tabs button.active .sn{background:#2a1a4d;color:var(--accent2);border-color:transparent}
+nav.tabs button.done .sn{background:var(--ok);color:#06210f;border-color:transparent}
+nav.tabs button.done .sn i{display:none}
+nav.tabs button.done .sn::after{content:"✓"}
+nav.tabs .tab-sep{flex:none;width:1px;height:20px;background:var(--line);margin:0 4px}
+nav.tabs button.optional{color:#d6c2ff;border-color:#3a2f5e;background:rgba(74,58,120,.18)}
+nav.tabs button.optional.active{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
+
+main{max-width:1180px;margin:0 auto;padding:20px 16px 90px}
+.panel{display:none;animation:fade .45s cubic-bezier(.22,1,.36,1)}
+.panel.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.stepline{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.stepline .sbadge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;letter-spacing:1px;
+  color:#fff;background:linear-gradient(180deg,#b79cff,var(--accent));padding:4px 12px;border-radius:999px;font-weight:700}
+.stepline .swhat{font-size:13px;color:var(--ink-mute)}
+.stepline.opt .sbadge{background:linear-gradient(180deg,#9b87e6,#7358c9)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
+h1.big{font-family:var(--disp);font-weight:800;font-size:clamp(28px,6vw,52px);line-height:1.1;letter-spacing:-.6px;text-shadow:0 2px 24px rgba(0,0,0,.65)}
+h2.sec{font-family:var(--disp);font-weight:800;font-size:clamp(22px,4.2vw,34px);letter-spacing:-.3px;line-height:1.16;margin:0 0 6px;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+h3.card-t{font-family:var(--jua);font-size:20px;letter-spacing:.2px;color:var(--ink)}
+.lead{font-size:clamp(15px,2.4vw,18px);color:var(--ink-dim);max-width:64ch;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.muted{color:var(--ink-mute)}
+.help{font-size:13px;color:var(--ink-mute);margin-top:8px;line-height:1.55}
+b.k{color:var(--ink);font-weight:800}
+.t1{color:var(--c1)}.t2{color:var(--c2)}.t3{color:var(--c3)}.t4{color:var(--c4)}.t5{color:var(--c5)}
+.card{background:linear-gradient(180deg,var(--surface),var(--deep));border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.card+.card{margin-top:18px}
+.grid{display:grid;gap:18px}
+@media(min-width:760px){.grid.c2{grid-template-columns:1fr 1fr}}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-dim)}
+.badge.beyond{background:linear-gradient(180deg,#241b3a,#1a1430);border-color:#4a3a78;color:#d6c2ff}
+.badge.gold{background:rgba(255,209,102,.1);border-color:#5a4a1e;color:var(--gold)}
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{font-size:13px;padding:6px 12px;border-radius:99px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.pill b{color:var(--ink)}
+.note{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);background:rgba(169,139,255,.08);
+  padding:13px 15px;border-radius:0 12px 12px 0;margin-top:14px;font-size:14.5px;color:var(--ink-dim)}
+.note .ic{flex:none;font-size:17px;line-height:1.4}
+.note.myth{border-color:var(--danger);background:rgba(255,93,108,.07)}
+.note.myth b{color:#ff97a1}
+.note.class{display:none;border-color:var(--gold);background:rgba(255,209,102,.07)}
+.note.class b{color:var(--gold)}
+body.teacher .note.class{display:flex}
+.honest{font-size:12px;color:var(--ink-mute);margin-top:8px;display:flex;gap:6px;align-items:flex-start}
+.btn{font-family:var(--body);font-weight:800;font-size:15px;cursor:pointer;padding:12px 20px;border-radius:12px;border:1px solid transparent;
+  display:inline-flex;align-items:center;gap:9px;transition:.18s;user-select:none}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.primary{background:linear-gradient(180deg,#c9b6ff,var(--accent));color:#fff;box-shadow:0 10px 24px -10px var(--accent)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{background:rgba(255,255,255,.08);border-color:var(--accent)}
+.btn.sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.explain{margin-top:14px;border-radius:13px;padding:15px 17px;font-size:14.5px;line-height:1.6;border:1px solid var(--line);
+  background:rgba(169,139,255,.08);color:var(--ink-dim);display:none;animation:fade .35s}
+.explain.show{display:block}
+.explain b{color:var(--ink)}
+.explain .why{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--accent2);margin-bottom:5px}
+
+/* 🔭 관측 기록판 */
+.obs{background:linear-gradient(180deg,#1b1a3c,#111a34);border:1.5px solid #4a3a78;border-radius:15px;padding:20px 22px;margin-top:16px}
+.obs h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.seg{display:flex;background:#0e1830;border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px;margin-bottom:14px;flex-wrap:wrap}
+.seg button{flex:1;min-width:88px;font-family:var(--body);font-weight:700;font-size:13.5px;color:var(--ink-dim);background:transparent;
+  border:0;padding:10px 6px;border-radius:8px;cursor:pointer;transition:.15s}
+.seg button.on{background:var(--accent);color:#fff}
+.seg button.seen::after{content:" ✓";font-size:11px;color:var(--ok)}
+.seg button.on.seen::after{color:#fff}
+.objgrid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:640px){.objgrid{grid-template-columns:1fr 1fr}}
+.obj{background:var(--surface2);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:.2s}
+.obj.done{border-color:var(--ok);background:rgba(74,222,128,.07)}
+.obj .oname{font-family:var(--jua);font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.obj .otag{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(154,230,110,.14);
+  border:1px solid #3a5e3a;color:var(--c4)}
+.obj .olook{font-size:14px;color:var(--ink-dim);line-height:1.55;background:#0e1830;border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px}
+.obj .oq{font-size:13.5px;font-weight:700;color:var(--ink)}
+.opick{display:flex;gap:8px}
+.opick button{flex:1;font-family:var(--body);font-weight:800;font-size:14px;color:var(--ink);background:#16224a;
+  border:1.5px solid var(--line);border-radius:10px;padding:11px 8px;cursor:pointer;transition:.15s}
+.opick button:hover:not(.locked){border-color:var(--accent)}
+.opick button.correct{border-color:var(--ok);background:rgba(74,222,128,.16);color:#d9ffe6}
+.opick button.wrong{border-color:var(--danger);background:rgba(255,93,108,.14)}
+.opick button.locked{cursor:default}
+.ofb{font-size:13px;line-height:1.55;color:var(--ink-dim);display:none;border-top:1px dashed var(--line);padding-top:9px}
+.ofb.show{display:block;animation:fade .3s}
+
+/* 기록표 */
+.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:14px}
+table.dtable{width:100%;border-collapse:collapse;font-size:13.5px;min-width:460px}
+.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12px;padding:9px 10px;
+  text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.dtable td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line-soft);line-height:1.45}
+.dtable tr:last-child td{border-bottom:0}
+.dtable tr.fresh td{animation:rowIn .5s}
+@keyframes rowIn{from{background:rgba(169,139,255,.22)}to{background:transparent}}
+.dtable .empty{color:var(--ink-mute);padding:16px;font-size:13px}
+.kind-n{color:var(--c1);font-weight:800}
+.kind-d{color:var(--c2);font-weight:800}
+
+/* 그림 슬롯 */
+.fig{margin:12px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830;position:relative}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-size:12.5px;color:var(--ink-mute);padding:10px 14px;line-height:1.5;text-align:center;border-top:1px solid var(--line-soft)}
+.fig.slot{display:none;border-style:dashed;border-color:#4a3a78;background:rgba(169,139,255,.05);padding:18px 14px;text-align:center}
+body.teacher .fig.slot{display:block}
+.fig.slot .fe{font-size:24px;opacity:.6}
+.fig.slot .fn{font-family:var(--mono);font-size:11.5px;color:var(--accent2);margin-top:7px;word-break:break-all}
+.fig.slot .fd{font-size:12px;color:var(--ink-mute);margin-top:5px;line-height:1.5}
+.obj .fig{margin:0}
+
+.terms{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(min-width:760px){.terms{grid-template-columns:repeat(4,1fr)}}
+.term{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px;border-top:3px solid var(--c,var(--accent))}
+.term .nm{font-family:var(--jua);font-size:17px;margin-bottom:3px}
+.term .de{font-size:13px;color:var(--ink-mute);line-height:1.5}
+
+.cloze-line{font-size:15.5px;line-height:2.05;color:var(--ink-dim)}
+.cloze-line+.cloze-line{margin-top:6px}
+.cloze{display:inline-block;min-width:52px;text-align:center;padding:2px 11px;margin:0 2px;border-radius:8px;background:#0e1830;
+  border:1.5px dashed var(--line);color:transparent;cursor:pointer;font-weight:800;transition:.16s;user-select:none;line-height:1.3}
+.cloze::after{content:"❓";font-size:12px}
+.cloze:hover{border-color:var(--accent);background:#221d40}
+.cloze.revealed{border-style:solid;cursor:default;animation:clozePop .42s}
+.cloze.revealed::after{content:none}
+@keyframes clozePop{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cloze-done{display:none;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ok)}
+.cloze-set.complete .cloze-done{display:inline-flex;animation:fade .4s}
+.cloze-hint{font-size:12.5px;color:var(--ink-mute);margin-top:10px}
+
+.miniquiz{background:linear-gradient(180deg,#1c1c3e,#0e1730);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.miniquiz .mq-head{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+.miniquiz .mq-badge{font-size:12px;font-weight:800;color:#fff;background:linear-gradient(180deg,#c9b6ff,var(--accent));padding:4px 10px;border-radius:99px}
+.miniquiz .mq-prog{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+.mq-q{margin-top:14px}
+.mq-q .mq-text{font-size:15px;font-weight:600;margin-bottom:9px}
+.mq-q .mq-text .qn{font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-right:6px}
+.mq-choices{display:grid;gap:8px}
+.mq-opt{text-align:left;font-family:var(--body);font-size:14.5px;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);
+  border-radius:11px;padding:11px 14px;cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:center}
+.mq-opt .k{flex:none;width:23px;height:23px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
+  font-size:12px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
+.mq-opt:hover:not(.locked){border-color:var(--accent);background:#2a2450}
+.mq-opt.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
+.mq-opt.correct .k{background:var(--ok);color:#06210f}
+.mq-opt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.mq-opt.wrong .k{background:var(--danger);color:#2a060b}
+.mq-opt.locked{cursor:default}
+.mq-fb{margin-top:9px;font-size:13.5px;line-height:1.55;border-radius:10px;padding:11px 13px;display:none}
+.mq-fb.show{display:block;animation:fade .3s}
+.mq-fb.ok{background:rgba(74,222,128,.09);border:1px solid #2e6e44;color:var(--ink-dim)}
+.mq-fb.no{background:rgba(255,93,108,.09);border:1px solid #7a2f38;color:var(--ink-dim)}
+.mq-fb b{color:var(--ink)}
+.mq-done{display:none;align-items:center;gap:8px;margin-top:14px;padding:11px 14px;border-radius:11px;background:rgba(255,209,102,.08);
+  border:1px solid #5a4a1e;color:var(--gold);font-weight:700;font-size:14px}
+.miniquiz.alldone .mq-done{display:flex;animation:fade .4s}
+
+.game-hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.lives{display:flex;gap:5px}.lives .h{font-size:22px;transition:.3s}
+.lives .h.gone{filter:grayscale(1) brightness(.5);transform:scale(.85)}
+.score-box{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;background:#0e1830;border:1px solid var(--line);padding:7px 13px;border-radius:11px}
+.score-box .lab2{font-size:11px;color:var(--ink-mute);font-weight:400;font-family:var(--body)}
+.score-box .num{font-size:18px;color:var(--gold)}
+.earned{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.medal{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:8px 13px;border-radius:11px;
+  background:linear-gradient(180deg,#2a2410,#1c1808);border:1px solid #5a4a1e;color:var(--gold);opacity:.3;filter:grayscale(.6);transition:.4s}
+.medal.got{opacity:1;filter:none;box-shadow:0 0 16px -4px var(--gold)}
+.medal .e{font-size:18px}
+textarea{width:100%;font-family:var(--body);font-size:14.5px;color:var(--ink);background:#0e1830;border:1.5px solid var(--line);
+  border-radius:12px;padding:12px 14px;min-height:88px;resize:vertical;outline:none;margin-top:8px;line-height:1.55;transition:.18s}
+textarea:focus{border-color:var(--accent);background:#221d40}
+textarea::placeholder{color:var(--ink-mute)}
+.savemark{font-size:12px;color:var(--ok);margin-top:6px;display:inline-block;opacity:0;transition:.3s}
+.savemark.on{opacity:1}
+.prog-list{position:fixed;right:14px;top:calc(var(--header-h) + 8px);z-index:60;width:264px;background:rgba(14,22,44,.97);
+  border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:none}
+.prog-list.show{display:block;animation:fade .3s}
+.prog-list h4{font-family:var(--jua);font-size:15px;margin-bottom:10px}
+.prog-list li{list-style:none;display:flex;gap:8px;font-size:13px;color:var(--ink-mute);padding:4px 0;line-height:1.45}
+.prog-list li.on{color:var(--ink-dim)}
+.prog-list li .mk{flex:none;color:var(--ink-mute)}
+.prog-list li.on .mk{color:var(--ok)}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:200;background:rgba(14,22,44,.96);
+  border:1px solid var(--accent);color:var(--ink);padding:12px 20px;border-radius:13px;font-weight:700;font-size:14.5px;
+  box-shadow:0 16px 40px -12px rgba(0,0,0,.8);opacity:0;pointer-events:none;transition:.3s;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.good{border-color:var(--ok)}#toast.bad{border-color:var(--danger)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.08s!important;scroll-behavior:auto}}
+@media print{
+  #cover,header.top,nav.tabs,#toast,.prog-list,.cta-row,.btn{display:none!important}
+  body{background:#fff;color:#111}
+  .panel{display:block!important;page-break-after:always}
+  .card,.obs,.obj{background:#fff;border-color:#ccc;box-shadow:none}
+  .lead,.muted,.note{color:#333}
+  h1.big,h2.sec,h3.card-t{color:#111}
+  .note.class{display:flex!important}
+  .cloze{color:#111!important;border-style:solid}.cloze::after{content:none}
+}
+</style>
+
+<style id="board-v2">
+/* ═══════════════════════════════════════════════════════════
+   전자칠판 판 v2 — 글자 크기·명암비 상향
+   교실 앞 화면에서 뒷자리까지 읽히도록 본문을 키우고,
+   배경과 붙어 보이던 회색 계열 글자색의 명암비를 올렸습니다.
+   (--ink-mute 4.0:1 → 7.7:1 / --ink-dim 8.6:1 → 12.0:1)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --line:#33406e; --line-soft:#28345e;
+  --ink:#f2f6ff; --ink-dim:#c6d2ee; --ink-mute:#9aa8cf;
+  --ok:#5eec92; --danger:#ff7a86;
+}
+body{line-height:1.68}
+b.k{color:#fff}
+
+/* 본문 계열 */
+.lead{font-size:clamp(17px,2.5vw,20px)}
+.help{font-size:15px;line-height:1.6}
+.honest{font-size:14px;line-height:1.6}
+.note{font-size:16px;line-height:1.65;padding:15px 17px;border-left-width:4px}
+.note .ic{font-size:19px}
+.badge{font-size:14px;padding:6px 13px}
+.pill{font-size:15px;padding:7px 14px}
+.term .nm{font-size:19px}
+.term .de{font-size:15px;line-height:1.6}
+.use .u-t{font-size:19px}
+.use .u-d{font-size:15.5px;line-height:1.6}
+h3.card-t{font-size:22px}
+.stepline .swhat{font-size:14.5px}
+.stepline .sbadge{font-size:13px}
+.eyebrow{font-size:13px}
+.fig figcaption{font-size:14.5px;line-height:1.6}
+.fig.slot .fn{font-size:13px}
+.fig.slot .fd{font-size:14px}
+
+/* 상호작용 */
+.btn{font-size:16.5px;padding:13px 22px}
+.btn.sm{font-size:15px;padding:9px 16px}
+nav.tabs button{font-size:15.5px;padding:9px 15px}
+nav.tabs button .sn{width:21px;height:21px;font-size:12px}
+.brand b{font-size:18px}
+.brand .sub{font-size:12.5px}
+.progress-mini .pct{font-size:13.5px}
+.choice{font-size:17px;border-width:2px;padding:15px 17px}
+.choice .key{width:30px;height:30px;font-size:15px}
+.explain{font-size:16px;line-height:1.68}
+.explain .why{font-size:14.5px}
+.cloze-line{font-size:17.5px;line-height:2.1}
+.cloze{border-width:2px;padding:3px 12px;min-width:56px}
+.cloze-hint{font-size:14.5px}
+.cloze-done{font-size:15px}
+textarea{font-size:16.5px;border-width:2px}
+.savemark{font-size:14px}
+.checkline{font-size:16.5px}
+.doit li{font-size:16.5px;line-height:1.6}
+.dtable{font-size:15.5px}
+.dtable th{font-size:14px;padding:11px 12px}
+.dtable td{padding:10px 12px}
+.dtable .empty{font-size:15px}
+.prog-list{width:290px}
+.prog-list li{font-size:14.5px}
+.prog-list h4{font-size:17px}
+#toast{font-size:16px;padding:14px 22px;border-width:2px}
+.medal{font-size:14.5px}
+.medal .e{font-size:20px}
+.score-box .num{font-size:20px}
+.score-box .lab2{font-size:13px}
+.lives .h{font-size:24px}
+.steps-card li{font-size:16.5px}
+.steps-card h3{font-size:20px}
+.cover-sub{font-size:clamp(16px,2.7vw,19px)}
+.cover-hint{font-size:14px}
+
+/* 실험실 조작판 */
+.simctl h4,.lab h3,.simlab h3{font-size:18px}
+.ctl label{font-size:15px}
+.ctl label .val{font-size:16px}
+.readout .r .lab2{font-size:13px}
+.readout .r .v{font-size:22px}
+.readout .r .v small{font-size:13px}
+.dl-head h4{font-size:18px}
+input[type=range]{height:8px}
+input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
+
+/* 문항 */
+.miniquiz .mq-badge{font-size:13.5px;padding:5px 12px}
+.miniquiz .mq-prog{font-size:13.5px}
+.mq-q .mq-text{font-size:17px;line-height:1.6}
+.mq-q .mq-text .qn{font-size:12.5px}
+.mq-opt{font-size:16.5px;padding:13px 16px;border-width:2px;line-height:1.5}
+.mq-opt .k{width:26px;height:26px;font-size:13.5px}
+.mq-fb{font-size:15.5px;line-height:1.65;padding:13px 15px}
+.mq-done{font-size:16px}
+
+/* ── 수능형 문항 — 자료 · <보기> · 다음 버튼 ── */
+.qfig{background:#04070f;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;overflow-x:auto}
+.qfig svg{width:100%;height:auto;display:block;max-width:600px;margin:0 auto}
+.bogi{background:#101c38;border:1.5px solid var(--line);border-radius:12px;padding:15px 18px;margin:0 0 14px}
+.bogi-t{display:inline-block;font-weight:800;font-size:14px;color:var(--ink-dim);border:1px solid var(--line);
+  border-radius:7px;padding:2px 14px;margin-bottom:11px;letter-spacing:3px}
+.bogi ul{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.bogi li{display:flex;gap:11px;align-items:flex-start;font-size:16.5px;line-height:1.62;color:var(--ink)}
+.bogi li .bk{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:14px;
+  font-weight:800;background:#22315c;border:1px solid var(--line);color:var(--ink-dim);margin-top:2px;transition:.25s}
+.bogi li .bv{display:none;margin-left:auto;flex:none;font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:99px}
+.bogi.reveal li.t .bk{background:var(--ok);color:#06210f;border-color:transparent}
+.bogi.reveal li.f .bk{background:var(--danger);color:#2a060b;border-color:transparent}
+.bogi.reveal li .bv{display:inline-block;animation:fade .3s}
+.bogi.reveal li.t .bv{background:rgba(94,236,146,.16);color:var(--ok)}
+.bogi.reveal li.f .bv{background:rgba(255,122,134,.16);color:var(--danger)}
+.mq-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.mq-lv{font-size:13px;font-weight:800;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:#101c38}
+.mq-lv[data-lv="하"]{color:#5eec92;border-color:#2f7d51}
+.mq-lv[data-lv="중"]{color:#ffd166;border-color:#6b5a26}
+.mq-lv[data-lv="상"]{color:#ff9fbe;border-color:#8b3742}
+.mq-next{display:none;margin-top:18px;justify-content:flex-end}
+.mq-next.show{display:flex;animation:fade .3s}
+@media print{
+  .mq-next{display:none!important}
+  .qfig{background:#fff}
+  .bogi{background:#fff;border-color:#ccc}
+  .bogi li{color:#111}
+}
+</style>
+</head>
+<body><!-- board-v2: inline font bumped -->
+<div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
+
+<div id="cover">
+  <div class="cover-in">
+    <div class="cover-emoji">🔭 ☁️ ✨</div>
+    <h1 class="cover-title">별과 별 사이는<br>비어 있지 않다</h1>
+    <p class="cover-sub">우리은하를 이루는 천체를 직접 관측하기 ✨</p>
+    <div class="cover-meta">
+      <span class="badge">⏱️ 45분</span>
+      <span class="badge">📘 VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ② · 282~283쪽</span>
+      <span class="badge gold" id="coverSaved" style="display:none">🔖 이어서 하기</span>
+    </div>
+    <div class="steps-card">
+      <h3>💡 학습 단계 안내</h3>
+      <ol>
+        <li><span class="sn">1</span><div><b>만나 보기</b> — 우리은하에는 별 말고 무엇이 더 있을까</div></li>
+        <li><span class="sn">2</span><div><b>관측하기</b> — 네 별자리를 훑으며 천체를 찾아보기</div></li>
+        <li><span class="sn">3</span><div><b>기록하기</b> — 찾은 천체를 성운·성단으로 가려 기록판에 남기기</div></li>
+        <li><span class="sn">4</span><div><b>견주어 보기</b> — 모은 기록으로 두 천체의 차이 분석하기</div></li>
+        <li><span class="sn">5</span><div><b>확인하기</b> — 배운 것 점검하기</div></li>
+        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 천문대에서 진짜로 보기 · 메시에 목록</div></li>
+      </ol>
+    </div>
+    <div class="cover-cta">
+      <button class="btn primary xl" id="coverGo">관측 시작하기 🔭</button>
+      <span class="cover-hint">진행 상황은 이 기기에 자동 저장돼요 · 왼쪽 위 제목을 누르면 이 화면으로 돌아옵니다</span>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="top-bar">
+    <button class="brand" id="brandBtn" title="표지로 돌아가기">
+      <div class="logo">🔭</div>
+      <div><b>별과 별 사이는 <span>비어 있지 않다</span></b>
+        <div class="sub">VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ② · 중2 과학</div></div>
+    </button>
+    <div class="head-right">
+      <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
+      <button class="hbtn" id="tmodeBtn" title="교사 모드">🧑‍🏫</button>
+      <div class="progress-mini" id="progWrap" title="진행도 — 누르면 남은 활동이 보여요">
+        <div class="bar"><i id="progBar"></i></div><div class="pct" id="progPct">0%</div>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabNav">
+    <button data-tab="meet" class="active"><span class="sn"><i>1</i></span>만나 보기</button>
+    <button data-tab="observe"><span class="sn"><i>2</i></span>관측하기</button>
+    <button data-tab="record"><span class="sn"><i>3</i></span>기록하기</button>
+    <button data-tab="compare"><span class="sn"><i>4</i></span>견주어 보기</button>
+    <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
+    <span class="tab-sep"></span>
+    <button data-tab="beyond" class="optional"><span class="sn"><i>+</i></span>🌙 더 알아보기</button>
+  </nav>
+</header>
+
+<div class="prog-list" id="progList"><h4>남은 활동</h4><ul id="progItems"></ul></div>
+
+<main>
+
+<!-- 1 -->
+<section class="panel show" id="panel-meet">
+  <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">만나 보기 · 오늘의 수수께끼</span></div>
+  <h1 class="big">별과 별 사이는<br><span class="t3">비어 있지</span> 않다.</h1>
+  <p class="lead" style="margin-top:16px">
+    밤하늘 사진을 보면 별은 점점이 박혀 있고 그 사이는 새까맣습니다.
+    그래서 우주는 <b class="k">텅 빈 공간에 별만 떠 있는 곳</b>처럼 보이죠.
+    그런데 망원경으로 오래 들여다보면, 그 검은 자리에서 <b class="t3">구름 같은 것</b>이 나타납니다.
+    별도 아니고 행성도 아닌 그것들의 정체는 무엇일까요?
+  </p>
+  <figure class="fig" data-fig="deepsky"
+    data-alt="별 사이에 구름처럼 퍼진 성운과 별이 무리 지어 모인 성단이 함께 보이는 밤하늘"
+    data-cap="별 사이의 검은 자리에서 구름 같은 것과 별 무리가 나타납니다."></figure>
+
+  <div class="grid c2" style="margin-top:22px">
+    <div class="card">
+      <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">☁️ 구름처럼 보이는 것</h2>
+      <p class="lead" style="font-size:17.5px">우리은하에는 수많은 별 외에도 별과 별 사이에
+        <b class="t3">성간 물질</b>이 퍼져 있습니다. 가스와 티끌 같은 물질이에요.
+        이 성간 물질이 모여 <b class="k">구름처럼 보이는 천체</b>를 <b class="t1">성운</b>이라고 합니다.</p>
+    </div>
+    <div class="card">
+      <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">✨ 무리 지어 있는 것</h2>
+      <p class="lead" style="font-size:17.5px">별은 하나씩 따로 떨어져 있기도 하지만,
+        <b class="k">수많은 별이 무리를 이루기도</b> 합니다. 이런 천체를 <b class="t2">성단</b>이라고 해요.
+        오늘 우리가 밤하늘에서 찾아낼 두 가지가 바로 이것들입니다.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:22px">
+    <div class="eyebrow" style="margin-bottom:8px">오늘의 목표</div>
+    <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 할 수 있다</h3>
+    <div class="grid c2">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c4);color:#0a2a10;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
+        <div><b class="k">천체 관측 프로그램으로 우리은하의 천체를 관측할 수 있다.</b><br><span class="muted" style="font-size:16px">별자리를 골라 그 안의 천체를 찾아내기.</span></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#3a0a1a;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
+        <div><b class="k">성운과 성단의 특징을 비교하여 분석할 수 있다.</b><br><span class="muted" style="font-size:16px">무엇을 기준으로 견줄지까지 정해서.</span></div>
+      </div>
+    </div>
+    <div class="pill-list">
+      <span class="pill">핵심어 · <b>성간 물질</b></span><span class="pill"><b>성운</b></span>
+      <span class="pill"><b>성단</b></span><span class="pill"><b>천체 관측</b></span>
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>도입 들어가기</b> — 우리은하에 있는 천체 사진을 먼저 보여 주고 "어떤 특징이 있나요?"만 물으세요. 이름을 알려 주기 전에 <b>생김새를 말로 표현</b>하게 하면, 뒤에서 '성간 물질의 밝기'와 '별이 모여 있는 정도'라는 기준이 학생 말에서 나옵니다.</div></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="observe">2단계 · 별자리를 훑어보기 →</button></div>
+</section>
+
+<!-- 2 -->
+<section class="panel" id="panel-observe">
+  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">관측하기 · 네 별자리를 훑어보기</span></div>
+  <h2 class="sec">어디를 봐야 만날 수 있을까</h2>
+  <p class="lead">교과서 282쪽 탐구입니다. 천체 관측 프로그램으로 <b class="t4">궁수자리 · 오리온자리 · 황소자리 · 전갈자리</b>를
+    차례로 살펴봅니다. 아래에서 별자리를 눌러 그 안에 어떤 천체가 있는지 확인하세요.</p>
+
+  <div class="card" style="margin-top:20px">
+    <div class="obs">
+      <h3>🔭 별자리별 천체 살펴보기</h3>
+      <div class="seg" id="conSeg"></div>
+      <div class="objgrid" id="objList"></div>
+      <p class="help" id="obsMsg" style="text-align:center;margin-top:14px">아직 살펴본 별자리: 0 / 4</p>
+    </div>
+    <p class="honest"><span class="ic">📌</span>천체의 특징을 확인할 때는 <b>이름과 겉으로 보이는 모습</b> 정도만 봅니다. 크기·거리·나이는 오늘 다루지 않아요.</p>
+    <div class="btn-row">
+      <a class="btn ghost sm" href="https://stellarium-web.org/" target="_blank" rel="noopener">🔭 스텔라리움 웹에서 직접 보기</a>
+      <a class="btn ghost sm" href="https://astro.kasi.re.kr/" target="_blank" rel="noopener">🇰🇷 한국천문연구원</a>
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>탐구 지도</b> — 모둠에서 <b>조사·관측·기록</b> 역할을 나누어 여러 별자리를 맡게 하세요. 조사 과정에서 <b>우리은하 밖의 천체</b>(안드로메다 은하 등)를 가져오는 경우가 있으니, 우리은하에 포함된 천체인지 확인시켜야 합니다.</div></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="record">3단계 · 찾은 것을 기록하기 →</button></div>
+</section>
+
+<!-- 3 -->
+<section class="panel" id="panel-record">
+  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">기록하기 · 성운인가, 성단인가</span></div>
+  <h2 class="sec">본 것을 남겨야 자료가 된다</h2>
+  <p class="lead">관측만 하고 끝내면 아무것도 남지 않습니다. 2단계에서 각 천체를
+    <b class="t1">성운</b>과 <b class="t2">성단</b> 중 어느 쪽인지 가려서 눌렀다면, 아래 기록판에 자동으로 쌓입니다.</p>
+
+  <div class="card" style="margin-top:20px">
+    <h3 class="card-t">📋 나의 천체 관측 기록판</h3>
+    <div class="dtable-wrap"><table class="dtable" id="recTable"></table></div>
+    <div class="btn-row">
+      <button class="btn ghost sm" data-go="observe">← 관측하러 돌아가기</button>
+      <button class="btn ghost sm" id="recCopy">표 복사</button>
+      <button class="btn ghost sm" id="recClear">비우기</button>
+    </div>
+    <p class="help" id="recMsg">여섯 천체를 모두 기록하면 4단계에서 비교 분석을 할 수 있어요.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 기록표를 복사해 <b>공유 플랫폼(패들렛·구글 문서 등)에 올리게</b> 하세요. 교과서 활동의 '공유' 단계입니다. 반 전체 기록을 모으면 다음 단계의 비교 분석이 훨씬 풍부해집니다.</div></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="compare">4단계 · 두 천체를 견주어 보기 →</button></div>
+</section>
+
+<!-- 4 -->
+<section class="panel" id="panel-compare">
+  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">견주어 보기 · 무엇을 기준으로 비교할까</span></div>
+  <h2 class="sec">비교하려면 먼저 '기준'을 정해야 한다</h2>
+  <p class="lead">"성운은 뿌옇고 성단은 반짝인다" 정도로는 과학이 되지 않습니다.
+    <b class="k">무엇을 기준으로 견줄지</b>를 정하는 것이 비교 분석의 시작이에요.</p>
+
+  <div class="card" style="margin-top:20px">
+    <h3 class="card-t">📊 성운과 성단, 이렇게 견줍니다</h3>
+    <div class="dtable-wrap">
+      <table class="dtable">
+        <tr><th>구분</th><th class="kind-n">성운</th><th class="kind-d">성단</th></tr>
+        <tr><td>무엇이 모였나</td><td>성간 물질(가스·티끌)</td><td>수많은 별</td></tr>
+        <tr><td>어떻게 보이나</td><td>구름처럼 퍼져 보인다</td><td>별이 무리 지어 보인다</td></tr>
+        <tr><td><b>비교 기준</b></td><td><b class="t3">성간 물질의 밝기</b></td><td><b class="t4">별이 모여 있는 정도</b></td></tr>
+      </table>
+    </div>
+    <p class="help">성운은 밝게 빛나는 것도, 오히려 뒤를 가려 <b>어둡게</b> 보이는 것도 있습니다. 그래서 '밝기'가 기준이 돼요.
+      성단은 별이 <b>엉성하게</b> 모였는지 <b>빽빽하게</b> 모였는지가 갈립니다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>지도 방향</b> — 두 번째 블록 질문 "우리은하를 구성하는 천체는 어떻게 탐사할 수 있을까?"에 대한 <b>두 번째 단서</b>입니다. 우리은하가 독립적인 별 외에도 성운·성단으로 이루어졌다는 점을 짚어 주세요. 종류(방출·반사·암흑 / 산개·구상)는 <b>다음 차시</b>입니다.</div></div>
+  </div>
+
+  <!-- 빈칸 -->
+  <div class="card cloze-set" style="margin-top:18px">
+    <div class="badge" style="margin-bottom:12px">✍️ 빈칸을 눌러 확인 — 먼저 머릿속으로 답한 뒤에</div>
+    <p class="cloze-line">
+      우리은하에는 수많은 별 외에도 별과 별 사이에 <span class="cloze" data-ans="성간 물질" data-c="c3">　</span>이 퍼져 있다.
+      이는 가스와 티끌 등의 물질이다.
+    </p>
+    <p class="cloze-line">
+      성간 물질이 모여 <span class="cloze" data-ans="구름" data-c="c1">　</span>처럼 보이는 천체를
+      <span class="cloze" data-ans="성운" data-c="c1">　</span>이라고 한다.
+    </p>
+    <p class="cloze-line">
+      하나씩 따로 떨어져 있는 별과 달리, 수많은 별이 <span class="cloze" data-ans="무리" data-c="c2">　</span>를 이루고 있는 천체를
+      <span class="cloze" data-ans="성단" data-c="c2">　</span>이라고 한다.
+    </p>
+    <p class="cloze-line">
+      성운은 <span class="cloze" data-ans="성간 물질의 밝기" data-c="c3">　</span>를,
+      성단은 <span class="cloze" data-ans="별이 모여 있는 정도" data-c="c4">　</span>를 기준으로 비교한다.
+    </p>
+    <div class="cloze-done">✅ 이 문단은 다 채웠어요!</div>
+    <p class="cloze-hint">빈칸을 그냥 눌러 답만 보면 남지 않아요. 소리 내어 답해 보고 누르세요.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🤔 정리해 볼까 <span class="badge" style="vertical-align:middle">교과서 283쪽 · 자료 비교·분석</span></h3>
+    <p class="lead" style="font-size:17.5px;margin-top:10px">
+      3단계에서 모은 기록을 보고, <b class="t1">성운</b>과 <b class="t2">성단</b>의 특징을 비교하여 분석해 보세요.
+      위에서 정한 <b class="k">두 가지 기준</b>을 문장에 꼭 넣어야 합니다.</p>
+    <textarea id="essay" placeholder="예) 성운은 …이 모여 …처럼 보이고, 성간 물질의 밝기에 따라 …. 성단은 …이 무리를 이루고 있으며, 별이 모여 있는 정도에 따라 …."></textarea>
+    <span class="savemark" id="essaySaved">✔ 저장됨</span>
+    <div class="btn-row"><button class="btn ghost sm" id="ansBtn">모범 답안 확인하기</button></div>
+    <div class="explain" id="modelAns" style="margin-top:12px">
+      <div class="why">✍️ 모범 답안</div>
+      <b>성운</b>은 성간 물질이 모여 구름처럼 보이는 천체로, <b>성간 물질의 밝기</b>를 기준으로 비교하면
+      밝게 보이는 것과 어둡게 보이는 것이 있다.<br>
+      <b>성단</b>은 수많은 별이 무리를 이루고 있는 천체로, <b>별이 모여 있는 정도</b>를 기준으로 비교하면
+      엉성하게 모여 있는 것과 공 모양으로 빽빽하게 모여 있는 것이 있다.
+    </div>
+  </div>
+
+  <div class="miniquiz" data-quiz="compare"></div>
+  <div class="cta-row"><button class="btn primary" data-go="check">5단계 · 얼마나 알게 됐는지 확인 →</button></div>
+</section>
+
+<!-- 5 -->
+<section class="panel" id="panel-check">
+  <div class="stepline"><span class="sbadge">STEP 5</span><span class="swhat">확인하기 · 형성평가</span></div>
+  <h2 class="sec">배운 것을 확인해 봅시다</h2>
+  <p class="lead">점수에 들어가지 않습니다. 어디가 헷갈리는지 찾는 게 목적이에요.</p>
+  <div class="card" style="margin-top:20px">
+    <div class="game-hud">
+      <div class="lives" id="lives"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span></div>
+      <div class="score-box"><span class="lab2">점수</span><span class="num" id="score">0</span></div>
+      <div class="score-box"><span class="lab2">문항</span><span class="num" id="qno">0/0</span></div>
+    </div>
+    <div id="gameBody">
+      <div style="text-align:center;padding:30px 10px">
+        <p class="lead" style="margin:0 auto 18px">준비됐나요? 5문항입니다.</p>
+        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+      </div>
+    </div>
+    <div class="earned" id="medals">
+      <div class="medal" data-medal="first"><span class="e">🥉</span>첫 정답</div>
+      <div class="medal" data-medal="half"><span class="e">🥈</span>절반 돌파</div>
+      <div class="medal" data-medal="perfect"><span class="e">🥇</span>전부 정답</div>
+    </div>
+  </div>
+  <div class="cta-row"><button class="btn ghost" data-go="beyond">🌙 더 알아보기 (선택)</button></div>
+</section>
+
+<!-- + -->
+<section class="panel" id="panel-beyond">
+  <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
+  <h2 class="sec">200년 전에 만든 '헷갈리는 것들' 목록</h2>
+  <p class="lead">여기서부터는 교과서 밖 이야기입니다. 외울 필요 없어요.</p>
+
+  <div class="grid c2" style="margin-top:20px">
+    <div class="card">
+      <h3 class="card-t">📒 M42, M45 — 이 M은 뭘까?</h3>
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
+        18세기 프랑스의 <b class="k">샤를 메시에</b>는 혜성을 찾는 사람이었습니다.
+        그런데 망원경을 보다 보면 혜성처럼 뿌옇게 보이는데 <b>움직이지 않는</b> 것들이 자꾸 걸렸어요.
+        짜증이 난 그는 <b class="k">"이건 혜성이 아니니 헷갈리지 말 것"</b> 목록을 만들었습니다.
+        그게 <b class="t5">메시에 목록</b>이고, M42·M45의 M이 바로 그의 이름입니다.</p>
+      <p class="help">혜성을 찾으려고 만든 '방해물 목록'이, 지금은 아마추어 천문가들이 가장 사랑하는 관측 목록이 되었습니다.</p>
+    </div>
+    <div class="card">
+      <h3 class="card-t">🔭 진짜로 보고 싶다면</h3>
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
+        화면 속 사진은 몇 시간씩 빛을 모아 찍은 것이라 아주 화려합니다.
+        실제로 망원경을 들여다보면 훨씬 <b class="k">희미하고 흑백에 가까워요.</b>
+        그래도 <b>내 눈으로 직접 본 빛</b>이라는 건 완전히 다른 경험입니다.
+        가까운 <b class="t4">천문대나 과학교육원</b>에서 관측 프로그램을 운영하니 한번 가 보세요.</p>
+      <p class="help">교과서 283쪽 「더해 보기」가 바로 이 활동입니다 — 관측하고 보고서를 써 보기.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
+    <p class="lead" style="font-size:18.5px;margin-top:10px">
+      <b class="k">"별과 별 사이는 비어 있지 않다."</b><br><br>
+      오늘 우리는 검게 보이던 자리에서 <b class="t3">성간 물질</b>을 찾아냈고,
+      그것이 모인 <b class="t1">성운</b>과, 별들이 무리 지은 <b class="t2">성단</b>을 가려냈습니다.<br><br>
+      그런데 성운 중에는 <b>스스로 빛나는 것</b>도 있고 <b>남의 빛을 반사하는 것</b>도 있으며,
+      아예 <b class="k">뒤를 가려 검게 보이는 것</b>도 있습니다.
+      성단도 엉성한 것과 빽빽한 것이 따로 있고요.<br><br>
+      그 갈래를 나누는 것이 <b class="k">다음 시간</b>입니다.
+    </p>
+    <div class="cta-row" style="justify-content:center">
+      <button class="btn ghost" data-go="meet">1단계로 돌아가기 ↑</button>
+      <a class="btn ghost" href="index.html">🌌 단원 허브로</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="toast"></div>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+
+<script>
+"use strict";
+/* 그림 자료 — img 폴더에 넣으면 자동 적용 */
+const FIGS={
+  deepsky:'img/o-deepsky.jpg',
+  m42:'img/o-m42.jpg', horsehead:'img/o-horsehead.jpg', m20:'img/o-m20.jpg',
+  m45:'img/o-m45.jpg', m22:'img/o-m22.jpg', m6:'img/o-m6.jpg'
+};
+const BG_IMAGES={cover:'',meet:'',observe:'',record:'',compare:'',check:'',beyond:''};
+const BG_FALLBACK={
+  cover:'radial-gradient(120% 90% at 50% 0%, #3b2a52, #070c1a 68%)',
+  meet:'radial-gradient(110% 80% at 50% 0%, #3b2a52, #070c1a 66%)',
+  observe:'radial-gradient(100% 80% at 50% 20%, #262a56, #070c1a 70%)',
+  record:'linear-gradient(180deg, #2a2450, #070c1a 74%)',
+  compare:'radial-gradient(90% 80% at 68% 15%, #221f4a, #070c1a 70%)',
+  check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
+  beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
+};
+const SAVE='galaxy_objects_v2';
+
+/* 관측 대상 — 교과서 예시(오리온대성운·말머리성운·플레이아데스·M22) + 같은 별자리의 대표 천체 */
+const CONS=[
+  {k:'sag', nm:'궁수자리'},
+  {k:'ori', nm:'오리온자리'},
+  {k:'tau', nm:'황소자리'},
+  {k:'sco', nm:'전갈자리'}
+];
+const OBJECTS=[
+  {id:'m20', con:'sag', nm:'삼렬성운 (M20)', fig:'m20',
+   look:'붉게 밝은 부분이 넓게 퍼져 있고, 그 위를 어두운 띠가 세 갈래로 가로지른다.',
+   kind:'성운', why:'별이 아니라 <b>성간 물질이 구름처럼 퍼져</b> 보입니다. 밝은 부분과 어두운 부분이 함께 있는 것도 성운의 특징이에요.'},
+  {id:'m22', con:'sag', nm:'M22 성단', fig:'m22',
+   look:'수많은 별이 공 모양으로 빽빽하게 모여 한 덩어리처럼 보인다.',
+   kind:'성단', why:'구름이 아니라 <b>별 하나하나가 모여</b> 있습니다. 아주 빽빽하게 모인 유형이에요.'},
+  {id:'m42', con:'ori', nm:'오리온대성운 (M42)', fig:'m42',
+   look:'붉은색으로 밝게 빛나며 구름처럼 넓게 퍼져 있다.',
+   kind:'성운', why:'교과서에 나오는 대표 성운입니다. <b>성간 물질이 밝게 빛나</b>고 있어요.'},
+  {id:'horsehead', con:'ori', nm:'말머리성운', fig:'horsehead',
+   look:'밝은 배경 앞에 말 머리 모양의 검은 그림자가 서 있다.',
+   kind:'성운', why:'검게 보여도 <b>성간 물질이 모인 천체</b>입니다. 뒤에서 오는 별빛을 가로막아 어둡게 보이는 거예요.'},
+  {id:'m45', con:'tau', nm:'플레이아데스성단 (M45)', fig:'m45',
+   look:'파랗게 빛나는 별 예닐곱 개가 느슨하게 모여 있다. 맨눈으로도 보인다.',
+   kind:'성단', why:'우리말로 <b>좀생이별</b>. 1차시 도입 사진에 나왔던 그 천체입니다. 별이 엉성하게 모인 유형이에요.'},
+  {id:'m6', con:'sco', nm:'나비성단 (M6)', fig:'m6',
+   look:'별 수십 개가 나비가 날개를 편 듯한 모양으로 흩어져 모여 있다.',
+   kind:'성단', why:'별이 <b>일정한 모양 없이 느슨하게</b> 모여 있습니다.'}
+];
+
+const QUIZ_SETS={
+  compare:{title:'성운과 성단 가려내기', qs:[
+    {q:'별과 별 사이에 퍼져 있는 가스와 티끌을 무엇이라 할까?',
+     ch:[{t:'성간 물질',ok:1},{t:'성운',ok:0},{t:'성단',ok:0}],
+     why:'이 성간 물질이 <b>모여서</b> 구름처럼 보이면 성운이 됩니다.'},
+    {q:'말머리성운은 검게 보인다. 그렇다면 성운이 아닌 걸까?',
+     ch:[{t:'성운이 맞다 — 뒤의 별빛을 가로막아 어둡게 보일 뿐이다',ok:1},
+         {t:'성운이 아니다 — 빛나지 않으므로 천체가 아니다',ok:0},
+         {t:'성단이다 — 별이 가려져 있을 뿐이다',ok:0}],
+     why:'성운은 <b>성간 물질이 모인 천체</b>입니다. 밝든 어둡든 성운이에요.'}
+  ]}
+};
+
+const GAME_QS=[
+  {id:"q1",
+   difficulty:"하",
+   intent:"관측 사진의 겉모습(구름처럼 퍼짐 vs 별이 무리 지음)만 보고 성운과 성단을 갈라내고, 관측한 별자리를 근거로 우리은하 소속 여부까지 판단할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 236\" role=\"img\" aria-label=\"천체 관측 프로그램으로 같은 배율에서 본 두 천체. 왼쪽 (가)는 궁수자리 부근에서 관측한 것으로, 붉은 기운이 구름처럼 넓게 번져 있어 낱낱의 별로 나뉘어 보이지 않는다. 오른쪽 (나)는 황소자리 부근에서 관측한 것으로, 점처럼 보이는 노란 별 열댓 개가 한곳에 무리 지어 모여 있고 그 주위는 어둡다.\"><defs><radialGradient id=\"q1cloud\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0%\" stop-color=\"#ff9fbe\" stop-opacity=\"0.85\"/><stop offset=\"55%\" stop-color=\"#ff9fbe\" stop-opacity=\"0.32\"/><stop offset=\"100%\" stop-color=\"#ff9fbe\" stop-opacity=\"0\"/></radialGradient></defs><rect x=\"0\" y=\"0\" width=\"560\" height=\"236\" fill=\"#070b18\"/><text x=\"280\" y=\"26\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" fill=\"#c6d2ee\">천체 관측 프로그램으로 같은 배율에서 관측한 두 천체</text><rect x=\"24\" y=\"42\" width=\"248\" height=\"130\" rx=\"10\" fill=\"#0a0f22\" stroke=\"#33406e\" stroke-width=\"1.6\"/><rect x=\"288\" y=\"42\" width=\"248\" height=\"130\" rx=\"10\" fill=\"#0a0f22\" stroke=\"#33406e\" stroke-width=\"1.6\"/><ellipse cx=\"148\" cy=\"107\" rx=\"84\" ry=\"46\" fill=\"url(#q1cloud)\"/><ellipse cx=\"120\" cy=\"94\" rx=\"44\" ry=\"28\" fill=\"url(#q1cloud)\"/><ellipse cx=\"180\" cy=\"120\" rx=\"42\" ry=\"26\" fill=\"url(#q1cloud)\"/><circle cx=\"118\" cy=\"100\" r=\"1.6\" fill=\"#ffffff\" opacity=\"0.7\"/><circle cx=\"166\" cy=\"113\" r=\"1.4\" fill=\"#ffffff\" opacity=\"0.65\"/><circle cx=\"140\" cy=\"129\" r=\"1.5\" fill=\"#ffffff\" opacity=\"0.55\"/><circle cx=\"374\" cy=\"104\" r=\"2.4\" fill=\"#ffd166\"/><circle cx=\"392\" cy=\"88\" r=\"3\" fill=\"#ffd166\"/><circle cx=\"416\" cy=\"82\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"434\" cy=\"96\" r=\"3.4\" fill=\"#ffd166\"/><circle cx=\"398\" cy=\"104\" r=\"3.8\" fill=\"#ffd166\"/><circle cx=\"420\" cy=\"106\" r=\"3\" fill=\"#ffd166\"/><circle cx=\"441\" cy=\"113\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"386\" cy=\"119\" r=\"3\" fill=\"#ffd166\"/><circle cx=\"408\" cy=\"125\" r=\"3.4\" fill=\"#ffd166\"/><circle cx=\"429\" cy=\"129\" r=\"2.8\" fill=\"#ffd166\"/><circle cx=\"449\" cy=\"124\" r=\"2.4\" fill=\"#ffd166\"/><circle cx=\"452\" cy=\"101\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"412\" cy=\"141\" r=\"3\" fill=\"#ffd166\"/><circle cx=\"391\" cy=\"140\" r=\"2.4\" fill=\"#ffd166\"/><text x=\"148\" y=\"196\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ffffff\">(가)</text><text x=\"412\" y=\"196\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#ffffff\">(나)</text><text x=\"148\" y=\"220\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">궁수자리 부근에서 관측</text><text x=\"412\" y=\"220\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">황소자리 부근에서 관측</text></svg>",
+   stem:"그림은 천체 관측 프로그램으로 <b>같은 배율</b>에서 관측한 두 천체 <b>(가)</b>와 <b>(나)</b>의 모습이다.<br>(가)와 (나)에 대한 설명으로 옳은 것은?",
+   ch:[{t:"(가)는 성간 물질이 모여 구름처럼 보이는 천체이다.",ok:1},{t:"(나)는 성간 물질이 모여 이루어진 천체이다.",ok:0},{t:"(가)는 수많은 별이 무리를 이루고 있는 천체이다.",ok:0},{t:"(가)와 (나)는 모두 우리은하 밖에 있는 천체이다.",ok:0},{t:"(가)가 있는 자리는 별도 성간 물질도 없는 텅 빈 공간이다.",ok:0}],
+   why:"<b>① 옳다.</b> (가)는 낱낱의 별로 나뉘어 보이지 않고 붉은 기운이 구름처럼 번져 있다. 이는 별과 별 사이에 퍼져 있던 <b>성간 물질(가스·티끌)이 모여 구름처럼 보이는 천체</b>, 곧 <b>성운</b>이다.<br><b>② 틀리다.</b> (나)는 점처럼 보이는 별 여러 개가 한곳에 무리 지어 있으므로 <b>성단</b>이다. 성단은 성간 물질이 아니라 <b>별</b>이 모인 천체다.<br><b>③ 틀리다.</b> ②·③은 성운과 성단을 서로 <b>맞바꾼</b> 설명이다. 가르는 잣대는 '무엇이 모여 있는가'이다.<br><b>④ 틀리다.</b> (가)는 궁수자리, (나)는 황소자리 부근에서 찾은 천체다. 이런 별자리를 길잡이로 삼아 찾는 성운·성단은 모두 <b>우리은하 안</b>의 천체다. 우리은하 밖의 천체(안드로메다 은하 등)가 섞여 들어오지 않았는지 확인해야 한다.<br><b>⑤ 틀리다.</b> 오히려 이 관측이 보여 주는 것은 <b>별과 별 사이가 비어 있지 않다</b>는 사실이다. 검게 보이던 자리에도 성간 물질이 퍼져 있다."},
+
+  {id:"q2",
+   difficulty:"중",
+   intent:"네 천체의 관측 기록을 읽어 성운·성단을 갈라내고, 어둡게 보이는 것도 성운이라는 판단과 '같은 별자리에서 찾았다고 같은 갈래는 아니다'라는 판단을 함께 적용할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 224\" role=\"img\" aria-label=\"관측 기록표. 천체 A는 궁수자리 부근에서 붉은빛이 구름처럼 넓게 퍼져 보이고, 천체 B는 오리온자리 부근에서 밝은 바탕 앞에 검은 그림자가 서 있는 모습으로 보이며, 천체 C는 황소자리 부근에서 푸른 별 예닐곱 개가 느슨하게 모여 보이고, 천체 D는 궁수자리 부근에서 별들이 공 모양으로 빽빽하게 모여 보인다. 분류 칸은 네 천체 모두 물음표로 비어 있다.\"><rect x=\"0\" y=\"0\" width=\"560\" height=\"224\" fill=\"#070b18\"/><text x=\"280\" y=\"26\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" fill=\"#c6d2ee\">천체 관측 기록표</text><rect x=\"14\" y=\"42\" width=\"532\" height=\"30\" fill=\"#141c3a\"/><rect x=\"14\" y=\"42\" width=\"532\" height=\"166\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"1.8\"/><line x1=\"14\" y1=\"72\" x2=\"546\" y2=\"72\" stroke=\"#5b6a99\" stroke-width=\"1.8\"/><line x1=\"14\" y1=\"106\" x2=\"546\" y2=\"106\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"14\" y1=\"140\" x2=\"546\" y2=\"140\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"14\" y1=\"174\" x2=\"546\" y2=\"174\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"72\" y1=\"42\" x2=\"72\" y2=\"208\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"168\" y1=\"42\" x2=\"168\" y2=\"208\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"470\" y1=\"42\" x2=\"470\" y2=\"208\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"43\" y=\"63\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">천체</text><text x=\"120\" y=\"63\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">관측한 별자리</text><text x=\"319\" y=\"63\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">망원경으로 본 모습</text><text x=\"508\" y=\"63\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">분류</text><text x=\"43\" y=\"95\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">A</text><text x=\"120\" y=\"95\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">궁수자리</text><text x=\"178\" y=\"95\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">붉은빛이 구름처럼 넓게 퍼져 있다</text><text x=\"508\" y=\"96\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#5b6a99\">?</text><text x=\"43\" y=\"129\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">B</text><text x=\"120\" y=\"129\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">오리온자리</text><text x=\"178\" y=\"129\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">밝은 바탕 앞에 검은 그림자가 서 있다</text><text x=\"508\" y=\"130\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#5b6a99\">?</text><text x=\"43\" y=\"163\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">C</text><text x=\"120\" y=\"163\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">황소자리</text><text x=\"178\" y=\"163\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">푸른 별 예닐곱 개가 느슨하게 모여 있다</text><text x=\"508\" y=\"164\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#5b6a99\">?</text><text x=\"43\" y=\"197\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffffff\">D</text><text x=\"120\" y=\"197\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">궁수자리</text><text x=\"178\" y=\"197\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">별들이 공 모양으로 빽빽하게 모여 있다</text><text x=\"508\" y=\"198\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" fill=\"#5b6a99\">?</text></svg>",
+   stem:"표는 어느 학생이 천체 관측 프로그램으로 우리은하의 천체 <b>A~D</b>를 관측하여 기록한 것이다.<br>A~D에 대한 설명으로 옳은 것만을 〈보기〉에서 있는 대로 고른 것은?",
+   boxes:["A와 B는 모두 성간 물질이 모여 이루어진 천체이다.", "C와 D는 별이 모여 있는 모습이 서로 달라도 모두 성단으로 분류한다.", "A와 D는 같은 별자리 부근에서 찾았으므로 반드시 같은 갈래의 천체이다."],
+   boxVerdicts:[true, true, false],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄷ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>ㄱ. 옳다.</b> A는 붉은빛이 구름처럼 퍼져 보이고, B는 밝은 바탕 앞에 검은 그림자처럼 보인다. 둘 다 낱낱의 별로 나뉘어 보이지 않으므로 <b>성간 물질이 모여 이루어진 성운</b>이다. B가 검게 보이는 것은 뒤에서 오는 별빛을 가로막기 때문일 뿐이어서, 어둡다고 성운이 아닌 것은 아니다.<br><b>ㄴ. 옳다.</b> C는 별 예닐곱 개가 느슨하게, D는 별들이 공 모양으로 빽빽하게 모여 있다. 모여 있는 모습은 다르지만 둘 다 <b>수많은 별이 무리를 이룬 성단</b>이다.<br><b>ㄷ. 옳지 않다.</b> A와 D는 모두 궁수자리 부근에서 찾았지만 A는 <b>성운</b>, D는 <b>성단</b>이다. 별자리는 천체를 찾아가는 <b>길잡이</b>일 뿐이어서, 같은 별자리 쪽에서도 성운과 성단이 함께 관측될 수 있다.<br>따라서 정답은 <b>ㄱ, ㄴ</b>이다."},
+
+  {id:"q3",
+   difficulty:"중",
+   intent:"성운과 성단을 무엇으로 견주는지, 두 비교 기준을 각 천체에 바르게 짝지을 수 있는지 평가한다(기준 뒤바꿈 오개념 확인).",
+   svg:"<svg viewBox=\"0 0 560 200\" role=\"img\" aria-label=\"두 천체를 견주어 정리한 표. 천체 (가)는 성간 물질인 가스와 티끌이 모여 있고 구름처럼 퍼져 보이며, 천체 (나)는 수많은 별이 모여 있고 별이 무리 지어 보인다. 마지막 줄인 비교하는 기준 칸은 (가)가 기호 ㉠, (나)가 기호 ㉡으로 비어 있다.\"><rect x=\"0\" y=\"0\" width=\"560\" height=\"200\" fill=\"#070b18\"/><text x=\"280\" y=\"24\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" fill=\"#c6d2ee\">두 천체를 견주어 정리한 표</text><rect x=\"14\" y=\"40\" width=\"532\" height=\"30\" fill=\"#141c3a\"/><rect x=\"14\" y=\"142\" width=\"532\" height=\"36\" fill=\"#ffd166\" fill-opacity=\"0.07\"/><rect x=\"14\" y=\"40\" width=\"532\" height=\"138\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"1.8\"/><line x1=\"14\" y1=\"70\" x2=\"546\" y2=\"70\" stroke=\"#5b6a99\" stroke-width=\"1.8\"/><line x1=\"14\" y1=\"106\" x2=\"546\" y2=\"106\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"14\" y1=\"142\" x2=\"546\" y2=\"142\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"170\" y1=\"40\" x2=\"170\" y2=\"178\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"358\" y1=\"40\" x2=\"358\" y2=\"178\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"92\" y=\"61\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">구분</text><text x=\"264\" y=\"61\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffffff\">천체 (가)</text><text x=\"452\" y=\"61\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffffff\">천체 (나)</text><text x=\"92\" y=\"92\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">무엇이 모여 있나</text><text x=\"264\" y=\"92\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">성간 물질(가스·티끌)</text><text x=\"452\" y=\"92\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">수많은 별</text><text x=\"92\" y=\"128\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">겉으로 보이는 모습</text><text x=\"264\" y=\"128\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">구름처럼 퍼져 보인다</text><text x=\"452\" y=\"128\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">별이 무리 지어 보인다</text><text x=\"92\" y=\"165\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" font-weight=\"700\" fill=\"#ffd166\">비교하는 기준</text><text x=\"264\" y=\"167\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"22\" font-weight=\"700\" fill=\"#ffd166\">㉠</text><text x=\"452\" y=\"167\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"22\" font-weight=\"700\" fill=\"#ffd166\">㉡</text></svg>",
+   stem:"표는 우리은하를 이루는 두 천체 <b>(가)</b>와 <b>(나)</b>를 견주어 정리한 것이다.<br>㉠과 ㉡에 들어갈 <b>비교하는 기준</b>으로 가장 알맞은 것은?",
+   ch:[{t:"㉠ 성간 물질의 밝기 · ㉡ 별이 모여 있는 정도",ok:1},{t:"㉠ 별이 모여 있는 정도 · ㉡ 성간 물질의 밝기",ok:0},{t:"㉠ 별의 개수 · ㉡ 성간 물질의 양",ok:0},{t:"㉠ 천체까지의 거리 · ㉡ 천체의 나이",ok:0},{t:"㉠ 성간 물질의 밝기 · ㉡ 별의 색깔",ok:0}],
+   why:"먼저 표에서 (가)는 성간 물질이 모여 구름처럼 보이므로 <b>성운</b>, (나)는 수많은 별이 무리를 이루므로 <b>성단</b>임을 읽어야 한다.<br><b>① 옳다.</b> 성운은 밝게 빛나는 것도 있고 뒤의 별빛을 가려 어둡게 보이는 것도 있으므로 <b>㉠ 성간 물질의 밝기</b>가 기준이 된다. 성단은 별이 엉성하게 모인 것과 빽빽하게 모인 것이 있으므로 <b>㉡ 별이 모여 있는 정도</b>가 기준이 된다.<br><b>② 틀리다.</b> 두 기준을 그대로 <b>맞바꾼</b> 것으로, 가장 많이 나오는 실수다.<br><b>③ 틀리다.</b> 성운은 별이 아니라 성간 물질이 모인 천체이므로 '별의 개수'로 견줄 수 없고, 성단은 별의 무리이므로 '성간 물질의 양'으로 견주지 않는다.<br><b>④ 틀리다.</b> 거리와 나이는 이번 관측에서 견주기로 정한 기준이 아니다(관측 기록에는 이름과 겉으로 보이는 모습만 남긴다).<br><b>⑤ 틀리다.</b> ㉠은 맞지만 ㉡이 틀렸다. <b>두 칸이 모두 맞아야 정답</b>이다."},
+
+  {id:"q4",
+   difficulty:"상",
+   intent:"모식도의 빛 경로를 읽어 어둡게 보이는 까닭을 설명하고, 밝은 부분과 어두운 부분이 모두 같은 갈래(성운)로 기록된다는 판단까지 할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 250\" role=\"img\" aria-label=\"우리은하의 어느 곳을 옆에서 본 모식도. 왼쪽에는 성간 물질이 밝게 빛나는 넓은 부분이 있고, 그 오른쪽 앞에 성간 물질이 짙게 모인 덩어리 P가 놓여 있으며, 맨 오른쪽에 관측자인 지구가 있다. 밝은 부분에서 나온 빛 가운데 P의 위쪽과 아래쪽을 지나는 빛은 관측자에게 그대로 도달하지만, P를 향해 간 빛은 P에 막혀 관측자에게 도달하지 못한다.\"><defs><radialGradient id=\"q4glow\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0%\" stop-color=\"#ff9fbe\" stop-opacity=\"0.9\"/><stop offset=\"58%\" stop-color=\"#ff9fbe\" stop-opacity=\"0.34\"/><stop offset=\"100%\" stop-color=\"#ff9fbe\" stop-opacity=\"0\"/></radialGradient><marker id=\"q4ah\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"5\" orient=\"auto\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#ffd166\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"560\" height=\"250\" fill=\"#070b18\"/><text x=\"280\" y=\"26\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" fill=\"#c6d2ee\">우리은하의 어느 곳을 옆에서 본 모습(모식도)</text><ellipse cx=\"110\" cy=\"130\" rx=\"72\" ry=\"62\" fill=\"url(#q4glow)\"/><ellipse cx=\"272\" cy=\"130\" rx=\"38\" ry=\"46\" fill=\"#050812\" stroke=\"#5b6a99\" stroke-width=\"2\"/><text x=\"272\" y=\"139\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"24\" font-weight=\"700\" fill=\"#ffffff\">P</text><line x1=\"188\" y1=\"72\" x2=\"452\" y2=\"72\" stroke=\"#ffd166\" stroke-width=\"2\" marker-end=\"url(#q4ah)\"/><line x1=\"188\" y1=\"188\" x2=\"452\" y2=\"188\" stroke=\"#ffd166\" stroke-width=\"2\" marker-end=\"url(#q4ah)\"/><line x1=\"188\" y1=\"130\" x2=\"228\" y2=\"130\" stroke=\"#ffd166\" stroke-width=\"2\"/><line x1=\"226\" y1=\"122\" x2=\"242\" y2=\"138\" stroke=\"#ff5d6c\" stroke-width=\"2.6\"/><line x1=\"242\" y1=\"122\" x2=\"226\" y2=\"138\" stroke=\"#ff5d6c\" stroke-width=\"2.6\"/><text x=\"330\" y=\"63\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">빛</text><text x=\"330\" y=\"206\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">빛</text><circle cx=\"482\" cy=\"130\" r=\"15\" fill=\"#a9dcff\"/><text x=\"100\" y=\"224\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">밝게 빛나는 성간 물질</text><text x=\"280\" y=\"224\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">짙게 모인 성간 물질 P</text><text x=\"482\" y=\"224\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">관측자(지구)</text></svg>",
+   stem:"그림은 우리은하의 어느 곳을 옆에서 본 모습을 나타낸 모식도이다. 노란 화살표는 관측자에게 오는 빛의 경로이고, ✕는 빛이 막힌 곳이다.<br>이에 대한 설명으로 옳은 것만을 〈보기〉에서 있는 대로 고른 것은?",
+   boxes:["관측자에게 P는 주위의 밝은 부분보다 어둡게 보인다.", "P는 스스로 빛을 내지 않으므로 우리은하를 이루는 천체로 볼 수 없다.", "밝게 빛나는 부분과 P는 관측 기록판에 모두 성운으로 적어야 한다."],
+   boxVerdicts:[true, false, true],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄴ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>ㄱ. 옳다.</b> 모식도에서 P의 위쪽과 아래쪽을 지나는 빛은 관측자에게 그대로 도달하지만, P를 향한 빛은 짙게 모인 성간 물질에 막힌다(✕). 그래서 관측자에게 P는 <b>주위의 밝은 부분보다 어두운 그림자 모양</b>으로 보인다. 오리온자리의 말머리성운이 바로 이런 경우다.<br><b>ㄴ. 옳지 않다.</b> '스스로 빛을 내는가'는 천체인지 아닌지를 가르는 조건이 아니다. P는 <b>성간 물질이 모여 있는 우리은하 안의 천체</b>이며, 검게 보인다고 해서 천체에서 빠지지 않는다.<br><b>ㄷ. 옳다.</b> 성운은 '<b>성간 물질이 모여 구름처럼 보이는 천체</b>'를 뜻하므로 밝게 보이든 어둡게 보이든 모두 성운이다. 밝게 빛나는 부분도, 검게 보이는 P도 기록판에는 <b>성운</b>으로 적는다.<br>따라서 정답은 <b>ㄱ, ㄷ</b>이다."},
+
+  {id:"q5",
+   difficulty:"상",
+   intent:"맨눈으로 본 인상과 망원경 관측 결과가 어긋나는 자료에서 잘못된 분류를 찾아내고, 판단 근거까지 바르게 고를 수 있는지 평가한다(뿌옇게 보이면 성운이라는 오개념 확인).",
+   svg:"<svg viewBox=\"0 0 560 300\" role=\"img\" aria-label=\"학생 A의 천체 관측 기록 카드 세 장. 카드 ㉮는 황소자리에서 관측했고 맨눈에는 뿌옇게 한 점처럼 보이지만 망원경으로 보면 푸른 별 예닐곱 개가 느슨하게 모여 있으며 학생의 분류는 성운이다. 카드 ㉯는 전갈자리에서 관측했고 별 수십 개가 나비 날개 모양으로 흩어져 모여 있으며 학생의 분류는 성단이다. 카드 ㉰는 오리온자리에서 관측했고 붉은빛이 구름처럼 넓게 퍼져 있으며 낱낱의 별로 나뉘어 보이지 않고 학생의 분류는 성운이다.\"><defs><radialGradient id=\"q5cloud\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0%\" stop-color=\"#ff9fbe\" stop-opacity=\"0.9\"/><stop offset=\"55%\" stop-color=\"#ff9fbe\" stop-opacity=\"0.34\"/><stop offset=\"100%\" stop-color=\"#ff9fbe\" stop-opacity=\"0\"/></radialGradient></defs><rect x=\"0\" y=\"0\" width=\"560\" height=\"300\" fill=\"#070b18\"/><text x=\"280\" y=\"26\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" fill=\"#c6d2ee\">학생 A의 천체 관측 기록 카드</text><rect x=\"14\" y=\"42\" width=\"168\" height=\"238\" rx=\"12\" fill=\"#0a0f22\" stroke=\"#33406e\" stroke-width=\"1.6\"/><rect x=\"196\" y=\"42\" width=\"168\" height=\"238\" rx=\"12\" fill=\"#0a0f22\" stroke=\"#33406e\" stroke-width=\"1.6\"/><rect x=\"378\" y=\"42\" width=\"168\" height=\"238\" rx=\"12\" fill=\"#0a0f22\" stroke=\"#33406e\" stroke-width=\"1.6\"/><text x=\"98\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"21\" font-weight=\"700\" fill=\"#ffd166\">㉮</text><text x=\"280\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"21\" font-weight=\"700\" fill=\"#ffd166\">㉯</text><text x=\"462\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"21\" font-weight=\"700\" fill=\"#ffd166\">㉰</text><text x=\"98\" y=\"90\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">황소자리</text><text x=\"280\" y=\"90\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">전갈자리</text><text x=\"462\" y=\"90\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">오리온자리</text><rect x=\"24\" y=\"98\" width=\"148\" height=\"52\" rx=\"8\" fill=\"#050812\" stroke=\"#222c54\" stroke-width=\"1.2\"/><rect x=\"206\" y=\"98\" width=\"148\" height=\"52\" rx=\"8\" fill=\"#050812\" stroke=\"#222c54\" stroke-width=\"1.2\"/><rect x=\"388\" y=\"98\" width=\"148\" height=\"52\" rx=\"8\" fill=\"#050812\" stroke=\"#222c54\" stroke-width=\"1.2\"/><circle cx=\"48\" cy=\"113\" r=\"3\" fill=\"#a9dcff\"/><circle cx=\"71\" cy=\"107\" r=\"3.4\" fill=\"#a9dcff\"/><circle cx=\"93\" cy=\"119\" r=\"3\" fill=\"#a9dcff\"/><circle cx=\"64\" cy=\"134\" r=\"2.6\" fill=\"#a9dcff\"/><circle cx=\"111\" cy=\"109\" r=\"2.8\" fill=\"#a9dcff\"/><circle cx=\"127\" cy=\"131\" r=\"3.2\" fill=\"#a9dcff\"/><circle cx=\"148\" cy=\"117\" r=\"2.6\" fill=\"#a9dcff\"/><circle cx=\"234\" cy=\"112\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"244\" cy=\"124\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"253\" cy=\"108\" r=\"2.4\" fill=\"#ffd166\"/><circle cx=\"259\" cy=\"126\" r=\"2.8\" fill=\"#ffd166\"/><circle cx=\"267\" cy=\"116\" r=\"2.4\" fill=\"#ffd166\"/><circle cx=\"280\" cy=\"120\" r=\"3\" fill=\"#ffd166\"/><circle cx=\"280\" cy=\"133\" r=\"2.4\" fill=\"#ffd166\"/><circle cx=\"294\" cy=\"116\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"302\" cy=\"107\" r=\"2.4\" fill=\"#ffd166\"/><circle cx=\"308\" cy=\"126\" r=\"2.8\" fill=\"#ffd166\"/><circle cx=\"318\" cy=\"112\" r=\"2.6\" fill=\"#ffd166\"/><circle cx=\"327\" cy=\"124\" r=\"2.4\" fill=\"#ffd166\"/><ellipse cx=\"462\" cy=\"124\" rx=\"60\" ry=\"21\" fill=\"url(#q5cloud)\"/><ellipse cx=\"444\" cy=\"116\" rx=\"33\" ry=\"14\" fill=\"url(#q5cloud)\"/><text x=\"24\" y=\"172\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">맨눈에는 뿌옇게</text><text x=\"24\" y=\"190\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">한 점처럼 보이나,</text><text x=\"24\" y=\"208\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">망원경으로 보면</text><text x=\"24\" y=\"226\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">푸른 별 예닐곱 개가</text><text x=\"24\" y=\"244\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">느슨하게 모여 있음</text><text x=\"206\" y=\"172\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">별 수십 개가 나비</text><text x=\"206\" y=\"190\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">날개 모양으로</text><text x=\"206\" y=\"208\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">흩어져 모여 있음</text><text x=\"388\" y=\"172\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">붉은빛이 구름처럼</text><text x=\"388\" y=\"190\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">넓게 퍼져 있고,</text><text x=\"388\" y=\"208\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">낱낱의 별로 나뉘어</text><text x=\"388\" y=\"226\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#c6d2ee\">보이지 않음</text><line x1=\"24\" y1=\"256\" x2=\"172\" y2=\"256\" stroke=\"#222c54\" stroke-width=\"1.2\"/><line x1=\"206\" y1=\"256\" x2=\"354\" y2=\"256\" stroke=\"#222c54\" stroke-width=\"1.2\"/><line x1=\"388\" y1=\"256\" x2=\"536\" y2=\"256\" stroke=\"#222c54\" stroke-width=\"1.2\"/><text x=\"24\" y=\"274\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">학생의 분류 → <tspan fill=\"#ffffff\" font-weight=\"700\">성운</tspan></text><text x=\"206\" y=\"274\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">학생의 분류 → <tspan fill=\"#ffffff\" font-weight=\"700\">성단</tspan></text><text x=\"388\" y=\"274\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">학생의 분류 → <tspan fill=\"#ffffff\" font-weight=\"700\">성운</tspan></text></svg>",
+   stem:"카드는 학생 A가 우리은하의 천체 <b>㉮·㉯·㉰</b>를 관측하고 기록한 것이다.<br>학생 A가 <b>잘못 분류한 천체</b>와 그렇게 판단한 까닭으로 옳은 것은?",
+   ch:[{t:"㉮ — 망원경으로 보면 별 하나하나가 무리를 이루고 있으므로 성단이다",ok:1},{t:"㉮ — 맨눈에 뿌옇게 한 점처럼 보이므로 성간 물질이 모인 성운이다",ok:0},{t:"㉯ — 별이 일정한 모양 없이 흩어져 있으므로 성운이다",ok:0},{t:"㉰ — 붉게 밝은 빛을 내고 있으므로 별이 모인 성단이다",ok:0},{t:"㉰ — 낱낱의 별로 나뉘어 보이지 않으므로 우리은하 밖의 천체이다",ok:0}],
+   why:"<b>① 옳다.</b> ㉮는 <b>맨눈에는 뿌옇게 한 점</b>으로 보이지만, 망원경으로 보면 <b>푸른 별 예닐곱 개가 느슨하게 무리 지어</b> 있다. 성간 물질이 아니라 <b>별</b>이 모여 있으므로 <b>성단</b>이다(황소자리의 플레이아데스가 이런 천체다). 학생 A가 '성운'이라 적은 것이 잘못이고, 그 까닭까지 바르게 밝힌 것은 ①뿐이다.<br><b>② 틀리다.</b> 잘못 분류한 카드(㉮)는 맞게 골랐지만, 이어지는 까닭이 오히려 학생의 분류를 <b>옳다고 두둔</b>하고 있어 앞뒤가 맞지 않는다. '뿌옇게 보이니 성운'이라는 판단이 바로 이 문항이 노리는 <b>오개념</b>이다. 겉이 뿌옇게 보이는지가 아니라 <b>무엇이 모여 있는지</b>로 갈라야 한다.<br><b>③ 틀리다.</b> ㉯는 별 수십 개가 모여 있으므로 성단이 맞다. 별이 늘어선 모양이 규칙적인지 아닌지는 성운·성단을 가르는 기준이 아니다.<br><b>④ 틀리다.</b> ㉰는 붉은빛이 구름처럼 퍼져 있고 낱낱의 별로 나뉘지 않으므로 성운이 맞다. 밝게 빛난다고 해서 별의 무리인 것은 아니다(성운도 밝게 빛날 수 있다).<br><b>⑤ 틀리다.</b> ㉰는 오리온자리 부근에서 관측되는 <b>우리은하 안</b>의 천체다."}
+];
+
+/* ── 엔진 ── */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TAU=Math.PI*2;
+const TABS=['meet','observe','record','compare','check','beyond'];
+const CS=getComputedStyle(document.documentElement);
+const CV=k=>CS.getPropertyValue('--'+k).trim();
+
+function setBg(tab){
+  const L=$('#bgLayer'); if(!L)return;
+  const img=BG_IMAGES[tab]||(tab==='cover'?BG_IMAGES.meet:'');
+  L.style.opacity='0';
+  setTimeout(()=>{L.style.backgroundImage=img?`url("${img}")`:(BG_FALLBACK[tab]||BG_FALLBACK.meet);L.style.opacity='1';},150);
+}
+const A={ctx:null,
+  ensure(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+    if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume();return this.ctx;},
+  blip(f=600,d=.08,type='sine',vol=.15){const c=this.ensure();if(!c)return;
+    const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(c.destination);
+    const t=c.currentTime;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);
+    g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.03);},
+  correct(){this.blip(660,.11);setTimeout(()=>this.blip(880,.13),85);setTimeout(()=>this.blip(1170,.18),190);},
+  wrong(){this.blip(200,.2,'sawtooth',.1);setTimeout(()=>this.blip(150,.24,'sawtooth',.08),130);},
+  pop(){this.blip(440,.05,'triangle',.13);},
+  win(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.blip(f,.22,'sine',.15),i*110));}};
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
+
+let S=load()||{tab:'meet',visited:{},con:'sag',seenCon:{},rec:{},cloze:{},mini:{},essay:'',best:0,medals:{}};
+S.visited=S.visited||{};S.seenCon=S.seenCon||{};S.rec=S.rec||{};S.cloze=S.cloze||{};S.mini=S.mini||{};
+S.medals=S.medals||{};S.essay=S.essay||'';S.con=S.con||'sag';
+let CLOZE_TOTAL=0;
+function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
+const recCount=()=>Object.keys(S.rec).length;
+
+function progChecks(){
+  return [
+    {label:'1단계 열어 보기',            ok:!!S.visited.meet},
+    {label:'2단계 · 네 별자리 모두 보기', ok:Object.keys(S.seenCon).length>=CONS.length},
+    {label:'3단계 · 천체 6개 모두 기록',  ok:recCount()>=OBJECTS.length},
+    {label:'4단계 · 빈칸 모두 채우기',    ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
+    {label:'4단계 · 비교 분석 답쓰기',    ok:(S.essay||'').trim().length>=20},
+    {label:'4단계 · 가려내기 퀴즈',       ok:!!S.mini.compare},
+    {label:'5단계 · 확인 문제 완주',      ok:S.best>0}
+  ];
+}
+function updateProgress(){
+  const c=progChecks(), pct=Math.round(c.filter(x=>x.ok).length/c.length*100);
+  $('#progBar').style.width=pct+'%';$('#progPct').textContent=pct+'%';
+  const ul=$('#progItems');
+  if(ul)ul.innerHTML=c.map(x=>`<li class="${x.ok?'on':''}"><span class="mk">${x.ok?'✔':'○'}</span>${x.label}</li>`).join('');
+  const done={meet:!!S.visited.meet, observe:Object.keys(S.seenCon).length>=CONS.length,
+    record:recCount()>=OBJECTS.length,
+    compare:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL&&(S.essay||'').trim().length>=20&&!!S.mini.compare,
+    check:S.best>0, beyond:!!S.visited.beyond};
+  $$('#tabNav button').forEach(b=>b.classList.toggle('done',!!done[b.dataset.tab]));
+}
+let toastT;
+function toast(msg,kind=''){const el=$('#toast');el.innerHTML=msg;el.className='show '+kind;
+  clearTimeout(toastT);toastT=setTimeout(()=>el.className='',2300);}
+
+function showTab(id,noScroll){
+  if(!TABS.includes(id))return;
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+id).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  setBg(id);S.tab=id;S.visited[id]=true;save();updateProgress();
+  if(id==='record')renderRec();
+  if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+}
+$('#tabNav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){A.ensure();showTab(b.dataset.go);}});
+
+function refreshCover(){
+  const any=progChecks().some(x=>x.ok);
+  $('#coverSaved').style.display=any?'inline-flex':'none';
+  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 🔭`:'관측 시작하기 🔭';
+}
+$('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
+  document.body.classList.remove('cover-on');A.ensure();A.pop();showTab(S.tab||'meet',true);});
+$('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classList.remove('hide');
+  document.body.classList.add('cover-on');setBg('cover');});
+
+(function(){const KEY='teacherMode';
+  document.body.classList.toggle('teacher',localStorage.getItem(KEY)==='1');
+  $('#tmodeBtn').addEventListener('click',()=>{
+    const on=!document.body.classList.contains('teacher');
+    document.body.classList.toggle('teacher',on);localStorage.setItem(KEY,on?'1':'0');
+    toast(on?'교사 모드 ON — 교실 연결 노트가 보입니다 🧑‍🏫':'교사 모드 OFF — 학생 화면입니다 🎒');});})();
+
+(function(){const wrap=$('#progWrap'),list=$('#progList');
+  wrap.addEventListener('click',()=>list.classList.toggle('show'));
+  document.addEventListener('click',e=>{if(!list.contains(e.target)&&!wrap.contains(e.target))list.classList.remove('show');});})();
+
+/* 그림 슬롯 — 동적으로 생긴 것도 처리할 수 있게 함수로 */
+function mountFigs(root=document){
+  $$('[data-fig]',root).forEach(el=>{
+    if(el.dataset.mounted)return; el.dataset.mounted='1';
+    const key=el.dataset.fig,src=FIGS[key]||'',alt=el.dataset.alt||'',cap=el.dataset.cap||'';
+    const slot=()=>{el.classList.add('slot');
+      el.innerHTML=`<div class="fe">🖼️</div><div class="fn">${FIGS[key]||'img/'+key+'.jpg'}</div><div class="fd">${alt}</div>`;};
+    if(!src){slot();return;}
+    const im=new Image();
+    im.onload=()=>{el.classList.remove('slot');
+      el.innerHTML=`<img src="${src}" alt="${alt.replace(/"/g,'&quot;')}" loading="lazy">`+(cap?`<figcaption>${cap}</figcaption>`:'');};
+    im.onerror=slot;im.src=src;
+  });
+}
+
+/* ═══════ 🔭 별자리별 천체 살펴보기 + 성운/성단 판별 ═══════ */
+function buildSeg(){
+  $('#conSeg').innerHTML=CONS.map(c=>
+    `<button data-con="${c.k}" class="${c.k===S.con?'on':''} ${S.seenCon[c.k]?'seen':''}">${c.nm}</button>`).join('');
+}
+function renderObjs(){
+  const list=OBJECTS.filter(o=>o.con===S.con);
+  $('#objList').innerHTML=list.map(o=>{
+    const done=S.rec[o.id];
+    return `<div class="obj ${done?'done':''}" data-obj="${o.id}">
+      <div class="oname">✨ ${o.nm}${done?' <span class="otag">기록됨</span>':''}</div>
+      <figure class="fig" data-fig="${o.fig}" data-alt="${o.nm} — ${o.look}"></figure>
+      <div class="olook">${o.look}</div>
+      <div class="oq">이 천체는 성운일까, 성단일까?</div>
+      <div class="opick">
+        <button data-kind="성운">☁️ 성운</button>
+        <button data-kind="성단">✨ 성단</button>
+      </div>
+      <div class="ofb"></div>
+    </div>`;}).join('');
+  mountFigs($('#objList'));
+  $$('.obj',$('#objList')).forEach(card=>{
+    const o=OBJECTS.find(x=>x.id===card.dataset.obj);
+    const fb=$('.ofb',card);
+    const finish=()=>{
+      $$('.opick button',card).forEach(b=>{b.classList.add('locked');
+        if(b.dataset.kind===o.kind)b.classList.add('correct');});
+      card.classList.add('done');
+      fb.className='ofb show'; fb.innerHTML=`<b>${o.kind}</b> — ${o.why}`;
+    };
+    if(S.rec[o.id]){finish();return;}
+    let busy=false;
+    card.addEventListener('click',e=>{
+      const b=e.target.closest('.opick button'); if(!b||busy||S.rec[o.id])return;
+      if(b.dataset.kind===o.kind){
+        A.correct(); S.rec[o.id]={nm:o.nm,con:CONS.find(c=>c.k===o.con).nm,look:o.look,kind:o.kind};
+        save(); finish(); updateProgress(); renderObjs2();
+        const n=recCount();
+        toast(n>=OBJECTS.length?'여섯 천체를 모두 기록했어요! 기록판을 보러 가 볼까요 📋':`기록 ${n}/${OBJECTS.length}`, n>=OBJECTS.length?'good':'');
+      }else{
+        busy=true; b.classList.add('wrong'); A.wrong();
+        fb.className='ofb show'; fb.innerHTML='다시 볼까요 — <b>구름처럼 퍼져</b> 있나요, <b>별이 무리 지어</b> 있나요?';
+        setTimeout(()=>{busy=false;b.classList.remove('wrong');},1400);
+      }
+    });
+  });
+}
+function renderObjs2(){ /* 기록됨 표시만 갱신 */ $('#obsMsg').textContent=
+  `아직 살펴본 별자리: ${Object.keys(S.seenCon).length} / ${CONS.length} · 기록한 천체: ${recCount()} / ${OBJECTS.length}`; }
+$('#conSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  S.con=b.dataset.con; S.seenCon[b.dataset.con]=1; save();
+  A.blip(520+CONS.findIndex(c=>c.k===b.dataset.con)*70,.06,'triangle',.11);
+  buildSeg(); renderObjs(); renderObjs2(); updateProgress();
+  if(Object.keys(S.seenCon).length===CONS.length)toast('네 별자리를 모두 훑어봤어요 🔭','good');
+});
+
+/* ═══════ 📋 관측 기록판 ═══════ */
+function renderRec(){
+  const t=$('#recTable'), ids=Object.keys(S.rec);
+  if(!ids.length){
+    t.innerHTML='<tr><td class="empty" colspan="4">아직 기록이 없어요. 2단계에서 천체를 성운·성단으로 가려 보세요.</td></tr>';
+  }else{
+    t.innerHTML='<tr><th>천체 이름</th><th>위치</th><th>겉으로 보이는 모습</th><th>분류</th></tr>'+
+      OBJECTS.filter(o=>S.rec[o.id]).map(o=>{const r=S.rec[o.id];
+        return `<tr><td><b>${r.nm}</b></td><td>${r.con} 부근</td><td style="text-align:left">${r.look}</td>
+          <td class="${r.kind==='성운'?'kind-n':'kind-d'}">${r.kind}</td></tr>`;}).join('');
+  }
+  const n=recCount();
+  $('#recMsg').innerHTML = n>=OBJECTS.length
+    ? '✅ 여섯 천체를 모두 기록했어요. 이제 4단계에서 <b>비교 분석</b>을 해 봅시다.'
+    : `${n}/${OBJECTS.length} 기록됨 — 여섯 천체를 모두 기록하면 4단계에서 비교 분석을 할 수 있어요.`;
+}
+$('#recCopy').addEventListener('click',async()=>{
+  if(!recCount())return toast('기록이 없어요','bad');
+  const text=['천체 이름\t위치\t겉모습\t분류'].concat(
+    OBJECTS.filter(o=>S.rec[o.id]).map(o=>{const r=S.rec[o.id];
+      return `${r.nm}\t${r.con} 부근\t${r.look}\t${r.kind}`;})).join('\n');
+  try{await navigator.clipboard.writeText(text);toast('기록표를 복사했어요 — 공유 플랫폼에 붙여넣기 📋','good');}
+  catch(e){toast('복사에 실패했어요','bad');}
+});
+$('#recClear').addEventListener('click',()=>{S.rec={};save();renderRec();renderObjs();renderObjs2();updateProgress();A.pop();});
+
+/* 빈칸 */
+(function(){
+  const all=$$('.cloze');CLOZE_TOTAL=all.length;
+  all.forEach((cz,i)=>{
+    const reveal=silent=>{
+      if(cz.classList.contains('revealed'))return;
+      cz.textContent=cz.dataset.ans;
+      const col=CV(cz.dataset.c||'accent');cz.style.color=col;cz.style.borderColor=col;
+      cz.classList.add('revealed');if(!silent)A.blip(720,.08);
+      S.cloze[i]=1;save();
+      const set=cz.closest('.cloze-set');
+      if(set&&$$('.cloze',set).every(x=>x.classList.contains('revealed'))){set.classList.add('complete');if(!silent)A.pop();}
+      updateProgress();};
+    cz.addEventListener('click',()=>reveal(false));
+    if(S.cloze[i])reveal(true);
+  });
+})();
+
+/* 미니 퀴즈 */
+(function(){
+  function build(host,key){
+    const set=QUIZ_SETS[key];if(!set)return;
+    let done=0;const total=set.qs.length;
+    host.innerHTML=`<div class="mq-head"><span class="mq-badge">✅ 개념 확인</span>
+      <span style="font-weight:700">${set.title}</span><span class="mq-prog" data-prog>0/${total}</span></div>`;
+    set.qs.forEach((q,qi)=>{
+      const qEl=document.createElement('div');qEl.className='mq-q';
+      qEl.innerHTML=`<div class="mq-text"><span class="qn">Q${qi+1}.</span>${q.q}</div><div class="mq-choices"></div><div class="mq-fb"></div>`;
+      const cw=$('.mq-choices',qEl),fb=$('.mq-fb',qEl);
+      let answered=false,solved=false;
+      q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+        const c=q.ch[idx];
+        const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+        b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
+        b.addEventListener('click',()=>{
+          if(answered||solved)return;answered=true;
+          if(c.ok){solved=true;b.classList.add('correct');
+            $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+            A.correct();fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;done++;upd();}
+          else{b.classList.add('wrong');A.wrong();
+            fb.className='mq-fb show no';fb.innerHTML=`<b>다시 생각해 볼까요.</b> ${q.why}`;
+            setTimeout(()=>{answered=false;b.classList.remove('wrong');},1600);}});
+        cw.appendChild(b);});
+      host.appendChild(qEl);});
+    const d=document.createElement('div');d.className='mq-done';d.innerHTML='🏅 개념 확인 완료!';host.appendChild(d);
+    function upd(){const p=host.querySelector('[data-prog]');if(p)p.textContent=done+'/'+total;
+      if(done>=total){host.classList.add('alldone');
+        if(!S.mini[key]){S.mini[key]=1;save();updateProgress();toast('개념 확인 완료! ✅','good');}}}
+  }
+  $$('.miniquiz').forEach(h=>build(h,h.dataset.quiz));
+})();
+
+/* 서술형 */
+(function(){
+  const ta=$('#essay'),mark=$('#essaySaved');let t;
+  ta.value=S.essay||'';
+  ta.addEventListener('input',()=>{S.essay=ta.value;save();updateProgress();
+    mark.classList.add('on');clearTimeout(t);t=setTimeout(()=>mark.classList.remove('on'),1400);});
+  $('#ansBtn').addEventListener('click',()=>{
+    const box=$('#modelAns'),open=box.classList.toggle('show');
+    $('#ansBtn').textContent=open?'모범 답안 접기':'모범 답안 확인하기';
+    if(open){A.pop();if((S.essay||'').trim().length<20)toast('먼저 <b>내 문장으로 써 본 뒤</b>에 보면 훨씬 남아요 ✍️');}});
+})();
+
+/* 확인 문제 */
+(function(){
+  const body=$('#gameBody');let i=0,score=0,lives=3,order=[];
+  function medal(k){if(S.medals[k])return;S.medals[k]=1;save();
+    const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');}
+  function paint(){Object.keys(S.medals).forEach(k=>{const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');});}
+  function hud(){$('#score').textContent=score;
+    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
+  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  function next(){
+    if(i>=order.length||lives<=0)return end();
+    hud();const q=GAME_QS[order[i]];
+    const bg=(q.boxes&&q.boxes.length)
+      ? '<div class="bogi" id="bogiBox"><div class="bogi-t">보 기</div><ul>'
+        + q.boxes.map(function(b,n){return '<li data-bi="'+n+'"><span class="bk">'+'\u3131\u3134\u3137\u3139'[n]+'</span><span>'+b+'</span><span class="bv"></span></li>';}).join('')
+        + '</ul></div>'
+      : '';
+    body.innerHTML='<div class="mq-q" style="margin-top:0">'
+      + '<div class="mq-meta"><span class="mq-lv" data-lv="'+(q.difficulty||'중')+'">난이도 '+(q.difficulty||'중')+'</span>'
+      + (q.boxes&&q.boxes.length?'<span class="mq-lv" style="color:var(--accent2)">&lt;보기&gt;형</span>':'')
+      + (q.svg?'<span class="mq-lv" style="color:var(--ink-mute)">자료 해석</span>':'') + '</div>'
+      + (q.svg?'<div class="qfig">'+q.svg+'</div>':'')
+      + '<div class="mq-text" style="font-size:18px"><span class="qn">Q'+(i+1)+'.</span>'+(q.stem||q.q)+'</div>'
+      + bg
+      + '<div class="mq-choices"></div><div class="mq-fb"></div>'
+      + '<div class="mq-next"><button class="btn primary sm" id="qNext">다음 문항 →</button></div></div>';
+    const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
+    q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
+      const c=q.ch[idx];
+      const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
+      b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
+      b.addEventListener('click',()=>{
+        if(locked)return;locked=true;
+        $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
+        if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
+          if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
+          fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;}
+        else{b.classList.add('wrong');A.wrong();lives--;
+          $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
+          fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
+        const bx=$('#bogiBox');
+        if(bx&&q.boxVerdicts){$$('li',bx).forEach(function(li,n){
+          const t=!!q.boxVerdicts[n];li.classList.add(t?'t':'f');
+          const v=$('.bv',li);if(v)v.textContent=t?'옳음':'옳지 않음';});bx.classList.add('reveal');}
+        const nx=$('.mq-next',body);if(nx){nx.classList.add('show');
+          const nb=$('#qNext');if(nb){nb.textContent=(i+1>=order.length||lives<=0)?'결과 보기 →':'다음 문항 →';
+            nb.addEventListener('click',function(){A.pop();i++;next();
+              scrollTo({top:document.querySelector('#panel-check').offsetTop-70,behavior:reduceMotion?'auto':'smooth'});});}}
+        hud();});
+      cw.appendChild(b);});}
+  function end(){
+    const perfect=score===GAME_QS.length*20;
+    if(perfect)medal('perfect');
+    if(score>(S.best||0)){S.best=score;save();}
+    updateProgress();perfect?A.win():A.pop();
+    body.innerHTML=`<div style="text-align:center;padding:26px 10px">
+      <div style="font-size:44px">${perfect?'🏆':(lives>0?'🎉':'💪')}</div>
+      <h3 class="card-t" style="margin:10px 0 6px">${perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?')}</h3>
+      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${GAME_QS.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
+      <button class="btn primary" id="gameAgain">다시 풀기</button></div>`;
+    $('#gameAgain').addEventListener('click',start);}
+  $('#gameStart').addEventListener('click',start);paint();
+})();
+
+/* 별 배경 */
+(function(){
+  const cv=$('#stars'),ctx=cv.getContext('2d');
+  let stars=[],w=0,h=0,t=0;
+  function build(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    w=innerWidth;h=innerHeight;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(130,w*h/10500));
+    stars=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.3,
+      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#cfe0ff','#d6c2ff','#ffc2d6'][i%4]}));}
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.6:(.35+.4*Math.sin(t*st.s+st.p));
+      ctx.fillStyle=st.c;ctx.shadowColor=st.c;ctx.shadowBlur=st.r*3.3;
+      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,TAU);ctx.fill();});
+    ctx.globalAlpha=1;ctx.shadowBlur=0;
+    if(!reduceMotion){t+=.013;requestAnimationFrame(draw);}}
+  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{build();if(reduceMotion)draw();},200);});
+  build();draw();
+})();
+
+(function init(){
+  mountFigs();
+  buildSeg(); renderObjs(); renderObjs2(); renderRec();
+  updateProgress();
+  const start=TABS.includes(S.tab)?S.tab:'meet';
+  $$('.panel').forEach(p=>p.classList.remove('show'));
+  $('#panel-'+start).classList.add('show');
+  $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===start));
+  S.tab=start;document.body.classList.add('cover-on');refreshCover();setBg('cover');
+})();
+</script>
+</body>
+</html>

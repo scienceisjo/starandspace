@@ -313,8 +313,133 @@ textarea::placeholder{color:var(--ink-mute)}
   .cloze{color:#111!important;border-style:solid}.cloze::after{content:none}
 }
 </style>
+
+<style id="board-v2">
+/* ═══════════════════════════════════════════════════════════
+   전자칠판 판 v2 — 글자 크기·명암비 상향
+   교실 앞 화면에서 뒷자리까지 읽히도록 본문을 키우고,
+   배경과 붙어 보이던 회색 계열 글자색의 명암비를 올렸습니다.
+   (--ink-mute 4.0:1 → 7.7:1 / --ink-dim 8.6:1 → 12.0:1)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --line:#33406e; --line-soft:#28345e;
+  --ink:#f2f6ff; --ink-dim:#c6d2ee; --ink-mute:#9aa8cf;
+  --ok:#5eec92; --danger:#ff7a86;
+}
+body{line-height:1.68}
+b.k{color:#fff}
+
+/* 본문 계열 */
+.lead{font-size:clamp(17px,2.5vw,20px)}
+.help{font-size:15px;line-height:1.6}
+.honest{font-size:14px;line-height:1.6}
+.note{font-size:16px;line-height:1.65;padding:15px 17px;border-left-width:4px}
+.note .ic{font-size:19px}
+.badge{font-size:14px;padding:6px 13px}
+.pill{font-size:15px;padding:7px 14px}
+.term .nm{font-size:19px}
+.term .de{font-size:15px;line-height:1.6}
+.use .u-t{font-size:19px}
+.use .u-d{font-size:15.5px;line-height:1.6}
+h3.card-t{font-size:22px}
+.stepline .swhat{font-size:14.5px}
+.stepline .sbadge{font-size:13px}
+.eyebrow{font-size:13px}
+.fig figcaption{font-size:14.5px;line-height:1.6}
+.fig.slot .fn{font-size:13px}
+.fig.slot .fd{font-size:14px}
+
+/* 상호작용 */
+.btn{font-size:16.5px;padding:13px 22px}
+.btn.sm{font-size:15px;padding:9px 16px}
+nav.tabs button{font-size:15.5px;padding:9px 15px}
+nav.tabs button .sn{width:21px;height:21px;font-size:12px}
+.brand b{font-size:18px}
+.brand .sub{font-size:12.5px}
+.progress-mini .pct{font-size:13.5px}
+.choice{font-size:17px;border-width:2px;padding:15px 17px}
+.choice .key{width:30px;height:30px;font-size:15px}
+.explain{font-size:16px;line-height:1.68}
+.explain .why{font-size:14.5px}
+.cloze-line{font-size:17.5px;line-height:2.1}
+.cloze{border-width:2px;padding:3px 12px;min-width:56px}
+.cloze-hint{font-size:14.5px}
+.cloze-done{font-size:15px}
+textarea{font-size:16.5px;border-width:2px}
+.savemark{font-size:14px}
+.checkline{font-size:16.5px}
+.doit li{font-size:16.5px;line-height:1.6}
+.dtable{font-size:15.5px}
+.dtable th{font-size:14px;padding:11px 12px}
+.dtable td{padding:10px 12px}
+.dtable .empty{font-size:15px}
+.prog-list{width:290px}
+.prog-list li{font-size:14.5px}
+.prog-list h4{font-size:17px}
+#toast{font-size:16px;padding:14px 22px;border-width:2px}
+.medal{font-size:14.5px}
+.medal .e{font-size:20px}
+.score-box .num{font-size:20px}
+.score-box .lab2{font-size:13px}
+.lives .h{font-size:24px}
+.steps-card li{font-size:16.5px}
+.steps-card h3{font-size:20px}
+.cover-sub{font-size:clamp(16px,2.7vw,19px)}
+.cover-hint{font-size:14px}
+
+/* 실험실 조작판 */
+.simctl h4,.lab h3,.simlab h3{font-size:18px}
+.ctl label{font-size:15px}
+.ctl label .val{font-size:16px}
+.readout .r .lab2{font-size:13px}
+.readout .r .v{font-size:22px}
+.readout .r .v small{font-size:13px}
+.dl-head h4{font-size:18px}
+input[type=range]{height:8px}
+input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
+
+/* 문항 */
+.miniquiz .mq-badge{font-size:13.5px;padding:5px 12px}
+.miniquiz .mq-prog{font-size:13.5px}
+.mq-q .mq-text{font-size:17px;line-height:1.6}
+.mq-q .mq-text .qn{font-size:12.5px}
+.mq-opt{font-size:16.5px;padding:13px 16px;border-width:2px;line-height:1.5}
+.mq-opt .k{width:26px;height:26px;font-size:13.5px}
+.mq-fb{font-size:15.5px;line-height:1.65;padding:13px 15px}
+.mq-done{font-size:16px}
+
+/* ── 수능형 문항 — 자료 · <보기> · 다음 버튼 ── */
+.qfig{background:#04070f;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;overflow-x:auto}
+.qfig svg{width:100%;height:auto;display:block;max-width:600px;margin:0 auto}
+.bogi{background:#101c38;border:1.5px solid var(--line);border-radius:12px;padding:15px 18px;margin:0 0 14px}
+.bogi-t{display:inline-block;font-weight:800;font-size:14px;color:var(--ink-dim);border:1px solid var(--line);
+  border-radius:7px;padding:2px 14px;margin-bottom:11px;letter-spacing:3px}
+.bogi ul{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.bogi li{display:flex;gap:11px;align-items:flex-start;font-size:16.5px;line-height:1.62;color:var(--ink)}
+.bogi li .bk{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:14px;
+  font-weight:800;background:#22315c;border:1px solid var(--line);color:var(--ink-dim);margin-top:2px;transition:.25s}
+.bogi li .bv{display:none;margin-left:auto;flex:none;font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:99px}
+.bogi.reveal li.t .bk{background:var(--ok);color:#06210f;border-color:transparent}
+.bogi.reveal li.f .bk{background:var(--danger);color:#2a060b;border-color:transparent}
+.bogi.reveal li .bv{display:inline-block;animation:fade .3s}
+.bogi.reveal li.t .bv{background:rgba(94,236,146,.16);color:var(--ok)}
+.bogi.reveal li.f .bv{background:rgba(255,122,134,.16);color:var(--danger)}
+.mq-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.mq-lv{font-size:13px;font-weight:800;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:#101c38}
+.mq-lv[data-lv="하"]{color:#5eec92;border-color:#2f7d51}
+.mq-lv[data-lv="중"]{color:#ffd166;border-color:#6b5a26}
+.mq-lv[data-lv="상"]{color:#ff9fbe;border-color:#8b3742}
+.mq-next{display:none;margin-top:18px;justify-content:flex-end}
+.mq-next.show{display:flex;animation:fade .3s}
+@media print{
+  .mq-next{display:none!important}
+  .qfig{background:#fff}
+  .bogi{background:#fff;border-color:#ccc}
+  .bogi li{color:#111}
+}
+</style>
 </head>
-<body>
+<body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
 
 <div id="cover">
@@ -390,7 +515,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:20px">
     <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🔥 쇳물이 알려 주는 것</h2>
-    <p class="lead" style="font-size:16px">
+    <p class="lead" style="font-size:17.5px">
       용광로에서 나온 쇳물은 처음에는 <b class="k">흰색에 가까운 색</b>을 띱니다.
       그러다 식어 가면서 <b class="t3">노란색</b>, <b class="t2">붉은색</b>으로 점차 색이 달라지죠.
       쇳물의 성분이 바뀐 게 아닙니다. 바뀐 건 <b class="k">온도</b>뿐이에요.
@@ -417,11 +542,11 @@ textarea::placeholder{color:var(--ink-mute)}
     <div class="grid c2">
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c3);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
-        <div><b class="k">별의 색과 표면 온도의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">어느 색이 뜨겁고 어느 색이 차가운지.</span></div>
+        <div><b class="k">별의 색과 표면 온도의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">어느 색이 뜨겁고 어느 색이 차가운지.</span></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#04223a;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
-        <div><b class="k">별의 색을 온도 순서대로 늘어놓을 수 있다.</b><br><span class="muted" style="font-size:14px">청색부터 적색까지 일곱 단계로.</span></div>
+        <div><b class="k">별의 색을 온도 순서대로 늘어놓을 수 있다.</b><br><span class="muted" style="font-size:16px">청색부터 적색까지 일곱 단계로.</span></div>
       </div>
     </div>
     <div class="pill-list">
@@ -457,13 +582,13 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">📘 해 보기 — 별자리 속 별들의 색 조사하기</h3>
-    <p class="lead" style="font-size:15.5px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       교과서 276쪽 활동입니다. 스마트 기기로 <b>별자리를 검색</b>해 그 별자리를 이루는 별들이
       어떤 색을 띠는지 조사해 보세요.</p>
     <ol style="margin:12px 0 0 20px;display:grid;gap:7px">
-      <li style="font-size:14.5px;color:var(--ink-dim)">검색어 예: <b class="k">천문우주지식정보 별자리 구성</b></li>
-      <li style="font-size:14.5px;color:var(--ink-dim)">별자리 그림을 내려받아 <b>별마다 색을 표시</b>합니다.</li>
-      <li style="font-size:14.5px;color:var(--ink-dim)">완성한 그림을 <b>공유 플랫폼에 올려</b> 친구들 것과 비교해 봅니다.</li>
+      <li style="font-size:16.5px;color:var(--ink-dim)">검색어 예: <b class="k">천문우주지식정보 별자리 구성</b></li>
+      <li style="font-size:16.5px;color:var(--ink-dim)">별자리 그림을 내려받아 <b>별마다 색을 표시</b>합니다.</li>
+      <li style="font-size:16.5px;color:var(--ink-dim)">완성한 그림을 <b>공유 플랫폼에 올려</b> 친구들 것과 비교해 봅니다.</li>
     </ol>
     <div class="btn-row">
       <a class="btn ghost sm" href="https://astro.kasi.re.kr/" target="_blank" rel="noopener">🇰🇷 한국천문연구원 열기</a>
@@ -494,7 +619,7 @@ textarea::placeholder{color:var(--ink-mute)}
       <div style="background:#ff6b5c">적색</div>
     </div>
     <div class="spec-cap"><span class="t1">← 표면 온도 높다</span><span class="t2">표면 온도 낮다 →</span></div>
-    <p class="lead" style="font-size:16px;margin-top:14px">
+    <p class="lead" style="font-size:17.5px;margin-top:14px">
       큰개자리의 가장 밝은 별 <b class="k">시리우스</b>는 백색을, 오리온자리의 <b class="k">베텔게우스</b>는 적색을,
       같은 오리온자리의 <b class="k">리겔</b>은 청백색을 띱니다.
       지구에서 가장 가까운 별인 <b class="k">태양</b>은 황색이에요.
@@ -560,7 +685,7 @@ textarea::placeholder{color:var(--ink-mute)}
       <h3>🎯 색 순서 맞추기</h3>
       <p class="help" style="margin-top:0">가장 뜨거운 색부터 하나씩 누르면 아래 줄에 쌓입니다. 틀리면 흔들려요.</p>
       <div class="sortpool" id="sortPool"></div>
-      <div class="sortline" id="sortLine"><span class="muted" style="font-size:13px" id="sortEmpty">여기에 순서대로 쌓입니다</span></div>
+      <div class="sortline" id="sortLine"><span class="muted" style="font-size:15px" id="sortEmpty">여기에 순서대로 쌓입니다</span></div>
       <div class="sortlabel"><span class="t1">뜨거움</span><span class="t2">차가움</span></div>
       <div class="sortdone">🏅 순서를 완성했어요! 청색 → 적색이 곧 뜨거움 → 차가움입니다.</div>
       <div class="btn-row"><button class="btn ghost sm" id="sortReset">다시 하기</button></div>
@@ -597,7 +722,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">교과서 277쪽 · 사고력</span></h3>
-    <p class="lead" style="font-size:16px;margin-top:10px">
+    <p class="lead" style="font-size:17.5px;margin-top:10px">
       유리 공예를 하는 모습입니다. 녹은 유리에서 <b class="k">(가)</b> 부분은 흰색에 가깝게,
       <b class="k">(나)</b> 부분은 붉게 빛나고 있습니다. 두 부분의 온도를 비교하고, 그렇게 생각한 까닭을 써 보세요.</p>
     <figure class="fig" data-fig="glass"
@@ -650,7 +775,7 @@ textarea::placeholder{color:var(--ink-mute)}
   <div class="grid c2" style="margin-top:20px">
     <div class="card">
       <h3 class="card-t">☀️ 우주에서 본 태양은 흰색</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         우주정거장에서 찍은 태양 사진은 <b class="k">하얗습니다.</b>
         태양이 노랗게 보이는 건 지구 대기가 <b class="t1">파란빛을 더 많이 흩뿌려</b> 하늘 전체로 퍼뜨리기 때문이에요.
         파란색을 빼앗긴 나머지 빛이 우리 눈에 닿으니 노랗게 보이는 거죠.
@@ -659,12 +784,12 @@ textarea::placeholder{color:var(--ink-mute)}
     </div>
     <div class="card">
       <h3 class="card-t">🔢 궁금한 사람만 — 실제 온도</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">교과서에서는 숫자를 다루지 않지만, 대략 이 정도입니다.</p>
+      <p class="lead" style="font-size:17.5px;margin-top:8px">교과서에서는 숫자를 다루지 않지만, 대략 이 정도입니다.</p>
       <div style="display:grid;gap:7px;margin-top:12px">
-        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#6ab8ff;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">청색 — 3만 ℃ 안팎까지</span></div>
-        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#f2f5ff;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">백색 — 1만 ℃ 안팎</span></div>
-        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#ffd166;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">황색 — 6천 ℃ 안팎 (태양)</span></div>
-        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#ff6b5c;flex:none"></span><span style="font-size:14px;color:var(--ink-dim)">적색 — 3천 ℃ 안팎</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#6ab8ff;flex:none"></span><span style="font-size:16px;color:var(--ink-dim)">청색 — 3만 ℃ 안팎까지</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#f2f5ff;flex:none"></span><span style="font-size:16px;color:var(--ink-dim)">백색 — 1만 ℃ 안팎</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#ffd166;flex:none"></span><span style="font-size:16px;color:var(--ink-dim)">황색 — 6천 ℃ 안팎 (태양)</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;background:#ff6b5c;flex:none"></span><span style="font-size:16px;color:var(--ink-dim)">적색 — 3천 ℃ 안팎</span></div>
       </div>
       <p class="help">쇳물이 하얗게 보이려면 1,500 ℃쯤 되어야 합니다. 별은 그보다 훨씬 뜨겁죠.</p>
     </div>
@@ -672,7 +797,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
-    <p class="lead" style="font-size:17px;margin-top:10px">
+    <p class="lead" style="font-size:18.5px;margin-top:10px">
       <b class="k">"가장 뜨거운 별은 빨갛지 않다."</b><br><br>
       우리는 빨강을 <b>따뜻한 색</b>, 파랑을 <b>차가운 색</b>이라고 부릅니다.
       그런데 그건 온도가 아니라 <b class="k">사람의 감정</b>에 붙인 이름이었어요.
@@ -693,7 +818,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
 </main>
 <div id="toast"></div>
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
 <script>
 "use strict";
@@ -711,7 +836,7 @@ const BG_FALLBACK={
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
-const SAVE='star_color_v1';
+const SAVE='star_color_v2';
 const POE_ANSWER='b';
 const POE_WHY={
   right:'맞았어요! 별은 <b>뜨거울수록 청색</b>, 차가울수록 적색을 띱니다. 가스레인지의 파란 불꽃이 촛불의 노란 불꽃보다 뜨거운 것과 같은 이치예요.',
@@ -754,27 +879,49 @@ const QUIZ_SETS={
 };
 
 const GAME_QS=[
-  {q:'별의 색이 다양한 까닭으로 옳은 것은?',
-   ch:[{t:'별마다 표면 온도가 다르기 때문',ok:1},
-       {t:'별마다 지구로부터의 거리가 다르기 때문',ok:0},
-       {t:'별마다 밝기가 다르기 때문',ok:0}],
-   why:'색을 결정하는 것은 표면 온도입니다.'},
-  {q:'다음 중 표면 온도가 가장 높은 별의 색은?',
-   ch:[{t:'청색',ok:1},{t:'황색',ok:0},{t:'적색',ok:0}],
-   why:'청색 → 백색 → 황색 → 적색 순으로 온도가 낮아집니다.'},
-  {q:'베텔게우스는 적색을 띤다. 이 별의 표면 온도는?',
-   ch:[{t:'태양보다 낮다',ok:1},{t:'태양보다 높다',ok:0},{t:'태양과 같다',ok:0}],
-   why:'적색은 황색(태양)보다 온도가 낮습니다.'},
-  {q:'용광로 쇳물이 식으면서 색이 달라지는 현상이 알려 주는 것은?',
-   ch:[{t:'물체의 색으로 온도를 짐작할 수 있다',ok:1},
-       {t:'물체의 색으로 크기를 짐작할 수 있다',ok:0},
-       {t:'물체의 색으로 무게를 짐작할 수 있다',ok:0}],
-   why:'별의 표면 온도를 색으로 알아내는 것과 똑같은 원리입니다.'},
-  {q:'별의 색을 표면 온도가 높은 것부터 바르게 나열한 것은?',
-   ch:[{t:'청색 – 백색 – 황색 – 적색',ok:1},
-       {t:'적색 – 황색 – 백색 – 청색',ok:0},
-       {t:'황색 – 청색 – 적색 – 백색',ok:0}],
-   why:'청색 쪽이 뜨겁고 적색 쪽이 차갑습니다.'}
+  {id:"q1",
+   difficulty:"하",
+   intent:"자료에서 네 별의 색을 읽고, 별의 색과 표면 온도의 관계를 적용해 온도의 양 극단(가장 높은 별·가장 낮은 별)을 판별할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 210\" role=\"img\" aria-label=\"네 개의 별 A, B, C, D가 왼쪽부터 나란히 그려져 있다. A는 백색, B는 적색, C는 청색, D는 황색이며 네 별의 크기는 모두 같게 그려져 있다.\"><rect x=\"10\" y=\"14\" width=\"540\" height=\"182\" rx=\"14\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.6\"/><circle cx=\"70\" cy=\"104\" r=\"54\" fill=\"#ffffff\" opacity=\"0.12\"/><circle cx=\"70\" cy=\"104\" r=\"34\" fill=\"#ffffff\"/><text x=\"70\" y=\"46\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">A</text><text x=\"70\" y=\"180\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">백색</text><circle cx=\"210\" cy=\"104\" r=\"54\" fill=\"#ff5d6c\" opacity=\"0.16\"/><circle cx=\"210\" cy=\"104\" r=\"34\" fill=\"#ff5d6c\"/><text x=\"210\" y=\"46\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">B</text><text x=\"210\" y=\"180\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">적색</text><circle cx=\"350\" cy=\"104\" r=\"54\" fill=\"#a9dcff\" opacity=\"0.16\"/><circle cx=\"350\" cy=\"104\" r=\"34\" fill=\"#a9dcff\"/><text x=\"350\" y=\"46\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">C</text><text x=\"350\" y=\"180\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">청색</text><circle cx=\"490\" cy=\"104\" r=\"54\" fill=\"#ffd166\" opacity=\"0.16\"/><circle cx=\"490\" cy=\"104\" r=\"34\" fill=\"#ffd166\"/><text x=\"490\" y=\"46\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">D</text><text x=\"490\" y=\"180\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">황색</text></svg>",
+   stem:"그림은 밤하늘에서 관측한 네 별 <b>A~D</b>의 색을 나타낸 것이다.<br>표면 온도가 <b>가장 높은 별</b>과 <b>가장 낮은 별</b>을 순서대로 옳게 짝지은 것은?",
+   ch:[{t:"A, D",ok:0},{t:"C, B",ok:1},{t:"B, C",ok:0},{t:"C, A",ok:0},{t:"D, B",ok:0}],
+   why:"별의 색은 그 별의 <b>표면 온도</b>에 따라 달라지며, <b>청색 쪽이 가장 뜨겁고 적색 쪽이 가장 차갑다.</b><br>자료의 네 별을 온도가 높은 것부터 늘어놓으면 <b>C(청색) → A(백색) → D(황색) → B(적색)</b> 순이다. 따라서 가장 높은 별은 C, 가장 낮은 별은 B이므로 정답은 <b>②</b>.<br>③ <b>B, C</b> — '빨강은 뜨겁고 파랑은 차갑다'는 일상의 느낌을 별에 그대로 적용한 것으로, 별에서는 <b>정확히 반대</b>다. 이 답을 고른 학생은 수도꼭지·색의 느낌과 실제 온도를 아직 분리하지 못한 것이다.<br>⑤ <b>D, B</b> — 태양처럼 익숙한 황색 별을 가장 뜨거운 별로 착각한 경우다. 황색은 순서표의 가운데쯤이다.<br>④ <b>C, A</b> — 가장 높은 별은 맞혔으나, 백색이 적색보다 차갑다고 본 것으로 순서 뒷부분을 놓쳤다.<br>① <b>A, D</b> — 순서표의 양 끝(청색·적색)을 아예 확인하지 않고 가운데 두 색만 비교한 경우다. 네 별을 <b>모두</b> 한 줄에 늘어놓아야 극단을 고를 수 있다."},
+
+  {id:"q2",
+   difficulty:"중",
+   intent:"한 별자리 안의 두 별을 비교하는 자료를 통해 색-온도 관계를 적용하고, '색은 거리 때문'이라는 오개념을 배제하며, 온도가 변할 때 색이 어느 쪽으로 이동하는지 추론할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 280\" role=\"img\" aria-label=\"한 별자리의 모식도. 왼쪽 위에 적색으로 빛나는 큰 별 Q가 있고 오른쪽 아래에 청백색으로 빛나는 큰 별 P가 있다. 두 별은 별자리를 잇는 선으로 연결되어 있으며 가운데에는 작은 별 세 개가 비스듬히 늘어서 있다.\"><text x=\"24\" y=\"30\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">같은 별자리를 이루는 별들</text><circle cx=\"64\" cy=\"66\" r=\"1.6\" fill=\"#9aa8cf\" opacity=\"0.6\"/><circle cx=\"272\" cy=\"52\" r=\"1.3\" fill=\"#9aa8cf\" opacity=\"0.6\"/><circle cx=\"498\" cy=\"112\" r=\"1.5\" fill=\"#9aa8cf\" opacity=\"0.6\"/><circle cx=\"104\" cy=\"186\" r=\"1.4\" fill=\"#9aa8cf\" opacity=\"0.6\"/><circle cx=\"468\" cy=\"200\" r=\"1.7\" fill=\"#9aa8cf\" opacity=\"0.6\"/><circle cx=\"300\" cy=\"244\" r=\"1.3\" fill=\"#9aa8cf\" opacity=\"0.6\"/><g stroke=\"#33406e\" stroke-width=\"1.6\" fill=\"none\"><line x1=\"185\" y1=\"78\" x2=\"355\" y2=\"62\"/><line x1=\"355\" y1=\"62\" x2=\"388\" y2=\"226\"/><line x1=\"388\" y1=\"226\" x2=\"172\" y2=\"226\"/><line x1=\"172\" y1=\"226\" x2=\"185\" y2=\"78\"/><line x1=\"248\" y1=\"142\" x2=\"318\" y2=\"162\"/></g><circle cx=\"248\" cy=\"142\" r=\"5\" fill=\"#ffffff\" opacity=\"0.85\"/><circle cx=\"283\" cy=\"152\" r=\"5\" fill=\"#ffffff\" opacity=\"0.85\"/><circle cx=\"318\" cy=\"162\" r=\"5\" fill=\"#ffffff\" opacity=\"0.85\"/><circle cx=\"355\" cy=\"62\" r=\"5.5\" fill=\"#ffffff\" opacity=\"0.85\"/><circle cx=\"172\" cy=\"226\" r=\"5.5\" fill=\"#ffffff\" opacity=\"0.85\"/><circle cx=\"185\" cy=\"78\" r=\"30\" fill=\"#ff5d6c\" opacity=\"0.16\"/><circle cx=\"185\" cy=\"78\" r=\"18\" fill=\"#ff5d6c\"/><text x=\"185\" y=\"42\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">Q</text><text x=\"185\" y=\"124\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">적색</text><circle cx=\"388\" cy=\"226\" r=\"30\" fill=\"#a9dcff\" opacity=\"0.16\"/><circle cx=\"388\" cy=\"226\" r=\"18\" fill=\"#a9dcff\"/><text x=\"388\" y=\"190\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">P</text><text x=\"388\" y=\"272\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">청백색</text></svg>",
+   stem:"그림은 같은 별자리를 이루는 두 별 <b>P</b>와 <b>Q</b>를 나타낸 것이다. P는 청백색으로, Q는 적색으로 보인다.<br>이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["표면 온도는 P가 Q보다 높다.", "두 별의 색이 서로 다른 것은 지구로부터의 거리가 다르기 때문이다.", "P의 표면 온도가 지금보다 낮아진다면, P의 색은 Q의 색 쪽으로 변해 갈 것이다."],
+   boxVerdicts:[true, false, true],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄷ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>ㄱ. 옳다.</b> 별의 색은 청색 쪽일수록 표면 온도가 높고 적색 쪽일수록 낮다. 청백색인 P가 적색인 Q보다 표면 온도가 <b>높다.</b><br><b>ㄴ. 옳지 않다.</b> 별의 색을 결정하는 것은 오직 <b>표면 온도</b>다. 거리는 별이 얼마나 <b>밝게 보이는지</b>에 관여할 뿐, 별의 색을 바꾸지는 못한다. 적색 별은 가까이 있어도 멀리 있어도 적색으로 보인다.<br><b>ㄷ. 옳다.</b> 온도가 낮아지면 색은 <b>청색 → 백색 → 황색 → 적색</b> 쪽으로 이동한다. 따라서 청백색인 P가 식으면 Q(적색) 쪽으로 색이 변해 간다. 쇳물이 식으면서 흰색에서 붉은색으로 변한 것과 같은 이야기다.<br>따라서 정답은 <b>ㄱ, ㄷ</b>인 <b>④</b>.<br>③·⑤처럼 ㄴ을 포함해 고른 학생은 '색이 다르면 거리도 다르다'는 오개념을 아직 버리지 못한 것이다. ②(ㄷ만)를 고른 학생은 색이 변하는 <b>방향</b>은 알면서도 지금 상태의 <b>비교</b>는 놓친 경우다.<br><b>[교사 유의]</b> ㄴ을 반박할 때 \"같은 별자리에 있으니 거리가 같다\"고 설명하지 않는다. 별자리는 하늘에서 가까워 <b>보이는</b> 별들을 묶은 것일 뿐이어서, 같은 별자리 안의 두 별이라도 지구까지의 실제 거리는 서로 크게 다를 수 있다. ㄴ이 틀린 까닭은 거리가 같아서가 아니라 <b>색을 정하는 것이 거리가 아니라 표면 온도이기 때문</b>이다."},
+
+  {id:"q3",
+   difficulty:"중",
+   intent:"표에 제시된 여러 별과 태양의 색을 표면 온도가 높은 것부터 한 줄로 나열할 수 있는지 평가한다. 양 끝(청색·적색)뿐 아니라 황색과 주황색처럼 가운데 이웃한 단계의 앞뒤까지 구별해야 풀린다.",
+   svg:"<svg viewBox=\"0 0 560 160\" role=\"img\" aria-label=\"별 A부터 D까지와 태양의 색을 나타낸 표. 별 A는 적색, 별 B는 청백색, 별 C는 주황색, 별 D는 백색, 태양은 황색이다.\"><text x=\"22\" y=\"30\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#9aa8cf\">[표] 별 A~D와 태양의 색</text><rect x=\"22\" y=\"48\" width=\"516\" height=\"40\" fill=\"#ffffff\" opacity=\"0.05\"/><rect x=\"22\" y=\"48\" width=\"516\" height=\"92\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"2\"/><line x1=\"22\" y1=\"88\" x2=\"538\" y2=\"88\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><g stroke=\"#33406e\" stroke-width=\"1.4\"><line x1=\"98\" y1=\"48\" x2=\"98\" y2=\"140\"/><line x1=\"186\" y1=\"48\" x2=\"186\" y2=\"140\"/><line x1=\"274\" y1=\"48\" x2=\"274\" y2=\"140\"/><line x1=\"362\" y1=\"48\" x2=\"362\" y2=\"140\"/><line x1=\"450\" y1=\"48\" x2=\"450\" y2=\"140\"/></g><g font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\" text-anchor=\"middle\"><text x=\"60\" y=\"75\">천체</text><text x=\"142\" y=\"75\">A</text><text x=\"230\" y=\"75\">B</text><text x=\"318\" y=\"75\">C</text><text x=\"406\" y=\"75\">D</text><text x=\"494\" y=\"75\">태양</text></g><g font-family=\"Pretendard, sans-serif\" font-size=\"16\" text-anchor=\"middle\"><text x=\"60\" y=\"120\" fill=\"#c6d2ee\" font-weight=\"700\">색</text><text x=\"142\" y=\"120\" fill=\"#ff5d6c\">적색</text><text x=\"230\" y=\"120\" fill=\"#a9dcff\">청백색</text><text x=\"318\" y=\"120\" fill=\"#ffab4d\">주황색</text><text x=\"406\" y=\"120\" fill=\"#ffffff\">백색</text><text x=\"494\" y=\"120\" fill=\"#ffd166\">황색</text></g></svg>",
+   stem:"표는 별 <b>A~D</b>와 <b>태양</b>의 색을 나타낸 것이다.<br>이 다섯 천체를 <b>표면 온도가 높은 것부터</b> 순서대로 옳게 나열한 것은?",
+   ch:[{t:"태양 → B → D → C → A",ok:0},{t:"B → D → C → 태양 → A",ok:0},{t:"B → D → 태양 → C → A",ok:1},{t:"D → B → 태양 → A → C",ok:0},{t:"A → C → 태양 → D → B",ok:0}],
+   why:"별의 색을 표면 온도가 높은 것부터 늘어놓으면 <b>청색 – 청백색 – 백색 – 황백색 – 황색 – 주황색 – 적색</b> 순이다. 표의 다섯 천체를 이 줄에 하나씩 얹으면 <b>B(청백색) → D(백색) → 태양(황색) → C(주황색) → A(적색)</b>이 되므로 정답은 <b>③</b>.<br>② <b>B → D → C → 태양 → A</b> — 앞부분은 맞혔지만 <b>황색과 주황색</b>의 앞뒤를 바꿨다. 순서표에서 황색이 주황색보다 앞(뜨거운 쪽)이다. 가장 많이 갈리는 지점이다.<br>④ <b>D → B → 태양 → A → C</b> — 청백색과 백색, 적색과 주황색의 앞뒤를 각각 뒤집었다. 양 끝은 알지만 이웃한 단계의 순서가 아직 흐릿한 경우다.<br>① <b>태양 → B → D → C → A</b> — 가장 익숙한 별인 태양을 가장 뜨거운 쪽에 놓았다. 태양의 황색은 순서표의 <b>가운데쯤</b>이다.<br>⑤ <b>A → C → 태양 → D → B</b> — 정답의 완전한 역순으로, '적색이 가장 뜨겁다'는 이 차시 대표 오개념이 그대로 드러난다."},
+
+  {id:"q4",
+   difficulty:"상",
+   intent:"식어 가는 물체의 색 변화 자료에서 시간 순서를 역추론하고, 색이 달라진 원인이 물질이 아니라 온도임을 판단하며, 그 규칙을 별의 표면 온도 비교로 옮겨 적용할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 220\" role=\"img\" aria-label=\"같은 쇳덩이를 찍은 사진 세 장을 순서 없이 나란히 놓은 그림. (가)의 쇳덩이는 붉은색, (나)의 쇳덩이는 흰색에 가까운 색, (다)의 쇳덩이는 노란색으로 빛나고 있다.\"><text x=\"24\" y=\"26\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">같은 쇳덩이를 일정한 시간 간격으로 찍은 사진 (순서 뒤섞음)</text><rect x=\"24\" y=\"42\" width=\"160\" height=\"132\" rx=\"12\" fill=\"#ffffff\" opacity=\"0.03\"/><rect x=\"24\" y=\"42\" width=\"160\" height=\"132\" rx=\"12\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"104\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">붉은색</text><ellipse cx=\"104\" cy=\"118\" rx=\"62\" ry=\"32\" fill=\"#ff5d6c\" opacity=\"0.17\"/><rect x=\"56\" y=\"96\" width=\"96\" height=\"44\" rx=\"8\" fill=\"#ff5d6c\"/><line x1=\"48\" y1=\"150\" x2=\"160\" y2=\"150\" stroke=\"#5b6a99\" stroke-width=\"3\"/><text x=\"104\" y=\"202\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(가)</text><rect x=\"200\" y=\"42\" width=\"160\" height=\"132\" rx=\"12\" fill=\"#ffffff\" opacity=\"0.03\"/><rect x=\"200\" y=\"42\" width=\"160\" height=\"132\" rx=\"12\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"280\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">흰색에 가까움</text><ellipse cx=\"280\" cy=\"118\" rx=\"62\" ry=\"32\" fill=\"#ffffff\" opacity=\"0.15\"/><rect x=\"232\" y=\"96\" width=\"96\" height=\"44\" rx=\"8\" fill=\"#ffffff\"/><line x1=\"224\" y1=\"150\" x2=\"336\" y2=\"150\" stroke=\"#5b6a99\" stroke-width=\"3\"/><text x=\"280\" y=\"202\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(나)</text><rect x=\"376\" y=\"42\" width=\"160\" height=\"132\" rx=\"12\" fill=\"#ffffff\" opacity=\"0.03\"/><rect x=\"376\" y=\"42\" width=\"160\" height=\"132\" rx=\"12\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"456\" y=\"70\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">노란색</text><ellipse cx=\"456\" cy=\"118\" rx=\"62\" ry=\"32\" fill=\"#ffd166\" opacity=\"0.17\"/><rect x=\"408\" y=\"96\" width=\"96\" height=\"44\" rx=\"8\" fill=\"#ffd166\"/><line x1=\"400\" y1=\"150\" x2=\"512\" y2=\"150\" stroke=\"#5b6a99\" stroke-width=\"3\"/><text x=\"456\" y=\"202\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(다)</text></svg>",
+   stem:"그림 <b>(가)~(다)</b>는 용광로에서 꺼내 식어 가는 <b>같은 쇳덩이</b>를 일정한 시간 간격으로 찍은 사진을 순서 없이 나타낸 것이다.<br>이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["사진을 찍은 순서는 (나) → (다) → (가)이다.", "쇳덩이의 색이 달라진 것은 쇳덩이를 이루는 물질이 달라졌기 때문이다.", "(가)와 같은 색으로 빛나는 별은 (나)와 같은 색으로 빛나는 별보다 표면 온도가 높다."],
+   boxVerdicts:[true, false, false],
+   ch:[{t:"ㄱ",ok:1},{t:"ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>ㄱ. 옳다.</b> 물체는 온도가 높을수록 흰색에 가까운 색을, 낮을수록 붉은색을 띤다. 쇳덩이는 <b>식어 가고</b> 있으므로 온도가 높은 상태부터 순서대로 놓으면 <b>(나) 흰색 → (다) 노란색 → (가) 붉은색</b>이 된다. 사진이 뒤섞여 있어도 색만으로 시간 순서를 되짚을 수 있다.<br><b>ㄴ. 옳지 않다.</b> 세 사진은 <b>같은 쇳덩이</b>다. 쇳덩이를 이루는 물질은 처음부터 끝까지 그대로이고, 달라진 것은 <b>온도뿐</b>이다. 색은 물체가 무엇으로 되어 있는지가 아니라 <b>얼마나 뜨거운지</b>가 결정한다. 이 판단이 서야 별에서도 '색 = 표면 온도의 단서'로 옮겨 쓸 수 있다.<br><b>ㄷ. 옳지 않다.</b> 별에도 같은 규칙이 적용된다. (가)는 적색, (나)는 백색에 가까우므로 (가)와 같은 색의 별은 (나)와 같은 색의 별보다 표면 온도가 <b>낮다.</b> 이 보기는 '붉은 별이 더 뜨겁다'는 오개념을 그대로 담고 있다.<br>따라서 옳은 것은 <b>ㄱ</b>뿐이므로 정답은 <b>①</b>.<br>③·⑤처럼 ㄷ을 고른 학생은 쇳덩이에서는 색과 온도의 관계를 맞게 판단했으면서도 <b>별로 옮기는 순간 오개념으로 되돌아간</b> 경우다. 쇳물과 별이 같은 규칙임을 다시 확인시켜야 한다. ②·④처럼 ㄴ을 고른 학생에게는 \"쇳덩이가 도중에 다른 금속으로 바뀌었을까?\"라고 되물으면 스스로 정리한다."},
+
+  {id:"q5",
+   difficulty:"상",
+   intent:"생활 속 불꽃 자료와 별 자료를 같은 규칙으로 연결해 판단하고, 별의 색을 크기로 설명하려는 오개념을 배제하며, 두 자료를 가로질러 황색과 주황색처럼 이웃한 단계까지 비교할 수 있는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 270\" role=\"img\" aria-label=\"왼쪽 (가)에는 가스레인지의 파란색 불꽃 P와 촛불의 노란색 불꽃 Q가 나란히 그려져 있고, 오른쪽 (나)에는 청백색인 별 ㉠과 주황색인 별 ㉡이 같은 크기로 그려져 있다.\"><text x=\"146\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(가)</text><text x=\"414\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(나)</text><line x1=\"280\" y1=\"44\" x2=\"280\" y2=\"252\" stroke=\"#33406e\" stroke-width=\"1.6\" stroke-dasharray=\"6 6\"/><ellipse cx=\"90\" cy=\"158\" rx=\"34\" ry=\"50\" fill=\"#a9dcff\" opacity=\"0.14\"/><path d=\"M90,112 C110,146 114,168 106,180 C100,189 80,189 74,180 C66,168 70,146 90,112 Z\" fill=\"#a9dcff\"/><rect x=\"56\" y=\"190\" width=\"68\" height=\"11\" rx=\"5\" fill=\"#5b6a99\"/><text x=\"90\" y=\"98\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">P</text><text x=\"90\" y=\"228\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">P · 가스불꽃</text><text x=\"90\" y=\"248\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#a9dcff\">파란색(청색)</text><ellipse cx=\"200\" cy=\"142\" rx=\"26\" ry=\"38\" fill=\"#ffd166\" opacity=\"0.16\"/><path d=\"M200,108 C215,136 217,154 209,163 C204,169 196,169 191,163 C183,154 185,136 200,108 Z\" fill=\"#ffd166\"/><line x1=\"200\" y1=\"176\" x2=\"200\" y2=\"166\" stroke=\"#5b6a99\" stroke-width=\"2\"/><rect x=\"182\" y=\"176\" width=\"36\" height=\"32\" rx=\"3\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"200\" y=\"96\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\">Q</text><text x=\"200\" y=\"228\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">Q · 촛불</text><text x=\"200\" y=\"248\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#ffd166\">노란색(황색)</text><circle cx=\"352\" cy=\"140\" r=\"46\" fill=\"#a9dcff\" opacity=\"0.15\"/><circle cx=\"352\" cy=\"140\" r=\"30\" fill=\"#a9dcff\"/><text x=\"352\" y=\"82\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"20\" font-weight=\"700\" fill=\"#c6d2ee\">㉠</text><text x=\"352\" y=\"204\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#a9dcff\">청백색</text><circle cx=\"478\" cy=\"140\" r=\"46\" fill=\"#ffab4d\" opacity=\"0.15\"/><circle cx=\"478\" cy=\"140\" r=\"30\" fill=\"#ffab4d\"/><text x=\"478\" y=\"82\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"20\" font-weight=\"700\" fill=\"#c6d2ee\">㉡</text><text x=\"478\" y=\"204\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#ffab4d\">주황색</text><text x=\"414\" y=\"240\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\">밤하늘의 두 별 (크기는 같게 그림)</text></svg>",
+   stem:"그림 <b>(가)</b>는 가스레인지의 파란 불꽃 <b>P</b>와 촛불의 노란 불꽃 <b>Q</b>를, <b>(나)</b>는 밤하늘의 두 별 <b>㉠</b>과 <b>㉡</b>을 나타낸 것이다.<br>이에 대한 설명으로 <b>옳은</b> 것은?",
+   ch:[{t:"P는 Q보다 온도가 낮다.",ok:0},{t:"㉠과 ㉡의 색이 다른 것은 두 별의 크기가 다르기 때문이다.",ok:0},{t:"㉡은 ㉠보다 표면 온도가 높다.",ok:0},{t:"Q와 같은 색으로 빛나는 별은 ㉡보다 표면 온도가 낮다.",ok:0},{t:"(가)에서는 P가, (나)에서는 ㉠이 각각 온도가 더 높은 쪽이다.",ok:1}],
+   why:"(가)의 불꽃과 (나)의 별은 <b>같은 규칙</b>으로 설명된다. 파란 쪽이 더 뜨겁고, 붉은 쪽으로 갈수록 더 차갑다.<br><b>⑤ 정답.</b> (가)에서는 파란 불꽃 <b>P</b>가 노란 불꽃 Q보다 뜨겁고, (나)에서는 청백색 별 <b>㉠</b>이 주황색 별 ㉡보다 표면 온도가 높다. 두 자료 모두에서 '파란 쪽 = 더 뜨거움'이 성립한다.<br><b>① 틀림.</b> 가스레인지의 파란 불꽃이 촛불의 노란 불꽃보다 <b>더 뜨겁다.</b> 공기가 잘 섞여 완전 연소할 때 파란 불꽃이 되고, 그쪽이 온도가 높다.<br><b>② 틀림.</b> 별의 색을 결정하는 것은 <b>표면 온도</b>이며 크기와는 관계가 없다. 자료에서 두 별을 굳이 같은 크기로 그린 까닭이 여기에 있다.<br><b>③ 틀림.</b> 주황색은 청백색보다 표면 온도가 <b>낮다.</b> '빨강·주황은 따뜻한 색, 파랑은 차가운 색'이라는 사람의 감각을 별의 온도에 그대로 가져다 붙인 대표적 오개념이다.<br><b>④ 틀림.</b> Q와 같은 색, 곧 <b>황색</b>으로 빛나는 별(태양이 그렇다)은 순서표에서 <b>주황색보다 앞쪽</b>에 있으므로 ㉡보다 표면 온도가 오히려 <b>높다.</b> ④를 고른 학생은 양 끝(청색·적색)만 외우고 가운데 이웃한 단계의 앞뒤는 아직 정리하지 못한 경우다."}
 ];
 
 /* 엔진 */
@@ -1033,7 +1180,7 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
       q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
         const c=q.ch[idx];
         const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
         b.addEventListener('click',()=>{
           if(answered||solved)return;answered=true;
           if(c.ok){solved=true;b.classList.add('correct');
@@ -1077,14 +1224,25 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
-    body.innerHTML=`<div class="mq-q" style="margin-top:0">
-      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
-      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const bg=(q.boxes&&q.boxes.length)
+      ? '<div class="bogi" id="bogiBox"><div class="bogi-t">보 기</div><ul>'
+        + q.boxes.map(function(b,n){return '<li data-bi="'+n+'"><span class="bk">'+'\u3131\u3134\u3137\u3139'[n]+'</span><span>'+b+'</span><span class="bv"></span></li>';}).join('')
+        + '</ul></div>'
+      : '';
+    body.innerHTML='<div class="mq-q" style="margin-top:0">'
+      + '<div class="mq-meta"><span class="mq-lv" data-lv="'+(q.difficulty||'중')+'">난이도 '+(q.difficulty||'중')+'</span>'
+      + (q.boxes&&q.boxes.length?'<span class="mq-lv" style="color:var(--accent2)">&lt;보기&gt;형</span>':'')
+      + (q.svg?'<span class="mq-lv" style="color:var(--ink-mute)">자료 해석</span>':'') + '</div>'
+      + (q.svg?'<div class="qfig">'+q.svg+'</div>':'')
+      + '<div class="mq-text" style="font-size:18px"><span class="qn">Q'+(i+1)+'.</span>'+(q.stem||q.q)+'</div>'
+      + bg
+      + '<div class="mq-choices"></div><div class="mq-fb"></div>'
+      + '<div class="mq-next"><button class="btn primary sm" id="qNext">다음 문항 →</button></div></div>';
     const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
     q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
       const c=q.ch[idx];
       const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
       b.addEventListener('click',()=>{
         if(locked)return;locked=true;
         $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
@@ -1094,7 +1252,15 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
         else{b.classList.add('wrong');A.wrong();lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
-        hud();setTimeout(()=>{i++;next();},1900);});
+        const bx=$('#bogiBox');
+        if(bx&&q.boxVerdicts){$$('li',bx).forEach(function(li,n){
+          const t=!!q.boxVerdicts[n];li.classList.add(t?'t':'f');
+          const v=$('.bv',li);if(v)v.textContent=t?'옳음':'옳지 않음';});bx.classList.add('reveal');}
+        const nx=$('.mq-next',body);if(nx){nx.classList.add('show');
+          const nb=$('#qNext');if(nb){nb.textContent=(i+1>=order.length||lives<=0)?'결과 보기 →':'다음 문항 →';
+            nb.addEventListener('click',function(){A.pop();i++;next();
+              scrollTo({top:document.querySelector('#panel-check').offsetTop-70,behavior:reduceMotion?'auto':'smooth'});});}}
+        hud();});
       cw.appendChild(b);});}
   function end(){
     const perfect=score===GAME_QS.length*20;

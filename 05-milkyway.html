@@ -323,8 +323,133 @@ textarea::placeholder{color:var(--ink-mute)}
   .cloze{color:#111!important;border-style:solid}.cloze::after{content:none}
 }
 </style>
+
+<style id="board-v2">
+/* ═══════════════════════════════════════════════════════════
+   전자칠판 판 v2 — 글자 크기·명암비 상향
+   교실 앞 화면에서 뒷자리까지 읽히도록 본문을 키우고,
+   배경과 붙어 보이던 회색 계열 글자색의 명암비를 올렸습니다.
+   (--ink-mute 4.0:1 → 7.7:1 / --ink-dim 8.6:1 → 12.0:1)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --line:#33406e; --line-soft:#28345e;
+  --ink:#f2f6ff; --ink-dim:#c6d2ee; --ink-mute:#9aa8cf;
+  --ok:#5eec92; --danger:#ff7a86;
+}
+body{line-height:1.68}
+b.k{color:#fff}
+
+/* 본문 계열 */
+.lead{font-size:clamp(17px,2.5vw,20px)}
+.help{font-size:15px;line-height:1.6}
+.honest{font-size:14px;line-height:1.6}
+.note{font-size:16px;line-height:1.65;padding:15px 17px;border-left-width:4px}
+.note .ic{font-size:19px}
+.badge{font-size:14px;padding:6px 13px}
+.pill{font-size:15px;padding:7px 14px}
+.term .nm{font-size:19px}
+.term .de{font-size:15px;line-height:1.6}
+.use .u-t{font-size:19px}
+.use .u-d{font-size:15.5px;line-height:1.6}
+h3.card-t{font-size:22px}
+.stepline .swhat{font-size:14.5px}
+.stepline .sbadge{font-size:13px}
+.eyebrow{font-size:13px}
+.fig figcaption{font-size:14.5px;line-height:1.6}
+.fig.slot .fn{font-size:13px}
+.fig.slot .fd{font-size:14px}
+
+/* 상호작용 */
+.btn{font-size:16.5px;padding:13px 22px}
+.btn.sm{font-size:15px;padding:9px 16px}
+nav.tabs button{font-size:15.5px;padding:9px 15px}
+nav.tabs button .sn{width:21px;height:21px;font-size:12px}
+.brand b{font-size:18px}
+.brand .sub{font-size:12.5px}
+.progress-mini .pct{font-size:13.5px}
+.choice{font-size:17px;border-width:2px;padding:15px 17px}
+.choice .key{width:30px;height:30px;font-size:15px}
+.explain{font-size:16px;line-height:1.68}
+.explain .why{font-size:14.5px}
+.cloze-line{font-size:17.5px;line-height:2.1}
+.cloze{border-width:2px;padding:3px 12px;min-width:56px}
+.cloze-hint{font-size:14.5px}
+.cloze-done{font-size:15px}
+textarea{font-size:16.5px;border-width:2px}
+.savemark{font-size:14px}
+.checkline{font-size:16.5px}
+.doit li{font-size:16.5px;line-height:1.6}
+.dtable{font-size:15.5px}
+.dtable th{font-size:14px;padding:11px 12px}
+.dtable td{padding:10px 12px}
+.dtable .empty{font-size:15px}
+.prog-list{width:290px}
+.prog-list li{font-size:14.5px}
+.prog-list h4{font-size:17px}
+#toast{font-size:16px;padding:14px 22px;border-width:2px}
+.medal{font-size:14.5px}
+.medal .e{font-size:20px}
+.score-box .num{font-size:20px}
+.score-box .lab2{font-size:13px}
+.lives .h{font-size:24px}
+.steps-card li{font-size:16.5px}
+.steps-card h3{font-size:20px}
+.cover-sub{font-size:clamp(16px,2.7vw,19px)}
+.cover-hint{font-size:14px}
+
+/* 실험실 조작판 */
+.simctl h4,.lab h3,.simlab h3{font-size:18px}
+.ctl label{font-size:15px}
+.ctl label .val{font-size:16px}
+.readout .r .lab2{font-size:13px}
+.readout .r .v{font-size:22px}
+.readout .r .v small{font-size:13px}
+.dl-head h4{font-size:18px}
+input[type=range]{height:8px}
+input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
+
+/* 문항 */
+.miniquiz .mq-badge{font-size:13.5px;padding:5px 12px}
+.miniquiz .mq-prog{font-size:13.5px}
+.mq-q .mq-text{font-size:17px;line-height:1.6}
+.mq-q .mq-text .qn{font-size:12.5px}
+.mq-opt{font-size:16.5px;padding:13px 16px;border-width:2px;line-height:1.5}
+.mq-opt .k{width:26px;height:26px;font-size:13.5px}
+.mq-fb{font-size:15.5px;line-height:1.65;padding:13px 15px}
+.mq-done{font-size:16px}
+
+/* ── 수능형 문항 — 자료 · <보기> · 다음 버튼 ── */
+.qfig{background:#04070f;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;overflow-x:auto}
+.qfig svg{width:100%;height:auto;display:block;max-width:600px;margin:0 auto}
+.bogi{background:#101c38;border:1.5px solid var(--line);border-radius:12px;padding:15px 18px;margin:0 0 14px}
+.bogi-t{display:inline-block;font-weight:800;font-size:14px;color:var(--ink-dim);border:1px solid var(--line);
+  border-radius:7px;padding:2px 14px;margin-bottom:11px;letter-spacing:3px}
+.bogi ul{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.bogi li{display:flex;gap:11px;align-items:flex-start;font-size:16.5px;line-height:1.62;color:var(--ink)}
+.bogi li .bk{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:14px;
+  font-weight:800;background:#22315c;border:1px solid var(--line);color:var(--ink-dim);margin-top:2px;transition:.25s}
+.bogi li .bv{display:none;margin-left:auto;flex:none;font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:99px}
+.bogi.reveal li.t .bk{background:var(--ok);color:#06210f;border-color:transparent}
+.bogi.reveal li.f .bk{background:var(--danger);color:#2a060b;border-color:transparent}
+.bogi.reveal li .bv{display:inline-block;animation:fade .3s}
+.bogi.reveal li.t .bv{background:rgba(94,236,146,.16);color:var(--ok)}
+.bogi.reveal li.f .bv{background:rgba(255,122,134,.16);color:var(--danger)}
+.mq-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.mq-lv{font-size:13px;font-weight:800;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:#101c38}
+.mq-lv[data-lv="하"]{color:#5eec92;border-color:#2f7d51}
+.mq-lv[data-lv="중"]{color:#ffd166;border-color:#6b5a26}
+.mq-lv[data-lv="상"]{color:#ff9fbe;border-color:#8b3742}
+.mq-next{display:none;margin-top:18px;justify-content:flex-end}
+.mq-next.show{display:flex;animation:fade .3s}
+@media print{
+  .mq-next{display:none!important}
+  .qfig{background:#fff}
+  .bogi{background:#fff;border-color:#ccc}
+  .bogi li{color:#111}
+}
+</style>
 </head>
-<body>
+<body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
 
 <div id="cover">
@@ -401,14 +526,14 @@ textarea::placeholder{color:var(--ink-mute)}
   <div class="grid c2" style="margin-top:22px">
     <div class="card">
       <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🌫️ 저 뿌연 띠는 뭘까?</h2>
-      <p class="lead" style="font-size:16px">불빛이 적은 곳에서 밤하늘을 오래 보면, 하늘을 가로지르는
+      <p class="lead" style="font-size:17.5px">불빛이 적은 곳에서 밤하늘을 오래 보면, 하늘을 가로지르는
         <b class="t4">두꺼운 띠</b>가 보입니다. 구름 같기도 하고 안개 같기도 한 이것을
         옛사람들은 <b class="k">'하늘의 강'</b>이라 불렀어요. 은하수(銀河水)라는 이름이 그렇게 붙었습니다.</p>
       <div class="note class"><span class="ic">💬</span><div><b>도입 들어가기</b> — 밤하늘에서 이 띠를 본 경험을 먼저 이야기하게 하세요. 도시에서는 보기 어려우니 <b>캠핑·시골 방문 경험</b>을 물으면 이야기가 나옵니다. <b>예시 답안</b>: 밤하늘에 두꺼운 띠 모양으로 보이는 것은 은하수이고, 은하수는 지구에서 본 우리은하의 일부이다.</div></div>
     </div>
     <div class="card">
       <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🧩 오늘의 방법 — 모형</h2>
-      <p class="lead" style="font-size:16px">밖에서 볼 수 없다면, <b class="k">안에서 본 것으로 모형을 세우고</b>
+      <p class="lead" style="font-size:17.5px">밖에서 볼 수 없다면, <b class="k">안에서 본 것으로 모형을 세우고</b>
         그 모형이 실제 관측과 맞는지 확인하면 됩니다. 오늘 우리가 할 일이 정확히 그것이에요.</p>
       <p class="help">과학에서 '모형'은 장난감이 아니라, 직접 볼 수 없는 것을 다루는 <b class="k">정식 도구</b>입니다.</p>
     </div>
@@ -420,11 +545,11 @@ textarea::placeholder{color:var(--ink-mute)}
     <div class="grid c2">
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c2);color:#062a28;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
-        <div><b class="k">우리은하의 구조와 크기를 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">위에서 볼 때와 옆에서 볼 때의 모양까지.</span></div>
+        <div><b class="k">우리은하의 구조와 크기를 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">위에서 볼 때와 옆에서 볼 때의 모양까지.</span></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c4);color:#3a0a1a;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
-        <div><b class="k">은하수가 무엇인지 설명할 수 있다.</b><br><span class="muted" style="font-size:14px">태양계의 위치와 연결지어서.</span></div>
+        <div><b class="k">은하수가 무엇인지 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">태양계의 위치와 연결지어서.</span></div>
       </div>
     </div>
     <div class="pill-list">
@@ -471,7 +596,7 @@ textarea::placeholder{color:var(--ink-mute)}
   <!-- 교과서 해 보기 -->
   <div class="doit">
     <h3>🎨 해 보기 — 색점토로 우리은하 모형 만들기</h3>
-    <p class="lead" style="font-size:15px">교과서 281쪽 활동입니다. 화면에서 본 것을 손으로 세워 봅니다.</p>
+    <p class="lead" style="font-size:17px">교과서 281쪽 활동입니다. 화면에서 본 것을 손으로 세워 봅니다.</p>
     <ol>
       <li><b>검은색 종이</b>에 우리은하의 모습을 그립니다.</li>
       <li><b>색점토</b>로 우리은하 모형을 만듭니다. — 중심부는 별이 빽빽하니 <b>더 두껍게</b> 쌓아야겠죠?</li>
@@ -496,7 +621,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:20px">
     <h3 class="card-t">🧭 왜 '띠'로 보일까?</h3>
-    <p class="lead" style="font-size:16px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       태양계는 우리은하의 중심에서 약 <b class="t3">8500 pc</b> 떨어진 <b class="t2">나선팔</b> 안에 있습니다.
       우리는 <b class="k">납작한 원반 속에 들어앉아</b> 있는 셈이에요.
       그래서 원반을 <b>옆으로 훑는 방향</b>을 보면 별이 겹겹이 쌓여 뿌옇게 보이고,
@@ -510,7 +635,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🔄 관측 방향을 돌려 보기</h3>
-    <p class="lead" style="font-size:15.5px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       2단계 관측소에서 <b>[지구에서 본 모습]</b>을 고르고 <b class="k">관측 방향</b> 슬라이더를 천천히 돌려 보세요.
       은하수의 <b>폭</b>과 <b>밝기</b>가 어떻게 달라지나요?</p>
     <div class="btn-row"><button class="btn ghost sm" data-go="model">관측소로 이동 →</button></div>
@@ -519,7 +644,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">교과서 281쪽 · 사고력</span></h3>
-    <p class="lead" style="font-size:16px;margin-top:10px">
+    <p class="lead" style="font-size:17.5px;margin-top:10px">
       지구에서 관측한 은하수의 <b>밝기와 폭</b>은, 우리은하 <b class="t1">중심 방향</b>을 볼 때와
       그 <b class="t5">반대쪽</b>을 볼 때 차이가 있습니다. 그 까닭을 <b class="k">우리은하의 구조와 관련지어</b> 설명해 보세요.</p>
     <textarea id="essay" placeholder="힌트: 태양계는 은하 중심에서 8500 pc 떨어진 나선팔에 있습니다. 중심 방향에는 별이 더 많을까요, 적을까요?"></textarea>
@@ -587,12 +712,12 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🚧 이 모형으로 설명 안 되는 것</h3>
-    <p class="lead" style="font-size:16px;margin-top:8px">
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
       좋은 모형이라도 한계가 있습니다. 정직하게 짚어 둡시다.</p>
     <ul style="margin:12px 0 0 20px;display:grid;gap:8px">
-      <li style="font-size:15px;color:var(--ink-dim)">우리는 <b class="k">여전히 밖에서 확인하지 못했습니다.</b> 이 모양은 안에서 잰 자료로 <b>추론</b>한 것입니다.</li>
-      <li style="font-size:15px;color:var(--ink-dim)">나선팔의 <b>정확한 개수와 모양</b>은 아직도 연구가 진행 중입니다.</li>
-      <li style="font-size:15px;color:var(--ink-dim)">원반 바깥을 공 모양으로 감싼 <b class="t5">헤일로</b>는 이 그림에 잘 드러나지 않습니다.</li>
+      <li style="font-size:17px;color:var(--ink-dim)">우리는 <b class="k">여전히 밖에서 확인하지 못했습니다.</b> 이 모양은 안에서 잰 자료로 <b>추론</b>한 것입니다.</li>
+      <li style="font-size:17px;color:var(--ink-dim)">나선팔의 <b>정확한 개수와 모양</b>은 아직도 연구가 진행 중입니다.</li>
+      <li style="font-size:17px;color:var(--ink-dim)">원반 바깥을 공 모양으로 감싼 <b class="t5">헤일로</b>는 이 그림에 잘 드러나지 않습니다.</li>
     </ul>
     <p class="help">"모형은 틀릴 수 있다"는 말은 약점이 아니라 <b class="k">과학이 스스로를 고쳐 나가는 방식</b>입니다.</p>
   </div>
@@ -636,7 +761,7 @@ textarea::placeholder{color:var(--ink-mute)}
   <div class="grid c2" style="margin-top:20px">
     <div class="card">
       <h3 class="card-t">🗺️ 천상열차분야지도</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         조선 시대에 돌에 새긴 밤하늘 별자리 지도입니다. 거기에 <b class="t4">띠 모양으로 표시된 부분</b>이 있는데,
         그게 바로 은하수예요. 망원경도 없던 시절, 사람들은 이미 <b class="k">하늘에 강이 흐른다</b>는 걸 알고
         정확히 기록해 두었습니다. 국보로 지정돼 있고, 만 원권 지폐 뒷면에서도 볼 수 있어요.</p>
@@ -645,7 +770,7 @@ textarea::placeholder{color:var(--ink-mute)}
     </div>
     <div class="card">
       <h3 class="card-t">🫧 헤일로 — 보이지 않는 껍질</h3>
-      <p class="lead" style="font-size:16px;margin-top:8px">
+      <p class="lead" style="font-size:17.5px;margin-top:8px">
         우리은하는 납작한 원반만이 아닙니다. 중심부에서부터 원반 바깥까지를
         <b class="t5">공 모양으로 감싸고 있는 영역</b>이 있는데, 이를 <b class="k">헤일로</b>라고 해요.
         여기에는 아주 늙은 별들과 구상 성단이 흩어져 있습니다.
@@ -656,7 +781,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
-    <p class="lead" style="font-size:17px;margin-top:10px">
+    <p class="lead" style="font-size:18.5px;margin-top:10px">
       <b class="k">"우리는 우리은하를 밖에서 본 적이 없다."</b><br><br>
       맞습니다. 앞으로도 못 나갑니다. 그런데도 우리는 그 모양과 크기를 압니다.
       <b class="k">안에서 하나하나 재서 알아냈기 때문</b>이에요.<br><br>
@@ -676,7 +801,7 @@ textarea::placeholder{color:var(--ink-mute)}
 
 </main>
 <div id="toast"></div>
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
 <script>
 "use strict";
@@ -695,7 +820,7 @@ const BG_FALLBACK={
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
-const SAVE='galaxy_milkyway_v1';
+const SAVE='galaxy_milkyway_v2';
 
 const QUIZ_SETS={
   sum:{title:'우리은하의 구조', qs:[
@@ -718,27 +843,50 @@ const QUIZ_SETS={
 };
 
 const GAME_QS=[
-  {q:'수천억 개의 별이 모여 있는 거대한 천체 집단을 무엇이라 하는가?',
-   ch:[{t:'은하',ok:1},{t:'성단',ok:0},{t:'태양계',ok:0}],
-   why:'그중 태양계가 속한 은하가 우리은하입니다.'},
-  {q:'우리은하의 지름은 대략 얼마인가?',
-   ch:[{t:'약 30000 pc',ok:1},{t:'약 8500 pc',ok:0},{t:'약 100 pc',ok:0}],
-   why:'8500 pc은 중심에서 태양계까지의 거리입니다.'},
-  {q:'밤하늘에 띠 모양으로 보이는 은하수의 정체는?',
-   ch:[{t:'지구에서 본 우리은하의 일부',ok:1},
-       {t:'우리은하 밖의 외부 은하',ok:0},
-       {t:'대기 중의 수증기',ok:0}],
-   why:'우리가 원반 안에 들어앉아 옆으로 훑어보기 때문에 띠로 보입니다.'},
-  {q:'은하수가 방향에 따라 폭과 밝기가 다른 까닭으로 옳은 것은?',
-   ch:[{t:'태양계가 은하 중심에서 벗어난 나선팔에 있기 때문',ok:1},
-       {t:'지구가 자전하기 때문',ok:0},
-       {t:'계절에 따라 별의 밝기가 변하기 때문',ok:0}],
-   why:'중심 방향에는 별이 훨씬 많이 겹쳐 보여 넓고 밝습니다.'},
-  {q:'우리은하를 옆에서 본 모습으로 옳은 것은?',
-   ch:[{t:'중심부가 약간 부풀어 있는 원반 모양',ok:1},
-       {t:'막대 둘레로 나선팔이 감긴 모양',ok:0},
-       {t:'속이 빈 고리 모양',ok:0}],
-   why:'두 번째는 위에서 본 모습입니다.'}
+  {id:"q1",
+   difficulty:"하",
+   intent:"위에서 본 모습과 옆에서 본 모습을 모식도만 보고 구별하고, 태양계 S가 은하 중심이 아니라 중심에서 벗어난 나선팔에 있음을 자료에서 읽어 내는지, 또 우리가 우리은하를 밖에서 볼 수 없다는 전제를 이해했는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 230\" role=\"img\" aria-label=\"자료 설명: 왼쪽 그림 (가)는 은하를 둥근 원반 모양으로 본 모습으로, 가운데에 밝은 막대 모양 구조가 있고 그 둘레로 나선 모양의 팔 네 개가 감겨 뻗어 있으며, 중심에서 벗어난 나선팔 위에 태양계 S가 초록색 점으로 표시되어 있다. 오른쪽 그림 (나)는 같은 은하를 다른 방향에서 본 모습으로, 가운데가 위아래로 볼록하고 양옆으로는 얇고 길게 퍼진 납작한 모양이며, 중심에서 오른쪽으로 조금 떨어진 얇은 부분에 태양계 S가 초록색 점으로 표시되어 있다.\"><defs><radialGradient id=\"q1disk\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".26\"/><stop offset=\".38\" stop-color=\"#8fa3ff\" stop-opacity=\".13\"/><stop offset=\"1\" stop-color=\"#8fa3ff\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"q1bulge\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".9\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient><linearGradient id=\"q1side\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#a9dcff\" stop-opacity=\"0\"/><stop offset=\".5\" stop-color=\"#a9dcff\" stop-opacity=\".42\"/><stop offset=\"1\" stop-color=\"#a9dcff\" stop-opacity=\"0\"/></linearGradient></defs><line x1=\"280\" y1=\"18\" x2=\"280\" y2=\"200\" stroke=\"#33406e\" stroke-width=\"1.4\"/><circle cx=\"145\" cy=\"112\" r=\"80\" fill=\"url(#q1disk)\"/><circle cx=\"145\" cy=\"112\" r=\"80\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\" stroke-dasharray=\"5 6\"/><g fill=\"none\" stroke=\"#6ef0e6\" stroke-width=\"3\" stroke-linecap=\"round\" opacity=\".5\"><path d=\"M165,112 C171,119 174,127 174,136 C173,148 165,158 154,166 C144,173 127,176 109,174\"/><path d=\"M165,112 C171,119 174,127 174,136 C173,148 165,158 154,166 C144,173 127,176 109,174\" transform=\"rotate(90 145 112)\"/><path d=\"M165,112 C171,119 174,127 174,136 C173,148 165,158 154,166 C144,173 127,176 109,174\" transform=\"rotate(180 145 112)\"/><path d=\"M165,112 C171,119 174,127 174,136 C173,148 165,158 154,166 C144,173 127,176 109,174\" transform=\"rotate(270 145 112)\"/></g><ellipse cx=\"145\" cy=\"112\" rx=\"36\" ry=\"13\" transform=\"rotate(-28 145 112)\" fill=\"url(#q1bulge)\"/><ellipse cx=\"145\" cy=\"112\" rx=\"25\" ry=\"7.5\" transform=\"rotate(-28 145 112)\" fill=\"#ffd166\" opacity=\".8\"/><circle cx=\"115\" cy=\"78\" r=\"9.5\" fill=\"none\" stroke=\"#a9f07a\" stroke-width=\"1.2\" opacity=\".6\"/><circle cx=\"115\" cy=\"78\" r=\"5.5\" fill=\"#a9f07a\"/><text x=\"115\" y=\"60\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">S</text><text x=\"145\" y=\"214\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\" text-anchor=\"middle\">(가)</text><ellipse cx=\"415\" cy=\"112\" rx=\"86\" ry=\"13\" fill=\"url(#q1side)\"/><ellipse cx=\"415\" cy=\"112\" rx=\"86\" ry=\"4.5\" fill=\"#cfe0ff\" opacity=\".3\"/><ellipse cx=\"415\" cy=\"112\" rx=\"31\" ry=\"22\" fill=\"url(#q1bulge)\"/><g fill=\"#cfe0ff\" opacity=\".8\"><circle cx=\"343\" cy=\"111\" r=\"1.1\"/><circle cx=\"352\" cy=\"114\" r=\"1.3\"/><circle cx=\"366\" cy=\"110\" r=\"1.2\"/><circle cx=\"379\" cy=\"113\" r=\"1.4\"/><circle cx=\"392\" cy=\"110\" r=\"1.2\"/><circle cx=\"437\" cy=\"114\" r=\"1.3\"/><circle cx=\"450\" cy=\"110\" r=\"1.2\"/><circle cx=\"474\" cy=\"113\" r=\"1.4\"/><circle cx=\"486\" cy=\"110\" r=\"1.2\"/><circle cx=\"494\" cy=\"114\" r=\"1.1\"/></g><circle cx=\"464\" cy=\"112\" r=\"9.5\" fill=\"none\" stroke=\"#a9f07a\" stroke-width=\"1.2\" opacity=\".6\"/><circle cx=\"464\" cy=\"112\" r=\"5.5\" fill=\"#a9f07a\"/><text x=\"464\" y=\"142\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">S</text><text x=\"415\" y=\"214\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\" text-anchor=\"middle\">(나)</text></svg>",
+   stem:"그림 (가)와 (나)는 <b>우리은하를 서로 다른 두 방향에서 본 모습</b>을 모형으로 나타낸 것이고, <b>S</b>는 태양계의 위치이다. 이에 대한 설명으로 옳은 것은?",
+   ch:[{t:"(가)는 우리은하를 옆에서 본 모습이다.",ok:0},{t:"(나)에서 우리은하의 중심부는 그 주변보다 두껍게 부풀어 있다.",ok:1},{t:"S는 우리은하의 중심에 위치한다.",ok:0},{t:"(가)와 같은 모습은 지구에서 밤하늘을 올려다보면 그대로 볼 수 있다.",ok:0},{t:"밤하늘에 보이는 은하수는 (가)와 (나)의 바깥에 있는 또 다른 은하이다.",ok:0}],
+   why:"<b>정답 ②</b><br>① (가)는 원반 전체가 <b>둥글게</b> 보이므로 <b>위에서</b> 본 모습이고, (나)는 얇고 길게 퍼져 보이므로 <b>옆에서</b> 본 모습이다. 위·옆을 서로 바꿔 말했으므로 틀렸다.<br>② (나)에서 가운데가 위아래로 볼록하고 양옆은 얇다. 옆에서 본 우리은하는 <b>중심부가 부풀어 있는 납작한 원반</b> 모양이므로 옳다.<br>③ 그림에서도 S는 중심이 아니라 중심에서 벗어난 나선팔 위에 찍혀 있다. 실제로도 태양계는 은하 중심에서 <b>약 8500 pc</b> 떨어져 있다. '태양계는 우리은하 한가운데 있다'는 것은 대표적인 오개념이다.<br>④ (가)는 우리은하를 <b>밖에서 내려다본</b> 모형이다. 우리는 우리은하 <b>안</b>에 있으므로 이 모습을 직접 볼 수 없고, 안에서 내다보면 하늘을 두르는 <b>띠(은하수)</b>로 보인다.<br>⑤ 은하수는 우리은하 밖의 다른 은하가 아니라, <b>지구에서 본 우리은하의 일부</b>이다."},
+
+  {id:"q2",
+   difficulty:"중",
+   intent:"위에서 본 은하 모식도의 관측 방향(P, Q)과 밤하늘 관측 결과를 짝지어, 은하수의 폭·밝기 차이가 태양계의 위치(구조)에서 비롯됨을 이해했는지, 또 밝기가 다른 두 띠가 모두 은하수임을 아는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 260\" role=\"img\" aria-label=\"자료 설명: 왼쪽은 우리은하를 위에서 본 모습이다. 한가운데에 밝은 은하 중심이 있고 그 둘레로 나선팔이 뻗어 있으며, 중심에서 오른쪽으로 벗어난 곳에 태양계 S가 초록색 점으로 있다. S에서 은하 중심을 지나 반대쪽 가장자리로 향하는 화살표에 P가, S에서 은하 중심과 반대쪽인 바깥 가장자리로 향하는 화살표에 Q가 붙어 있다. 오른쪽 위 (가)는 밤하늘을 나타낸 것으로 폭이 넓고 밝은 뿌연 띠가 가로지르며 띠 안에 별이 매우 촘촘하다. 오른쪽 아래 (나)는 밤하늘을 나타낸 것으로 폭이 좁고 희미한 띠가 지나가며 별이 성기게 흩어져 있다.\"><defs><radialGradient id=\"q2disk\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".24\"/><stop offset=\".4\" stop-color=\"#8fa3ff\" stop-opacity=\".12\"/><stop offset=\"1\" stop-color=\"#8fa3ff\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"q2core\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".9\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><line x1=\"246\" y1=\"20\" x2=\"246\" y2=\"250\" stroke=\"#33406e\" stroke-width=\"1.4\"/><text x=\"122\" y=\"30\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#9aa8cf\" text-anchor=\"middle\">우리은하를 위에서 본 모습</text><circle cx=\"122\" cy=\"122\" r=\"72\" fill=\"url(#q2disk)\"/><circle cx=\"122\" cy=\"122\" r=\"72\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\" stroke-dasharray=\"5 6\"/><g transform=\"rotate(-52 122 122)\" fill=\"none\" stroke=\"#6ef0e6\" stroke-width=\"2.6\" stroke-linecap=\"round\" opacity=\".45\"><path d=\"M140,122 C145,128 148,136 148,144 C147,154 140,163 130,171 C121,177 106,180 90,178\"/><path d=\"M140,122 C145,128 148,136 148,144 C147,154 140,163 130,171 C121,177 106,180 90,178\" transform=\"rotate(90 122 122)\"/><path d=\"M140,122 C145,128 148,136 148,144 C147,154 140,163 130,171 C121,177 106,180 90,178\" transform=\"rotate(180 122 122)\"/><path d=\"M140,122 C145,128 148,136 148,144 C147,154 140,163 130,171 C121,177 106,180 90,178\" transform=\"rotate(270 122 122)\"/></g><circle cx=\"122\" cy=\"122\" r=\"16\" fill=\"url(#q2core)\"/><circle cx=\"122\" cy=\"122\" r=\"4\" fill=\"#ffd166\"/><text x=\"122\" y=\"156\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" fill=\"#ffd166\" text-anchor=\"middle\">은하 중심</text><line x1=\"152\" y1=\"122\" x2=\"70\" y2=\"122\" stroke=\"#ffd166\" stroke-width=\"2.4\" stroke-dasharray=\"7 5\"/><polygon points=\"59,122 71,116.5 71,127.5\" fill=\"#ffd166\"/><line x1=\"174\" y1=\"122\" x2=\"197\" y2=\"122\" stroke=\"#cfb4ff\" stroke-width=\"2.4\" stroke-dasharray=\"7 5\"/><polygon points=\"208,122 196,116.5 196,127.5\" fill=\"#cfb4ff\"/><text x=\"96\" y=\"112\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\" text-anchor=\"middle\">P</text><text x=\"192\" y=\"110\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#cfb4ff\" text-anchor=\"middle\">Q</text><circle cx=\"163\" cy=\"122\" r=\"5.5\" fill=\"#a9f07a\"/><text x=\"163\" y=\"105\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">S</text><text x=\"272\" y=\"40\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(가)</text><rect x=\"272\" y=\"50\" width=\"262\" height=\"84\" rx=\"8\" fill=\"#05080f\" stroke=\"#33406e\" stroke-width=\"1.4\"/><rect x=\"273\" y=\"64\" width=\"260\" height=\"56\" fill=\"#a9dcff\" opacity=\".2\"/><rect x=\"273\" y=\"78\" width=\"260\" height=\"28\" fill=\"#ffffff\" opacity=\".24\"/><g fill=\"#ffffff\" opacity=\".9\"><circle cx=\"284\" cy=\"92\" r=\"1.4\"/><circle cx=\"295\" cy=\"85\" r=\"1.4\"/><circle cx=\"306\" cy=\"99\" r=\"1.4\"/><circle cx=\"317\" cy=\"88\" r=\"1.4\"/><circle cx=\"328\" cy=\"103\" r=\"1.4\"/><circle cx=\"339\" cy=\"80\" r=\"1.4\"/><circle cx=\"350\" cy=\"95\" r=\"1.4\"/><circle cx=\"361\" cy=\"86\" r=\"1.4\"/><circle cx=\"372\" cy=\"100\" r=\"1.4\"/><circle cx=\"383\" cy=\"90\" r=\"1.4\"/><circle cx=\"394\" cy=\"82\" r=\"1.4\"/><circle cx=\"405\" cy=\"97\" r=\"1.4\"/><circle cx=\"416\" cy=\"89\" r=\"1.4\"/><circle cx=\"427\" cy=\"104\" r=\"1.4\"/><circle cx=\"438\" cy=\"93\" r=\"1.4\"/><circle cx=\"449\" cy=\"84\" r=\"1.4\"/><circle cx=\"460\" cy=\"98\" r=\"1.4\"/><circle cx=\"471\" cy=\"91\" r=\"1.4\"/><circle cx=\"482\" cy=\"101\" r=\"1.4\"/><circle cx=\"493\" cy=\"87\" r=\"1.4\"/><circle cx=\"504\" cy=\"94\" r=\"1.4\"/><circle cx=\"515\" cy=\"83\" r=\"1.4\"/><circle cx=\"526\" cy=\"97\" r=\"1.4\"/><circle cx=\"289\" cy=\"105\" r=\"1.4\"/><circle cx=\"311\" cy=\"78\" r=\"1.4\"/><circle cx=\"333\" cy=\"92\" r=\"1.4\"/><circle cx=\"355\" cy=\"108\" r=\"1.4\"/><circle cx=\"377\" cy=\"79\" r=\"1.4\"/><circle cx=\"399\" cy=\"103\" r=\"1.4\"/><circle cx=\"421\" cy=\"86\" r=\"1.4\"/><circle cx=\"443\" cy=\"100\" r=\"1.4\"/><circle cx=\"465\" cy=\"81\" r=\"1.4\"/><circle cx=\"487\" cy=\"94\" r=\"1.4\"/><circle cx=\"509\" cy=\"106\" r=\"1.4\"/><circle cx=\"528\" cy=\"88\" r=\"1.4\"/></g><g fill=\"#c6d2ee\" opacity=\".65\"><circle cx=\"292\" cy=\"60\" r=\"1\"/><circle cx=\"334\" cy=\"57\" r=\"1\"/><circle cx=\"376\" cy=\"63\" r=\"1\"/><circle cx=\"418\" cy=\"58\" r=\"1\"/><circle cx=\"460\" cy=\"62\" r=\"1\"/><circle cx=\"502\" cy=\"56\" r=\"1\"/><circle cx=\"300\" cy=\"126\" r=\"1\"/><circle cx=\"348\" cy=\"122\" r=\"1\"/><circle cx=\"396\" cy=\"128\" r=\"1\"/><circle cx=\"444\" cy=\"123\" r=\"1\"/><circle cx=\"492\" cy=\"127\" r=\"1\"/><circle cx=\"524\" cy=\"120\" r=\"1\"/></g><text x=\"272\" y=\"152\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#c6d2ee\">(나)</text><rect x=\"272\" y=\"162\" width=\"262\" height=\"84\" rx=\"8\" fill=\"#05080f\" stroke=\"#33406e\" stroke-width=\"1.4\"/><rect x=\"273\" y=\"192\" width=\"260\" height=\"24\" fill=\"#a9dcff\" opacity=\".16\"/><rect x=\"273\" y=\"200\" width=\"260\" height=\"8\" fill=\"#ffffff\" opacity=\".18\"/><g fill=\"#ffffff\" opacity=\".8\"><circle cx=\"286\" cy=\"204\" r=\"1.3\"/><circle cx=\"310\" cy=\"201\" r=\"1.3\"/><circle cx=\"334\" cy=\"206\" r=\"1.3\"/><circle cx=\"358\" cy=\"203\" r=\"1.3\"/><circle cx=\"382\" cy=\"200\" r=\"1.3\"/><circle cx=\"406\" cy=\"205\" r=\"1.3\"/><circle cx=\"430\" cy=\"202\" r=\"1.3\"/><circle cx=\"454\" cy=\"207\" r=\"1.3\"/><circle cx=\"478\" cy=\"203\" r=\"1.3\"/><circle cx=\"502\" cy=\"200\" r=\"1.3\"/><circle cx=\"524\" cy=\"205\" r=\"1.3\"/></g><g fill=\"#c6d2ee\" opacity=\".6\"><circle cx=\"294\" cy=\"175\" r=\"1\"/><circle cx=\"330\" cy=\"184\" r=\"1\"/><circle cx=\"368\" cy=\"170\" r=\"1\"/><circle cx=\"404\" cy=\"188\" r=\"1\"/><circle cx=\"442\" cy=\"177\" r=\"1\"/><circle cx=\"478\" cy=\"183\" r=\"1\"/><circle cx=\"514\" cy=\"172\" r=\"1\"/><circle cx=\"302\" cy=\"228\" r=\"1\"/><circle cx=\"346\" cy=\"220\" r=\"1\"/><circle cx=\"390\" cy=\"234\" r=\"1\"/><circle cx=\"434\" cy=\"222\" r=\"1\"/><circle cx=\"476\" cy=\"230\" r=\"1\"/><circle cx=\"518\" cy=\"218\" r=\"1\"/></g></svg>",
+   stem:"왼쪽 그림은 우리은하를 위에서 본 모습에서 태양계 <b>S</b>와 두 관측 방향 <b>P</b>, <b>Q</b>를 나타낸 것이고, <b>(가)</b>와 <b>(나)</b>는 지구에서 P와 Q 중 서로 다른 한 방향의 밤하늘을 관측한 모습이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["(가)는 P 방향의 밤하늘을 관측한 모습이다.", "(가)와 (나)의 차이는 지구가 자전하기 때문에 나타난다.", "(가)와 (나)에서 보이는 뿌연 띠는 모두 은하수이다."],
+   boxVerdicts:[true, false, true],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>정답 ③ (ㄱ, ㄷ)</b><br><b>ㄱ (옳음)</b> — P는 태양계 S에서 <b>은하 중심을 지나 반대쪽 가장자리까지</b> 향하는 방향이다. 이 시선에는 원반의 별이 겹겹이 쌓여 있으므로 은하수가 <b>넓고 밝게</b> 보인다. 따라서 띠가 두껍고 밝은 (가)가 P 방향이다. (반대로 Q는 은하 바깥쪽이어서 별이 적어 좁고 희미한 (나)가 된다.)<br><b>ㄴ (틀림)</b> — 지구의 자전은 하늘 전체를 함께 돌게 할 뿐, 특정 방향의 별 개수를 바꾸지 못한다. (가)와 (나)의 차이는 <b>태양계가 우리은하의 중심에서 벗어난 나선팔에 있기 때문에</b> 방향마다 시선에 놓인 별의 양이 다른 데서 생긴다.<br><b>ㄷ (옳음)</b> — 밝고 넓은 띠만 은하수인 것이 아니다. 좁고 희미한 (나)의 띠도 <b>같은 원반을 다른 방향으로 훑어 본 것</b>이므로 똑같이 은하수이다. 은하수는 하늘을 한 바퀴 두르며, 방향에 따라 폭과 밝기만 달라진다."},
+
+  {id:"q3",
+   difficulty:"상",
+   intent:"지름과 반지름을 구분하고 태양계~은하 중심 거리(8500 pc)로부터 은하 안의 두 거리를 계산한 뒤, 그 결과를 은하수의 폭·밝기 비교에까지 적용하는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 250\" role=\"img\" aria-label=\"자료 설명: 우리은하를 위에서 본 모습이다. 원반 한가운데에 밝은 은하 중심 C가 있고, C에서 오른쪽으로 조금 떨어진 나선팔 위에 태양계 S가 있다. C와 S를 잇는 직선을 양쪽으로 늘였을 때 원반 오른쪽 가장자리와 만나는 지점이 X, 왼쪽 가장자리와 만나는 지점이 Y이다. C에서 S까지의 구간에는 8500 pc이라고 적혀 있고, Y에서 X까지 이어지는 원반 전체 폭에는 지름 30000 pc이라고 적혀 있다.\"><defs><radialGradient id=\"q3disk\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".22\"/><stop offset=\".4\" stop-color=\"#8fa3ff\" stop-opacity=\".12\"/><stop offset=\"1\" stop-color=\"#8fa3ff\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"q3core\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".9\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><circle cx=\"280\" cy=\"100\" r=\"92\" fill=\"url(#q3disk)\"/><circle cx=\"280\" cy=\"100\" r=\"92\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\" stroke-dasharray=\"5 6\"/><g transform=\"rotate(-52 280 100)\" fill=\"none\" stroke=\"#6ef0e6\" stroke-width=\"2.8\" stroke-linecap=\"round\" opacity=\".4\"><path d=\"M303,100 C310,108 313,117 313,128 C312,141 303,153 290,162 C279,170 259,174 239,171\"/><path d=\"M303,100 C310,108 313,117 313,128 C312,141 303,153 290,162 C279,170 259,174 239,171\" transform=\"rotate(90 280 100)\"/><path d=\"M303,100 C310,108 313,117 313,128 C312,141 303,153 290,162 C279,170 259,174 239,171\" transform=\"rotate(180 280 100)\"/><path d=\"M303,100 C310,108 313,117 313,128 C312,141 303,153 290,162 C279,170 259,174 239,171\" transform=\"rotate(270 280 100)\"/></g><g fill=\"#cfe0ff\" opacity=\".65\"><circle cx=\"236\" cy=\"66\" r=\"1.2\"/><circle cx=\"318\" cy=\"58\" r=\"1.2\"/><circle cx=\"212\" cy=\"132\" r=\"1.2\"/><circle cx=\"340\" cy=\"146\" r=\"1.2\"/><circle cx=\"262\" cy=\"36\" r=\"1.2\"/><circle cx=\"296\" cy=\"170\" r=\"1.2\"/><circle cx=\"356\" cy=\"78\" r=\"1.2\"/><circle cx=\"208\" cy=\"78\" r=\"1.2\"/><circle cx=\"248\" cy=\"158\" r=\"1.2\"/><circle cx=\"330\" cy=\"36\" r=\"1.2\"/></g><line x1=\"188\" y1=\"100\" x2=\"372\" y2=\"100\" stroke=\"#5b6a99\" stroke-width=\"1.4\" stroke-dasharray=\"6 5\"/><circle cx=\"280\" cy=\"100\" r=\"18\" fill=\"url(#q3core)\"/><circle cx=\"280\" cy=\"100\" r=\"5\" fill=\"#ffd166\"/><text x=\"280\" y=\"72\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\" text-anchor=\"middle\">C</text><circle cx=\"332\" cy=\"100\" r=\"6\" fill=\"#a9f07a\"/><text x=\"332\" y=\"72\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">S</text><circle cx=\"372\" cy=\"100\" r=\"5\" fill=\"#a9dcff\"/><text x=\"384\" y=\"106\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#a9dcff\" text-anchor=\"start\">X</text><circle cx=\"188\" cy=\"100\" r=\"5\" fill=\"#a9dcff\"/><text x=\"176\" y=\"106\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#a9dcff\" text-anchor=\"end\">Y</text><path d=\"M280,120 v11 M280,126 H332 M332,120 v11\" stroke=\"#a9f07a\" stroke-width=\"1.6\" fill=\"none\"/><text x=\"306\" y=\"148\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">8500 pc</text><path d=\"M188,106 V204 M372,106 V204\" stroke=\"#6ef0e6\" stroke-width=\"1.1\" stroke-dasharray=\"4 5\" opacity=\".45\" fill=\"none\"/><path d=\"M188,201 v12 M188,207 H372 M372,201 v12\" stroke=\"#6ef0e6\" stroke-width=\"1.6\" fill=\"none\"/><text x=\"280\" y=\"234\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#6ef0e6\" text-anchor=\"middle\">지름 30000 pc</text></svg>",
+   stem:"그림은 우리은하를 위에서 본 모습을 나타낸 것이다. <b>C</b>는 은하 중심, <b>S</b>는 태양계이고, <b>X</b>와 <b>Y</b>는 C와 S를 지나는 직선이 우리은하의 가장자리와 만나는 두 지점이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["C에서 Y까지의 거리는 약 30000 pc이다.", "S에서 X까지의 거리는 약 6500 pc이다.", "태양계에서 Y가 있는 쪽 밤하늘을 관측할 때가 X가 있는 쪽을 관측할 때보다 은하수가 더 넓고 밝게 보인다."],
+   boxVerdicts:[false, true, true],
+   ch:[{t:"ㄱ",ok:0},{t:"ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>정답 ④ (ㄴ, ㄷ)</b><br><b>ㄱ (틀림)</b> — 30000 pc은 우리은하의 <b>지름</b>이다. C에서 가장자리 Y까지는 <b>반지름</b>이므로 30000 ÷ 2 = <b>약 15000 pc</b>이다. 지름과 반지름을 혼동한 진술이다.<br><b>ㄴ (옳음)</b> — 반지름이 15000 pc이고 C에서 S까지가 8500 pc이므로, S에서 같은 쪽 가장자리 X까지는 15000 − 8500 = <b>약 6500 pc</b>이다.<br><b>ㄷ (옳음)</b> — S에서 Y 쪽을 보면 시선이 은하 중심 C를 지나 반대편 가장자리까지 8500 + 15000 = <b>약 23500 pc</b>를 훑는다. 반대로 X 쪽은 6500 pc뿐이다. 시선 방향에 놓인 별의 수가 훨씬 많은 <b>Y 쪽(은하 중심 방향)</b>에서 은하수가 더 넓고 밝게 보인다. 여름철 궁수자리 방향이 바로 이 경우이다."},
+
+  {id:"q4",
+   difficulty:"상",
+   intent:"태양계의 위치라는 조건을 바꾸었을 때 은하수가 어떻게 달라질지 추론하게 하여, '띠 모양으로 보이는 까닭(납작한 원반 안에 있어서)'과 '방향마다 다르게 보이는 까닭(중심에서 벗어나 있어서)'을 구분하는지 평가한다.",
+   svg:"<svg viewBox=\"0 0 560 240\" role=\"img\" aria-label=\"자료 설명: 왼쪽 (가)는 우리은하를 위에서 본 모습으로, 한가운데에 은하 중심이라고 적힌 밝은 부분이 있고 나선팔이 뻗어 있으며, 은하 중심에서 오른쪽으로 벗어난 나선팔 위에 태양계 S가 초록색 점으로 표시되어 있고 은하 중심과 S 사이가 초록색 점선으로 이어져 있다. 오른쪽 (나)는 (가)와 모양과 크기가 똑같은 은하이지만, 태양계 S가 나선팔이 아니라 은하의 한가운데, 즉 은하 중심과 같은 자리에 놓여 있다.\"><defs><radialGradient id=\"q4disk\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".24\"/><stop offset=\".4\" stop-color=\"#8fa3ff\" stop-opacity=\".12\"/><stop offset=\"1\" stop-color=\"#8fa3ff\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"q4core\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".9\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><line x1=\"280\" y1=\"18\" x2=\"280\" y2=\"206\" stroke=\"#33406e\" stroke-width=\"1.4\"/><circle cx=\"145\" cy=\"105\" r=\"76\" fill=\"url(#q4disk)\"/><circle cx=\"145\" cy=\"105\" r=\"76\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\" stroke-dasharray=\"5 6\"/><g transform=\"rotate(-52 145 105)\" fill=\"none\" stroke=\"#6ef0e6\" stroke-width=\"2.7\" stroke-linecap=\"round\" opacity=\".45\"><path d=\"M164,105 C170,112 173,119 172,128 C172,139 164,149 154,156 C144,163 128,166 111,164\"/><path d=\"M164,105 C170,112 173,119 172,128 C172,139 164,149 154,156 C144,163 128,166 111,164\" transform=\"rotate(90 145 105)\"/><path d=\"M164,105 C170,112 173,119 172,128 C172,139 164,149 154,156 C144,163 128,166 111,164\" transform=\"rotate(180 145 105)\"/><path d=\"M164,105 C170,112 173,119 172,128 C172,139 164,149 154,156 C144,163 128,166 111,164\" transform=\"rotate(270 145 105)\"/></g><circle cx=\"145\" cy=\"105\" r=\"17\" fill=\"url(#q4core)\"/><circle cx=\"145\" cy=\"105\" r=\"4.5\" fill=\"#ffd166\"/><line x1=\"145\" y1=\"105\" x2=\"188\" y2=\"105\" stroke=\"#a9f07a\" stroke-width=\"1.6\" stroke-dasharray=\"4 4\"/><circle cx=\"188\" cy=\"105\" r=\"9.5\" fill=\"none\" stroke=\"#a9f07a\" stroke-width=\"1.2\" opacity=\".6\"/><circle cx=\"188\" cy=\"105\" r=\"5.5\" fill=\"#a9f07a\"/><line x1=\"188\" y1=\"88\" x2=\"188\" y2=\"94\" stroke=\"#a9f07a\" stroke-width=\"1.2\"/><text x=\"188\" y=\"83\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">S</text><line x1=\"145\" y1=\"124\" x2=\"145\" y2=\"134\" stroke=\"#ffd166\" stroke-width=\"1.2\"/><text x=\"145\" y=\"150\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" font-weight=\"700\" fill=\"#ffd166\" text-anchor=\"middle\">은하 중심</text><text x=\"145\" y=\"224\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\" text-anchor=\"middle\">(가)</text><circle cx=\"415\" cy=\"105\" r=\"76\" fill=\"url(#q4disk)\"/><circle cx=\"415\" cy=\"105\" r=\"76\" fill=\"none\" stroke=\"#33406e\" stroke-width=\"1.4\" stroke-dasharray=\"5 6\"/><g transform=\"rotate(-52 415 105)\" fill=\"none\" stroke=\"#6ef0e6\" stroke-width=\"2.7\" stroke-linecap=\"round\" opacity=\".45\"><path d=\"M434,105 C440,112 443,119 442,128 C442,139 434,149 424,156 C414,163 398,166 381,164\"/><path d=\"M434,105 C440,112 443,119 442,128 C442,139 434,149 424,156 C414,163 398,166 381,164\" transform=\"rotate(90 415 105)\"/><path d=\"M434,105 C440,112 443,119 442,128 C442,139 434,149 424,156 C414,163 398,166 381,164\" transform=\"rotate(180 415 105)\"/><path d=\"M434,105 C440,112 443,119 442,128 C442,139 434,149 424,156 C414,163 398,166 381,164\" transform=\"rotate(270 415 105)\"/></g><circle cx=\"415\" cy=\"105\" r=\"17\" fill=\"url(#q4core)\"/><circle cx=\"415\" cy=\"105\" r=\"4.5\" fill=\"#ffd166\"/><circle cx=\"415\" cy=\"105\" r=\"11\" fill=\"none\" stroke=\"#a9f07a\" stroke-width=\"1.4\" opacity=\".85\"/><circle cx=\"415\" cy=\"105\" r=\"5.5\" fill=\"#a9f07a\"/><line x1=\"415\" y1=\"88\" x2=\"415\" y2=\"93\" stroke=\"#a9f07a\" stroke-width=\"1.2\"/><text x=\"415\" y=\"83\" font-family=\"Pretendard, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#a9f07a\" text-anchor=\"middle\">S</text><line x1=\"415\" y1=\"124\" x2=\"415\" y2=\"134\" stroke=\"#ffd166\" stroke-width=\"1.2\"/><text x=\"415\" y=\"150\" font-family=\"Pretendard, sans-serif\" font-size=\"14\" font-weight=\"700\" fill=\"#ffd166\" text-anchor=\"middle\">은하 중심</text><text x=\"415\" y=\"224\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#c6d2ee\" text-anchor=\"middle\">(나)</text></svg>",
+   stem:"그림 (가)는 우리은하에서 태양계 <b>S</b>의 실제 위치를, (나)는 태양계 S가 <b>우리은하의 중심에 있다고 가정한 경우</b>를 나타낸 것이다. 두 은하의 모양과 크기는 같다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?",
+   boxes:["(나)와 같다면 관측 방향에 따른 은하수의 폭과 밝기 차이가 (가)에서보다 작아진다.", "(나)와 같다면 밤하늘에서 은하수를 관측할 수 없게 된다.", "(가)에서 은하수가 하늘을 두르는 띠 모양으로 보이는 것은 태양계가 은하 중심에서 벗어나 있기 때문이다."],
+   boxVerdicts:[true, false, false],
+   ch:[{t:"ㄱ",ok:1},{t:"ㄴ",ok:0},{t:"ㄷ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+   why:"<b>정답 ① (ㄱ)</b><br><b>ㄱ (옳음)</b> — (나)처럼 S가 은하 중심에 있으면 원반을 따라 <b>어느 방향을 보든 시선에 놓인 별의 양이 거의 같아진다.</b> 즉 방향에 따른 폭·밝기의 차이가 (가)보다 <b>작아진다.</b> 반대로 (가)에서 방향마다 은하수가 다르게 보이는 것은 태양계가 중심에서 약 8500 pc <b>벗어나</b> 있기 때문이다.<br><b>ㄴ (틀림)</b> — 위치가 바뀌어도 태양계는 여전히 <b>납작한 원반 안</b>에 있다. 원반을 따라 훑는 방향에는 별이 겹쳐 뿌옇게 보이고 원반의 위·아래쪽은 별이 적으므로, 하늘을 두르는 <b>띠(은하수)는 그대로 보인다.</b> 다만 어느 방향에서나 비슷한 밝기의 띠가 될 뿐이다.<br><b>ㄷ (틀림)</b> — 두 가지 까닭을 바꿔 놓았다. 은하수가 <b>띠 모양</b>인 까닭은 태양계가 <b>납작한 원반 안</b>에 들어앉아 있기 때문이고, 중심에서 벗어나 있다는 사실은 그 띠의 <b>폭과 밝기가 방향마다 달라지는</b> 까닭이다. ㄴ에서 보았듯 중심에 있어도 띠는 그대로 보인다."},
+
+  {id:"q5",
+   difficulty:"중",
+   intent:"우리은하의 지름(약 30000 pc)과 태양계~은하 중심 거리(약 8500 pc)를 혼동하지 않고 구분하며, 위·옆에서 본 구조를 정확히 진술하는지 평가한다.",
+   stem:"우리은하에 대한 설명으로 <b>옳지 않은</b> 것은?",
+   ch:[{t:"수천억 개의 별이 모여 있는 거대한 천체 집단이며, 태양계를 포함한다.",ok:0},{t:"위에서 보면 중심부의 막대 구조에서 나선팔이 여러 개 뻗어 있는 모습이다.",ok:0},{t:"옆에서 보면 중심부가 볼록한 납작한 원반 모습이다.",ok:0},{t:"지름이 약 30000 pc이어서 빛으로도 가로지르는 데 약 10만 년이 걸린다.",ok:0},{t:"태양계에서 우리은하의 중심까지의 거리는 약 30000 pc이다.",ok:1}],
+   why:"<b>정답 ⑤ (옳지 않은 것)</b><br>⑤ 30000 pc은 우리은하의 <b>지름</b>이고, 태양계에서 은하 중심까지의 거리는 <b>약 8500 pc</b>이다. 두 숫자를 바꿔 쓴 대표적인 오답이다. 지름의 절반인 반지름이 15000 pc이므로, 8500 pc은 반지름보다도 짧다는 점을 함께 확인해 두자.<br>① 은하는 수천억 개의 별이 모인 천체 집단이고, 그중 <b>태양계가 속한</b> 은하가 우리은하이므로 옳다.<br>② 위에서 본 모습에 대한 옳은 설명이다.<br>③ 옆에서 본 모습에 대한 옳은 설명이다.<br>④ 1 pc이 약 3.26광년이므로 30000 pc은 약 10만 광년, 즉 빛으로 약 10만 년 걸리는 거리이다. 옳다. ④와 ⑤의 숫자가 같다는 점에 속지 말 것."}
 ];
 
 /* ── 엔진 ── */
@@ -1104,7 +1252,7 @@ $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classLis
       q.ch.map((c,i)=>i).sort(()=>Math.random()-.5).forEach((idx,n)=>{
         const c=q.ch[idx];
         const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-        b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+        b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
         b.addEventListener('click',()=>{
           if(answered||solved)return;answered=true;
           if(c.ok){solved=true;b.classList.add('correct');
@@ -1148,14 +1296,25 @@ $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classLis
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
-    body.innerHTML=`<div class="mq-q" style="margin-top:0">
-      <div class="mq-text" style="font-size:16.5px"><span class="qn">Q${i+1}.</span>${q.q}</div>
-      <div class="mq-choices"></div><div class="mq-fb"></div></div>`;
+    const bg=(q.boxes&&q.boxes.length)
+      ? '<div class="bogi" id="bogiBox"><div class="bogi-t">보 기</div><ul>'
+        + q.boxes.map(function(b,n){return '<li data-bi="'+n+'"><span class="bk">'+'\u3131\u3134\u3137\u3139'[n]+'</span><span>'+b+'</span><span class="bv"></span></li>';}).join('')
+        + '</ul></div>'
+      : '';
+    body.innerHTML='<div class="mq-q" style="margin-top:0">'
+      + '<div class="mq-meta"><span class="mq-lv" data-lv="'+(q.difficulty||'중')+'">난이도 '+(q.difficulty||'중')+'</span>'
+      + (q.boxes&&q.boxes.length?'<span class="mq-lv" style="color:var(--accent2)">&lt;보기&gt;형</span>':'')
+      + (q.svg?'<span class="mq-lv" style="color:var(--ink-mute)">자료 해석</span>':'') + '</div>'
+      + (q.svg?'<div class="qfig">'+q.svg+'</div>':'')
+      + '<div class="mq-text" style="font-size:18px"><span class="qn">Q'+(i+1)+'.</span>'+(q.stem||q.q)+'</div>'
+      + bg
+      + '<div class="mq-choices"></div><div class="mq-fb"></div>'
+      + '<div class="mq-next"><button class="btn primary sm" id="qNext">다음 문항 →</button></div></div>';
     const cw=$('.mq-choices',body),fb=$('.mq-fb',body);let locked=false;
     q.ch.map((c,n)=>n).sort(()=>Math.random()-.5).forEach((idx,n)=>{
       const c=q.ch[idx];
       const b=document.createElement('button');b.className='mq-opt';b.dataset.ok=c.ok?'1':'0';
-      b.innerHTML=`<span class="k">${'①②③④'[n]}</span>${c.t}`;
+      b.innerHTML=`<span class="k">${'①②③④⑤'[n]}</span>${c.t}`;
       b.addEventListener('click',()=>{
         if(locked)return;locked=true;
         $$('.mq-opt',cw).forEach(x=>x.classList.add('locked'));
@@ -1165,7 +1324,15 @@ $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classLis
         else{b.classList.add('wrong');A.wrong();lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
-        hud();setTimeout(()=>{i++;next();},1900);});
+        const bx=$('#bogiBox');
+        if(bx&&q.boxVerdicts){$$('li',bx).forEach(function(li,n){
+          const t=!!q.boxVerdicts[n];li.classList.add(t?'t':'f');
+          const v=$('.bv',li);if(v)v.textContent=t?'옳음':'옳지 않음';});bx.classList.add('reveal');}
+        const nx=$('.mq-next',body);if(nx){nx.classList.add('show');
+          const nb=$('#qNext');if(nb){nb.textContent=(i+1>=order.length||lives<=0)?'결과 보기 →':'다음 문항 →';
+            nb.addEventListener('click',function(){A.pop();i++;next();
+              scrollTo({top:document.querySelector('#panel-check').offsetTop-70,behavior:reduceMotion?'auto':'smooth'});});}}
+        hud();});
       cw.appendChild(b);});}
   function end(){
     const perfect=score===GAME_QS.length*20;
