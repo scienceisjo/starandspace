@@ -167,6 +167,21 @@ body.teacher .tnote{display:flex}
 .tool b{font-size:14.5px;display:block}
 .tool span{font-size:12.5px;color:var(--ink-mute)}
 
+/* 이야기보따리 카드 — 차시가 아니므로 .lesson 진도 집계에 넣지 않는다 */
+.story{display:grid;gap:14px;margin-top:18px;grid-template-columns:1fr}
+.storycard{position:relative;display:flex;flex-direction:column;gap:9px;text-align:left;overflow:hidden;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:18px 20px 18px 24px;text-decoration:none;color:inherit;transition:.18s}
+.storycard::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--k,var(--accent))}
+.storycard:hover{transform:translateY(-3px);border-color:var(--k,var(--accent))}
+.storycard .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.storycard .ic{font-size:22px}
+.storycard .tagline{font-size:11.5px;font-weight:800;letter-spacing:.05em;color:var(--k,var(--accent));
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.storycard h3{font-family:var(--jua);font-size:18px;line-height:1.35;color:var(--ink);margin:0}
+.storycard .why{font-size:13.5px;color:var(--ink-dim);line-height:1.55;margin:0}
+.storycard .src{font-size:12px;color:var(--ink-mute);line-height:1.5;margin:0}
+.storycard .go{font-size:13px;font-weight:800;color:var(--k,var(--accent))}
 h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;align-items:center;gap:9px}
 .sechead .line{flex:1;height:1px;background:var(--line-soft)}
 
@@ -288,7 +303,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
     <div class="lab">■ 두 번째 블록 · 2. 우리은하와 우주 탐사</div>
     <h2>우리은하를 구성하는 천체는<br>어떻게 탐사할 수 있을까?</h2>
     <p class="desc">별 하나에서 눈을 들어 별의 무리, 은하, 그리고 우주 전체로 시야를 넓힙니다.
-       아래 여섯 차시의 단서를 모으면 이 질문에 답할 수 있습니다.</p>
+       아래 여섯 차시의 단서를 모으고, 마지막 10차시에서 이 질문에 최종 답을 씁니다.</p>
     <div class="tnote"><span class="ic">💬</span><div><b>중단원 지도 유의점</b> — 우리은하의 모양은 지구에서 관측되는 <b>은하수와 관련지어</b> 이해하도록 지도합니다. 우주 팽창과 관련해 <b>적색 편이·허블 법칙·가속 팽창 같은 심화 내용은 다루지 않습니다.</b></div></div>
   </section>
 
@@ -338,23 +353,38 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
     </a>
 
     <div class="lesson soon" style="--k:var(--c5)" data-id="l9">
+      
       <div class="thumb" data-thumb="l9"></div>
       <div class="top"><div class="no">9</div><span class="badge wait">준비 중</span><span class="pg">288~291쪽</span></div>
-      <h3>인류에게 영향을 미치는<br>우주 탐사</h3>
+      <h3>운동화 속의 우주<br>— 인류에게 영향을 미치는 우주 탐사</h3>
       <p class="why">정수기·에어쿠션 운동화·GPS·형상기억합금 안경테. 우주로 나간 기술이 어떻게 내 책상까지 왔을까요?</p>
-      <div class="tags"><span class="tag">인공위성</span><span class="tag">우주 망원경</span><span class="tag">탐사선·탐사차</span></div>
-      <div class="go">준비 중</div>
-      <div class="tnote"><span class="ic">💡</span><div>퍼서비어런스 탐사차(2021, 화성)가 <b>첨단 과학 &amp; 진로와 직업</b> 지면으로 이어집니다. 화성 거주지 구상 활동과 묶어 운영할 수 있습니다.</div></div>
+      <div class="tags"><span class="tag">인공위성</span><span class="tag">우주 망원경</span><span class="tag">탐사선·탐사 차</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">💡</span><div>조사 활동은 <b>주제를 검색어로 그대로</b> 쓰게 하고, 우주 탐사로 알게 된 사실이 <b>미래 탐사의 바탕</b>이 됨을 강조하세요(10차시로 연결). 퍼서비어런스 탐사 차(2021, 화성)가 <b>첨단 과학 &amp; 진로와 직업</b> 지면으로 이어져 화성 거주지 구상 활동과 묶어 운영할 수 있습니다.</div></div>
     </div>
 
     <div class="lesson soon" style="--k:var(--c5)" data-id="l10">
+      
       <div class="thumb" data-thumb="l10"></div>
       <div class="top"><div class="no">10</div><span class="badge wait">준비 중</span><span class="pg">292~293쪽</span></div>
-      <h3>우주 탐사 계획 세우기</h3>
-      <p class="why">블록 질문에 답하는 마무리 차시. 모둠이 직접 탐사 목적·대상·방법을 정해 계획서를 만듭니다.</p>
-      <div class="tags"><span class="tag">문제 해결</span><span class="tag">모둠 프로젝트</span></div>
-      <div class="go">준비 중</div>
+      <h3>다음 탐사는 어디로 갈까<br>— 우주 탐사 계획 세우기</h3>
+      <p class="why">다누리가 남긴 성과를 분석해 탐사 대상·방법·활동을 담은 나의 탐사 계획서를 만듭니다. 블록 질문에 최종 답을 쓰는 마무리 차시.</p>
+      <div class="tags"><span class="tag">다누리</span><span class="tag">탐사 계획서</span><span class="tag">문제 해결</span></div>
+      <div class="go">수업 열기 →</div>
+      <div class="tnote"><span class="ic">💡</span><div><b>최근의 탐사 성과를 바탕으로</b> 계획을 세우게 하고, 정리는 <b>정보 그림·보고서·만화</b> 등 다양한 방식을 허용하세요. 모둠 역할 분담과 협력적 소통을 지도합니다. 정답이 여럿인 제작 차시라 이 페이지에는 점수·게임 없이 <b>루브릭 자기 점검</b>만 있습니다.</div></div>
     </div>
+  </div>
+
+  <!-- ═══════════ 이야기보따리 ═══════════ -->
+  <h2 class="sechead">이야기보따리<span class="line"></span></h2>
+  <div class="story">
+    <a class="storycard" style="--k:var(--c5)" href="story.html">
+      <div class="top"><span class="ic">🌌</span><span class="tagline">교사 구두 전달용 · 15장면</span></div>
+      <h3>은하 이야기<br>— 밤하늘의 뿌연 띠에서 우주의 지도까지</h3>
+      <p class="why">영상을 틀지 않고 선생님이 직접 들려주는 강연용 자료입니다. 화면을 넘기며 이야기하면 장면마다 애니메이션이 받쳐 줍니다. 은하수의 어원에서 시작해 갈릴레오와 1920년 우주 대토론, 허블의 세페이드 변광성을 지나 딥필드·적색이동·제임스 웹, 그리고 암흑은하까지 이어집니다.</p>
+      <p class="src">📺 유튜브 <b>〈취미는 과학〉 은하 편</b>의 내용을 바탕으로 만들었습니다 (출연: 서울대학교 천문학자 황호성 교수)</p>
+      <div class="go">이야기 열기 →</div>
+    </a>
   </div>
 
   <!-- ═══════════ 선지식 · 도구 ═══════════ -->
@@ -377,7 +407,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
 
 <div id="toast"></div>
 
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-08</span></footer>
 
 <script>
 "use strict";
@@ -386,7 +416,7 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
    🖼️ 허브 사진 — img 폴더에 파일명만 맞춰 넣으면 자동으로 들어갑니다
    ① hero  : 히어로 큰 배경 사진 (가로로 긴 16:9)
    ② page  : 페이지 전체에 은은하게 깔리는 배경
-   ③ l1~l8 : 차시 카드 썸네일 (16:7)
+   ③ l1~l10 : 차시 카드 썸네일 (16:7)
    없는 사진은 그냥 안 나옵니다 — 지금 상태로도 깨지지 않아요
    ══════════════════════════════════════════════════════════════ */
 const HUB_IMG={
