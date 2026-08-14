@@ -44,9 +44,22 @@ body{
   position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center; gap:10px;
   padding:10px clamp(12px,2vw,26px); background:linear-gradient(180deg,rgba(5,6,15,.85),rgba(5,6,15,0));
 }
-.brand{font-weight:800; letter-spacing:-.02em; font-size:clamp(14px,1.35vw,20px); color:var(--c1); cursor:pointer;
-  background:none;border:0;font-family:inherit;padding:6px 8px;border-radius:10px}
-.brand:hover{background:rgba(94,231,255,.1)}
+/* 단원 허브로 가는 버튼 — 눌러서 다른 페이지로 나간다는 게 느껴지도록 채운 버튼 */
+.hubbtn{
+  display:inline-flex; align-items:center; gap:7px; text-decoration:none; white-space:nowrap;
+  background:var(--c1); color:#04131a; border:1px solid var(--c1); border-radius:999px;
+  padding:8px clamp(13px,1.15vw,19px); font-family:inherit; font-weight:800;
+  font-size:clamp(12px,1.05vw,16px); box-shadow:0 6px 18px -9px rgba(94,231,255,.9); transition:.16s;
+}
+.hubbtn:hover{background:#9df2ff; border-color:#9df2ff; transform:translateY(-1px);
+  box-shadow:0 11px 24px -10px rgba(94,231,255,1)}
+.hubbtn:active{transform:translateY(0); box-shadow:0 4px 10px -7px rgba(94,231,255,1)}
+.hubbtn .ar{font-size:1.15em; line-height:1; transition:transform .16s}
+.hubbtn:hover .ar{transform:translateX(-3px)}
+/* 제목은 이제 누르는 것이 아니라 그냥 이름표 */
+.brandtxt{font-weight:800; letter-spacing:-.02em; color:var(--dim);
+  font-size:clamp(13px,1.2vw,19px); white-space:nowrap; padding-left:4px}
+@media (max-width:900px){ .brandtxt{display:none} }
 .spacer{flex:1}
 .tbtn{
   background:rgba(255,255,255,.07); color:var(--ink); border:1px solid var(--line); border-radius:999px;
@@ -219,8 +232,14 @@ body.teacher #scriptPanel{display:block; animation:sin .28s ease-out}
 
 /* ── 표지 ─────────────────────────────── */
 #cover{position:fixed; inset:0; z-index:30; display:grid; place-items:center; text-align:center; padding:24px;
-  background:radial-gradient(80% 60% at 50% 42%, rgba(20,14,60,.55), rgba(3,4,12,.92) 70%)}
+  background:radial-gradient(80% 60% at 50% 42%, #140f42 0%, #070a18 58%, #04050d 100%)}
 #cover.hide{display:none}
+/* 표지가 떠 있는 동안에는 이야기 화면과 조작부를 완전히 감춘다
+   (표지 뒤로 장면 내용이 비쳐 보이지 않게 — 표지와 이야기를 분리) */
+body.cover-on #stage,
+body.cover-on .topbar,
+body.cover-on .navbar,
+body.cover-on #scriptPanel{display:none !important}
 .cov-emoji{font-size:clamp(30px,4.6vw,64px); letter-spacing:.16em; margin-bottom:10px}
 .cov-unit{font-size:clamp(12px,1.15vw,18px); font-weight:800; letter-spacing:.2em; color:var(--c1)}
 h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; letter-spacing:-.045em; font-weight:900;
@@ -243,6 +262,17 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
 .resume{display:block; margin:12px auto 0; background:none; border:0; color:var(--dim); font-size:clamp(12px,1.1vw,16px);
   font-family:inherit; cursor:pointer; text-decoration:underline; text-underline-offset:4px}
 .resume:hover{color:var(--c1)}
+/* 표지에서도 단원 허브로 나갈 수 있게 (표지에서는 상단바가 감춰져 있으므로) */
+.cov-hub{
+  display:inline-flex; align-items:center; gap:8px; margin:clamp(16px,2.6vh,28px) auto 0;
+  text-decoration:none; color:var(--c1); background:rgba(94,231,255,.08);
+  border:1.5px solid var(--c1); border-radius:999px;
+  padding:10px clamp(18px,1.7vw,26px); font-family:inherit; font-weight:800;
+  font-size:clamp(12px,1.15vw,17px); transition:.16s;
+}
+.cov-hub:hover{background:var(--c1); color:#04131a; transform:translateY(-1px)}
+.cov-hub .ar{font-size:1.15em; line-height:1; transition:transform .16s}
+.cov-hub:hover .ar{transform:translateX(-3px)}
 
 /* ── 목차 ─────────────────────────────── */
 #toc{position:fixed; inset:0; z-index:50; display:none; place-items:center; background:rgba(3,4,12,.9); padding:24px}
@@ -325,7 +355,9 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
 <canvas id="sky" aria-hidden="true"></canvas>
 
 <header class="topbar">
-  <button class="brand" id="home" title="표지로">✦ 은하 이야기보따리</button>
+  <a class="hubbtn" href="index.html" title="VIII. 별과 우주 단원 허브로 이동"><span class="ar">←</span>단원 허브</a>
+  <button class="tbtn" id="home" title="이 자료의 표지로">⌂ 표지</button>
+  <span class="brandtxt">✦ 은하 이야기보따리</span>
   <span class="spacer"></span>
   <span class="counter" id="counter">1 / 13</span>
   <button class="tbtn" id="btnToc" title="목차 (M)">☰ 목차</button>
@@ -768,6 +800,7 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     </div>
     <button class="enter" id="enter">이야기 시작하기</button>
     <button class="resume" id="resume" hidden>이어서 보기 →</button>
+    <div><a class="cov-hub" href="index.html"><span class="ar">←</span>VIII. 별과 우주 단원 허브로</a></div>
   </div>
 </div>
 
@@ -1457,12 +1490,19 @@ document.addEventListener('keydown',function(e){
 
 /* 표지 */
 var cover=$('#cover');
+document.body.classList.add('cover-on');   /* 처음엔 표지 화면 */
+function hideCover(){ cover.classList.add('hide'); document.body.classList.remove('cover-on'); }
+function showCover(){
+  stopAll();
+  scenes.forEach(function(s){ s.classList.remove('on') });  /* 뒤에 남아 비치지 않도록 */
+  cover.classList.remove('hide'); document.body.classList.add('cover-on');
+}
 try{ var last=parseInt(localStorage.getItem(SAVE)||'0',10);
   if(last>0 && last<N){ var r=$('#resume'); r.hidden=false; r.textContent='이어서 보기 → '+(last+1)+'. '+scenes[last].dataset.t;
-    r.addEventListener('click',function(){ cover.classList.add('hide'); go(last); }); }
+    r.addEventListener('click',function(){ hideCover(); go(last); }); }
 }catch(e){}
-$('#enter').addEventListener('click',function(){ cover.classList.add('hide'); go(0); });
-$('#home').addEventListener('click',function(){ stopAll(); cover.classList.remove('hide'); });
+$('#enter').addEventListener('click',function(){ hideCover(); go(0); });
+$('#home').addEventListener('click',showCover);
 
 /* 상단 버튼 */
 $('#btnTeacher').addEventListener('click',function(){
