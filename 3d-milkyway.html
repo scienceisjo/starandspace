@@ -337,5 +337,50 @@ function draw(){
 }
 resize(); requestAnimationFrame(draw);
 </script>
+
+<script id="sim-fullscreen">
+/* 시뮬 전체화면 버튼 — 전자칠판용. 큰 캔버스의 부모에 ⛶ 버튼을 단다. */
+(function(){
+  var st = document.createElement('style');
+  st.textContent = '.simfs-btn{position:absolute;right:8px;top:8px;z-index:40;width:34px;height:34px;'+
+    'border-radius:9px;border:1.5px solid rgba(128,128,128,.45);cursor:pointer;font-size:17px;line-height:1;'+
+    'background:rgba(24,24,24,.45);color:#fff;backdrop-filter:blur(3px);opacity:.55;transition:.15s}'+
+    '.simfs-btn:hover{opacity:1}'+
+    '.simfs-on{display:grid !important;place-items:center;background:#0b0f1a}'+
+    '.simfs-on>canvas{width:min(97vw, 178vh) !important;height:auto !important;max-height:96vh}';
+  document.head.appendChild(st);
+  function attach(cv){
+    if (cv.dataset.fsDone) return;
+    var host = cv.parentElement;
+    if (!host || host.querySelector('.simfs-btn')) { cv.dataset.fsDone = 1; return; }
+    cv.dataset.fsDone = 1;
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    var b = document.createElement('button');
+    b.className = 'simfs-btn'; b.type = 'button'; b.textContent = '⛶';
+    b.title = '전체화면 (전자칠판용) — 다시 누르거나 Esc로 나가기';
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (document.fullscreenElement === host){ document.exitFullscreen(); }
+      else if (host.requestFullscreen){ host.requestFullscreen(); }
+    });
+    host.appendChild(b);
+  }
+  document.addEventListener('fullscreenchange', function(){
+    var el = document.fullscreenElement;
+    document.querySelectorAll('.simfs-on').forEach(function(x){ if (x!==el) x.classList.remove('simfs-on'); });
+    if (el && el.querySelector('.simfs-btn') && typeof THREE === 'undefined') el.classList.add('simfs-on');
+    /* 시뮬들이 스스로 크기를 다시 재도록 */
+    setTimeout(function(){ dispatchEvent(new Event('resize')); }, 60);
+    setTimeout(function(){ dispatchEvent(new Event('resize')); }, 350);
+  });
+  function scan(){
+    document.querySelectorAll('canvas').forEach(function(cv){
+      if (cv.dataset.fsDone) return;
+      if (cv.clientWidth >= 290 && cv.clientHeight >= 150) attach(cv);
+    });
+  }
+  scan(); setInterval(scan, 1500);
+})();
+</script>
 </body>
 </html>
