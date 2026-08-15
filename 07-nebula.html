@@ -1280,5 +1280,60 @@ $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classLis
   scan(); setInterval(scan, 1500);
 })();
 </script>
+
+<script id="sim-quiz">
+/* 시뮬 개념확인 카드 — 시뮬 조작 후 바로 답해 보는 1~2문항, 정답 시 해설 공개 */
+(function(){
+  var CFG = [{"at": {"h3": "갈래 가려내기"}, "qs": [{"q": "성간 물질이 별빛을 흡수해 가열되며 스스로 빛을 내는 성운은?", "c": ["방출 성운", "반사 성운", "암흑 성운"], "ok": 0, "w": "스스로 빛을 내면 <b>방출</b>, 남의 빛을 되비추면 반사, 뒤의 빛을 가리면 암흑 — 빛과의 관계로 셋이 갈립니다."}, {"q": "암흑 성운이 검게 보이는 까닭은?", "c": ["뒤에서 오는 별빛을 가로막아서", "빛을 모두 반사해서", "그 자리에 별이 없어서"], "ok": 0, "w": "별이 없는 구멍이 아니라, 짙은 성간 물질이 <b>뒷별의 빛을 가린</b> 그림자 — 적외선으로 보면 뒤가 보입니다."}]}];
+  var st = document.createElement('style');
+  st.textContent = '.sq-card{margin:16px 0 4px;border-radius:14px;padding:14px 17px;'+
+    'border:1.5px solid rgba(128,128,128,.35);background:rgba(127,127,127,.09)}'+
+    '.sq-h{font-weight:800;font-size:14.5px;margin-bottom:2px;opacity:.85}'+
+    '.sq-q{font-size:14.5px;margin:12px 0 8px;line-height:1.55;font-weight:600}'+
+    '.sq-row{display:flex;gap:8px;flex-wrap:wrap}'+
+    '.sq-c{font-size:13.5px;padding:7px 14px;border-radius:99px;border:1.5px solid rgba(128,128,128,.45);'+
+    'background:rgba(255,255,255,.06);color:inherit;cursor:pointer;font-family:inherit;transition:.15s}'+
+    '.sq-c:hover{border-color:currentColor}'+
+    '.sq-c.ok{background:#2c7a44;border-color:#2c7a44;color:#fff}'+
+    '.sq-c.no{background:#b3362e;border-color:#b3362e;color:#fff;animation:sqsh .35s}'+
+    '@keyframes sqsh{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}'+
+    '.sq-why{display:none;margin-top:10px;font-size:13.5px;line-height:1.6;opacity:.92;'+
+    'border-top:1px dashed rgba(128,128,128,.35);padding-top:9px}';
+  document.head.appendChild(st);
+  function host(a){
+    var el = a.cv ? document.getElementById(a.cv) : null;
+    if (!el && a.id) el = document.getElementById(a.id);
+    if (!el && a.h3){
+      var hs = document.querySelectorAll('h3');
+      for (var i=0;i<hs.length;i++) if (hs[i].textContent.indexOf(a.h3)>=0){ el = hs[i]; break; }
+    }
+    if (!el) return null;
+    return el.closest('.card,.simlab,.lab,.stage-card,.obs,section') || el.parentElement;
+  }
+  CFG.forEach(function(grp){
+    var h = host(grp.at); if (!h || h.dataset.sq) return; h.dataset.sq = 1;
+    var card = document.createElement('div'); card.className = 'sq-card';
+    var hd = document.createElement('div'); hd.className = 'sq-h';
+    hd.textContent = '🧪 개념 확인 — 시뮬에서 답을 찾았나요?'; card.appendChild(hd);
+    grp.qs.forEach(function(q){
+      var qd = document.createElement('div'); qd.className = 'sq-q'; qd.textContent = 'Q. ' + q.q; card.appendChild(qd);
+      var row = document.createElement('div'); row.className = 'sq-row';
+      var why = document.createElement('div'); why.className = 'sq-why'; why.innerHTML = '💡 ' + q.w;
+      q.c.forEach(function(t, i){
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'sq-c'; b.textContent = t;
+        b.addEventListener('click', function(){
+          if (i === q.ok){
+            row.querySelectorAll('.sq-c').forEach(function(x){ x.disabled = true; x.classList.remove('no'); });
+            b.classList.add('ok'); why.style.display = 'block';
+          } else { b.classList.add('no'); setTimeout(function(){ b.classList.remove('no'); }, 650); }
+        });
+        row.appendChild(b);
+      });
+      card.appendChild(row); card.appendChild(why);
+    });
+    h.insertAdjacentElement('afterend', card);
+  });
+})();
+</script>
 </body>
 </html>
