@@ -139,6 +139,45 @@ h2.title{
 .viz.plain .vizcap{border-top:0; background:none}
 @media (max-width:900px){ .viz{--capH:36px} }
 
+/* ── 만화 그림 슬롯 ─────────────────
+   파일이 있으면 삽입, 없으면 학생 화면에선 숨고 교사 모드에서만 슬롯이 보인다 */
+.fig{margin:clamp(10px,1.5vh,16px) 0 0; padding:0}
+.fig .figwrap{position:relative; border-radius:14px; overflow:hidden;
+  border:1px solid var(--line); display:none; line-height:0}
+.fig.ok .figwrap{display:block}
+.fig img{display:block; width:100%; height:auto}
+.fig figcaption{display:none; margin-top:9px; font-size:clamp(11px,1.02vw,15px);
+  color:var(--dim); line-height:1.6}
+.fig.ok figcaption{display:block}
+.fig .slot{display:none; border:1px dashed var(--line); border-radius:14px;
+  padding:12px 14px; color:var(--dim); font-size:12.5px; line-height:1.6}
+body.teacher .fig:not(.ok) .slot{display:block}
+/* 그림 칸을 덮는 만화 — 캔버스와 세그먼트로 전환 */
+.viz .figover{position:absolute; left:0; right:0; top:0; bottom:var(--capH);
+  margin:0; padding:8px; display:none; align-items:center; justify-content:center; background:#05060f}
+.viz.showfig .figover{display:flex}
+.viz.showfig canvas{display:none}
+.figover .figwrap{display:inline-block; max-width:100%; max-height:100%; border:0; border-radius:10px}
+.figover.ok .figwrap{display:inline-block}
+.figover img{display:block; max-width:100%; max-height:100%; width:auto; height:auto}
+/* 세그먼트 */
+.seg{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
+.seg button{flex:1 1 auto; padding:9px 12px; border-radius:11px; border:1px solid var(--line);
+  background:rgba(255,255,255,.06); color:var(--dim); font-weight:700; cursor:pointer;
+  font-family:inherit; font-size:clamp(11px,1.02vw,16px)}
+.seg button.on{background:rgba(94,231,255,.2); border-color:var(--c1); color:#fff}
+/* 그림 속 빈 말풍선에 얹는 대사 — 글자 크기는 그림 폭에 비례(JS) */
+.bub{position:absolute; left:var(--x); top:var(--y); width:var(--w);
+  transform:translate(-50%,-50%); text-align:center; word-break:keep-all;
+  font-weight:800; color:#15151f; line-height:1.3; letter-spacing:-.02em;
+  font-size:var(--bfs,12px)}
+/* 말풍선이 없는 칸에 얹는 해설 자막 */
+.cap2{position:absolute; left:var(--x); top:var(--y); width:var(--w);
+  transform:translate(-50%,-100%); text-align:center; word-break:keep-all;
+  color:#fff; background:rgba(6,8,20,.8); border:1px solid rgba(255,255,255,.24);
+  border-radius:10px; padding:.42em .6em; font-weight:700; line-height:1.34;
+  font-size:var(--cfs,11px)}
+
 /* 조작 위젯 */
 .ctl{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px}
 .pill{background:rgba(255,255,255,.08); border:1px solid var(--line); color:var(--ink); border-radius:999px;
@@ -537,6 +576,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="lead">다른 은하는 밖에서 찍으면 됩니다. 그런데 우리은하는? <b>우리가 그 안에 살고 있어요.</b></p>
     <p class="sub">인류가 가장 멀리 보낸 보이저 1호도 이제 겨우 <b>태양계</b>를 벗어났습니다. 우리은하 밖으로 카메라를 들고 나간 적은 <b>한 번도 없어요.</b> 교과서의 우리은하 그림은 전부 <b class="k1">관측 자료로 재구성한 상상도</b>입니다.</p>
     <p class="sub">별을 하나하나 세어 지도를 만들려던 사람도 있었지만 실패했습니다. 별과 별 사이의 <b class="k2">먼지</b>가 뒤쪽을 가려 버렸거든요. 1950년대에 <b>얀 오르트</b>가 먼지를 통과하는 <b class="k1">전파</b>로 수소 지도를 그려서야, 우리은하가 <b>나선 모양</b>이라는 걸 알아냈습니다.</p>
+    <p class="sub" style="color:var(--c1)"><b>그래서 교과서의 우리은하 그림은 밖에서 찍은 사진이 아닙니다.</b>
+      은하 <b>안</b>에서 여러 방향을 관측한 자료를 모아 <b>재구성한 모식도</b>예요.</p>
+    <div class="seg" id="seg7">
+      <button class="on" data-v7="map">🗺️ 우리은하 지도</button>
+      <button data-v7="comic">📖 운동장 비유 만화</button>
+    </div>
     <div class="ctl">
       <button class="pill p2" data-act="dust">🌫️ 먼지 장막 켜기</button>
       <button class="pill" data-act="radio">📡 전파로 보기</button>
@@ -552,8 +597,17 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “안에서 밖 모양을 알아내려면 뭘 해야 할까?”</span>
     </div>
   </div>
-  <div class="viz"><canvas data-anim="milkymap"></canvas>
-    <div class="vizcap">노란 점이 <b>태양</b> — 중심에서 약 2만 5천 광년 떨어진 변두리</div>
+  <div class="viz" id="viz7"><canvas data-anim="milkymap"></canvas>
+    <figure class="fig figover" data-fig="g3" data-alt="운동장 안에서는 전체 모양이 안 보인다는 비유로 우리은하 관측을 설명하는 4컷 만화">
+      <div class="figwrap">
+        <b class="bub" style="--x:27.0%; --y:11.2%; --w:11.5%">여기선 운동장 전체 모양이 안 보이네.</b>
+        <b class="bub" style="--x:9.0%;  --y:59.6%; --w:10.6%">우리도 우리은하 안에 있어.</b>
+        <span class="cap2" style="--x:74.8%; --y:45.5%; --w:40%">위에서 내려다보면 전체 모양이 한눈에 보인다</span>
+        <span class="cap2" style="--x:74.8%; --y:97%;   --w:44%">여러 방향의 관측 자료를 퍼즐처럼 맞춰 전체 모습을 그린다</span>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-03.png</b> — 운동장 비유 4컷 만화 (파일을 넣으면 자동으로 들어갑니다)</div>
+    </figure>
+    <div class="vizcap" id="cap7">노란 점이 <b>태양</b> — 중심에서 약 2만 5천 광년 떨어진 변두리</div>
   </div>
 </section>
 
@@ -811,7 +865,7 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
   <div class="tocgrid" id="tocgrid"></div>
 </div></div>
 
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-08</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-14</span></footer>
 
 <script>
 (function(){
@@ -1415,6 +1469,51 @@ ANIM.dark=function(cv,api){
   });
 };
 
+/* ── 만화 그림 ───────────────────────
+   여기에 파일명만 적으면 들어갑니다. 파일이 없으면 학생 화면에선 안 보이고
+   교사 모드에서만 슬롯이 뜹니다. */
+var FIGS={
+  g3:'img/gs-03.png'
+};
+function sizeFig(fg){
+  var im=fg.querySelector('img');
+  var w=im? im.getBoundingClientRect().width : fg.getBoundingClientRect().width;
+  if(!w) return;                       /* 장면이 숨어 있으면 폭이 0 — 나중에 다시 */
+  fg.style.setProperty('--bfs',(w*0.0200).toFixed(2)+'px');
+  fg.style.setProperty('--cfs',(w*0.0165).toFixed(2)+'px');
+}
+function sizeFigsIn(sc){ $$('.fig.ok',sc).forEach(sizeFig); }
+$$('.fig[data-fig]').forEach(function(fg){
+  var src=FIGS[fg.dataset.fig]; if(!src) return;
+  var im=new Image();
+  im.onload=function(){
+    im.alt=fg.dataset.alt||'';
+    var wrap=fg.querySelector('.figwrap');
+    wrap.insertBefore(im, wrap.firstChild);
+    fg.classList.add('ok');
+    sizeFig(fg);
+  };
+  im.src=src;                          /* 실패하면 아무 일도 안 일어남 = 슬롯 유지 */
+});
+window.addEventListener('resize',function(){ $$('.fig.ok').forEach(sizeFig) });
+
+/* 7장면 — 지도 ↔ 만화 전환 */
+(function(){
+  var seg=$('#seg7'); if(!seg) return;
+  var viz=$('#viz7'), cap=$('#cap7');
+  var CAPS={ map:'노란 점이 <b>태양</b> — 중심에서 약 2만 5천 광년 떨어진 변두리',
+             comic:'운동장 <b>안</b>에 있으면 전체 모양이 안 보인다 — 우리은하도 마찬가지' };
+  $$('button',seg).forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.dataset.v7;
+      $$('button',seg).forEach(function(x){ x.classList.toggle('on',x===b) });
+      viz.classList.toggle('showfig', v==='comic');
+      cap.innerHTML='<span>'+CAPS[v]+'</span>';
+      if(v==='comic') $$('.fig.ok',viz).forEach(sizeFig);
+    });
+  });
+})();
+
 /* ── 장면 엔진 ─────────────────────── */
 var scenes=$$('.scene'), N=scenes.length, cur=0, live=[];
 var counter=$('#counter'), dots=$('#dots'), tocgrid=$('#tocgrid');
@@ -1468,6 +1567,7 @@ function go(i){
   $('#prev').disabled=(i===0); $('#next').disabled=(i===N-1);
   try{ localStorage.setItem(SAVE,String(i)); }catch(e){}
   startScene(i);
+  sizeFigsIn(scenes[i]);   /* 장면이 보인 뒤라야 그림 폭을 잴 수 있다 */
 }
 $('#next').addEventListener('click',function(){ go(cur+1) });
 $('#prev').addEventListener('click',function(){ go(cur-1) });
@@ -1607,6 +1707,9 @@ $$('.qopt').forEach(function(o){
     $('#qscore').textContent=qOk+' / '+qN;
   });
 });
+
+/* 캡션 안의 <b> 가 flex 항목이 되어 조각나는 것 방지 — 한 덩어리로 감싼다 */
+$$('.vizcap').forEach(function(c){ if(!c.firstElementChild || c.childNodes.length>1) c.innerHTML='<span>'+c.innerHTML+'</span>'; });
 
 window.addEventListener('resize',function(){ $$('canvas').forEach(function(cv){ cv._w=null; }); });
 })();
