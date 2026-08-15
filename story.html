@@ -157,6 +157,7 @@ body.teacher .fig:not(.ok) .slot{display:block}
   margin:0; padding:8px; display:none; align-items:center; justify-content:center; background:#05060f}
 .viz.showfig .figover{display:flex}
 .viz.showfig canvas{display:none}
+.viz.showfig .hideonfig{display:none}
 .figover .figwrap{display:inline-block; max-width:100%; max-height:100%; border:0; border-radius:10px}
 .figover.ok .figwrap{display:inline-block}
 .figover img{display:block; max-width:100%; max-height:100%; width:auto; height:auto}
@@ -415,6 +416,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="lead">불빛 없는 시골 밤하늘을 올려다보면, 하늘을 가로지르는 <span class="k">희뿌연 강</span>이 보입니다. 옛날 사람들은 이게 뭔지 몰랐어요.</p>
     <p class="sub">그리스 사람들은 <b>헤라의 젖이 하늘에 뿌려진 자국</b>이라고 했습니다. 그래서 이름이 <span class="k1">갈락시아스</span> — “우유빛깔”. 오늘날 은하를 뜻하는 <span class="k1">galaxy</span>가 여기서 나왔고, 우리말로는 <span class="k1">은하수</span>, 은빛 강이라 불렀죠.</p>
     <p class="sub">오늘 이야기는 이 뿌연 띠 하나에서 출발해 <b class="k3">우주 전체의 지도</b>까지 갑니다. 400년이 걸린 이야기예요.</p>
+    <div class="seg" data-segfor="viz1"
+         data-cap-anim="은하수 — 우리가 우리은하 원반을 <b>안쪽에서</b> 옆으로 바라본 모습"
+         data-cap-comic="불빛 없는 곳에서 올려다본 밤하늘 — 오늘 이야기는 여기서 시작합니다">
+      <button class="on" data-v="anim">✦ 밤하늘 애니메이션</button>
+      <button data-v="comic">📖 그 밤 그림</button>
+    </div>
     <div class="script">
       <b>여는 말</b> — 교실 불을 조금 낮추고 시작하면 몰입이 확 삽니다.
       <ul>
@@ -424,7 +431,11 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “저 뿌연 게 뭐라고 생각해? 구름? 안개? 연기?”</span>
     </div>
   </div>
-  <div class="viz plain"><canvas data-anim="milkyway"></canvas>
+  <div class="viz plain" id="viz1"><canvas data-anim="milkyway"></canvas>
+    <figure class="fig figover" data-fig="g9" data-alt="언덕에서 밤하늘의 은하수를 올려다보는 장면">
+      <div class="figwrap"></div>
+      <div class="slot">🖼️ <b>img/gs-09.png</b> — 그 뿌연 띠</div>
+    </figure>
     <div class="vizcap">은하수 — 우리가 우리은하 원반을 <b>안쪽에서</b> 옆으로 바라본 모습</div>
   </div>
 </section>
@@ -441,6 +452,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="sub" style="margin:0">슬라이더를 천천히 밀어도 됩니다</span>
     </div>
     <div class="slab"><span>맨눈</span><input type="range" data-ctl="resolve" min="0" max="100" value="0"><span>망원경</span></div>
+    <div class="seg" data-segfor="viz2"
+         data-cap-anim="같은 하늘, 같은 별. 달라진 건 <b>보는 도구</b>뿐"
+         data-cap-comic="맨눈으로 뿌옇던 것이 망원경에서는 <b>별알갱이</b>로 갈라진다">
+      <button class="on" data-v="anim">🔭 맨눈 ↔ 망원경</button>
+      <button data-v="comic">📖 그날 밤 만화</button>
+    </div>
     <div class="script">
       <b>진행</b> — 슬라이더를 <b>아주 천천히</b> 미세요. 뿌연 게 알갱이로 갈라지는 순간 반응이 나옵니다.
       <ul>
@@ -450,7 +467,14 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “그럼 이제 다 알아낸 걸까?” → 아니요. 다음 문제가 기다립니다.</span>
     </div>
   </div>
-  <div class="viz"><canvas data-anim="resolve"></canvas>
+  <div class="viz" id="viz2"><canvas data-anim="resolve"></canvas>
+    <figure class="fig figover" data-fig="g4" data-alt="맨눈으로는 뿌옇던 띠가 망원경에서는 무수한 별로 갈라지는 2컷 만화">
+      <div class="figwrap">
+        <b class="bub" style="--x:12.4%; --y:14.6%; --w:8.7%">저 뿌연 띠는 뭘까?</b>
+        <b class="bub" style="--x:11.3%; --y:63.4%; --w:8.7%">전부 별이잖아!</b>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-04.png</b> — 뿌연 띠가 별이 되던 밤</div>
+    </figure>
     <div class="vizcap">같은 하늘, 같은 별. 달라진 건 <b>보는 도구</b>뿐</div>
   </div>
 </section>
@@ -539,6 +563,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="lead">에드윈 허블은 안드로메다 성운 속에서 <span class="k4">세페이드 변광성</span>을 찾아냈습니다. 밝기가 규칙적으로 커졌다 작아지는 별이에요.</p>
     <p class="sub">이 별에는 놀라운 성질이 있습니다. <b>느리게 깜빡일수록 실제로 더 밝다.</b> 그래서 깜빡이는 주기를 재면 <b>진짜 밝기</b>를 알 수 있고, 눈에 보이는 밝기와 비교하면 <span class="k5">거리</span>가 나옵니다.</p>
     <p class="sub">가로등의 원래 밝기를 알면, 흐릿하게 보이는 정도로 얼마나 먼지 알 수 있는 것과 같은 원리죠.</p>
+    <div class="seg" data-segfor="viz5"
+         data-cap-anim="깜빡이는 <b>주기</b>를 재면 그 별의 <b>진짜 밝기</b>를 알 수 있다 → 거리가 나온다"
+         data-cap-comic="원래 밝기를 알면, 흐린 정도로 <b>거리</b>를 알 수 있다">
+      <button class="on" data-v="anim">💫 광도 곡선</button>
+      <button data-v="comic">📖 가로등 비유 만화</button>
+    </div>
     <div class="script">
       <b>비유로 밀기</b> — 수식 없이 이 하나면 충분합니다.
       <ul>
@@ -548,7 +578,16 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “이 별을 왜 ‘우주의 줄자’라고 부를까?”</span>
     </div>
   </div>
-  <div class="viz"><canvas data-anim="cepheid"></canvas>
+  <div class="viz" id="viz5"><canvas data-anim="cepheid"></canvas>
+    <figure class="fig figover" data-fig="g5" data-alt="가로등 비유와 깜빡이는 별로 거리를 재는 원리를 보여주는 3컷 만화">
+      <div class="figwrap">
+        <b class="bub" style="--x:23.6%; --y:11.7%; --w:11.1%">같은 전구인데 멀수록 흐려 보이네.</b>
+        <b class="bub" style="--x:46.8%; --y:80.3%; --w:17.5%">느리게 깜빡일수록 원래 더 밝은 별!</b>
+        <b class="bub" style="--x:74.9%; --y:13.6%; --w:14.4%">그럼 밝기를 견주면 거리를 알 수 있어.</b>
+        <b class="bub" style="--x:90%;   --y:81%;   --w:11.9%">우주의 줄자다!</b>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-05.png</b> — 깜빡이는 별이 준 줄자</div>
+    </figure>
     <div class="vizcap">깜빡이는 <b>주기</b>를 재면 그 별의 <b>진짜 밝기</b>를 알 수 있다 → 거리가 나온다</div>
   </div>
 </section>
@@ -562,6 +601,10 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="sub">우리은하 밖에 다른 은하가 있다 — <b>커티스가 옳았습니다.</b> 편지를 받은 섀플리는 제자에게 저 말을 남겼어요.</p>
     <p class="sub">재밌는 건, 지금 값으로 보면 <b>두 숫자 다 틀렸다</b>는 겁니다. 우리은하 지름은 약 10만 광년, 안드로메다까지는 253만 광년이에요. 숫자는 다 어긋났지만 <b class="k5">결론은 맞았습니다.</b></p>
     <div class="ctl"><button class="pill" data-act="bars">📏 거리 비교 펼치기</button></div>
+    <div class="seg" data-segfor="viz6">
+      <button class="on" data-v="anim">📏 거리 비교</button>
+      <button data-v="comic">📖 그 편지 만화</button>
+    </div>
     <div class="script">
       <b>클라이맥스</b> — 여기서 <b>투표 결과를 되받으세요.</b> “아까 커티스 손든 사람, 축하한다!”
       <ul>
@@ -572,8 +615,17 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “내가 오래 믿던 게 틀렸다는 증거를 받으면, 나는 어떻게 할까?”</span>
     </div>
   </div>
-  <div class="viz plain" style="display:flex;align-items:center">
-    <div style="width:100%">
+  <div class="viz plain" id="viz6" style="display:flex;align-items:center">
+    <figure class="fig figover" data-fig="g2" data-alt="편지를 읽은 학자의 우주가 갈라지며 무수한 은하가 드러나는 3컷 만화">
+      <div class="figwrap">
+        <b class="bub"    style="--x:15.7%; --y:17.1%; --w:11%">안드로메다까지 거리를 쟀다고?</b>
+        <b class="bub"    style="--x:42.2%; --y:17.3%; --w:11.9%">우리은하 밖에 은하가 이렇게 많다니.</b>
+        <b class="bub"    style="--x:80%;   --y:17.9%; --w:11%">내 우주를 산산조각 낸 편지야.</b>
+        <b class="bub sm" style="--x:94%;   --y:37%;   --w:5.5%">네?! 정말요?</b>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-02.png</b> — 내 우주를 산산조각 낸 편지</div>
+    </figure>
+    <div class="hideonfig" style="width:100%">
       <div class="bars" id="barSet">
         <div class="barrow"><b class="k4">섀플리의 우주</b><div class="bartrk"><i style="background:linear-gradient(90deg,#ffd76a,#ff9a6b)" data-w="12"></i><span>지름 30만 광년</span></div></div>
         <div class="barrow"><b class="k1">허블의 측정</b><div class="bartrk"><i style="background:linear-gradient(90deg,#5ee7ff,#8ab6ff)" data-w="35"></i><span>안드로메다 90만 광년</span></div></div>
@@ -595,9 +647,11 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="sub">별을 하나하나 세어 지도를 만들려던 사람도 있었지만 실패했습니다. 별과 별 사이의 <b class="k2">먼지</b>가 뒤쪽을 가려 버렸거든요. 1950년대에 <b>얀 오르트</b>가 먼지를 통과하는 <b class="k1">전파</b>로 수소 지도를 그려서야, 우리은하가 <b>나선 모양</b>이라는 걸 알아냈습니다.</p>
     <p class="sub" style="color:var(--c1)"><b>그래서 교과서의 우리은하 그림은 밖에서 찍은 사진이 아닙니다.</b>
       은하 <b>안</b>에서 여러 방향을 관측한 자료를 모아 <b>재구성한 모식도</b>예요.</p>
-    <div class="seg" id="seg7">
-      <button class="on" data-v7="map">🗺️ 우리은하 지도</button>
-      <button data-v7="comic">📖 운동장 비유 만화</button>
+    <div class="seg" data-segfor="viz7"
+         data-cap-anim="노란 점이 <b>태양</b> — 중심에서 약 2만 5천 광년 떨어진 변두리"
+         data-cap-comic="운동장 <b>안</b>에 있으면 전체 모양이 안 보인다 — 우리은하도 마찬가지">
+      <button class="on" data-v="anim">🗺️ 우리은하 지도</button>
+      <button data-v="comic">📖 운동장 비유 만화</button>
     </div>
     <div class="ctl">
       <button class="pill p2" data-act="dust">🌫️ 먼지 장막 켜기</button>
@@ -698,6 +752,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="sub">그 결과가 <span class="k1">허블 딥필드</span>. 사진에 찍힌 점들은 <b>별이 아니라 전부 은하</b>였습니다. 점 하나마다 별이 <b>수천억 개</b>씩 들어 있어요.</p>
     <p class="sub">한 번에 길게 찍은 게 아니라 10~20분씩 <b>수백 장</b>을 찍어 합친 겁니다. 우주에서 날아오는 입자가 카메라를 계속 때려서, 한 번에 오래 열어 두면 사진이 망가지거든요.</p>
     <div class="ctl"><button class="pill" data-act="deep-play">🔍 그 한 조각 확대하기</button></div>
+    <div class="seg" data-segfor="viz10"
+         data-cap-anim="모래알 하나가 가리는 넓이의 하늘 — 그 안에 은하 수천 개"
+         data-cap-comic="아무것도 없어 보이는 곳에 <b>열흘</b>을 걸었습니다">
+      <button class="on" data-v="anim">🔍 확대해 보기</button>
+      <button data-v="comic">📖 그 열흘 만화</button>
+    </div>
     <div class="script">
       <b>스케일 충격 주기</b> — 확대 버튼 누르기 <b>전에</b> 반드시 예측을 받으세요.
       <ul>
@@ -709,7 +769,16 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “저 점 하나 안에도 누군가 하늘을 보고 있을까?”</span>
     </div>
   </div>
-  <div class="viz"><canvas data-anim="deep"></canvas>
+  <div class="viz" id="viz10"><canvas data-anim="deep"></canvas>
+    <figure class="fig figover" data-fig="g6" data-alt="텅 빈 하늘 조각을 열흘 동안 관측해 은하가 가득 드러나는 3컷 만화">
+      <div class="figwrap">
+        <b class="bub"    style="--x:12.3%; --y:17.4%; --w:13%">여긴 아무것도 없어 보이는데…</b>
+        <b class="bub"    style="--x:44.1%; --y:20%;   --w:13%">그래도 열흘 동안 찍는다.</b>
+        <b class="bub"    style="--x:77.3%; --y:19.3%; --w:12.3%">전부 은하야!</b>
+        <b class="bub sm" style="--x:90.7%; --y:74.4%; --w:3.7%">말도 안 돼.</b>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-06.png</b> — 텅 빈 하늘을 열흘 동안</div>
+    </figure>
     <div class="vizcap">모래알 하나가 가리는 넓이의 하늘 — 그 안에 은하 수천 개</div>
   </div>
 </section>
@@ -752,6 +821,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="sub">예상은 이랬습니다 — 갓 태어난 우주의 은하는 <b>작고 희미하고 어수선할 것.</b> 그런데 실제로는 <b>무겁고 밝고, 심지어 원반 구조까지 갖춘</b> 은하가 나왔습니다.</p>
     <p class="sub">표준 우주 모형이 계산한 것보다 은하가 <b class="k2">너무 빨리 자란</b> 겁니다. 그래서 지금 천문학자들은 둘 중 하나라고 봅니다. <b>관측이 뭔가 잘못됐거나, 모형을 고쳐야 하거나.</b></p>
     <p class="sub" style="color:var(--c5)"><b>아직 결론이 나지 않았습니다.</b> 지금 이 순간에도 연구 중인 문제예요.</p>
+    <div class="seg" data-segfor="viz12"
+         data-cap-anim="138억 년 타임라인 — 빨간 표시가 제임스 웹이 찾은 은하의 시점"
+         data-cap-comic="왼쪽이 <b>예상</b>, 오른쪽이 <b>실제 관측</b>">
+      <button class="on" data-v="anim">🗓 138억 년 타임라인</button>
+      <button data-v="comic">📖 예상 vs 관측 만화</button>
+    </div>
     <div class="script">
       <b>과학의 현재성</b> — 교과서에 답이 없는 문제를 보여주는 자리입니다.
       <ul>
@@ -762,7 +837,14 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “관측이 틀렸을까, 이론이 틀렸을까? 너라면 어느 쪽을 먼저 의심할래?”</span>
     </div>
   </div>
-  <div class="viz"><canvas data-anim="timeline"></canvas>
+  <div class="viz" id="viz12"><canvas data-anim="timeline"></canvas>
+    <figure class="fig figover" data-fig="g7" data-alt="예상한 초기 은하와 실제로 관측된 초기 은하를 나란히 비교하는 2컷 만화">
+      <div class="figwrap">
+        <b class="bub" style="--x:17%;   --y:17.6%; --w:21.3%">초기 우주니까 작고 흐릿하겠지.</b>
+        <b class="bub" style="--x:64.4%; --y:18.4%; --w:18.9%">이렇게 크고 밝다고?!</b>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-07.png</b> — 예상과 달랐다</div>
+    </figure>
     <div class="vizcap">138억 년 타임라인 — 빨간 표시가 제임스 웹이 찾은 은하의 시점</div>
   </div>
 </section>
@@ -802,6 +884,12 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <p class="sub">한국의 연구진이 답 하나를 내놨습니다. 별은 거의 없고 <b class="k1">가스</b>와 <b class="k3">암흑물질</b>로만 이루어진 <b>암흑은하</b>가 실제로 존재한다는 것. 가스가 움직이는 속도를 보고 <b>보이지 않는 무게</b>를 찾아낸 거예요.</p>
     <p class="sub">우주를 구성하는 건 암흑에너지 <b>약 70%</b>, 암흑물질 <b>약 25%</b>. 우리가 눈으로 보는 별과 물질은 <b class="k4">고작 5%</b>입니다.</p>
     <div class="ctl"><button class="pill p3" data-act="reveal">🟣 안 보이던 것 켜기</button></div>
+    <div class="seg" data-segfor="viz14"
+         data-cap-anim="밝은 점 = 지금까지 찾은 위성은하 · 보라 점 = 있어야 하는데 안 보이던 것들"
+         data-cap-comic="안 보이는데 있다고 말하려면 <b>증거</b>가 필요하다 — 가스의 움직임">
+      <button class="on" data-v="anim">🟣 위성은하 지도</button>
+      <button data-v="comic">📖 어디 갔지? 만화</button>
+    </div>
     <div class="script">
       <b>반전 연출</b> — 버튼 누르기 전에 점 개수를 <b>세어 보게</b> 하면 효과가 큽니다.
       <ul>
@@ -812,7 +900,17 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       <span class="ask">발문: “안 보이는 걸 있다고 하려면 어떤 증거가 필요할까?”</span>
     </div>
   </div>
-  <div class="viz"><canvas data-anim="dark"></canvas>
+  <div class="viz" id="viz14"><canvas data-anim="dark"></canvas>
+    <figure class="fig figover" data-fig="g8" data-alt="보이는 위성은하는 몇 개뿐인데 계산으로는 수백 개여야 한다는 3컷 만화">
+      <div class="figwrap">
+        <b class="bub"    style="--x:10.2%; --y:18.6%; --w:11.7%">위성은하가 몇 개 없네?</b>
+        <b class="bub sm" style="--x:27.6%; --y:64.2%; --w:4.9%">60개쯤?</b>
+        <b class="bub"    style="--x:41.4%; --y:21.1%; --w:9.5%">계산으론 수백 개인데.</b>
+        <b class="bub"    style="--x:59.5%; --y:44.4%; --w:7.7%">어디 갔지?</b>
+        <span class="cap2" style="--x:83.5%; --y:96%; --w:28%">가스가 휘어 도는 움직임이 보이지 않는 무게를 알려준다</span>
+      </div>
+      <div class="slot">🖼️ <b>img/gs-08.png</b> — 보이지 않는데 있다</div>
+    </figure>
     <div class="vizcap">밝은 점 = 지금까지 찾은 위성은하 · 보라 점 = 있어야 하는데 안 보이던 것들</div>
   </div>
 </section>
@@ -1491,7 +1589,14 @@ ANIM.dark=function(cv,api){
    교사 모드에서만 슬롯이 뜹니다. */
 var FIGS={
   g1:'img/gs-01.png',
-  g3:'img/gs-03.png'
+  g2:'img/gs-02.png',
+  g3:'img/gs-03.png',
+  g4:'img/gs-04.png',
+  g5:'img/gs-05.png',
+  g6:'img/gs-06.png',
+  g7:'img/gs-07.png',
+  g8:'img/gs-08.png',
+  g9:'img/gs-09.png'
 };
 function sizeFig(fg){
   var im=fg.querySelector('img');
@@ -1515,22 +1620,21 @@ $$('.fig[data-fig]').forEach(function(fg){
 });
 window.addEventListener('resize',function(){ $$('.fig.ok').forEach(sizeFig) });
 
-/* 7장면 — 지도 ↔ 만화 전환 */
-(function(){
-  var seg=$('#seg7'); if(!seg) return;
-  var viz=$('#viz7'), cap=$('#cap7');
-  var CAPS={ map:'노란 점이 <b>태양</b> — 중심에서 약 2만 5천 광년 떨어진 변두리',
-             comic:'운동장 <b>안</b>에 있으면 전체 모양이 안 보인다 — 우리은하도 마찬가지' };
+/* 시뮬레이션 ↔ 만화 전환 (data-segfor 로 연결) */
+$$('.seg[data-segfor]').forEach(function(seg){
+  var viz=document.getElementById(seg.dataset.segfor); if(!viz) return;
   $$('button',seg).forEach(function(b){
     b.addEventListener('click',function(){
-      var v=b.dataset.v7;
       $$('button',seg).forEach(function(x){ x.classList.toggle('on',x===b) });
-      viz.classList.toggle('showfig', v==='comic');
-      cap.innerHTML='<span>'+CAPS[v]+'</span>';
-      if(v==='comic') $$('.fig.ok',viz).forEach(sizeFig);
+      var comic = b.dataset.v==='comic';
+      viz.classList.toggle('showfig', comic);
+      var cap=viz.querySelector('.vizcap');
+      var t = comic ? seg.dataset.capComic : seg.dataset.capAnim;
+      if(cap && t) cap.innerHTML='<span>'+t+'</span>';
+      if(comic) $$('.fig.ok',viz).forEach(sizeFig);
     });
   });
-})();
+});
 
 /* ── 장면 엔진 ─────────────────────── */
 var scenes=$$('.scene'), N=scenes.length, cur=0, live=[];

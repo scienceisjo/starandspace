@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>은하수는 우리은하의 단면이다 · 은하수 관측소 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{
+ --abyss:#04070f; --surface:#101c38; --line:#33406e; --line-soft:#232f55;
+ --ink:#e8eeff; --ink-dim:#c6d2ee; --ink-mute:#9aa8cf;
+ --accent:#6ef0e6; --star:#ffd166; --pink:#ff9fbe; --blue:#8fd0ff; --green:#a9f07a;
+ --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+ --jua:"Jua",var(--disp); --gowun:"Gowun Dodum",var(--disp);
+ --r:16px; --shadow:0 18px 50px -18px rgba(0,0,0,.9);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--disp);color:var(--ink);background:
+ radial-gradient(1000px 620px at 12% 4%, rgba(110,240,230,.06), transparent 60%),
+ radial-gradient(760px 520px at 90% 92%, rgba(255,159,190,.05), transparent 55%),
+ var(--abyss); min-height:100vh; -webkit-font-smoothing:antialiased}
+header{padding:26px 20px 8px; text-align:center}
+header h1{font-family:var(--jua); font-size:clamp(22px,4.5vw,34px)}
+header h1 .em{color:var(--accent)}
+header p{color:var(--ink-mute); margin-top:6px; font-size:clamp(13px,2.4vw,15.5px); font-family:var(--gowun)}
+.wrap{max-width:1180px; margin:0 auto; padding:14px 16px 40px}
+.stage-card{background:rgba(16,28,56,.55); border:1.5px solid var(--line); border-radius:var(--r);
+ overflow:hidden; box-shadow:var(--shadow)}
+.stage-head{display:flex; align-items:center; gap:10px; padding:12px 18px; border-bottom:1px solid var(--line-soft); flex-wrap:wrap}
+.stage-head h2{font-family:var(--jua); font-size:17.5px; color:var(--accent)}
+.stage-head .hint{margin-left:auto; font-size:12.5px; color:var(--ink-mute); font-family:var(--gowun)}
+.view-btns{display:flex; gap:8px}
+.vbtn{font-family:var(--jua); font-size:14px; padding:7px 15px; border-radius:999px; cursor:pointer;
+ border:1.5px solid var(--line); background:rgba(4,7,15,.5); color:var(--ink-mute); transition:.15s}
+.vbtn.on{background:var(--accent); border-color:var(--accent); color:#04252b}
+.stage{position:relative; height:min(58vh,540px); background:#04070f}
+.stage canvas{display:block}
+.hud{position:absolute; left:14px; top:12px; pointer-events:none; display:flex; flex-direction:column; gap:8px; max-width:min(380px,62%)}
+.tag{background:rgba(4,7,15,.78); border:1px solid var(--line-soft); color:var(--ink-dim); font-size:13px;
+ padding:6px 12px; border-radius:9px; font-family:var(--gowun); line-height:1.55}
+.tag b{color:var(--star)}
+.dirbar{position:absolute; right:14px; top:12px; background:rgba(4,7,15,.85); border:1.5px solid var(--line);
+ border-radius:12px; padding:10px 14px; min-width:190px; text-align:center; display:none}
+.dirbar .dl{font-family:var(--jua); font-size:12.5px; color:var(--ink-mute)}
+.dirbar .dv{font-family:var(--jua); font-size:17px; color:var(--star); margin-top:3px}
+.dirbar .meter{height:10px; border-radius:99px; background:#182448; margin-top:8px; overflow:hidden}
+.dirbar .meter i{display:block; height:100%; width:50%; border-radius:99px;
+ background:linear-gradient(90deg,#6ef0e6,#ffd166); transition:width .2s}
+.dirbar .dd{font-size:11.5px; color:var(--ink-mute); margin-top:5px; font-family:var(--gowun)}
+.inset{position:absolute; right:14px; bottom:12px; background:rgba(4,7,15,.85); border:1.5px solid var(--line);
+ border-radius:12px; padding:7px 9px 5px}
+.inset .ilabel{font-family:var(--jua); font-size:11.5px; color:var(--ink-mute); margin-bottom:4px; text-align:center}
+.panel{display:flex; gap:14px; flex-wrap:wrap; align-items:center; padding:14px 18px; border-top:1px solid var(--line-soft)}
+.btn{font-family:var(--jua); font-size:14px; padding:8px 16px; border-radius:10px; cursor:pointer;
+ border:1.5px solid var(--line); background:rgba(16,28,56,.7); color:var(--ink-dim); transition:.15s}
+.btn:hover{border-color:var(--accent); color:var(--accent)}
+.btn.on{background:var(--accent); color:#04252b; border-color:var(--accent)}
+.note-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px; margin-top:16px}
+.note{background:rgba(16,28,56,.5); border:1px solid var(--line-soft); border-radius:12px; padding:13px 16px;
+ font-size:14px; color:var(--ink-dim); line-height:1.6; font-family:var(--gowun)}
+.note b{color:var(--ink)} .note .k{color:var(--accent); font-family:var(--jua); font-size:13.5px}
+#app-credit{margin:34px auto 18px; text-align:center; font-size:12.5px; color:var(--ink-mute); font-family:var(--gowun)}
+@media (max-width:760px){ .inset{display:none} }
+</style>
+</head>
+<body>
+<header>
+ <h1>🌌 은하수는 <span class="em">우리은하의 단면</span>이다</h1>
+ <p>은하 밖에서 보고, 태양계 자리에서 보고 — 은하수 관측소 3D</p>
+</header>
+
+<div class="wrap">
+ <section class="stage-card">
+  <div class="stage-head">
+   <h2>은하수 관측소</h2>
+   <div class="view-btns">
+    <button class="vbtn on" data-view="out">🛸 은하 밖 시점</button>
+    <button class="vbtn" data-view="in">🔭 태양계 시점</button>
+   </div>
+   <span class="hint" id="view-hint">드래그로 은하를 돌려 보세요 · 초록 고리 = 태양계의 자리</span>
+  </div>
+  <div class="stage" id="stage">
+   <div class="hud"><div class="tag" id="msg">우리은하를 <b>밖에서</b> 본 모습 — 우리는 실제로 이 모습을 본 적이 없습니다. 태양계(초록 고리)의 위치를 확인하세요.</div></div>
+   <div class="dirbar" id="dirbar">
+    <div class="dl">지금 바라보는 방향</div>
+    <div class="dv" id="dir-name">은하 중심 쪽 (여름 밤하늘)</div>
+    <div class="meter"><i id="dir-meter"></i></div>
+    <div class="dd">은하수의 폭 · 밝기</div>
+   </div>
+   <div class="inset" id="inset-map">
+    <div class="ilabel">🗺️ 위에서 본 우리은하 — 시선 방향</div>
+    <canvas id="cv-map" width="170" height="170"></canvas>
+   </div>
+  </div>
+  <div class="panel">
+   <button class="btn" id="center-btn">🎯 만약 태양계가 은하 중심에 있다면?</button>
+   <button class="btn" id="spin-btn">🧭 천천히 한 바퀴 둘러보기</button>
+   <span style="font-family:var(--gowun);font-size:13.5px;color:var(--ink-mute)" id="tip">
+    태양계 시점에서 좌우로 드래그하면 보는 방향이 바뀝니다.</span>
+  </div>
+ </section>
+
+ <div class="note-row">
+  <div class="note"><span class="k">① 은하수의 정체</span><br>
+   우리는 은하 원반의 <b>안</b>에 있습니다. 원반이 얇으니, 원반 <b>면을 따라 보면</b> 별이 겹겹이 쌓여
+   하늘을 가로지르는 <b>띠</b>로 보입니다 — 그게 은하수.</div>
+  <div class="note"><span class="k">② 여름과 겨울의 은하수</span><br>
+   태양계는 중심에서 약 8500 pc 벗어나 있어요. <b>중심 쪽(궁수자리)</b>을 보면 별이 가장 많이 겹쳐
+   넓고 밝고, <b>반대쪽(겨울 밤하늘)</b>은 좁고 희미합니다.</div>
+  <div class="note"><span class="k">③ 결정적 실험</span><br>
+   「태양계가 은하 중심에 있다면?」 버튼을 눌러 보세요. 어느 방향이든 <b>비슷해집니다</b> —
+   방향에 따라 다르다는 사실 자체가, 우리가 <b>치우친 자리</b>에 있다는 증거입니다.</div>
+ </div>
+</div>
+
+<footer id="app-credit">© 2026 승재쌤의 과학실 · 은하수 관측소 3D · 최종 업데이트 2026-08-16</footer>
+
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script>
+'use strict';
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(stage.clientWidth, stage.clientHeight);
+renderer.setClearColor(0x04070f);
+stage.insertBefore(renderer.domElement, stage.firstChild);
+const scene = new THREE.Scene();
+
+/* ══ 우리은하 파티클 ══ */
+const DISK_R = 60, SUN_R = 34;              // 반지름 60 ≈ 15000 pc, 태양 34 ≈ 8500 pc
+function gauss(){ let s=0; for(let i=0;i<4;i++) s+=Math.random(); return (s-2)/1.2; }
+/* 원반 + 나선팔 */
+(function(){
+  const N = 11000, pos = new Float32Array(N*3), col = new Float32Array(N*3);
+  const cA = new THREE.Color(0xbfd4ff), cB = new THREE.Color(0xfff2d0);
+  for(let i=0;i<N;i++){
+    const r = Math.pow(Math.random(), .58) * DISK_R;
+    let th = Math.random()*Math.PI*2;
+    /* 2팔 로그 나선으로 끌어당김 */
+    const armPhase = (r/DISK_R)*4.4;
+    const k = Math.floor(Math.random()*2);
+    const armTh = k*Math.PI + armPhase;
+    th = armTh + gauss()*(.45 + .3*(r/DISK_R));
+    const y = gauss() * (1.5 - .012*r) * (r<8 ? 2.4 : 1);
+    pos[i*3]   = Math.cos(th)*r + gauss()*1.2;
+    pos[i*3+1] = y;
+    pos[i*3+2] = Math.sin(th)*r + gauss()*1.2;
+    const c = cA.clone().lerp(cB, Math.random()*.6 + (r<10?.35:0));
+    col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color', new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(g, new THREE.PointsMaterial({size:.55, vertexColors:true,
+    transparent:true, opacity:.85, depthWrite:false})));
+})();
+/* 중심 팽대부(막대) */
+(function(){
+  const N = 3200, pos = new Float32Array(N*3), col = new Float32Array(N*3);
+  const c0 = new THREE.Color(0xffe3b0);
+  for(let i=0;i<N;i++){
+    pos[i*3]   = gauss()*7.5;      // 막대: x로 길쭉
+    pos[i*3+1] = gauss()*3.2;
+    pos[i*3+2] = gauss()*4.2;
+    const c = c0.clone().multiplyScalar(.8 + Math.random()*.4);
+    col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color', new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(g, new THREE.PointsMaterial({size:.6, vertexColors:true,
+    transparent:true, opacity:.9, depthWrite:false})));
+})();
+/* 헤일로의 구상 성단 (붉은 점 뭉치) */
+(function(){
+  const clusters = 15;
+  for(let c=0;c<clusters;c++){
+    const u = Math.random()*2-1, ph = Math.random()*Math.PI*2;
+    const rr = 22 + Math.random()*40, s = Math.sqrt(1-u*u);
+    const cx = s*Math.cos(ph)*rr, cy = u*rr*.8, cz = s*Math.sin(ph)*rr;
+    const n = 60, pos = new Float32Array(n*3);
+    for(let i=0;i<n;i++){
+      pos[i*3]=cx+gauss()*1.1; pos[i*3+1]=cy+gauss()*1.1; pos[i*3+2]=cz+gauss()*1.1;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+    scene.add(new THREE.Points(g, new THREE.PointsMaterial({color:0xffb09a, size:.5,
+      transparent:true, opacity:.8, depthWrite:false})));
+  }
+})();
+/* 태양계 표식: 초록 고리 */
+const sunMark = new THREE.Group();
+const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2,.16,8,40),
+  new THREE.MeshBasicMaterial({color:0xa9f07a}));
+ring.rotation.x = Math.PI/2; sunMark.add(ring);
+(function(){
+  const cv = document.createElement('canvas'); cv.width=256; cv.height=64;
+  const c = cv.getContext('2d'); c.fillStyle='#a9f07a'; c.font='bold 38px Pretendard, sans-serif';
+  c.textAlign='center'; c.textBaseline='middle'; c.fillText('태양계', 128, 34);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv), transparent:true, depthWrite:false}));
+  sp.scale.set(9,2.3,1); sp.position.y = 4; sunMark.add(sp);
+})();
+sunMark.position.set(SUN_R, 0, 0);
+scene.add(sunMark);
+
+/* ══ 카메라 ══ */
+const outCam = new THREE.PerspectiveCamera(50, 2, .1, 800);
+outCam.position.set(30, 68, 88);
+const ctl = new THREE.OrbitControls(outCam, renderer.domElement);
+ctl.enableDamping = true; ctl.maxDistance = 320;
+const inCam = new THREE.PerspectiveCamera(72, 2, .1, 800);
+let yaw = -Math.PI/2, pitch = 0;           // look=(sin·yaw,0,cos·yaw) → yaw −π/2 = −x(은하 중심 쪽)
+let view = 'out', atCenter = false, spinning = false;
+let obsPos = new THREE.Vector3(SUN_R, 0, 0);
+
+/* 태양계 시점 마우스 드래그(요·피치) */
+(function(){
+  let drag = false, px = 0, py = 0;
+  renderer.domElement.addEventListener('pointerdown', e=>{
+    if (view!=='in') return; drag = true; px = e.clientX; py = e.clientY; spinning = false;
+    document.getElementById('spin-btn').classList.remove('on');
+  });
+  addEventListener('pointermove', e=>{
+    if(!drag) return;
+    yaw   -= (e.clientX-px)*.004; pitch += (e.clientY-py)*.003;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch));
+    px = e.clientX; py = e.clientY;
+  });
+  addEventListener('pointerup', ()=>{ drag = false; });
+})();
+
+/* ══ UI ══ */
+const msg = document.getElementById('msg');
+document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('.vbtn').forEach(x=>x.classList.toggle('on', x===b));
+  view = b.dataset.view;
+  const inV = view==='in';
+  document.getElementById('dirbar').style.display = inV ? '' : 'none';
+  ctl.enabled = !inV;
+  sunMark.visible = !inV;
+  document.getElementById('view-hint').textContent = inV
+    ? '좌우 드래그 = 보는 방향 바꾸기 · 하늘을 한 바퀴 둘러보세요'
+    : '드래그로 은하를 돌려 보세요 · 초록 고리 = 태양계의 자리';
+  msg.innerHTML = inV
+    ? '태양계 자리에서 하늘을 봅니다. 별들이 겹쳐 보이는 <b>띠</b>가 은하수 — 방향에 따라 폭과 밝기가 달라져요!'
+    : '우리은하를 <b>밖에서</b> 본 모습 — 우리는 실제로 이 모습을 본 적이 없습니다. 태양계(초록 고리)의 위치를 확인하세요.';
+  resize();
+}));
+document.getElementById('center-btn').addEventListener('click', function(){
+  atCenter = !atCenter; this.classList.toggle('on', atCenter);
+  this.textContent = atCenter ? '↩️ 태양계를 원래 자리로' : '🎯 만약 태양계가 은하 중심에 있다면?';
+  msg.innerHTML = atCenter
+    ? '지금은 <b>은하 중심</b>에서 보는 중 — 어느 방향을 봐도 은하수가 <b>비슷</b>하죠? 방향 차이가 사라졌습니다!'
+    : '다시 <b>원래 자리(8500 pc 바깥)</b> — 중심 쪽과 바깥쪽의 차이가 돌아왔습니다.';
+  if (view!=='in'){ document.querySelector('[data-view=in]').click(); }
+});
+document.getElementById('spin-btn').addEventListener('click', function(){
+  spinning = !spinning; this.classList.toggle('on', spinning);
+  if (spinning && view!=='in') document.querySelector('[data-view=in]').click();
+});
+
+/* ══ 방향 지표 ══ */
+function dirInfo(){
+  /* 시선의 수평 방향과 '중심 방향(-x쪽 = 관측자→원점)'이 이루는 각 */
+  const look = new THREE.Vector3(Math.sin(yaw)*Math.cos(pitch), 0, Math.cos(yaw)*Math.cos(pitch)).normalize();
+  const toCenter = obsPos.clone().negate().setY(0);
+  if (toCenter.lengthSq() < .01) return {deg:0, frac:1};  // 중심에 있으면 모든 방향 동일
+  toCenter.normalize();
+  const cos = look.dot(toCenter);
+  const deg = Math.acos(Math.max(-1,Math.min(1,cos)))*180/Math.PI;
+  return {deg, frac:(cos+1)/2};
+}
+
+/* ══ 2D 인셋: 위에서 본 은하 + 시선 ══ */
+const mCv = document.getElementById('cv-map'), mCx = mCv.getContext('2d');
+function drawMap(){
+  const W = mCv.width, H = mCv.height, cx = W/2, cy = H/2, sc = (W/2-12)/DISK_R;
+  mCx.clearRect(0,0,W,H);
+  /* 원반 + 팽대부 */
+  mCx.fillStyle = 'rgba(143,208,255,.14)';
+  mCx.beginPath(); mCx.arc(cx,cy,DISK_R*sc,0,Math.PI*2); mCx.fill();
+  mCx.fillStyle = 'rgba(255,227,176,.5)';
+  mCx.beginPath(); mCx.ellipse(cx,cy,8*sc*1.6,5*sc*1.6,0,0,Math.PI*2); mCx.fill();
+  /* 태양계 위치 */
+  const ox = cx + obsPos.x*sc, oy = cy + obsPos.z*sc;
+  /* 시선 부채꼴 (수평 성분, world x→오른쪽, z→아래) */
+  if (view==='in'){
+    const a = Math.atan2(Math.cos(yaw), Math.sin(yaw));   // canvas 각도: atan2(dz,dx)
+    mCx.fillStyle = 'rgba(255,209,102,.22)';
+    mCx.beginPath(); mCx.moveTo(ox,oy);
+    mCx.arc(ox,oy, 66, a-.42, a+.42); mCx.closePath(); mCx.fill();
+  }
+  mCx.fillStyle = '#a9f07a';
+  mCx.beginPath(); mCx.arc(ox,oy,4,0,Math.PI*2); mCx.fill();
+  mCx.fillStyle = '#9aa8cf'; mCx.font = '10px Pretendard, sans-serif'; mCx.textAlign='center';
+  mCx.fillText(atCenter?'태양계(가정: 중심)':'태양계', ox, oy-8);
+}
+
+function resize(){
+  renderer.setSize(stage.clientWidth, stage.clientHeight);
+  const asp = stage.clientWidth/stage.clientHeight;
+  outCam.aspect = asp; outCam.updateProjectionMatrix();
+  inCam.aspect = asp; inCam.updateProjectionMatrix();
+  draw();
+}
+addEventListener('resize', resize);
+
+let last = performance.now();
+function draw(){
+  const now = performance.now(); const dt = Math.min(.05,(now-last)/1000)||.016; last = now;
+  /* 관측 위치 보간 */
+  const target = atCenter ? new THREE.Vector3(0,0,0) : new THREE.Vector3(SUN_R,0,0);
+  obsPos.lerp(target, Math.min(1, dt*2.2));
+  sunMark.position.copy(obsPos);
+  if (spinning) yaw += dt*.35;
+  if (view==='in'){
+    inCam.position.copy(obsPos).add(new THREE.Vector3(0,.6,0));
+    const look = new THREE.Vector3(
+      Math.sin(yaw)*Math.cos(pitch), Math.sin(pitch), Math.cos(yaw)*Math.cos(pitch));
+    inCam.lookAt(inCam.position.clone().add(look));
+    const {deg, frac} = dirInfo();
+    const name = atCenter ? '중심에서는 어디나 똑같아요!'
+      : deg < 45 ? '은하 중심 쪽 (여름 밤하늘 · 궁수자리)'
+      : deg > 135 ? '중심 반대쪽 (겨울 밤하늘)'
+      : '은하 원반의 옆면 쪽';
+    document.getElementById('dir-name').textContent = name;
+    document.getElementById('dir-meter').style.width =
+      (atCenter ? 72 : 25 + frac*70) + '%';
+    renderer.render(scene, inCam);
+  } else {
+    ctl.update(); renderer.render(scene, outCam);
+  }
+  drawMap();
+  requestAnimationFrame(draw);
+}
+resize(); requestAnimationFrame(draw);
+</script>
+</body>
+</html>

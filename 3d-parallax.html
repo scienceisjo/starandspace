@@ -58,6 +58,11 @@ input[type=range]{accent-color:var(--accent); width:170px}
  font-size:14px; color:var(--ink-dim); line-height:1.6; font-family:var(--gowun)}
 .note b{color:var(--ink)} .note .k{color:var(--accent); font-family:var(--jua); font-size:13.5px}
 #app-credit{margin:34px auto 18px; text-align:center; font-size:12.5px; color:var(--ink-mute); font-family:var(--gowun)}
+.inset{position:absolute; background:rgba(4,7,15,.85); border:1.5px solid var(--line); border-radius:12px; padding:7px 9px 5px}
+.inset .ilabel{font-family:var(--jua); font-size:11.5px; color:var(--ink-mute); margin-bottom:4px; text-align:center}
+#inset-orbit{right:14px; bottom:12px}
+#inset-sky{left:14px; bottom:12px}
+@media (max-width:760px){ #inset-sky{display:none} #inset-orbit canvas{width:130px;height:130px} }
 @media (max-width:640px){ input[type=range]{width:120px} .readout{min-width:120px} }
 </style>
 </head>
@@ -84,6 +89,14 @@ input[type=range]{accent-color:var(--accent); width:170px}
     <div class="rv" id="ro-p">0.50&#8243;</div>
     <div class="rd" id="ro-d">거리 2 pc</div>
     <div class="rd" style="margin-top:6px;color:#7c88ad">※ 각도는 이해를 돕기 위해<br>크게 과장했습니다</div>
+   </div>
+   <div class="inset" id="inset-orbit">
+    <div class="ilabel">🛰️ 위에서 내려다본 공전</div>
+    <canvas id="cv-orbit" width="180" height="180"></canvas>
+   </div>
+   <div class="inset" id="inset-sky">
+    <div class="ilabel">🌃 지구에서 본 밤하늘 (배경 별과 별 S)</div>
+    <canvas id="cv-sky" width="300" height="104"></canvas>
    </div>
   </div>
   <div class="panel">
@@ -281,9 +294,65 @@ function draw(){
       if (trail.length > 60){ scene.remove(trail[0].m); trail.shift(); }
     }
   }
+  drawInsets(ang);
   if (view==='space'){ ctl.update(); renderer.render(scene, spaceCam); }
   else renderer.render(scene, earthCam);
   requestAnimationFrame(draw);
+}
+
+/* ── 2D 모식도 인셋: 공전도 + 밤하늘 띠 ── */
+const oCv = document.getElementById('cv-orbit'), oCx = oCv.getContext('2d');
+const sCv = document.getElementById('cv-sky'),  sCx = sCv.getContext('2d');
+const SKY_BG = [[38,30],[74,68],[118,44],[168,72],[214,36],[258,62],[286,48]]; // 고정 배경 별(파랑)
+function drawInsets(ang){
+  /* ① 위에서 내려다본 공전 (world x→오른쪽, z→아래) */
+  const W = oCv.width, H = oCv.height, cx = 62, cy = H/2, R = 36;
+  oCx.clearRect(0,0,W,H);
+  oCx.strokeStyle = '#33406e'; oCx.setLineDash([4,4]);
+  oCx.beginPath(); oCx.arc(cx,cy,R,0,Math.PI*2); oCx.stroke(); oCx.setLineDash([]);
+  oCx.fillStyle = '#ffd166';
+  oCx.beginPath(); oCx.arc(cx,cy,7,0,Math.PI*2); oCx.fill();          // 태양
+  const ex = cx + Math.cos(ang+Math.PI/2)*R, ey = cy + Math.sin(ang+Math.PI/2)*R;
+  /* E₁·E₂ (별 방향에 수직인 두 끝점) */
+  oCx.fillStyle = '#5b6a99'; oCx.font = '10px Pretendard, sans-serif'; oCx.textAlign = 'center';
+  oCx.fillText('E₁', cx, cy-R-6); oCx.fillText('E₂', cx, cy+R+13);
+  /* 별 S (오른쪽 멀리) + 시선 */
+  const sx = W-16, sy = cy;
+  oCx.strokeStyle = 'rgba(110,240,230,.6)';
+  oCx.beginPath(); oCx.moveTo(ex,ey); oCx.lineTo(sx,sy); oCx.stroke();
+  oCx.fillStyle = '#ffd166';
+  oCx.beginPath(); oCx.arc(sx,sy,4.5,0,Math.PI*2); oCx.fill();
+  oCx.fillText('별 S', sx, sy+16);
+  /* 지구 */
+  oCx.fillStyle = '#8fd0ff';
+  oCx.beginPath(); oCx.arc(ex,ey,5,0,Math.PI*2); oCx.fill();
+  oCx.fillStyle = '#c6d2ee'; oCx.fillText('지구', ex, ey-9);
+
+  /* ② 지구에서 본 밤하늘 — 배경 별은 고정, 별 S만 좌우로 */
+  const w2 = sCv.width, h2 = sCv.height;
+  sCx.clearRect(0,0,w2,h2);
+  sCx.fillStyle = '#04070f'; sCx.fillRect(0,0,w2,h2);
+  sCx.fillStyle = '#8fd0ff';
+  SKY_BG.forEach(([x,y])=>{ sCx.beginPath(); sCx.arc(x,y,2.4,0,Math.PI*2); sCx.fill(); });
+  /* 별 S의 겉보기 위치: 지구의 z성분(시선에 수직)에 비례, 거리에 반비례 */
+  const amp = 96 * (80/starDist);                       // 2 pc일 때 ±96px
+  const off = -Math.sin(ang+Math.PI/2) * amp;           // earthZ = R·sin(…)
+  /* 흔들리는 범위 표시 */
+  sCx.strokeStyle = 'rgba(255,159,190,.4)'; sCx.setLineDash([3,3]);
+  sCx.beginPath(); sCx.moveTo(w2/2-amp, 22); sCx.lineTo(w2/2+amp, 22); sCx.stroke(); sCx.setLineDash([]);
+  sCx.fillStyle = '#ff9fbe'; sCx.font = '10px Pretendard, sans-serif'; sCx.textAlign = 'center';
+  sCx.fillText('← 왔다 갔다 하는 폭 →', w2/2, 14);
+  const sxx = w2/2 + off, syy = 58;
+  sCx.fillStyle = '#ffd166';
+  sCx.beginPath(); sCx.arc(sxx, syy, 4.5, 0, Math.PI*2); sCx.fill();
+  const spikes = 4;
+  sCx.strokeStyle = 'rgba(255,209,102,.7)';
+  for(let i=0;i<spikes;i++){ const a2 = i/spikes*Math.PI;
+    sCx.beginPath(); sCx.moveTo(sxx-Math.cos(a2)*9, syy-Math.sin(a2)*9);
+    sCx.lineTo(sxx+Math.cos(a2)*9, syy+Math.sin(a2)*9); sCx.stroke(); }
+  sCx.fillStyle = '#ffd166'; sCx.fillText('별 S', sxx, syy+20);
+  sCx.fillStyle = '#7c88ad'; sCx.textAlign = 'left';
+  sCx.fillText('파란 별 = 배경 별(움직이지 않음)', 8, h2-8);
 }
 resize(); requestAnimationFrame(draw);
 </script>
