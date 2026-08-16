@@ -1335,5 +1335,64 @@ $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classLis
   });
 })();
 </script>
+
+<script id="ui-extras">
+/* ① 학생용 키워드 줄을 누르면 바로 위의 교사용 설명 문장을 펼쳐 본다
+   ② 헤더 아이콘(허브 이동 / 교사용 on-off)에 글자 라벨을 붙인다 */
+(function(){
+  var st = document.createElement('style');
+  st.textContent =
+    /* ① 키워드 → 설명 펼치기 */
+    '.keyline-s .kw{cursor:pointer;position:relative}'+
+    '.keyline-s .kw:hover{filter:brightness(.97)}'+
+    '.kw-peek{display:block;margin:-8px 0 18px;padding:12px 15px;border-radius:12px;font-size:15px;line-height:1.7;'+
+    'border:1.5px dashed rgba(128,128,128,.45);background:rgba(127,127,127,.08)}'+
+    '.kw-peek .kw-peek-h{font-size:12.5px;opacity:.7;margin-bottom:5px}'+
+    'body.teacher .kw-peek{display:none}'+
+    /* ② 헤더 아이콘 라벨 */
+    '.hbtn{position:relative}'+
+    '.hb-wrap{display:flex;flex-direction:column;align-items:center;gap:2px}'+
+    '.hb-lab{font-size:9.5px;line-height:1.1;opacity:.75;white-space:nowrap;letter-spacing:-.02em}'+
+    '@media(max-width:520px){.hb-lab{display:none}}';
+  document.head.appendChild(st);
+
+  /* ── ① 키워드 클릭 → 바로 위 .say 문단 펼치기 ── */
+  document.querySelectorAll('.keyline-s').forEach(function(line){
+    /* 이 키워드 줄 바로 앞에 오는 교사용 설명(.say)들을 모은다 */
+    var says = [], p = line.previousElementSibling;
+    while (p && (p.classList.contains('say') || p.tagName === 'BR')){
+      if (p.classList.contains('say')) says.unshift(p);
+      p = p.previousElementSibling;
+    }
+    if (!says.length) return;
+    var peek = null;
+    line.querySelectorAll('.kw').forEach(function(kw){
+      kw.setAttribute('title', '눌러서 자세한 설명 보기');
+      kw.addEventListener('click', function(){
+        if (peek){ peek.remove(); peek = null; line.querySelectorAll('.kw').forEach(function(x){x.style.outline='';}); return; }
+        peek = document.createElement('div');
+        peek.className = 'kw-peek';
+        peek.innerHTML = '<div class="kw-peek-h">📖 자세한 설명</div>' +
+          says.map(function(s){ return s.innerHTML; }).join('<br>');
+        line.insertAdjacentElement('afterend', peek);
+        kw.style.outline = '2px solid currentColor';
+        peek.scrollIntoView({block:'nearest', behavior:'smooth'});
+      });
+    });
+  });
+
+  /* ── ② 헤더 아이콘 라벨 ── */
+  function label(el, text){
+    if (!el || el.dataset.hbl) return; el.dataset.hbl = 1;
+    var w = document.createElement('span'); w.className = 'hb-wrap';
+    el.parentNode.insertBefore(w, el); w.appendChild(el);
+    var l = document.createElement('span'); l.className = 'hb-lab'; l.textContent = text;
+    w.appendChild(l);
+  }
+  var hubBtn = document.querySelector('a.hbtn[href$="허브.html"], a.hbtn[href$="index.html"], a.hbtn[href*="허브"], a.hbtn[href*="index"]');
+  label(hubBtn, '허브페이지로 이동');
+  label(document.getElementById('tmodeBtn'), '교사용 on/off');
+})();
+</script>
 </body>
 </html>
