@@ -438,6 +438,40 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
   .bogi li{color:#111}
 }
 </style>
+
+<style id="sum-css">
+.sumwrap{margin-top:16px}
+.sblk{border:2px solid rgba(128,128,128,.4);border-radius:16px;padding:16px 18px;margin-bottom:14px;
+ background:rgba(127,127,127,.08)}
+.sblk.done{border-color:#2c7a44;background:rgba(44,122,68,.12)}
+.sblk-h{display:flex;align-items:center;gap:9px;font-family:var(--jua,Jua,sans-serif);
+ font-size:clamp(17px,2.2vw,21px);color:var(--gold,#c4711e);margin-bottom:10px}
+.sblk-h .no{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;
+ background:var(--gold,#c4711e);color:#fff}
+.sline{font-size:clamp(16px,2.1vw,19.5px);line-height:2.1;opacity:.92}
+.sline b{opacity:1}
+.bl{display:inline-block;min-width:88px;padding:2px 12px;margin:0 3px;border-bottom:2.5px solid var(--accent,#a05c2c);
+ font-family:var(--jua,Jua,sans-serif);font-size:1.02em;text-align:center;color:transparent;cursor:pointer;
+ transition:.18s;background:rgba(160,120,60,.12);border-radius:6px 6px 0 0}
+.bl:hover{background:rgba(160,120,60,.22)}
+.bl.on{color:var(--accent,#a05c2c);background:rgba(44,122,68,.15);border-color:#2c7a44}
+.bl.cur{background:rgba(255,209,102,.3);box-shadow:0 0 0 3px rgba(255,209,102,.45)}
+.bl.miss{animation:blsh .35s}
+@keyframes blsh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.sumbar{position:sticky;top:calc(var(--header-h,60px) + 6px);z-index:20;display:flex;gap:10px;flex-wrap:wrap;
+ align-items:center;padding:12px 15px;border:2px solid rgba(128,128,128,.4);border-radius:14px;
+ background:var(--surface,var(--paper-hi,#f6efdf));margin-bottom:16px;box-shadow:0 6px 18px -10px rgba(0,0,0,.4)}
+.mic{font-family:var(--jua,Jua,sans-serif);font-size:15px;padding:9px 18px;border-radius:99px;cursor:pointer;
+ border:2px solid rgba(128,128,128,.45);background:rgba(127,127,127,.1);color:inherit;transition:.15s}
+.mic.on{background:#b3362e;border-color:#b3362e;color:#fff;animation:mpulse 1.3s infinite}
+@keyframes mpulse{0%,100%{box-shadow:0 0 0 0 rgba(179,54,46,.5)}50%{box-shadow:0 0 0 10px rgba(179,54,46,0)}}
+.heard{flex:1 1 200px;font-size:14.5px;opacity:.75;min-height:22px}
+.heard b{color:var(--accent,#a05c2c);opacity:1}
+.sprog{font-family:var(--mono,monospace);font-size:14px;font-weight:700;opacity:.85}
+.styped{font-size:15px;border:1.5px solid rgba(128,128,128,.45);border-radius:10px;padding:7px 12px;width:150px;
+ background:rgba(127,127,127,.08);color:inherit}
+.micwarn{font-size:13px;color:#e0685c;flex:1 1 100%}
+</style>
 </head>
 <body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
@@ -492,6 +526,7 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
     <button data-tab="judge"><span class="sn"><i>4</i></span>판별하기</button>
     <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
     <span class="tab-sep"></span>
+ <button data-tab="sum" class="optional"><span class="sn"><i>+</i></span>📝 개념 정리하기</button>
     <button data-tab="beyond" class="optional"><span class="sn"><i>+</i></span>🌙 더 알아보기</button>
   </nav>
 </header>
@@ -734,6 +769,32 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
 </section>
 
 <!-- + -->
+
+<!-- + 개념 정리하기 -->
+<section class="panel" id="panel-sum">
+ <div class="stepline"><span class="sbadge">정리</span><span class="swhat">학습지 순서대로 · 빈칸 채우기</span></div>
+ <h2 class="sec">오늘 배운 개념, 빈칸으로 확인</h2>
+ <p class="lead">빈칸을 <b>눌러서</b> 답을 확인하거나,
+ <b>🎤 음성으로 답하기</b>를 켜고 <b>소리 내어 말하면</b> 저절로 채워집니다.</p>
+
+ <div class="sumbar">
+  <button class="mic" id="micBtn">🎤 음성으로 답하기</button>
+  <input class="styped" id="typeIn" placeholder="또는 여기에 입력 후 Enter" aria-label="답 입력">
+  <span class="heard" id="heard">마이크를 켜면 여기에 들린 말이 표시됩니다</span>
+  <span class="sprog" id="sprog">0 / 0</span>
+  <button class="btn ghost sm" id="sumReset">↺ 다시</button>
+  <button class="btn ghost sm" id="sumAll">전부 보기</button>
+  <span class="micwarn" id="micWarn" style="display:none"></span>
+ </div>
+
+ <div class="sumwrap" id="sumWrap"></div>
+
+ <div class="note class"><span class="ic">💬</span><div><b>이렇게 쓰세요</b> —
+ ① 학습지를 덮게 하고 이 탭을 띄웁니다. ② 한 명씩 지목해 <b>소리 내어</b> 답하게 하면 마이크가 알아듣고 칸이 채워집니다.
+ ③ 못 알아들으면 옆의 입력칸에 타이핑하거나 빈칸을 눌러 넘어가세요.
+ <b>마이크는 크롬·엣지에서만</b> 되고 인터넷이 필요합니다. 안 되면 <b>빈칸 클릭</b>만으로도 수업이 굴러갑니다.</div></div>
+</section>
+
 <section class="panel" id="panel-beyond">
   <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
   <h2 class="sec">2,000년 전에 만든 자를 아직도 쓴다</h2>
@@ -794,7 +855,7 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
 const FIGS={
   sirius:'img/m-sirius.png', tenpc:'img/m-tenpc.png', rule:'img/m-rule.png'
 };
-const BG_IMAGES={cover:'',engage:'',compare:'',explain:'',judge:'',check:'',beyond:''};
+const BG_IMAGES={cover:'',engage:'',compare:'',explain:'',judge:'',check:'',sum:'',beyond:''};
 const BG_FALLBACK={
   cover:'radial-gradient(120% 90% at 50% 0%, #2b3560, #070c1a 68%)',
   engage:'radial-gradient(110% 80% at 50% 0%, #2b3560, #070c1a 66%)',
@@ -802,6 +863,7 @@ const BG_FALLBACK={
   explain:'linear-gradient(180deg, #202a52, #070c1a 74%)',
   judge:'radial-gradient(90% 80% at 68% 15%, #2c2f5e, #070c1a 70%)',
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
+  sum:'radial-gradient(105% 85% at 50% 10%, rgba(127,127,127,.06), transparent 68%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
 const SAVE='star_magnitude_v2';
@@ -936,7 +998,7 @@ const GAME_QS=[
 /* 엔진 */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const TABS=['engage','compare','explain','judge','check','beyond'];
+const TABS=['engage','compare','explain','judge','check','sum','beyond'];
 const CS=getComputedStyle(document.documentElement);
 const CV=k=>CS.getPropertyValue('--'+k).trim();
 
@@ -1475,6 +1537,154 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
   var hubBtn = document.querySelector('a.hbtn[href$="index.html"], a.hbtn[href*="허브"], a.hbtn[href*="index"]');
   label(hubBtn, '허브페이지로 이동');
   label(document.getElementById('tmodeBtn'), '교사용 on/off');
+})();
+</script>
+
+<script id="sum-js">
+(function(){
+  var SUM=[
+ {t:'겉보기 등급', lines:[
+  ['우리 ', {a:'눈에 보이는', alt:['눈에보이는','보이는']}, ' 밝기를 등급으로 나타낸 것'],
+  ['등급이 ', {a:'작을수록', alt:['작을수록','작은','낮을수록']}, ' 밝은 별 — 0등급, −1등급도 있다']]},
+ {t:'등급 차와 밝기 차', lines:[
+  ['1등급 차이 = 약 ', {a:'2.5', alt:['2.5','이점오']}, '배'],
+  ['5등급 차이 = 약 ', {a:'100', alt:['100','백']}, '배 (1등급 별은 6등급 별보다 약 100배 밝다)']]},
+ {t:'절대 등급', lines:[
+  ['별을 ', {a:'10 pc', alt:['10pc','십파섹','10파섹']}, ' 거리에 두었다고 가정했을 때의 등급'],
+  ['거리를 통일했으니 별의 ', {a:'실제', alt:['실제','진짜']}, ' 밝기를 비교할 수 있다']]},
+ {t:'거리 판단 — 겉보기 − 절대', lines:[
+  ['(겉보기 − 절대) < 0 → 10 pc보다 ', {a:'가깝다', alt:['가깝','가까이']}, ''],
+  ['(겉보기 − 절대) > 0 → 10 pc보다 ', {a:'멀다', alt:['멀다','멀리']}, ' — 값이 클수록 더 멀다']]}
+];
+
+  var wrap=document.getElementById('sumWrap'); if(!wrap) return;
+  var blanks=[], cur=0;
+
+  function build(){
+    var html='', bi=0;
+    SUM.forEach(function(b,k){
+      html+='<div class="sblk" data-blk="'+k+'"><div class="sblk-h"><span class="no">'+(k+1)+'</span>'+b.t+'</div>';
+      b.lines.forEach(function(ln){
+        html+='<div class="sline">';
+        if(typeof ln==='string'){ html+=ln; }
+        else ln.forEach(function(p){
+          if(typeof p==='string') html+=p;
+          else { html+='<span class="bl" data-b="'+bi+'">'+p.a+'</span>'; blanks.push({a:p.a,alt:p.alt,blk:k,on:false}); bi++; }
+        });
+        html+='</div>';
+      });
+      html+='</div>';
+    });
+    wrap.innerHTML=html;
+    wrap.querySelectorAll('.bl').forEach(function(el){
+      el.addEventListener('click',function(){ reveal(+el.dataset.b); });
+    });
+    paint();
+  }
+  function paint(){
+    var done=0;
+    blanks.forEach(function(b,i){
+      var el=wrap.querySelector('[data-b="'+i+'"]');
+      if(!el) return;
+      el.classList.toggle('on',b.on);
+      el.classList.toggle('cur',i===cur && !b.on);
+      if(b.on) done++;
+    });
+    document.getElementById('sprog').textContent=done+' / '+blanks.length;
+    SUM.forEach(function(_,k){
+      var all=blanks.filter(function(b){return b.blk===k;}).every(function(b){return b.on;});
+      var el=wrap.querySelector('[data-blk="'+k+'"]');
+      if(el) el.classList.toggle('done',all);
+    });
+    if(done===blanks.length && blanks.length){
+      if(typeof toast==='function') toast('개념 정리 완료! 학습지와 견주어 보세요 📝','good');
+    }
+  }
+  function nextCur(){
+    for(var i=0;i<blanks.length;i++){ var j=(cur+i)%blanks.length; if(!blanks[j].on){cur=j; return;} }
+  }
+  function reveal(i){
+    if(i<0||i>=blanks.length) return;
+    blanks[i].on=true;
+    if(i===cur) nextCur();
+    paint();
+  }
+  function norm(t){ return String(t||'').toLowerCase().replace(/[\s.,!?~·'"()]/g,''); }
+  function match(text){
+    var n=norm(text); if(!n) return -1;
+    function hit(b){ return b.alt.some(function(a){ return n.indexOf(norm(a))>=0; }); }
+    if(blanks[cur] && !blanks[cur].on && hit(blanks[cur])) return cur;
+    for(var i=0;i<blanks.length;i++) if(!blanks[i].on && hit(blanks[i])) return i;
+    return -1;
+  }
+  function tryAnswer(text){
+    var i=match(text);
+    if(i>=0){ reveal(i); return true; }
+    var el=wrap.querySelector('[data-b="'+cur+'"]');
+    if(el){ el.classList.add('miss'); setTimeout(function(){el.classList.remove('miss');},400); }
+    return false;
+  }
+
+  var typeIn=document.getElementById('typeIn');
+  typeIn.addEventListener('keydown',function(e){
+    if(e.key!=='Enter') return;
+    if(tryAnswer(typeIn.value)) typeIn.value='';
+  });
+
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var micBtn=document.getElementById('micBtn'), heard=document.getElementById('heard'), rec=null, want=false;
+  if(!SR){
+    micBtn.disabled=true; micBtn.style.opacity=.5;
+    var w=document.getElementById('micWarn'); w.style.display='block';
+    w.textContent='이 브라우저는 음성 인식을 지원하지 않습니다 — 크롬이나 엣지에서 열면 됩니다. (빈칸 클릭·입력은 그대로 됩니다)';
+  } else {
+    micBtn.addEventListener('click',function(){ want=!want; want?start():stop(); });
+  }
+  function start(){
+    try{
+      rec=new SR(); rec.lang='ko-KR'; rec.continuous=true; rec.interimResults=true;
+      rec.onresult=function(e){
+        var txt='';
+        for(var i=e.resultIndex;i<e.results.length;i++){
+          txt=e.results[i][0].transcript;
+          heard.innerHTML='들린 말: <b>'+txt+'</b>';
+          if(e.results[i].isFinal) tryAnswer(txt);
+          else if(match(txt)>=0) tryAnswer(txt);
+        }
+      };
+      rec.onerror=function(ev){
+        var w2=document.getElementById('micWarn'); w2.style.display='block';
+        w2.textContent = ev.error==='not-allowed'
+          ? '마이크 사용이 차단되었습니다 — 주소창의 자물쇠를 눌러 마이크를 허용해 주세요.'
+          : (ev.error==='network' ? '인터넷 연결이 필요합니다(크롬 음성 인식). 입력칸이나 빈칸 클릭을 쓰세요.'
+                                  : '음성 인식 오류: '+ev.error);
+        want=false; micBtn.classList.remove('on'); micBtn.textContent='🎤 음성으로 답하기';
+      };
+      rec.onend=function(){ if(want){ try{rec.start();}catch(e){} } };
+      rec.start();
+      micBtn.classList.add('on'); micBtn.textContent='⏹ 듣는 중… (누르면 멈춤)';
+      heard.textContent='듣고 있습니다 — 답을 또박또박 말해 보세요';
+      document.getElementById('micWarn').style.display='none';
+    }catch(e){ want=false; }
+  }
+  function stop(){
+    want=false; if(rec){ try{rec.stop();}catch(e){} }
+    micBtn.classList.remove('on'); micBtn.textContent='🎤 음성으로 답하기';
+    heard.textContent='마이크를 껐습니다';
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-tab]');
+    if(b && b.dataset.tab!=='sum' && want) stop();
+  });
+
+  document.getElementById('sumReset').addEventListener('click',function(){
+    blanks.forEach(function(b){b.on=false;}); cur=0; paint();
+  });
+  document.getElementById('sumAll').addEventListener('click',function(){
+    blanks.forEach(function(b){b.on=true;}); paint();
+  });
+
+  build();
 })();
 </script>
 </body>
