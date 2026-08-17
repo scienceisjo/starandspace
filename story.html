@@ -129,8 +129,10 @@ h2.title{
    (캔버스도 바닥에 상태 문구를 그리므로, 겹치면 글자가 포개져 읽히지 않는다) */
 .viz{position:relative; width:100%; height:clamp(240px,58vh,720px); border-radius:22px; overflow:hidden;
   background:rgba(255,255,255,.025); border:1px solid var(--line); --capH:42px}
-.viz canvas{position:absolute; left:0; right:0; top:0; bottom:var(--capH);
-  width:auto; height:auto; display:block}
+/* 캔버스는 replaced element라 width:auto면 좌우를 채우지 않고 고유 크기로 줄어든다.
+   반드시 명시적 100% / calc 로 크기를 준다. */
+.viz canvas{position:absolute; left:0; top:0;
+  width:100%; height:calc(100% - var(--capH)); display:block}
 .viz.plain{background:none; border:0}
 .vizcap{position:absolute; left:0; right:0; bottom:0; height:var(--capH); padding:0 16px;
   display:flex; align-items:center; justify-content:center; text-align:center;
@@ -173,6 +175,19 @@ body.teacher .fig:not(.ok) .slot{display:block}
   font-weight:800; color:#15151f; line-height:1.3; letter-spacing:-.02em;
   font-size:var(--bfs,12px)}
 .bub.sm{font-size:calc(var(--bfs,12px)*0.62); line-height:1.24}   /* 작은 말풍선용 */
+/* 눌러서 읽어 주기 */
+.bub,.cap2{cursor:pointer}
+.bub:hover{text-shadow:0 0 8px rgba(94,231,255,.9)}
+.cap2:hover{border-color:var(--c1)}
+@keyframes bubPop{0%{transform:translate(-50%,-50%) scale(1)}
+  40%{transform:translate(-50%,-50%) scale(1.07)} 100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes capPop{0%{transform:translate(-50%,-100%) scale(1)}
+  40%{transform:translate(-50%,-100%) scale(1.05)} 100%{transform:translate(-50%,-100%) scale(1)}}
+.ttshint{position:absolute; right:1.2%; top:1.6%; font-size:calc(var(--cfs,11px)*0.92);
+  color:#dfe6ff; background:rgba(6,8,20,.72); border:1px solid rgba(255,255,255,.22);
+  border-radius:999px; padding:.3em .7em; font-weight:700; pointer-events:none; line-height:1.2}
+.bub.speaking{animation:bubPop .5s ease}
+.cap2.speaking{animation:capPop .5s ease}
 /* 말풍선이 없는 칸에 얹는 해설 자막 */
 .cap2{position:absolute; left:var(--x); top:var(--y); width:var(--w);
   transform:translate(-50%,-100%); text-align:center; word-break:keep-all;
@@ -341,6 +356,7 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
   .vote{grid-template-columns:1fr}
   .hint{display:none}
 }
+
 @media (prefers-reduced-motion:reduce){
   .scene.on,.scene.on .txt>*,.scene.on .viz{animation:none; opacity:1; transform:none}
   .hl::before{animation:none; transform:scaleX(1)}
@@ -388,6 +404,24 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
   h1, h2.title{background:none; -webkit-text-fill-color:CanvasText; color:CanvasText}
   .kicker,.badge,.pill,.card,.tbtn,.qopt,.arrow,.vbox{border:1px solid CanvasText}
   .vizcap,.sub,.hint,.counter{color:CanvasText}
+}
+
+/* 세로가 낮은 화면(1600x900 등)에서는 글자·여백을 줄여 한 화면에 담는다.
+   ※ 반드시 스타일 맨 끝에 두어야 앞의 기본 규칙을 이긴다 */
+@media (max-height:960px){
+  h2.title{font-size:clamp(22px,2.7vw,42px); margin-bottom:clamp(5px,1vh,11px)}
+  .lead{font-size:clamp(13px,1.20vw,20px); line-height:1.55; margin-bottom:clamp(5px,0.9vh,10px)}
+  .sub{font-size:clamp(11.5px,1.02vw,16px); line-height:1.58; margin-bottom:8px}
+  .kicker{margin-bottom:clamp(4px,0.8vh,9px); padding:4px 10px}
+  .card{padding:clamp(9px,1.1vw,14px)}
+  .card h4{font-size:clamp(13px,1.2vw,18px); margin-bottom:6px}
+  .card p{font-size:clamp(11px,0.98vw,14.5px); line-height:1.48}
+  .ctl,.seg,.slab{margin-top:7px}
+  .pill,.seg button{padding:7px 13px}
+  table.cmp th,table.cmp td{padding:6px 9px}
+  .vote{margin-top:8px; gap:10px}
+  .vbox{padding:9px}
+  .viz{height:clamp(210px,50vh,600px)}
 }
 </style>
 </head>
@@ -1615,10 +1649,35 @@ $$('.fig[data-fig]').forEach(function(fg){
     wrap.insertBefore(im, wrap.firstChild);
     fg.classList.add('ok');
     sizeFig(fg);
+    /* 그림이 실제로 커지거나 줄 때마다 글자 크기를 다시 맞춘다 (글씨 밀림 방지) */
+    if(window.ResizeObserver) new ResizeObserver(function(){ sizeFig(fg); }).observe(im);
+    /* 말풍선이 있으면 '눌러서 듣기' 안내를 붙인다 */
+    if(TTS && fg.querySelector('.bub')){
+      var h=document.createElement('span'); h.className='ttshint';
+      h.textContent='🔊 말풍선을 누르면 읽어 줍니다';
+      wrap.appendChild(h);
+    }
   };
   im.src=src;                          /* 실패하면 아무 일도 안 일어남 = 슬롯 유지 */
 });
 window.addEventListener('resize',function(){ $$('.fig.ok').forEach(sizeFig) });
+
+/* 말풍선을 누르면 대사를 읽어 준다 (전자칠판 수업용) */
+var TTS = ('speechSynthesis' in window);
+function speak(t){
+  if(!TTS || !t) return;
+  try{
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t);
+    u.lang='ko-KR'; u.rate=0.97; u.pitch=1.05;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.bub,.cap2'); if(!b) return;
+  speak(b.textContent.trim());
+  b.classList.remove('speaking'); void b.offsetWidth; b.classList.add('speaking');
+});
 
 /* 시뮬레이션 ↔ 만화 전환 (data-segfor 로 연결) */
 $$('.seg[data-segfor]').forEach(function(seg){
