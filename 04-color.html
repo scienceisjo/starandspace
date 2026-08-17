@@ -438,6 +438,38 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
   .bogi li{color:#111}
 }
 </style>
+
+<style id="xsim-css">
+.xsim{margin-top:14px}
+.xsim-stage{position:relative;border:1.5px solid rgba(128,128,128,.35);border-radius:14px;
+ overflow:hidden;background:rgba(127,127,127,.07)}
+.xsim-stage canvas{display:block;width:100%;height:auto}
+.xsim-ctl{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.xsim-btn{font-family:inherit;font-size:14px;font-weight:700;padding:8px 15px;border-radius:10px;cursor:pointer;
+ border:1.5px solid rgba(128,128,128,.45);background:rgba(127,127,127,.08);color:inherit;transition:.15s}
+.xsim-btn:hover{border-color:currentColor}
+.xsim-btn.on{background:#2c7a44;border-color:#2c7a44;color:#fff}
+.xsim-btn.warn.on{background:#a05c2c;border-color:#a05c2c}
+.xsim-lab{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.xsim-lab b{font-size:13.5px}
+.xsim-ctl input[type=range]{width:150px;accent-color:#2c7a44}
+.xsim-read{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.xsim-r{flex:1 1 118px;border:1px solid rgba(128,128,128,.3);border-radius:11px;padding:8px 11px;text-align:center;
+ background:rgba(127,127,127,.07)}
+.xsim-r .k{font-size:12px;opacity:.72;line-height:1.35}
+.xsim-r .v{font-size:19px;font-weight:800;margin-top:3px;line-height:1.2}
+.xsim-r .v small{font-size:12px;font-weight:600;opacity:.75}
+.xsim-msg{margin-top:12px;padding:11px 14px;border-radius:11px;font-size:14.5px;line-height:1.62;
+ border:1.5px dashed rgba(128,128,128,.4);background:rgba(127,127,127,.05)}
+.xsim-msg.hit{border-style:solid;border-color:#2c7a44;background:rgba(44,122,68,.1)}
+.xsim-scope{display:inline-block;font-size:12px;font-weight:700;padding:2px 11px;border-radius:99px;
+ border:1.5px solid #7d5ba6;color:#7d5ba6;background:rgba(125,91,166,.09);margin-bottom:8px}
+.xsim-why{margin-top:12px;padding:12px 15px;border-radius:12px;border:1px solid rgba(128,128,128,.3);
+ background:rgba(127,127,127,.05);font-size:14px;line-height:1.68}
+.xsim-why b{font-weight:800}
+.xsim-why .h{font-weight:800;font-size:14.5px;margin-bottom:5px}
+.xsim-why+.xsim-why{margin-top:9px}
+</style>
 </head>
 <body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
@@ -579,6 +611,155 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
     <p class="honest"><span class="ic">📌</span>화면의 색은 실제 별빛을 눈에 보이게 과장한 것입니다. 별의 크기와도 관계가 없어요.</p>
     <div class="note class"><span class="ic">💬</span><div><b>차시 지도상의 유의점</b> — 별의 표면 온도를 <b>정량적으로 다루지 않습니다.</b> 그래서 이 다이얼도 숫자(K) 대신 '아주 높음~아주 낮음'으로만 표시했습니다. 숫자가 궁금한 학생에게는 `+ 더 알아보기` 탭을 안내하세요.</div></div>
   </div>
+
+<div class="card xsim" id="heat-card">
+ <span class="xsim-scope">🔎 왜 그럴까 · 성취기준 밖 보조 자료</span>
+ <h3 class="card-t">🔥 달아오르는 쇠막대 — 온도가 색을 결정한다</h3>
+ <p class="lead say">별의 색이 온도를 알려 준다는 게 잘 와닿지 않는다면, <b>대장간의 쇠</b>를 떠올려 보세요.
+ 같은 쇠인데 온도가 오를수록 <b class="t4">붉은색 → 주황 → 노랑 → 흰색 → 푸른빛</b>으로 변합니다.
+ 별도 똑같아요. 직접 달궈 보면서 어느 온도에서 어떤 별이 되는지 확인해 보세요.</p>
+ <div class="keyline-s"><span class="kw">온도가 낮다 — 붉은색</span><span class="arw">→</span><span class="kw">높아질수록 흰색</span><span class="arw">→</span><span class="kw hi">가장 뜨거우면 청색</span><span class="memo"></span></div>
+
+ <div class="xsim-stage"><canvas id="htCv" height="250" aria-label="쇠막대를 가열하면 온도에 따라 붉은색에서 주황, 노랑, 흰색, 푸른색으로 변하고 해당 온도의 별 이름이 함께 표시된다."></canvas></div>
+
+ <div class="xsim-ctl">
+  <button class="xsim-btn warn" id="htBurn">🔥 가열하기 (꾹 누르기)</button>
+  <span class="xsim-lab"><b>또는 스페이스바를 연타!</b> ⌨️</span>
+  <button class="xsim-btn" id="htCool" style="margin-left:auto">❄️ 식히기</button>
+ </div>
+
+ <div class="xsim-read">
+  <div class="xsim-r"><div class="k">표면 온도</div><div class="v" id="htT">1000<small> K</small></div></div>
+  <div class="xsim-r"><div class="k">지금 색</div><div class="v" id="htC">적색</div></div>
+  <div class="xsim-r"><div class="k">이 온도의 별</div><div class="v" id="htS" style="font-size:16px">—</div></div>
+  <div class="xsim-r"><div class="k">연타 파워</div><div class="v" id="htP">0<small> %</small></div></div>
+ </div>
+ <div class="xsim-msg" id="htMsg">🔥 버튼을 누르거나 <b>스페이스바를 연타</b>해 쇠를 달궈 보세요. 빨리 누를수록 빨리 뜨거워집니다!</div>
+
+ <div class="xsim-why"><div class="h">🌡️ 왜 뜨거울수록 파랗게 보일까?</div>
+ 뜨거운 물체는 빛을 <b>여러 색으로 섞어</b> 내보냅니다. 그런데 온도가 오를수록 <b>파란빛 쪽의 비율이 커져요.</b><br>
+ · 온도가 낮으면 붉은빛이 주로 나와서 <b>붉게</b> 보이고,<br>
+ · 아주 뜨거우면 파란빛까지 듬뿍 나와서 <b>푸르게</b> 보입니다.<br>
+ 그래서 <b>색만 보고도 표면 온도를 알 수 있는</b> 거예요. 별까지 온도계를 가져갈 수는 없으니, 천문학자들에게는 정말 고마운 성질이죠.
+ <span style="opacity:.75">※ 중학교에서는 <b>색의 순서</b>만 알면 충분합니다. 온도 수치는 참고로만 보세요.</span></div>
+
+ <div class="note class"><span class="ic">💬</span><div><b>이야기 각본</b> — ① "대장간에서 쇠를 달구면?" 학생들이 "빨개져요" ② 가열 시작 → 붉은색에서 출발 ③ 계속 달구며 "더 뜨거워지면?" → 노랑 → <b>흰색</b> ④ "여기서 멈추지 않습니다" → 청백색 ⑤ 별 이름표를 짚으며 "베텔게우스는 여기, 태양은 여기, 리겔은 저 위" ⑥ 마무리 — <b>"빨간 게 제일 뜨겁다"는 일상 감각과 반대!"</b> · 스페이스 연타는 학생들이 매우 좋아합니다. 모둠 대결로 써도 좋아요.</div></div>
+</div>
+
+<script>
+(function(){
+  var cv=document.getElementById('htCv'); if(!cv) return;
+  var cx=cv.getContext('2d'), W=640, H=250;
+  var T=1000, burning=false, power=0, lastKey=0;
+  var STARS=[[3200,'베텔게우스'],[3800,'안타레스'],[5800,'태양'],[7500,'프로키온'],[9900,'시리우스'],[12000,'리겔'],[25000,'스피카']];
+  function fit(){var b=cv.parentElement.clientWidth||640; if(b<10)b=640; W=b;
+    var d=Math.min(devicePixelRatio||1,2); cv.width=W*d; cv.height=H*d;
+    cv.style.height=H+'px'; cx.setTransform(d,0,0,d,0,0);}
+  /* 흑체 색 근사 (Tanner Helland) */
+  function bbColor(k){
+    var t=k/100, r,g,b;
+    if(t<=66){ r=255; g=99.47*Math.log(t)-161.12; }
+    else { r=329.7*Math.pow(t-60,-0.1332); g=288.12*Math.pow(t-60,-0.0755); }
+    if(t>=66) b=255; else if(t<=19) b=0; else b=138.52*Math.log(t-10)-305.04;
+    function c(v){return Math.max(0,Math.min(255,Math.round(v||0)));}
+    return [c(r),c(g),c(b)];
+  }
+  function colorName(k){
+    if(k<3700) return '적색'; if(k<5000) return '주황색'; if(k<6000) return '황색';
+    if(k<7500) return '황백색'; if(k<10000) return '백색'; if(k<20000) return '청백색'; return '청색';
+  }
+  function heat(amount){ T=Math.min(30000, T+amount); power=Math.min(100,power+9); }
+  var bt=document.getElementById('htBurn');
+  ['pointerdown','pointerenter'].forEach(function(){});
+  bt.addEventListener('pointerdown',function(){burning=true;});
+  addEventListener('pointerup',function(){burning=false;});
+  bt.addEventListener('pointerleave',function(){burning=false;});
+  document.getElementById('htCool').addEventListener('click',function(){T=1000; power=0;});
+  addEventListener('keydown',function(e){
+    if(e.code!=='Space') return;
+    var card=document.getElementById('heat-card');
+    var r=card.getBoundingClientRect();
+    if(r.bottom<0 || r.top>innerHeight) return;      /* 화면에 보일 때만 */
+    e.preventDefault();
+    var now=performance.now();
+    var fast=(now-lastKey)<220 ? 2.2 : 1;            /* 연타할수록 가속 */
+    lastKey=now;
+    heat(520*fast);
+  });
+  var last=0;
+  function render(t){
+    t=t||performance.now();
+    var dt=Math.min(.05,(t-last)/1000)||.016; last=t;
+    var bw=cv.parentElement.clientWidth; if(bw>10&&Math.abs(bw-W)>2) fit();
+    if(burning) heat(2600*dt);
+    T=Math.max(1000, T-(burning?0:1)*(T-1000)*0.22*dt);   /* 천천히 식음 */
+    power=Math.max(0,power-38*dt);
+    var rgb=bbColor(T), col='rgb('+rgb[0]+','+rgb[1]+','+rgb[2]+')';
+    cx.clearRect(0,0,W,H);
+    /* 온도 눈금 */
+    var gx0=40, gx1=W-40, gy=H-46;
+    var grad=cx.createLinearGradient(gx0,0,gx1,0);
+    for(var i=0;i<=10;i++){var c2=bbColor(1000+(29000)*i/10); grad.addColorStop(i/10,'rgb('+c2[0]+','+c2[1]+','+c2[2]+')');}
+    cx.fillStyle=grad; cx.fillRect(gx0,gy,gx1-gx0,16);
+    cx.strokeStyle='rgba(128,128,128,.5)'; cx.lineWidth=1; cx.strokeRect(gx0,gy,gx1-gx0,16);
+    var px=gx0+(gx1-gx0)*Math.min(1,(T-1000)/29000);
+    cx.fillStyle='#fff'; cx.strokeStyle='#333'; cx.lineWidth=2;
+    cx.beginPath(); cx.moveTo(px,gy-7); cx.lineTo(px-6,gy-16); cx.lineTo(px+6,gy-16); cx.closePath();
+    cx.fill(); cx.stroke();
+    cx.font='11px Pretendard, sans-serif'; cx.textAlign='left'; cx.fillStyle='rgba(127,127,127,.9)';
+    cx.fillText('1,000 K', gx0, gy+30); cx.textAlign='right'; cx.fillText('30,000 K', gx1, gy+30);
+    /* 별 이름표 */
+    cx.textAlign='center'; cx.font='10.5px Pretendard, sans-serif';
+    for(var s=0;s<STARS.length;s++){
+      var sx=gx0+(gx1-gx0)*Math.min(1,(STARS[s][0]-1000)/29000);
+      cx.strokeStyle='rgba(128,128,128,.45)'; cx.lineWidth=1;
+      cx.beginPath(); cx.moveTo(sx,gy+16); cx.lineTo(sx,gy+22); cx.stroke();
+      cx.fillStyle='rgba(127,127,127,.95)';
+      if(s%2===0) cx.fillText(STARS[s][1], sx, gy+34);
+    }
+    /* 쇠막대 */
+    var bx=W*0.2, bw2=W*0.6, by=76, bh=54;
+    cx.shadowColor=col; cx.shadowBlur=Math.min(60,(T-1000)/380);
+    cx.fillStyle=col; cx.fillRect(bx,by,bw2,bh);
+    cx.shadowBlur=0;
+    cx.fillStyle='rgba(90,90,90,.9)'; cx.fillRect(bx-52,by+12,54,30);   /* 집게 */
+    cx.strokeStyle='rgba(128,128,128,.6)'; cx.lineWidth=2; cx.strokeRect(bx,by,bw2,bh);
+    /* 불꽃 */
+    if(burning||power>4){
+      for(var f=0;f<7;f++){
+        var fx=bx+20+Math.random()*(bw2-40), fy=by+bh+6+Math.random()*14;
+        cx.fillStyle='rgba(255,'+(120+Math.random()*90|0)+',40,.6)';
+        cx.beginPath(); cx.arc(fx,fy,3+Math.random()*5,0,6.2832); cx.fill();
+      }
+    }
+    cx.font='13px Pretendard, sans-serif'; cx.textAlign='center'; cx.fillStyle='rgba(127,127,127,.95)';
+    cx.fillText('같은 쇠막대 — 달라진 것은 온도뿐입니다', W/2, by-14);
+    /* readout */
+    document.getElementById('htT').innerHTML=Math.round(T/10)*10+'<small> K</small>';
+    var cn=colorName(T);
+    var ce=document.getElementById('htC'); ce.textContent=cn; ce.style.color=col;
+    document.getElementById('htP').innerHTML=Math.round(power)+'<small> %</small>';
+    var near=STARS[0], bd=1e9;
+    for(var q=0;q<STARS.length;q++){var dd=Math.abs(STARS[q][0]-T); if(dd<bd){bd=dd; near=STARS[q];}}
+    document.getElementById('htS').textContent = bd<1800 ? near[1] : '—';
+    var m=document.getElementById('htMsg');
+    if(T>18000){ m.className='xsim-msg hit';
+      m.innerHTML='🔵 <b>청색!</b> 별 중에서도 가장 뜨거운 무리입니다. "빨간 게 제일 뜨겁다"는 일상 감각과 <b>정반대</b>죠?'; }
+    else if(T>9000){ m.className='xsim-msg hit';
+      m.innerHTML='⚪ <b>백색~청백색</b>에 도달했습니다. 시리우스·리겔이 이 근처예요. 더 달굴 수 있을까요?'; }
+    else if(T>5000){ m.className='xsim-msg';
+      m.innerHTML='🟡 <b>노란빛</b> — 우리 <b>태양</b>이 이 근처(약 5800 K)입니다. 계속 달궈 보세요!'; }
+    else { m.className='xsim-msg';
+      m.innerHTML='🔥 버튼을 누르거나 <b>스페이스바를 연타</b>해 쇠를 달궈 보세요. 빨리 누를수록 빨리 뜨거워집니다!'; }
+    requestAnimationFrame(render);
+  }
+  addEventListener('resize',fit);
+  cv.__tick=render;
+  fit(); requestAnimationFrame(render);
+})();
+</script>
+
+
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">📘 해 보기 — 별자리 속 별들의 색 조사하기</h3>
@@ -1448,7 +1629,7 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
     /* ② 헤더 아이콘 라벨 */
     '.hbtn{position:relative}'+
     '.hb-wrap{display:flex;flex-direction:column;align-items:center;gap:2px}'+
-    '.hb-lab{font-size:9.5px;line-height:1.1;opacity:.75;white-space:nowrap;letter-spacing:-.02em}'+
+    '.hb-lab{font-size:10px;line-height:1.15;white-space:nowrap;letter-spacing:-.02em;font-weight:700;'+'color:#fff;background:rgba(28,22,14,.62);padding:2px 7px;border-radius:7px;'+'text-shadow:0 1px 2px rgba(0,0,0,.65);backdrop-filter:blur(2px)}'+
     '@media(max-width:520px){.hb-lab{display:none}}';
   document.head.appendChild(st);
 
@@ -1485,7 +1666,7 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
     var l = document.createElement('span'); l.className = 'hb-lab'; l.textContent = text;
     w.appendChild(l);
   }
-  var hubBtn = document.querySelector('a.hbtn[href$="허브.html"], a.hbtn[href$="index.html"], a.hbtn[href*="허브"], a.hbtn[href*="index"]');
+  var hubBtn = document.querySelector('a.hbtn[href$="index.html"], a.hbtn[href*="허브"], a.hbtn[href*="index"]');
   label(hubBtn, '허브페이지로 이동');
   label(document.getElementById('tmodeBtn'), '교사용 on/off');
 })();
