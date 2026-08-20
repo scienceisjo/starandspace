@@ -970,7 +970,7 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
     <div id="gameBody">
       <div style="text-align:center;padding:30px 10px">
         <p class="lead" style="margin:0 auto 18px">준비됐나요? 5문항입니다.</p>
-        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center"><button class="btn primary" id="gameStart">📗 필수 문제</button><button class="btn" id="gameStartAdv">📚 심화 문제</button><button class="btn ghost" id="gameStartFull">🔥 도전 모드 — 전체 ❤️×3</button></div><p style="margin:9px 0 0;font-size:13px;line-height:1.7;color:var(--ink-mute,#96805c)">수업 시간에는 <b>필수</b>부터 — 필수·심화는 하트가 닳지 않아요. 도전 모드는 전체 문항을 하트 3개로 달립니다.</p>
       </div>
     </div>
     <div class="earned" id="medals">
@@ -1170,7 +1170,7 @@ const GAME_QS=[
 
  {id:"s1",difficulty:"상",
  intent:"[실력탄탄급 · 창작] 등급 2종+색을 한 표에 결합해 '보이는 밝기/실제 밝기/온도/거리'를 모두 다른 기준으로 판정하는 종합형 — 단원 통합 사고를 요구.",
- svg:"<svg viewBox=\"0 0 560 190\" role=\"img\" aria-label=\"표. 별 P는 겉보기 등급 0.5, 절대 등급 -5.0, 청백색. 별 Q는 겉보기 등급 0.0, 절대 등급 -1.0, 적색.\"><rect x=\"60\" y=\"18\" width=\"440\" height=\"156\" rx=\"10\" fill=\"#101c38\" stroke=\"#33406e\" stroke-width=\"1.6\"/><line x1=\"60\" y1=\"57\" x2=\"500\" y2=\"57\" stroke=\"#33406e\" stroke-width=\"1.6\"/><line x1=\"60\" y1=\"96\" x2=\"500\" y2=\"96\" stroke=\"#33406e\" stroke-width=\"1.2\"/><line x1=\"60\" y1=\"135\" x2=\"500\" y2=\"135\" stroke=\"#33406e\" stroke-width=\"1.2\"/><line x1=\"230\" y1=\"18\" x2=\"230\" y2=\"174\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"365\" y1=\"18\" x2=\"365\" y2=\"174\" stroke=\"#33406e\" stroke-width=\"1.2\"/><text x=\"145\" y=\"43\" text-anchor=\"middle\" fill=\"#9aa8cf\" font-size=\"14\" font-family=\"Pretendard, sans-serif\">별</text><text x=\"297\" y=\"43\" text-anchor=\"middle\" fill=\"#c6d2ee\" font-size=\"15\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">P</text><text x=\"432\" y=\"43\" text-anchor=\"middle\" fill=\"#c6d2ee\" font-size=\"15\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">Q</text><text x=\"145\" y=\"83\" text-anchor=\"middle\" fill=\"#9aa8cf\" font-size=\"13.5\" font-family=\"Pretendard, sans-serif\">겉보기 등급</text><text x=\"297\" y=\"83\" text-anchor=\"middle\" fill=\"#e8eeff\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">0.5</text><text x=\"432\" y=\"83\" text-anchor=\"middle\" fill=\"#e8eeff\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">0.0</text><text x=\"145\" y=\"122\" text-anchor=\"middle\" fill=\"#9aa8cf\" font-size=\"13.5\" font-family=\"Pretendard, sans-serif\">절대 등급</text><text x=\"297\" y=\"122\" text-anchor=\"middle\" fill=\"#e8eeff\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">&#8722;5.0</text><text x=\"432\" y=\"122\" text-anchor=\"middle\" fill=\"#e8eeff\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">&#8722;1.0</text><text x=\"145\" y=\"161\" text-anchor=\"middle\" fill=\"#9aa8cf\" font-size=\"13.5\" font-family=\"Pretendard, sans-serif\">색</text><text x=\"297\" y=\"161\" text-anchor=\"middle\" fill=\"#8fd0ff\" font-size=\"14.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">청백색</text><text x=\"432\" y=\"161\" text-anchor=\"middle\" fill=\"#ff9fbe\" font-size=\"14.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">적색</text></svg>",
+ svg:"<svg viewBox=\"0 0 560 190\" role=\"img\" aria-label=\"표. 별 P는 겉보기 등급 0.5, 절대 등급 -5.0, 청백색. 별 Q는 겉보기 등급 0.0, 절대 등급 -1.0, 적색.\"><rect x=\"60\" y=\"18\" width=\"440\" height=\"156\" rx=\"10\" fill=\"#f7f9fd\" stroke=\"#33406e\" stroke-width=\"1.6\"/><line x1=\"60\" y1=\"57\" x2=\"500\" y2=\"57\" stroke=\"#33406e\" stroke-width=\"1.6\"/><line x1=\"60\" y1=\"96\" x2=\"500\" y2=\"96\" stroke=\"#33406e\" stroke-width=\"1.2\"/><line x1=\"60\" y1=\"135\" x2=\"500\" y2=\"135\" stroke=\"#33406e\" stroke-width=\"1.2\"/><line x1=\"230\" y1=\"18\" x2=\"230\" y2=\"174\" stroke=\"#33406e\" stroke-width=\"1.4\"/><line x1=\"365\" y1=\"18\" x2=\"365\" y2=\"174\" stroke=\"#33406e\" stroke-width=\"1.2\"/><text x=\"145\" y=\"43\" text-anchor=\"middle\" fill=\"#4a5878\" font-size=\"14\" font-family=\"Pretendard, sans-serif\">별</text><text x=\"297\" y=\"43\" text-anchor=\"middle\" fill=\"#243154\" font-size=\"15\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">P</text><text x=\"432\" y=\"43\" text-anchor=\"middle\" fill=\"#243154\" font-size=\"15\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">Q</text><text x=\"145\" y=\"83\" text-anchor=\"middle\" fill=\"#4a5878\" font-size=\"13.5\" font-family=\"Pretendard, sans-serif\">겉보기 등급</text><text x=\"297\" y=\"83\" text-anchor=\"middle\" fill=\"#1d2947\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">0.5</text><text x=\"432\" y=\"83\" text-anchor=\"middle\" fill=\"#1d2947\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">0.0</text><text x=\"145\" y=\"122\" text-anchor=\"middle\" fill=\"#4a5878\" font-size=\"13.5\" font-family=\"Pretendard, sans-serif\">절대 등급</text><text x=\"297\" y=\"122\" text-anchor=\"middle\" fill=\"#1d2947\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">&#8722;5.0</text><text x=\"432\" y=\"122\" text-anchor=\"middle\" fill=\"#1d2947\" font-size=\"15\" font-family=\"Pretendard, sans-serif\">&#8722;1.0</text><text x=\"145\" y=\"161\" text-anchor=\"middle\" fill=\"#4a5878\" font-size=\"13.5\" font-family=\"Pretendard, sans-serif\">색</text><text x=\"297\" y=\"161\" text-anchor=\"middle\" fill=\"#2e6da3\" font-size=\"14.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">청백색</text><text x=\"432\" y=\"161\" text-anchor=\"middle\" fill=\"#b04a6e\" font-size=\"14.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">적색</text></svg>",
  stem:"표는 별 P와 Q의 등급과 색을 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 모두 고른 것은?",
  boxes:["우리 눈에는 Q가 P보다 밝게 보인다",
  "표면 온도는 P가 Q보다 높다",
@@ -1482,9 +1482,25 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
     const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');}
   function paint(){Object.keys(S.medals).forEach(k=>{const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');});}
   function hud(){$('#score').textContent=score;
-    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $('#qno').textContent=Math.min(i+1,(order.length||GAME_QS.length))+'/'+(order.length||GAME_QS.length);
     $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
-  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  let MODE='full';
+  /* 필수 = 난이도 '하' 전부 + '중'의 앞쪽 절반. 심화 = 나머지. */
+  function pickCore(){const core=[],mid=[];
+    GAME_QS.forEach((q,n)=>{const d=q.difficulty||'중';
+      if(d==='하')core.push(n);else if(d==='중')mid.push(n);});
+    mid.slice(0,Math.ceil(mid.length/2)).forEach(n=>core.push(n));
+    if(core.length<3)GAME_QS.forEach((q,n)=>{if(core.length<3&&core.indexOf(n)<0)core.push(n);});
+    return core.sort((a,b)=>a-b);}
+  function start(mode){MODE=(mode==='core'||mode==='adv')?mode:'full';i=0;score=0;
+    const core=pickCore();
+    if(MODE==='core')order=core.slice();
+    else if(MODE==='adv'){order=GAME_QS.map((_,n)=>n).filter(n=>core.indexOf(n)<0);
+      if(!order.length)order=GAME_QS.map((_,n)=>n);}
+    else order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);
+    lives=(MODE==='full')?3:Infinity;
+    const lv=$('#lives');if(lv)lv.style.display=(MODE==='full')?'':'none';
+    hud();next();}
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
@@ -1513,7 +1529,7 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
         if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
           if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
           fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;}
-        else{b.classList.add('wrong');A.wrong();lives--;
+        else{b.classList.add('wrong');A.wrong();if(MODE==='full')lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
         const bx=$('#bogiBox');
@@ -1527,17 +1543,20 @@ addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(
         hud();});
       cw.appendChild(b);});}
   function end(){
-    const perfect=score===GAME_QS.length*20;
+    const perfect=score===order.length*20;
     if(perfect)medal('perfect');
     if(score>(S.best||0)){S.best=score;save();}
     updateProgress();perfect?A.win():A.pop();
     body.innerHTML=`<div style="text-align:center;padding:26px 10px">
       <div style="font-size:44px">${perfect?'🏆':(lives>0?'🎉':'💪')}</div>
       <h3 class="card-t" style="margin:10px 0 6px">${perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?')}</h3>
-      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${GAME_QS.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
+      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${order.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
       <button class="btn primary" id="gameAgain">다시 풀기</button></div>`;
-    $('#gameAgain').addEventListener('click',start);}
-  $('#gameStart').addEventListener('click',start);paint();
+    $('#gameAgain').addEventListener('click',function(){start(MODE);});}
+  $('#gameStart').addEventListener('click',function(){start('core');});
+  var _ba=$('#gameStartAdv');if(_ba)_ba.addEventListener('click',function(){start('adv');});
+  var _bf=$('#gameStartFull');if(_bf)_bf.addEventListener('click',function(){start('full');});
+  paint();
 })();
 
 /* 별 배경 */

@@ -1010,7 +1010,7 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
     <div id="gameBody">
       <div style="text-align:center;padding:30px 10px">
         <p class="lead" style="margin:0 auto 18px">준비됐나요? 5문항입니다.</p>
-        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center"><button class="btn primary" id="gameStart">📗 필수 문제</button><button class="btn" id="gameStartAdv">📚 심화 문제</button><button class="btn ghost" id="gameStartFull">🔥 도전 모드 — 전체 ❤️×3</button></div><p style="margin:9px 0 0;font-size:13px;line-height:1.7;color:var(--ink-mute,#96805c)">수업 시간에는 <b>필수</b>부터 — 필수·심화는 하트가 닳지 않아요. 도전 모드는 전체 문항을 하트 3개로 달립니다.</p>
       </div>
     </div>
     <div class="earned" id="medals">
@@ -1215,7 +1215,7 @@ const GAME_QS=[
  {id:"q5",
    difficulty:"상",
    intent:"광원이 내보내는 빛의 양과 거리라는 두 요인을 동시에 다루어, 조건이 다른 두 상황의 밝기를 비교하고 '밝기만으로는 거리를 알 수 없다'는 한계까지 추론할 수 있는지 평가한다.",
-   svg:"<svg viewBox=\"0 0 560 258\" role=\"img\" aria-label=\"위쪽에는 크고 밝은 전구 X와 그로부터 20센티미터 떨어진 지점 P가, 아래쪽에는 작은 전구 Y와 그로부터 10센티미터 떨어진 지점 Q가 그려져 있다. 두 거리는 실제 비율대로 그려져 있다. 오른쪽 상자에는 전구 X가 내보내는 빛의 양은 전구 Y의 4배라고 적혀 있다.\"><defs><radialGradient id=\"q5glow\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".5\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><circle cx=\"95\" cy=\"72\" r=\"28\" fill=\"url(#q5glow)\"/><circle cx=\"95\" cy=\"72\" r=\"11\" fill=\"#ffd166\"/><text x=\"95\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">전구 X</text><rect x=\"320\" y=\"50\" width=\"10\" height=\"44\" fill=\"#6ef0e6\" fill-opacity=\".3\" stroke=\"#6ef0e6\" stroke-width=\"1.8\"/><text x=\"325\" y=\"40\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">P</text><line x1=\"95\" y1=\"116\" x2=\"325\" y2=\"116\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"95\" y1=\"110\" x2=\"95\" y2=\"122\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"325\" y1=\"110\" x2=\"325\" y2=\"122\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"210\" y=\"138\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">20 cm</text><circle cx=\"95\" cy=\"190\" r=\"16\" fill=\"url(#q5glow)\" opacity=\".55\"/><circle cx=\"95\" cy=\"190\" r=\"6\" fill=\"#ffd166\"/><text x=\"95\" y=\"160\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">전구 Y</text><rect x=\"205\" y=\"170\" width=\"10\" height=\"40\" fill=\"#6ef0e6\" fill-opacity=\".3\" stroke=\"#6ef0e6\" stroke-width=\"1.8\"/><text x=\"210\" y=\"160\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">Q</text><line x1=\"95\" y1=\"226\" x2=\"210\" y2=\"226\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"95\" y1=\"220\" x2=\"95\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"210\" y1=\"220\" x2=\"210\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"152\" y=\"246\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">10 cm</text><rect x=\"350\" y=\"150\" width=\"195\" height=\"86\" rx=\"12\" fill=\"#ffffff\" fill-opacity=\".04\" stroke=\"#33406e\" stroke-width=\"1.6\"/><text x=\"364\" y=\"176\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">전구 X가 내보내는</text><text x=\"364\" y=\"198\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">빛의 양은 전구 Y의</text><text x=\"364\" y=\"220\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffd166\">4배이다.</text></svg>",
+   svg:"<svg viewBox=\"0 0 560 258\" role=\"img\" aria-label=\"위쪽에는 크고 밝은 전구 X와 그로부터 20센티미터 떨어진 지점 P가, 아래쪽에는 작은 전구 Y와 그로부터 10센티미터 떨어진 지점 Q가 그려져 있다. 두 거리는 실제 비율대로 그려져 있다. 오른쪽 상자에는 전구 X가 내보내는 빛의 양은 전구 Y의 4배라고 적혀 있다.\"><rect x=\"6\" y=\"6\" width=\"548\" height=\"246\" rx=\"12\" fill=\"#101c38\" stroke=\"#33406e\" stroke-width=\"1.6\"/><defs><radialGradient id=\"q5glow\"><stop offset=\"0\" stop-color=\"#ffd166\" stop-opacity=\".5\"/><stop offset=\"1\" stop-color=\"#ffd166\" stop-opacity=\"0\"/></radialGradient></defs><circle cx=\"95\" cy=\"72\" r=\"28\" fill=\"url(#q5glow)\"/><circle cx=\"95\" cy=\"72\" r=\"11\" fill=\"#ffd166\"/><text x=\"95\" y=\"32\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">전구 X</text><rect x=\"320\" y=\"50\" width=\"10\" height=\"44\" fill=\"#6ef0e6\" fill-opacity=\".3\" stroke=\"#6ef0e6\" stroke-width=\"1.8\"/><text x=\"325\" y=\"40\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">P</text><line x1=\"95\" y1=\"116\" x2=\"325\" y2=\"116\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"95\" y1=\"110\" x2=\"95\" y2=\"122\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"325\" y1=\"110\" x2=\"325\" y2=\"122\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"210\" y=\"138\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">20 cm</text><circle cx=\"95\" cy=\"190\" r=\"16\" fill=\"url(#q5glow)\" opacity=\".55\"/><circle cx=\"95\" cy=\"190\" r=\"6\" fill=\"#ffd166\"/><text x=\"95\" y=\"160\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#ffd166\">전구 Y</text><rect x=\"205\" y=\"170\" width=\"10\" height=\"40\" fill=\"#6ef0e6\" fill-opacity=\".3\" stroke=\"#6ef0e6\" stroke-width=\"1.8\"/><text x=\"210\" y=\"160\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#6ef0e6\">Q</text><line x1=\"95\" y1=\"226\" x2=\"210\" y2=\"226\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"6 5\"/><line x1=\"95\" y1=\"220\" x2=\"95\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><line x1=\"210\" y1=\"220\" x2=\"210\" y2=\"232\" stroke=\"#5b6a99\" stroke-width=\"1.6\"/><text x=\"152\" y=\"246\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">10 cm</text><rect x=\"350\" y=\"150\" width=\"195\" height=\"86\" rx=\"12\" fill=\"#ffffff\" fill-opacity=\".04\" stroke=\"#33406e\" stroke-width=\"1.6\"/><text x=\"364\" y=\"176\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">전구 X가 내보내는</text><text x=\"364\" y=\"198\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" fill=\"#c6d2ee\">빛의 양은 전구 Y의</text><text x=\"364\" y=\"220\" font-family=\"Pretendard, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#ffd166\">4배이다.</text></svg>",
    stem:"그림은 두 전구 <b>X</b>, <b>Y</b>와 각 전구로부터 떨어진 지점 <b>P</b>, <b>Q</b>를 나타낸 것이다. 전구 X가 내보내는 빛의 양은 전구 Y의 <b>4배</b>이다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은? (단, 주변은 충분히 어둡고 다른 빛의 영향은 없다.)",
    boxes:["P에서 잰 빛의 세기는 Q에서 잰 빛의 세기와 같다.", "지점 P를 전구 X로부터 40 cm 떨어진 곳으로 옮기면, 그곳에서 잰 빛의 세기는 지금의 1/4배가 된다.", "어떤 지점에서 잰 빛의 세기만 알면, 그 지점에서 광원까지의 거리를 언제나 알아낼 수 있다."],
    boxVerdicts:[true, true, false],
@@ -1601,9 +1601,25 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
     const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');}
   function paint(){Object.keys(S.medals).forEach(k=>{const el=$(`.medal[data-medal="${k}"]`);if(el)el.classList.add('got');});}
   function hud(){$('#score').textContent=score;
-    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $('#qno').textContent=Math.min(i+1,(order.length||GAME_QS.length))+'/'+(order.length||GAME_QS.length);
     $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
-  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  let MODE='full';
+  /* 필수 = 난이도 '하' 전부 + '중'의 앞쪽 절반. 심화 = 나머지. */
+  function pickCore(){const core=[],mid=[];
+    GAME_QS.forEach((q,n)=>{const d=q.difficulty||'중';
+      if(d==='하')core.push(n);else if(d==='중')mid.push(n);});
+    mid.slice(0,Math.ceil(mid.length/2)).forEach(n=>core.push(n));
+    if(core.length<3)GAME_QS.forEach((q,n)=>{if(core.length<3&&core.indexOf(n)<0)core.push(n);});
+    return core.sort((a,b)=>a-b);}
+  function start(mode){MODE=(mode==='core'||mode==='adv')?mode:'full';i=0;score=0;
+    const core=pickCore();
+    if(MODE==='core')order=core.slice();
+    else if(MODE==='adv'){order=GAME_QS.map((_,n)=>n).filter(n=>core.indexOf(n)<0);
+      if(!order.length)order=GAME_QS.map((_,n)=>n);}
+    else order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);
+    lives=(MODE==='full')?3:Infinity;
+    const lv=$('#lives');if(lv)lv.style.display=(MODE==='full')?'':'none';
+    hud();next();}
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
@@ -1632,7 +1648,7 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
         if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
           if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
           fb.className='mq-fb show ok';fb.innerHTML=`<b>정답!</b> ${q.why}`;}
-        else{b.classList.add('wrong');A.wrong();lives--;
+        else{b.classList.add('wrong');A.wrong();if(MODE==='full')lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML=`<b>아쉬워요.</b> ${q.why}`;}
         const bx=$('#bogiBox');
@@ -1648,18 +1664,21 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
     });
   }
   function end(){
-    const perfect=score===GAME_QS.length*20;
+    const perfect=score===order.length*20;
     if(perfect)medal('perfect');
     if(score>(S.best||0)){S.best=score;save();}
     updateProgress();perfect?A.win():A.pop();
     body.innerHTML=`<div style="text-align:center;padding:26px 10px">
       <div style="font-size:44px">${perfect?'🏆':(lives>0?'🎉':'💪')}</div>
       <h3 class="card-t" style="margin:10px 0 6px">${perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?')}</h3>
-      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${GAME_QS.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
+      <p class="lead" style="margin:0 auto 16px">점수 <b class="k">${score}</b> / ${order.length*20} · 최고 기록 <b class="k">${S.best||0}</b></p>
       <button class="btn primary" id="gameAgain">다시 풀기</button></div>`;
-    $('#gameAgain').addEventListener('click',start);
+    $('#gameAgain').addEventListener('click',function(){start(MODE);});
   }
-  $('#gameStart').addEventListener('click',start);paint();
+  $('#gameStart').addEventListener('click',function(){start('core');});
+  var _ba=$('#gameStartAdv');if(_ba)_ba.addEventListener('click',function(){start('adv');});
+  var _bf=$('#gameStartFull');if(_bf)_bf.addEventListener('click',function(){start('full');});
+  paint();
 })();
 
 /* 별 배경 */

@@ -1173,7 +1173,7 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
     <div id="gameBody">
       <div style="text-align:center;padding:32px 10px">
         <p class="lead" style="margin:0 auto 20px">준비됐나요? 그림·표 해석 5문항입니다.</p>
-        <button class="btn primary" id="gameStart">확인 문제 시작</button>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center"><button class="btn primary" id="gameStart">📗 필수 문제</button><button class="btn" id="gameStartAdv">📚 심화 문제</button><button class="btn ghost" id="gameStartFull">🔥 도전 모드 — 전체 ❤️×3</button></div><p style="margin:9px 0 0;font-size:13px;line-height:1.7;color:var(--ink-mute,#96805c)">수업 시간에는 <b>필수</b>부터 — 필수·심화는 하트가 닳지 않아요. 도전 모드는 전체 문항을 하트 3개로 달립니다.</p>
       </div>
     </div>
     <div class="earned" id="medals">
@@ -1514,7 +1514,7 @@ const GAME_QS=[
 
  {id:"o3",difficulty:"중",
  intent:"(창작) 6개월 간격 시차 그림에서 연주 시차(절반)·거리(역수)·가까운 별과의 대소를 단계적으로 계산하는 보기형.",
- svg:"<svg viewBox=\"0 0 560 210\" role=\"img\" aria-label=\"태양을 중심으로 공전하는 지구가 6개월 간격으로 E1과 E2에 있을 때 별 S를 관측한 그림. 두 관측 방향 사이의 각도인 시차는 0.2초이다.\"><rect x=\"10\" y=\"10\" width=\"540\" height=\"190\" rx=\"12\" fill=\"#101c38\" stroke=\"#33406e\" stroke-width=\"1.6\"/><ellipse cx=\"120\" cy=\"105\" rx=\"48\" ry=\"66\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/><circle cx=\"120\" cy=\"105\" r=\"11\" fill=\"#ffd166\"/><text x=\"120\" y=\"133\" text-anchor=\"middle\" fill=\"#9aa8cf\" font-size=\"12.5\" font-family=\"Pretendard, sans-serif\">태양</text><circle cx=\"120\" cy=\"39\" r=\"7\" fill=\"#8fd0ff\"/><text x=\"96\" y=\"36\" text-anchor=\"middle\" fill=\"#c6d2ee\" font-size=\"13.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">E&#8321;</text><circle cx=\"120\" cy=\"171\" r=\"7\" fill=\"#8fd0ff\"/><text x=\"96\" y=\"178\" text-anchor=\"middle\" fill=\"#c6d2ee\" font-size=\"13.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">E&#8322;</text><line x1=\"120\" y1=\"39\" x2=\"430\" y2=\"105\" stroke=\"#7fc6e8\" stroke-width=\"1.6\"/><line x1=\"120\" y1=\"171\" x2=\"430\" y2=\"105\" stroke=\"#7fc6e8\" stroke-width=\"1.6\"/><path d=\"M430 105 L392 97 A40 40 0 0 0 392 113 Z\" fill=\"#6ef0e6\" opacity=\"0.25\"/><text x=\"372\" y=\"110\" text-anchor=\"end\" fill=\"#6ef0e6\" font-size=\"14\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">0.2&#8243;</text><path d=\"M430 93 L433 101 L441 102 L435 107 L437 115 L430 111 L423 115 L425 107 L419 102 L427 101 Z\" fill=\"#ffd166\"/><text x=\"455\" y=\"110\" fill=\"#c6d2ee\" font-size=\"14\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">별 S</text></svg>",
+ svg:"<svg viewBox=\"0 0 650 210\" role=\"img\" aria-label=\"태양을 중심으로 공전하는 지구가 6개월 간격으로 E1과 E2에 있을 때 별 S를 관측한 그림. 두 관측 방향 사이의 각도인 시차는 0.2초이다.\"><rect x=\"10\" y=\"10\" width=\"630\" height=\"190\" rx=\"12\" fill=\"#101c38\" stroke=\"#33406e\" stroke-width=\"1.6\"/><ellipse cx=\"120\" cy=\"105\" rx=\"48\" ry=\"66\" fill=\"none\" stroke=\"#5b6a99\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/><circle cx=\"120\" cy=\"105\" r=\"11\" fill=\"#ffd166\"/><text x=\"120\" y=\"133\" text-anchor=\"middle\" fill=\"#9aa8cf\" font-size=\"12.5\" font-family=\"Pretendard, sans-serif\">태양</text><circle cx=\"120\" cy=\"39\" r=\"7\" fill=\"#8fd0ff\"/><text x=\"96\" y=\"36\" text-anchor=\"middle\" fill=\"#c6d2ee\" font-size=\"13.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">E&#8321;</text><circle cx=\"120\" cy=\"171\" r=\"7\" fill=\"#8fd0ff\"/><text x=\"96\" y=\"178\" text-anchor=\"middle\" fill=\"#c6d2ee\" font-size=\"13.5\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">E&#8322;</text><line x1=\"120\" y1=\"39\" x2=\"430\" y2=\"105\" stroke=\"#7fc6e8\" stroke-width=\"1.6\"/><line x1=\"120\" y1=\"171\" x2=\"430\" y2=\"105\" stroke=\"#7fc6e8\" stroke-width=\"1.6\"/><path d=\"M430 105 L392 97 A40 40 0 0 0 392 113 Z\" fill=\"#6ef0e6\" opacity=\"0.25\"/><text x=\"372\" y=\"110\" text-anchor=\"end\" fill=\"#6ef0e6\" font-size=\"14\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">0.2&#8243;</text><path d=\"M430 93 L433 101 L441 102 L435 107 L437 115 L430 111 L423 115 L425 107 L419 102 L427 101 Z\" fill=\"#ffd166\"/><text x=\"455\" y=\"110\" fill=\"#c6d2ee\" font-size=\"14\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">별 S</text><line x1=\"430\" y1=\"105\" x2=\"596\" y2=\"141\" stroke=\"#7fc6e8\" stroke-width=\"1.3\" stroke-dasharray=\"4 4\" opacity=\".75\"/><line x1=\"430\" y1=\"105\" x2=\"596\" y2=\"69\"  stroke=\"#7fc6e8\" stroke-width=\"1.3\" stroke-dasharray=\"4 4\" opacity=\".75\"/><line x1=\"612\" y1=\"34\" x2=\"612\" y2=\"182\" stroke=\"#33406e\" stroke-width=\"1.2\" stroke-dasharray=\"2 4\"/><circle cx=\"612\" cy=\"44\" r=\"1.6\" fill=\"#5b6a99\"/><circle cx=\"612\" cy=\"96\" r=\"1.6\" fill=\"#5b6a99\"/><circle cx=\"612\" cy=\"118\" r=\"1.6\" fill=\"#5b6a99\"/><circle cx=\"612\" cy=\"166\" r=\"1.6\" fill=\"#5b6a99\"/><circle cx=\"612\" cy=\"141\" r=\"4\" fill=\"#ffd166\"/><circle cx=\"612\" cy=\"69\"  r=\"4\" fill=\"#ffd166\"/><text x=\"604\" y=\"146\" text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#9aa8cf\">E₁에서 본 위치</text><text x=\"604\" y=\"64\"  text-anchor=\"end\" font-family=\"Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#9aa8cf\">E₂에서 본 위치</text><text x=\"612\" y=\"26\" text-anchor=\"middle\" font-family=\"Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#9aa8cf\">배경별</text></svg>",
  stem:"그림은 지구가 E&#8321;에 있을 때 별 S를 관측한 후, 6개월 뒤 E&#8322;에서 다시 관측한 모습이다. 두 관측 방향 사이의 각도는 0.2&Prime;였다. 이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 모두 고른 것은?",
  boxes:["별 S의 연주 시차는 0.1&Prime;이다",
  "지구에서 별 S까지의 거리는 10 pc이다",
@@ -1546,7 +1546,7 @@ const GAME_QS=[
  {id:"q4",
    difficulty:"상",
    intent:"연주 시차 값에서 거리를 역산하고, 공전 궤도 반지름이 절반인 행성으로 조건을 바꾸었을 때 시차의 변화와 측정 가능한 거리 한계까지 추론할 수 있는지 확인한다.",
-   svg:"<svg viewBox=\"0 0 560 260\" role=\"img\" aria-label=\"태양을 중심으로 한 두 개의 동심 궤도 모식도. 바깥의 파란 점선 원은 반지름 1AU인 지구의 공전 궤도로 정반대편 두 지점 P와 Q가 표시되어 있고, 안쪽의 연두색 실선 원은 반지름 0.5AU인 가상 행성 X의 궤도로 정반대편 두 점이 표시되어 있다. 네 지점에서 오른쪽 멀리 있는 같은 별 A를 향해 시선이 그려져 있으며, 안쪽 궤도에서 온 두 시선이 이루는 각이 더 좁다.\"><defs><radialGradient id=\"q4sun\"><stop offset=\"0\" stop-color=\"#fff6d8\"/><stop offset=\".55\" stop-color=\"#ffd166\"/><stop offset=\"1\" stop-color=\"#ffd16600\"/></radialGradient></defs><circle cx=\"150\" cy=\"118\" r=\"76\" fill=\"none\" stroke=\"#7fc6e8\" stroke-width=\"1.8\" stroke-dasharray=\"6 6\"/><circle cx=\"150\" cy=\"118\" r=\"38\" fill=\"none\" stroke=\"#a9f07a\" stroke-width=\"2.2\"/><line x1=\"150\" y1=\"42\" x2=\"150\" y2=\"194\" stroke=\"#4b5f8f\" stroke-width=\"1.2\"/><line x1=\"150\" y1=\"42\" x2=\"462\" y2=\"118\" stroke=\"#e8eeff\" stroke-width=\"1.6\"/><line x1=\"150\" y1=\"194\" x2=\"462\" y2=\"118\" stroke=\"#e8eeff\" stroke-width=\"1.6\"/><line x1=\"150\" y1=\"80\" x2=\"462\" y2=\"118\" stroke=\"#a9f07a\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\"/><line x1=\"150\" y1=\"156\" x2=\"462\" y2=\"118\" stroke=\"#a9f07a\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\"/><line x1=\"66\" y1=\"118\" x2=\"112\" y2=\"118\" stroke=\"#ffd166\" stroke-width=\"1.2\"/><text x=\"60\" y=\"123\" text-anchor=\"end\" fill=\"#ffd166\" font-size=\"14\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">태양</text><circle cx=\"150\" cy=\"118\" r=\"24\" fill=\"url(#q4sun)\"/><circle cx=\"150\" cy=\"118\" r=\"11\" fill=\"#ffd166\"/><circle cx=\"150\" cy=\"42\" r=\"8\" fill=\"#8fd0ff\"/><text x=\"150\" y=\"27\" text-anchor=\"middle\" fill=\"#cfeaff\" font-size=\"17\" font-weight=\"800\" font-family=\"Pretendard, sans-serif\">P</text><circle cx=\"150\" cy=\"194\" r=\"8\" fill=\"#8fd0ff\"/><text x=\"150\" y=\"215\" text-anchor=\"middle\" fill=\"#cfeaff\" font-size=\"17\" font-weight=\"800\" font-family=\"Pretendard, sans-serif\">Q</text><circle cx=\"150\" cy=\"80\" r=\"6\" fill=\"#a9f07a\"/><circle cx=\"150\" cy=\"156\" r=\"6\" fill=\"#a9f07a\"/><g transform=\"translate(462,118)\"><path d=\"M0 -14 L4 -4.3 L14.5 -4.3 L6.2 2 L9.3 12 L0 6 L-9.3 12 L-6.2 2 L-14.5 -4.3 L-4 -4.3 Z\" fill=\"#ff9fbe\"/></g><text x=\"462\" y=\"94\" text-anchor=\"middle\" fill=\"#ff9fbe\" font-size=\"17\" font-weight=\"800\" font-family=\"Pretendard, sans-serif\">별 A</text><line x1=\"286\" y1=\"224\" x2=\"320\" y2=\"224\" stroke=\"#7fc6e8\" stroke-width=\"1.8\" stroke-dasharray=\"6 6\"/><text x=\"330\" y=\"229\" fill=\"#c6d2ee\" font-size=\"14\" font-family=\"Pretendard, sans-serif\">지구의 궤도 (1 AU)</text><line x1=\"286\" y1=\"248\" x2=\"320\" y2=\"248\" stroke=\"#a9f07a\" stroke-width=\"2.2\"/><text x=\"330\" y=\"253\" fill=\"#c6d2ee\" font-size=\"14\" font-family=\"Pretendard, sans-serif\">행성 X의 궤도 (0.5 AU)</text></svg>",
+   svg:"<svg viewBox=\"0 0 560 260\" role=\"img\" aria-label=\"태양을 중심으로 한 두 개의 동심 궤도 모식도. 바깥의 파란 점선 원은 반지름 1AU인 지구의 공전 궤도로 정반대편 두 지점 P와 Q가 표시되어 있고, 안쪽의 연두색 실선 원은 반지름 0.5AU인 가상 행성 X의 궤도로 정반대편 두 점이 표시되어 있다. 네 지점에서 오른쪽 멀리 있는 같은 별 A를 향해 시선이 그려져 있으며, 안쪽 궤도에서 온 두 시선이 이루는 각이 더 좁다.\"><defs><radialGradient id=\"q4sun\"><stop offset=\"0\" stop-color=\"#fff6d8\"/><stop offset=\".55\" stop-color=\"#ffd166\"/><stop offset=\"1\" stop-color=\"#ffd16600\"/></radialGradient></defs><circle cx=\"150\" cy=\"118\" r=\"76\" fill=\"none\" stroke=\"#7fc6e8\" stroke-width=\"1.8\" stroke-dasharray=\"6 6\"/><circle cx=\"150\" cy=\"118\" r=\"38\" fill=\"none\" stroke=\"#a9f07a\" stroke-width=\"2.2\"/><line x1=\"150\" y1=\"42\" x2=\"150\" y2=\"194\" stroke=\"#4b5f8f\" stroke-width=\"1.2\"/><line x1=\"150\" y1=\"42\" x2=\"462\" y2=\"118\" stroke=\"#e8eeff\" stroke-width=\"1.6\"/><line x1=\"150\" y1=\"194\" x2=\"462\" y2=\"118\" stroke=\"#e8eeff\" stroke-width=\"1.6\"/><line x1=\"150\" y1=\"80\" x2=\"462\" y2=\"118\" stroke=\"#a9f07a\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\"/><line x1=\"150\" y1=\"156\" x2=\"462\" y2=\"118\" stroke=\"#a9f07a\" stroke-width=\"1.4\" stroke-dasharray=\"5 4\"/><line x1=\"66\" y1=\"118\" x2=\"112\" y2=\"118\" stroke=\"#ffd166\" stroke-width=\"1.2\"/><text x=\"60\" y=\"123\" text-anchor=\"end\" fill=\"#ffd166\" font-size=\"14\" font-weight=\"700\" font-family=\"Pretendard, sans-serif\">태양</text><circle cx=\"150\" cy=\"118\" r=\"24\" fill=\"url(#q4sun)\"/><circle cx=\"150\" cy=\"118\" r=\"11\" fill=\"#ffd166\"/><circle cx=\"150\" cy=\"42\" r=\"8\" fill=\"#8fd0ff\"/><text x=\"150\" y=\"27\" text-anchor=\"middle\" fill=\"#cfeaff\" font-size=\"17\" font-weight=\"800\" font-family=\"Pretendard, sans-serif\">P</text><circle cx=\"150\" cy=\"194\" r=\"8\" fill=\"#8fd0ff\"/><text x=\"150\" y=\"215\" text-anchor=\"middle\" fill=\"#cfeaff\" font-size=\"17\" font-weight=\"800\" font-family=\"Pretendard, sans-serif\">Q</text><circle cx=\"150\" cy=\"80\" r=\"6\" fill=\"#a9f07a\"/><circle cx=\"150\" cy=\"156\" r=\"6\" fill=\"#a9f07a\"/><g transform=\"translate(462,118)\"><path d=\"M0 -14 L4 -4.3 L14.5 -4.3 L6.2 2 L9.3 12 L0 6 L-9.3 12 L-6.2 2 L-14.5 -4.3 L-4 -4.3 Z\" fill=\"#ff9fbe\"/></g><text x=\"462\" y=\"94\" text-anchor=\"middle\" fill=\"#ff9fbe\" font-size=\"17\" font-weight=\"800\" font-family=\"Pretendard, sans-serif\">별 A</text><line x1=\"286\" y1=\"224\" x2=\"320\" y2=\"224\" stroke=\"#7fc6e8\" stroke-width=\"1.8\" stroke-dasharray=\"6 6\"/><text x=\"330\" y=\"229\" fill=\"#c6d2ee\" font-size=\"14\" font-family=\"Pretendard, sans-serif\">지구의 공전 궤도 (1 AU)</text><line x1=\"286\" y1=\"248\" x2=\"320\" y2=\"248\" stroke=\"#a9f07a\" stroke-width=\"2.2\"/><text x=\"330\" y=\"253\" fill=\"#c6d2ee\" font-size=\"14\" font-family=\"Pretendard, sans-serif\">행성 X의 공전 궤도 (0.5 AU)</text></svg>",
    stem:"그림은 태양을 중심으로 공전하는 지구와, 지구의 공전 궤도 반지름의 <b>절반</b>인 궤도를 도는 가상의 행성 X를 나타낸 것이다. 지구의 두 지점 P, Q에서 관측하여 구한 별 A의 연주 시차는 0.1″이었다. 이에 대한 설명으로 옳은 것만을 〈보기〉에서 있는 대로 고른 것은? (단, 별 A까지의 실제 거리는 변하지 않는다.)",
    boxes:["별 A까지의 거리는 10 pc이다.", "행성 X의 궤도에서 정반대편에 있는 두 지점에서 관측하면, 별 A의 시차는 지구에서 측정한 값의 절반이 된다.", "행성 X에서 이 방법을 쓰면 지구에서보다 더 멀리 있는 별까지 거리를 구할 수 있다."],
    boxVerdicts:[true, true, false],
@@ -2066,9 +2066,25 @@ $('#brandBtn').addEventListener('click',openCover);
     const el=$('.medal[data-medal="'+k+'"]');if(el)el.classList.add('got');}
   function paint(){Object.keys(S.medals).forEach(k=>{const el=$('.medal[data-medal="'+k+'"]');if(el)el.classList.add('got');});}
   function hud(){$('#score').textContent=score;
-    $('#qno').textContent=Math.min(i+1,GAME_QS.length)+'/'+GAME_QS.length;
+    $('#qno').textContent=Math.min(i+1,(order.length||GAME_QS.length))+'/'+(order.length||GAME_QS.length);
     $$('#lives .h').forEach((h,n)=>h.classList.toggle('gone',n>=lives));}
-  function start(){i=0;score=0;lives=3;order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);hud();next();}
+  let MODE='full';
+  /* 필수 = 난이도 '하' 전부 + '중'의 앞쪽 절반. 심화 = 나머지. */
+  function pickCore(){const core=[],mid=[];
+    GAME_QS.forEach((q,n)=>{const d=q.difficulty||'중';
+      if(d==='하')core.push(n);else if(d==='중')mid.push(n);});
+    mid.slice(0,Math.ceil(mid.length/2)).forEach(n=>core.push(n));
+    if(core.length<3)GAME_QS.forEach((q,n)=>{if(core.length<3&&core.indexOf(n)<0)core.push(n);});
+    return core.sort((a,b)=>a-b);}
+  function start(mode){MODE=(mode==='core'||mode==='adv')?mode:'full';i=0;score=0;
+    const core=pickCore();
+    if(MODE==='core')order=core.slice();
+    else if(MODE==='adv'){order=GAME_QS.map((_,n)=>n).filter(n=>core.indexOf(n)<0);
+      if(!order.length)order=GAME_QS.map((_,n)=>n);}
+    else order=GAME_QS.map((_,n)=>n).sort(()=>Math.random()-.5);
+    lives=(MODE==='full')?3:Infinity;
+    const lv=$('#lives');if(lv)lv.style.display=(MODE==='full')?'':'none';
+    hud();next();}
   function next(){
     if(i>=order.length||lives<=0)return end();
     hud();const q=GAME_QS[order[i]];
@@ -2097,7 +2113,7 @@ $('#brandBtn').addEventListener('click',openCover);
         if(c.ok){b.classList.add('correct');A.correct();score+=20;medal('first');
           if(i+1>=Math.ceil(GAME_QS.length/2))medal('half');
           fb.className='mq-fb show ok';fb.innerHTML='<b>정답!</b> '+q.why;}
-        else{b.classList.add('wrong');A.wrong();lives--;
+        else{b.classList.add('wrong');A.wrong();if(MODE==='full')lives--;
           $$('.mq-opt',cw).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
           fb.className='mq-fb show no';fb.innerHTML='<b>아쉬워요.</b> '+q.why;}
         const bx=$('#bogiBox');
@@ -2111,17 +2127,20 @@ $('#brandBtn').addEventListener('click',openCover);
         hud();});
       cw.appendChild(b);});}
   function end(){
-    const perfect=score===GAME_QS.length*20;
+    const perfect=score===order.length*20;
     if(perfect)medal('perfect');
     if(score>(S.best||0)){S.best=score;save();}
     updateProgress();perfect?A.win():A.pop();
     body.innerHTML='<div style="text-align:center;padding:28px 10px">'
       +'<div style="font-size:46px">'+(perfect?'🏆':(lives>0?'🎉':'💪'))+'</div>'
       +'<h3 class="card-t" style="margin:10px 0 8px">'+(perfect?'전부 정답! 완벽해요':(lives>0?'끝까지 풀었어요':'다시 한 번 풀어 볼까요?'))+'</h3>'
-      +'<p class="lead" style="margin:0 auto 18px">점수 <b class="k">'+score+'</b> / '+(GAME_QS.length*20)+' · 최고 기록 <b class="k">'+(S.best||0)+'</b></p>'
+      +'<p class="lead" style="margin:0 auto 18px">점수 <b class="k">'+score+'</b> / '+(order.length*20)+' · 최고 기록 <b class="k">'+(S.best||0)+'</b></p>'
       +'<button class="btn primary" id="gameAgain">다시 풀기</button></div>';
-    $('#gameAgain').addEventListener('click',start);}
-  $('#gameStart').addEventListener('click',start);paint();
+    $('#gameAgain').addEventListener('click',function(){start(MODE);});}
+  $('#gameStart').addEventListener('click',function(){start('core');});
+  var _ba=$('#gameStartAdv');if(_ba)_ba.addEventListener('click',function(){start('adv');});
+  var _bf=$('#gameStartFull');if(_bf)_bf.addEventListener('click',function(){start('full');});
+  paint();
 })();
 
 /* 별 배경 */
