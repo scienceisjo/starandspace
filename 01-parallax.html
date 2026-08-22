@@ -1335,6 +1335,88 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
       <a class="btn ghost" href="index.html">🌌 단원 허브로</a>
     </div>
   </div>
+
+  <!-- ─────────── 별도 움직이잖아요? ─────────── -->
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🤔 "근데 <span class="t2">별</span>도 움직이잖아요?"</h3>
+    <p class="lead" style="font-size:17px;margin-top:10px">
+      맞습니다. 수업에서 "별은 가만히 있는데 지구가 움직여서 그렇게 보인다"고 한 건
+      <b>연주 시차 하나만 떼어 설명하려고 잠시 별을 세워 둔 것</b>이에요.
+      실제로는 별도, 태양도, 우리은하도 쉬지 않고 움직입니다.</p>
+    <p class="lead" style="font-size:17px;margin-top:10px">
+      그래서 별 하나를 여러 해 관측하면 위치 변화에 <b>두 가지가 겹쳐서</b> 나타납니다.</p>
+    <div class="dtable-wrap">
+      <table class="dtable">
+        <tr><th>무엇이</th><th>왜 생기나</th><th>어떤 모양으로 보이나</th></tr>
+        <tr><td><b class="t3">연주 시차</b></td><td>지구가 태양 주위를 공전해서</td>
+            <td><b>딱 1년 주기</b>로 갔다가 제자리로 돌아옴</td></tr>
+        <tr><td><b class="t4">고유 운동</b></td><td>별과 태양이 서로 다르게 우주를 가로질러서</td>
+            <td><b>해마다 한 방향</b>으로 쌓이며 흘러감</td></tr>
+      </table>
+    </div>
+    <p class="help">모양이 이렇게 다르기 때문에 천문학자들은 여러 해치 관측을 모아
+      <b>되돌아오는 흔들림(연주 시차)</b>과 <b>흘러가는 이동(고유 운동)</b>을 갈라낼 수 있습니다.
+      가이아 망원경도 별마다 위치·연주 시차·고유 운동을 <b>한꺼번에</b> 구합니다.</p>
+  </div>
+
+  <div class="simlab" style="margin-top:18px">
+    <h3>🌠 고유 운동 vs 연주 시차 — 겹쳐 보기</h3>
+    <p class="lead" style="font-size:16.5px">밤하늘에서 <b class="t2">별 A</b>의 위치를 6년 동안 지켜봅니다.
+      배경 별은 아주 멀어서 움직이지 않는다고 봅니다. 아래 세 가지를 번갈아 켜 보세요.</p>
+
+    <div class="simgrid">
+      <div class="simstage"><canvas id="pmcv" height="330"></canvas></div>
+      <div class="simctl">
+        <h4>조작판</h4>
+        <div class="btn-row" style="margin-bottom:12px">
+          <button class="btn primary sm" id="pmM0" data-mode="0">연주 시차만</button>
+          <button class="btn ghost sm" id="pmM1" data-mode="1">고유 운동만</button>
+          <button class="btn ghost sm" id="pmM2" data-mode="2">둘 다</button>
+        </div>
+        <div class="ctl">
+          <label>① 연주 시차 <span class="val" id="vPp">0.4&Prime;</span></label>
+          <input type="range" id="pmP" min="1" max="8" step="1" value="4">
+        </div>
+        <div class="ctl">
+          <label>② 고유 운동 <span class="val" id="vPm">0.6&Prime;/년</span></label>
+          <input type="range" id="pmMu" min="0" max="20" step="1" value="6">
+        </div>
+        <div class="btn-row">
+          <button class="btn primary sm" id="pmPlay">&#9654; 6년 재생</button>
+          <button class="btn ghost sm" id="pmReset">처음으로</button>
+        </div>
+        <div class="readout">
+          <div class="r"><div class="lab2">경과</div><div class="v" id="rYr">0년 0개월</div></div>
+          <div class="r"><div class="lab2">6년간 흘러간 거리</div><div class="v" id="rDrift">3.6&Prime;</div></div>
+        </div>
+        <p class="help" id="pmHint">연주 시차만 켜면 별이 <b>제자리로 돌아옵니다</b>. 1년이면 원위치예요.</p>
+      </div>
+    </div>
+
+    <p class="honest"><span class="ic">📌</span>각도는 눈에 보이게 <b>크게 과장</b>했습니다.
+      실제 연주 시차는 아무리 커도 <b>0.77&Prime;</b>(프록시마 켄타우리)를 넘지 않아요.
+      가로·세로 눈금 한 칸이 <b>1&Prime;</b>입니다.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">📐 헷갈리기 쉬운 세 가지</h3>
+    <div class="note" style="margin-top:12px"><span class="ic">1️⃣</span><div>
+      <b>6개월 동안 지구가 움직인 거리는 약 3억 km</b>(2 AU)입니다. 그런데
+      <b class="t3">연주 시차는 이때 벌어진 각의 절반</b>이에요.
+      기준이 되는 자의 길이가 <b>태양~지구 1 AU</b>이기 때문입니다.</div></div>
+    <div class="note" style="margin-top:10px"><span class="ic">2️⃣</span><div>
+      태양도 우리은하를 약 2억 년에 한 바퀴 돕니다. 이 움직임이 <b>사라지는 것은 아니고</b>,
+      별과 태양의 상대적인 이동으로 <b class="t4">고유 운동 쪽에 합쳐져</b> 나타납니다.
+      둘을 가르는 기준은 크기가 아니라 <b>1년마다 되돌아오느냐</b>예요.</div></div>
+    <div class="note" style="margin-top:10px"><span class="ic">3️⃣</span><div>
+      고유 운동이 연주 시차보다 <b>훨씬 큰 별도 있습니다.</b>
+      <b class="k">바너드 별</b>은 연주 시차가 0.55&Prime;인데 고유 운동은 <b>1년에 10.3&Prime;</b>—
+      약 19배예요. 180년이면 보름달 지름만큼 하늘을 가로지릅니다.</div></div>
+    <p class="help">덧붙이면, 고유 운동은 <b>하늘을 가로지르는 방향</b>의 움직임만 보여 줍니다.
+      별이 우리 쪽으로 곧장 다가오거나 멀어지는 운동은 위치가 바뀌지 않아 보이지 않아요.
+      그건 별빛의 스펙트럼으로 따로 잽니다.</p>
+  </div>
+
 </section>
 
 </main>
@@ -2455,6 +2537,125 @@ $('#brandBtn').addEventListener('click',openCover);
 
   build();
 })();
+
+/* ── 고유 운동 vs 연주 시차 시뮬레이터 (더 알아보기) ── */
+(function(){
+  const cv=$('#pmcv'); if(!cv) return;
+  const sP=$('#pmP'), sMu=$('#pmMu');
+  let ctx,w,h,raf=null,playing=false,t=0,mode=0;
+  const SPAN=6;                                  // 관측 기간(년)
+  const P=()=>+sP.value/10;                      // 연주 시차 (")
+  const MU=()=>+sMu.value/10;                    // 고유 운동 ("/년)
+  const BG=Array.from({length:30},(_,i)=>({x:((i*167)%100)/100,y:((i*73)%100)/100,r:.7+((i*53)%30)/40}));
+  function syncS(el){el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');}
+
+  /* 별 A의 겉보기 위치(단위 ") — 평균 위치를 원점으로 */
+  function pos(tt){
+    const drift = (mode===0) ? 0 : MU()*tt;
+    const par   = (mode===1) ? 0 : P();
+    return {x: drift + par*Math.cos(TAU*tt), y: par*Math.sin(TAU*tt)*0.45};
+  }
+  function scale(){
+    const span = (mode===0?0:MU()*SPAN) + (mode===1?0:P()*2) + 1.2;
+    return Math.min((w-96)/Math.max(span,1.2), 46);
+  }
+  function draw(){
+    if(!ctx)return;
+    ctx.clearRect(0,0,w,h);
+    const px=scale();
+    const ox=54+(mode===0?(w-96)/2:0), oy=h/2;
+    /* 배경 별 */
+    BG.forEach(function(b,i){
+      ctx.globalAlpha=.30+((i*29)%40)/110;
+      ctx.fillStyle='#dfe7f5';
+      ctx.beginPath();ctx.arc(28+b.x*(w-56),26+b.y*(h-80),b.r,0,TAU);ctx.fill();});
+    ctx.globalAlpha=1;
+    /* 1" 눈금 격자 */
+    ctx.strokeStyle=C.linesoft||'#2b3550';ctx.lineWidth=1;ctx.globalAlpha=.5;
+    for(let k=-14;k<=14;k++){
+      const gx=ox+k*px; if(gx<12||gx>w-12)continue;
+      ctx.beginPath();ctx.moveTo(gx,oy-72);ctx.lineTo(gx,oy+72);ctx.stroke();}
+    ctx.globalAlpha=1;
+    /* 평균 위치 표시 */
+    ctx.setLineDash([4,4]);ctx.strokeStyle=C.c3;ctx.globalAlpha=.55;
+    ctx.beginPath();ctx.moveTo(12,oy);ctx.lineTo(w-12,oy);ctx.stroke();
+    ctx.setLineDash([]);ctx.globalAlpha=1;
+    /* 지나온 자취 */
+    ctx.beginPath();
+    for(let k=0;k<=Math.round(t*72);k++){
+      const q=pos(k/72), X=ox+q.x*px, Y=oy-q.y*px;
+      k?ctx.lineTo(X,Y):ctx.moveTo(X,Y);}
+    ctx.strokeStyle=(mode===1?C.c4:C.c2);ctx.lineWidth=2.4;ctx.globalAlpha=.9;ctx.stroke();ctx.globalAlpha=1;
+    /* 현재 별 */
+    const p=pos(t), X=ox+p.x*px, Y=oy-p.y*px;
+    const g=ctx.createRadialGradient(X,Y,0,X,Y,15);
+    g.addColorStop(0,'#fff');g.addColorStop(.4,C.c2);g.addColorStop(1,'rgba(110,240,230,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(X,Y,15,0,TAU);ctx.fill();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(X,Y,4.5,0,TAU);ctx.fill();
+    /* 라벨 */
+    ctx.font='700 13px Pretendard, sans-serif';ctx.fillStyle=C.inkdim;ctx.textAlign='left';
+    ctx.fillText('밤하늘에서 본 별 A의 위치',16,20);
+    ctx.textAlign='center';ctx.fillStyle=C.c2;ctx.fillText('별 A',X,Y-22);
+    /* 눈금 안내 */
+    ctx.font='600 12px Pretendard, sans-serif';ctx.fillStyle=C.inkmute;ctx.textAlign='right';
+    ctx.fillText('세로 점선 한 칸 = 1″',w-14,h-14);
+  }
+  const HINT=['연주 시차만 켜면 별이 <b>제자리로 돌아옵니다</b>. 1년이면 원위치예요.',
+    '고유 운동만 켜면 <b>한 방향으로 곧게</b> 흘러갑니다. 되돌아오지 않아요.',
+    '둘을 겹치면 <b>물결처럼 구불거리며 흘러갑니다</b>. 이 구불거림에서 1년 주기만 골라내면 연주 시차예요.'];
+  function ensureFit(){
+    const cw=cv.clientWidth||cv.parentElement.clientWidth||320;
+    const want=Math.round(cw*Math.min(devicePixelRatio||1,2.5));
+    if(cv.width!==want){({ctx,w,h}=fit(cv));}
+  }
+  function upd(){
+    ensureFit();
+    $('#vPp').innerHTML=P().toFixed(1)+'&Prime;';
+    $('#vPm').innerHTML=MU().toFixed(1)+'&Prime;/년';
+    $('#rDrift').innerHTML=(mode===0?0:MU()*SPAN).toFixed(1)+'&Prime;';
+    const mo=Math.round(t*12);
+    $('#rYr').textContent=Math.floor(mo/12)+'년 '+(mo%12)+'개월';
+    $('#pmHint').innerHTML=HINT[mode];
+    syncS(sP);syncS(sMu);draw();
+  }
+  function setMode(m){
+    mode=m;
+    [0,1,2].forEach(function(k){
+      const b=$('#pmM'+k);
+      b.className='btn '+(k===m?'primary':'ghost')+' sm';});
+    upd();
+  }
+  function stop(){playing=false;if(raf)cancelAnimationFrame(raf);raf=null;$('#pmPlay').innerHTML='▶ 6년 재생';}
+  function step(){
+    if(!playing)return;
+    t+=1/240; if(t>=SPAN){t=SPAN;upd();stop();return;}
+    upd();raf=requestAnimationFrame(step);
+  }
+  $('#pmPlay').addEventListener('click',function(){
+    if(playing){stop();return;}
+    if(t>=SPAN)t=0;
+    playing=true;this.innerHTML='⏸ 멈춤';
+    if(reduceMotion){t=SPAN;upd();stop();return;}
+    raf=requestAnimationFrame(step);});
+  $('#pmReset').addEventListener('click',function(){stop();t=0;upd();});
+  [0,1,2].forEach(function(k){$('#pmM'+k).addEventListener('click',function(){stop();t=0;setMode(k);});});
+  [sP,sMu].forEach(function(el){el.addEventListener('input',upd);});
+  function resize(){upd();}
+  addEventListener('resize',resize);
+  /* 표지에서 본문으로 넘어가거나 탭이 열려 폭이 처음 생길 때 다시 맞춘다 */
+  if(window.ResizeObserver){
+    new ResizeObserver(resize).observe(cv.parentElement);
+  }
+  /* 표지 시작·단계 이동 버튼을 누르면 폭이 새로 생기므로 다음 프레임에 다시 잰다 */
+  document.addEventListener('click',function(ev){
+    if(ev.target.closest('[data-go],#coverGo'))
+      [0,80,300].forEach(function(d){setTimeout(resize,d);});   // 레이아웃이 자리 잡을 때까지
+  },true);
+  if(document.readyState==='loading')addEventListener('DOMContentLoaded',resize);
+  else resize();
+  setMode(0);
+})();
+
 </script>
 </body>
 </html>
