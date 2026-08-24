@@ -958,23 +958,23 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
 </section>
 
 <!-- ══════════ 15. 닫는 장면 ══════════ -->
-<section class="scene wide" data-t="다시, 그 뿌연 띠">
-  <div class="txt" style="max-width:none; text-align:center; margin:0 auto">
+<section class="scene" data-t="다시, 그 뿌연 띠">
+  <div class="txt">
     <span class="kicker">회수 · 오늘의 이야기</span>
     <h2 class="title" style="font-size:clamp(26px,4.4vw,66px)">다시 하늘을 보면,<br>이제 <span class="k1">뿌연 띠</span>가 아니다</h2>
-    <p class="lead" style="max-width:56ch;margin:0 auto 18px">우유가 뿌려진 자국이라 불렸던 그것은 <b>수천억 개의 별</b>이었고, 그 별들은 <b>납작한 원반</b>을 이루고 있었고, 그 원반은 우주에 떠 있는 <b>수천억 개 은하 중 하나</b>였습니다.</p>
-    <div class="cards three" style="margin-top:6px">
+    <p class="lead" style="margin:0 0 14px">우유가 뿌려진 자국이라 불렸던 그것은 <b>수천억 개의 별</b>이었고, 그 별들이 이룬 <b>납작한 원반</b>은 <b>수천억 개 은하 중 하나</b>였습니다.</p>
+    <div class="cards three" style="margin-top:10px">
       <div class="card"><span class="badge a">1610</span><h4>갈릴레오</h4><p>뿌연 띠 = 별의 무리</p></div>
-      <div class="card"><span class="badge b">1920s</span><h4>대토론과 허블</h4><p>우리은하 밖에 다른 은하가 있다</p></div>
-      <div class="card"><span class="badge g">지금</span><h4>제임스 웹 · 암흑은하</h4><p>아직 풀리지 않은 문제들</p></div>
+      <div class="card"><span class="badge b">1920s</span><h4>대토론과 허블</h4><p>우리은하 밖에도 은하가 있다</p></div>
+      <div class="card"><span class="badge g">지금</span><h4>제임스 웹 · 암흑은하</h4><p>아직 풀리지 않은 문제</p></div>
     </div>
-    <p class="lead" style="max-width:52ch;margin:22px auto 0">400년 동안 사람들이 한 일은 결국 하나입니다.<br><b class="k5">“저게 뭘까?”</b> 하고 계속 물어본 것.</p>
-    <p class="sub" style="max-width:52ch;margin:12px auto 0">그리고 그 질문은 <b>아직 끝나지 않았습니다.</b></p>
-    <p class="srcnote" style="max-width:52ch;margin-left:auto;margin-right:auto">
+    <p class="lead" style="margin:16px 0 0">400년 동안 사람들이 한 일은 하나입니다. <b class="k5">“저게 뭘까?”</b> 하고 계속 물어본 것.</p>
+    <p class="sub" style="margin:8px 0 0">그리고 그 질문은 <b>아직 끝나지 않았습니다.</b></p>
+    <p class="srcnote" style="margin-top:14px">
       이 이야기는 유튜브 <b>〈취미는 과학〉 은하 편</b>의 내용을 바탕으로 만들었습니다.<br>
-      출연: 서울대학교 천문학자 <b>황호성</b> 교수 · 더 자세한 이야기는 원본 영상에서 확인하세요.
+      출연: 서울대학교 천문학자 <b>황호성</b> 교수
     </p>
-    <div class="script" style="text-align:left; max-width:60ch; margin-left:auto; margin-right:auto">
+    <div class="script" >
       <b>마무리</b> — 1장면의 밤하늘을 다시 띄우고 끝내면 수미상관이 완성됩니다(제목 클릭 → 표지).
       <ul>
         <li>“오늘 배운 것 중 <b>가장 놀라웠던 것</b> 하나씩” 발표시키기</li>
@@ -983,6 +983,14 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
       </ul>
       <span class="ask">마무리 발문: “너희가 어른이 됐을 때 풀려 있을 문제는 뭘까?”</span>
     </div>
+  </div>
+  <div class="viz showfig">
+    <figure class="fig figover" data-fig="g10"
+            data-alt="같은 언덕에서 다시 올려다본 밤하늘 — 이제 뿌연 띠가 무수한 별과 은하로 보인다">
+      <div class="figwrap"></div>
+      <div class="slot">🖼️ <b>img/gs-10.png</b> — 다시, 그 하늘</div>
+    </figure>
+    <div class="vizcap">같은 언덕, 같은 하늘. 달라진 것은 <b>우리가 아는 것</b>뿐입니다.</div>
   </div>
 </section>
 
@@ -1641,7 +1649,8 @@ var FIGS={
   g6:'img/gs-06.png',
   g7:'img/gs-07.png',
   g8:'img/gs-08.png',
-  g9:'img/gs-09.png'
+  g9:'img/gs-09.png',
+  g10:'img/gs-10.png'
 };
 function sizeFig(fg){
   var im=fg.querySelector('img');
