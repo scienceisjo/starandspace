@@ -37,7 +37,10 @@ body{
   color:var(--ink); font-family:Pretendard,system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
   overflow:hidden; -webkit-tap-highlight-color:transparent;
 }
-#sky{position:fixed; inset:0; z-index:0; display:block}
+/* 별하늘 캔버스 자체에도 어두운 배경을 깔아 둔다 —
+   컨테이너가 body 배경을 무시하는 환경에서도 흰 바탕이 비치지 않게 */
+#sky{position:fixed; inset:0; z-index:0; display:block;
+  background:radial-gradient(120% 90% at 50% 0%, #0d1030 0%, #05060f 60%, #02030a 100%)}
 
 /* ── 상단 바 ───────────────────────────── */
 .topbar{
@@ -79,12 +82,12 @@ body{
 }
 .scene.wide{grid-template-columns:minmax(0,1fr)}
 /* ── 장면 전환 — 넘긴 방향으로 밀려 들어온다 ── */
-.scene.on{display:grid; animation:sceneIn .54s cubic-bezier(.22,.9,.28,1) forwards}
+.scene.on{display:grid; opacity:1; animation:sceneIn .54s cubic-bezier(.22,.9,.28,1) forwards}
 body.back .scene.on{animation-name:sceneInBack}
 @keyframes sceneIn{from{opacity:0; transform:translateX(52px)} to{opacity:1; transform:none}}
 @keyframes sceneInBack{from{opacity:0; transform:translateX(-52px)} to{opacity:1; transform:none}}
 /* 본문은 위에서 한 줄씩 차례로 내려앉는다 */
-.scene.on .txt>*{animation:riseIn .52s cubic-bezier(.22,.9,.28,1) backwards}
+.scene.on .txt>*{opacity:1; animation:riseIn .52s cubic-bezier(.22,.9,.28,1) backwards}
 .scene.on .txt>*:nth-child(1){animation-delay:.05s}
 .scene.on .txt>*:nth-child(2){animation-delay:.11s}
 .scene.on .txt>*:nth-child(3){animation-delay:.17s}
@@ -94,7 +97,7 @@ body.back .scene.on{animation-name:sceneInBack}
 .scene.on .txt>*:nth-child(7){animation-delay:.41s}
 .scene.on .txt>*:nth-child(n+8){animation-delay:.46s}
 @keyframes riseIn{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
-.scene.on .viz{animation:vizIn .62s cubic-bezier(.22,.9,.28,1) backwards; animation-delay:.10s}
+.scene.on .viz{opacity:1; animation:vizIn .62s cubic-bezier(.22,.9,.28,1) backwards; animation-delay:.10s}
 @keyframes vizIn{from{opacity:0; transform:scale(.955)} to{opacity:1; transform:none}}
 
 /* ── 강조 글자 — 개념어에 형광펜이 그어진다 ── */
