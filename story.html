@@ -33,14 +33,18 @@
 html,body{height:100%}
 html{background:#05060f}   /* body 배경이 그려지지 않는 환경에서도 바탕은 어둡게 */
 body{
-  margin:0; background:radial-gradient(120% 90% at 50% 0%, #0d1030 0%, var(--bg) 60%, #02030a 100%);
+  margin:0; background-color:#05060f;
+  background-image:radial-gradient(120% 90% at 50% 0%, #0d1030 0%, var(--bg) 60%, #02030a 100%);
   color:var(--ink); font-family:Pretendard,system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
   overflow:hidden; -webkit-tap-highlight-color:transparent;
 }
 /* 별하늘 캔버스 자체에도 어두운 배경을 깔아 둔다 —
    컨테이너가 body 배경을 무시하는 환경에서도 흰 바탕이 비치지 않게 */
+/* 어떤 환경에서도 흰 바탕이 비치지 않도록 하는 최후의 배경 층 */
+#bgfill{position:fixed; inset:0; z-index:-1; background-color:#05060f; forced-color-adjust:none}
 #sky{position:fixed; inset:0; z-index:0; display:block;
-  background:radial-gradient(120% 90% at 50% 0%, #0d1030 0%, #05060f 60%, #02030a 100%)}
+  background-color:#05060f; forced-color-adjust:none;
+  background-image:radial-gradient(120% 90% at 50% 0%, #0d1030 0%, #05060f 60%, #02030a 100%)}
 
 /* ── 상단 바 ───────────────────────────── */
 .topbar{
@@ -430,6 +434,7 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
 </head>
 <body>
 
+<div id="bgfill" aria-hidden="true"></div>
 <canvas id="sky" aria-hidden="true"></canvas>
 
 <header class="topbar">
@@ -1098,7 +1103,10 @@ function drawGalaxy(c,x,y,R,type,seed,rot,tint,alpha){
   function build(){ stars=[]; var n=Math.round((cv._w*cv._h)/7000);
     for(var i=0;i<Math.min(n,420);i++) stars.push({x:Math.random(),y:Math.random(),r:rnd(.4,1.5),p:Math.random()*7,s:rnd(.5,2)}); }
   function draw(c,w,h,t){
-    c.clearRect(0,0,w,h);
+    /* 지우지 말고 어두운 색으로 칠한다 — CSS 배경이 무력화돼도 캔버스 픽셀은 남는다 */
+    var bg=c.createRadialGradient(w*.5,0,0,w*.5,0,Math.max(w,h)*1.1);
+    bg.addColorStop(0,'#0d1030'); bg.addColorStop(.6,'#05060f'); bg.addColorStop(1,'#02030a');
+    c.fillStyle=bg; c.fillRect(0,0,w,h);
     if(!stars.length||stars._w!==w){ build(); stars._w=w; }
     for(var i=0;i<stars.length;i++){ var s=stars[i];
       var tw=RM?.7:(.55+.45*Math.sin(t*s.s+s.p));
