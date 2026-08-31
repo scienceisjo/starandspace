@@ -170,7 +170,9 @@ body.teacher .fig:not(.ok) .slot{display:block}
 .viz.showfig .hideonfig{display:none}
 .figover .figwrap{display:inline-block; max-width:100%; max-height:100%; border:0; border-radius:10px}
 .figover.ok .figwrap{display:inline-block}
-.figover img{display:block; max-width:100%; max-height:100%; width:auto; height:auto}
+/* 틀 크기는 JS 가 그림 비율대로 픽셀로 잡아 준다 — 말풍선 좌표의 기준이 되므로
+   CSS 로 어림잡으면 세로가 어긋난다(실제로 43px 어긋났었음) */
+.figover img{display:block; width:100%; height:100%; max-width:none; max-height:none}
 /* 세그먼트 */
 .seg{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
 .seg button{flex:1 1 auto; padding:9px 12px; border-radius:11px; border:1px solid var(--line);
@@ -720,7 +722,7 @@ h1{margin:.24em 0 .18em; font-size:clamp(32px,6.4vw,104px); line-height:1.03; le
     <figure class="fig figover" data-fig="g3" data-alt="운동장 안에서는 전체 모양이 안 보인다는 비유로 우리은하 관측을 설명하는 4컷 만화">
       <div class="figwrap">
         <b class="bub" style="--x:27.0%; --y:11.2%; --w:11.5%">여기선 운동장 전체 모양이 안 보이네.</b>
-        <b class="bub" style="--x:9.0%;  --y:59.6%; --w:10.6%">우리도 우리은하 안에 있어.</b>
+        <b class="bub sm" style="--x:9.0%;  --y:59.6%; --w:10.6%">우리도 우리은하 안에 있어.</b>
         <span class="cap2" style="--x:74.8%; --y:45.5%; --w:40%">위에서 내려다보면 전체 모양이 한눈에 보인다</span>
         <span class="cap2" style="--x:74.8%; --y:97%;   --w:44%">여러 방향의 관측 자료를 퍼즐처럼 맞춰 전체 모습을 그린다</span>
       </div>
@@ -1720,8 +1722,24 @@ var FIGS={
   g10:'img/gs-10.png'
 };
 function sizeFig(fg){
-  var im=fg.querySelector('img');
-  var w=im? im.getBoundingClientRect().width : fg.getBoundingClientRect().width;
+  var im=fg.querySelector('img'), wrap=fg.querySelector('.figwrap');
+  if(!im||!wrap) return;
+  /* 그림 칸을 덮는 만화는 틀 크기를 직접 계산한다.
+     .bub 의 --x/--y 가 이 틀을 기준으로 잡히므로, 틀과 그림이 한 픽셀도
+     어긋나면 안 된다. CSS 의 max-height 만으로는 세로가 맞지 않는다. */
+  if(fg.classList.contains('figover') && im.naturalWidth){
+    var cs=getComputedStyle(fg);
+    var availW=fg.clientWidth  - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var availH=fg.clientHeight - parseFloat(cs.paddingTop)  - parseFloat(cs.paddingBottom);
+    if(availW>0 && availH>0){
+      var ar=im.naturalWidth/im.naturalHeight;
+      var fw=Math.min(availW, availH*ar), fh=fw/ar;
+      if(Math.abs(parseFloat(wrap.style.width||0)-fw)>0.5){
+        wrap.style.width=fw.toFixed(1)+'px'; wrap.style.height=fh.toFixed(1)+'px';
+      }
+    }
+  }
+  var w=im.getBoundingClientRect().width || fg.getBoundingClientRect().width;
   if(!w) return;                       /* 장면이 숨어 있으면 폭이 0 — 나중에 다시 */
   fg.style.setProperty('--bfs',(w*0.0200).toFixed(2)+'px');
   fg.style.setProperty('--cfs',(w*0.0165).toFixed(2)+'px');
@@ -1751,18 +1769,50 @@ window.addEventListener('resize',function(){ $$('.fig.ok').forEach(sizeFig) });
 
 /* 말풍선을 누르면 대사를 읽어 준다 (전자칠판 수업용) */
 var TTS = ('speechSynthesis' in window);
-function speak(t){
-  if(!TTS || !t) return;
+var koVoice=null, curUtter=null;       /* curUtter: 참조를 잡아 두지 않으면 도중에 끊긴다 */
+function pickVoice(){
+  if(!TTS) return;
+  var vs=speechSynthesis.getVoices()||[];
+  koVoice = vs.filter(function(v){ return /^ko/i.test(v.lang||'') })[0] || null;
+}
+if(TTS){ pickVoice(); try{ speechSynthesis.addEventListener('voiceschanged',pickVoice) }catch(e){} }
+
+/* 소리가 안 나면 왜 안 나는지 화면에 알려 준다 — 조용히 실패하지 않게 */
+function ttsFail(el){
+  var wrap=el && el.closest('.figwrap'); if(!wrap) return;
+  var h=wrap.querySelector('.ttshint'); if(!h) return;
+  if(h._t) clearTimeout(h._t);
+  if(!h._orig) h._orig=h.textContent;
+  h.textContent='🔇 이 브라우저에서는 소리가 나오지 않습니다';
+  h._t=setTimeout(function(){ h.textContent=h._orig },2800);
+}
+function speak(t,el){
+  if(!TTS || !t){ ttsFail(el); return; }
   try{
     speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(t);
-    u.lang='ko-KR'; u.rate=0.97; u.pitch=1.05;
-    speechSynthesis.speak(u);
-  }catch(e){}
+    speechSynthesis.resume();          /* 멈춘 채로 남아 있으면 아무 소리도 안 난다 */
+    setTimeout(function(){             /* cancel 바로 뒤에 speak 하면 씹는 브라우저가 있다 */
+      var u=new SpeechSynthesisUtterance(t), started=false;
+      u.lang='ko-KR'; u.rate=0.97; u.pitch=1.05;
+      if(koVoice) u.voice=koVoice;
+      u.onstart=function(){ started=true; };
+      u.onerror=function(ev){
+        if(ev && (ev.error==='canceled'||ev.error==='interrupted')) return;
+        ttsFail(el);
+      };
+      curUtter=u;
+      speechSynthesis.speak(u);
+      /* onstart 는 엣지에서 늦게 오거나 아예 안 온다.
+         엔진 상태까지 같이 봐야 잘 말하는 중에 헛경고가 뜨지 않는다. */
+      setTimeout(function(){
+        if(!started && !speechSynthesis.speaking && !speechSynthesis.pending) ttsFail(el);
+      },1200);
+    },60);
+  }catch(e){ ttsFail(el); }
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('.bub,.cap2'); if(!b) return;
-  speak(b.textContent.trim());
+  speak(b.textContent.trim(), b);
   b.classList.remove('speaking'); void b.offsetWidth; b.classList.add('speaking');
 });
 
