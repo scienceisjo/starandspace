@@ -9,6 +9,10 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── 발표 크기(2026-09-03) ── 전자칠판·빔에서 글자가 작다는 피드백.
+   labbitory 발표모드(글자 ×1.28)에 맞춰 큰 화면에서만 전체를 키운다. 휴대폰은 그대로. */
+@media (min-width:1000px){html{zoom:1.35}}
+
 /* ═══════════════════════════════════════════════════════════════
    전자칠판 대응 — 글자를 키우고 배경 대비를 높인 판
    ink-dim / ink-mute 를 기존보다 밝게 올려 명암비를 확보했습니다.

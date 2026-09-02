@@ -9,6 +9,10 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── 발표 크기(2026-09-03) ── 전자칠판·빔에서 글자가 작다는 피드백.
+   labbitory 발표모드(글자 ×1.28)에 맞춰 큰 화면에서만 전체를 키운다. 휴대폰은 그대로. */
+@media (min-width:1000px){html{zoom:1.35}}
+
 :root{
   --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
   --line:#2b3763; --line-soft:#222c54;
