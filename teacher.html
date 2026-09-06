@@ -88,7 +88,7 @@ td.num,th.num{text-align:right;font-family:var(--mono)}
  </div>
 
  <div class="card" id="codesCard" hidden>
- <h2>🎟️ 참여 코드 <span class="r"><input id="newCustom" placeholder="원하는 코드 (예: 8314)" maxlength="12" style="width:160px;letter-spacing:.06em" autocomplete="off"><input id="newLabel" placeholder="이름표 (예: 2-3반)" maxlength="40" style="width:150px"><input id="newDays" type="number" value="120" min="1" max="365" style="width:84px" title="유효 기간(일)"><button class="btn cta sm" id="addCode">+ 이 코드로 발급</button><button class="btn ghost sm" id="newCode">🎲 무작위 코드</button></span></h2>
+ <h2>🎟️ 참여 코드 <span class="r"><input id="newCustom" placeholder="원하는 코드 (숫자·영문 3~12자)" maxlength="12" style="width:160px;letter-spacing:.06em" autocomplete="off"><input id="newLabel" placeholder="이름표 (예: 2-3반)" maxlength="40" style="width:150px"><input id="newDays" type="number" value="120" min="1" max="365" style="width:84px" title="유효 기간(일)"><button class="btn cta sm" id="addCode">+ 이 코드로 발급</button><button class="btn ghost sm" id="newCode">🎲 무작위 코드</button></span></h2>
  <div class="note">학생은 수업 페이지 오른쪽 위 🎯 버튼 → <b>학번·이름·참여 코드</b>를 넣습니다(숫자 코드가 치기 쉬워요). 한 기기에서 한 번 넣으면 다른 차시·다른 단원도 자동으로 이어집니다. <b>코드 없이 혼자 탐구</b>한 학생은 서버에 남지 않고 📄 PDF로 제출합니다. 코드를 끄면 그 코드로는 더 저장되지 않아요(있는 기록은 남습니다). 삭제하면 그 코드의 학생 기록도 함께 지워집니다.</div>
  <div class="tbl-wrap"><table id="codesTbl"><thead><tr><th>코드</th><th>이름표</th><th>상태</th><th class="num">기록 수</th><th>마지막 저장</th><th>기한</th><th></th></tr></thead><tbody></tbody></table></div>
  <div class="msg" id="codesMsg"></div>
@@ -228,7 +228,7 @@ function paintStudents(){
   const st=x.state||{};const tot=st.total||((st.checks||[]).length)||1;const qs=qaSummary(st);
   const tr=document.createElement('tr');
   tr.innerHTML='<td><span class="tag page u-'+pageUnit(x.page)+'">'+esc((unit?'':UNITS[pageUnit(x.page)]+' · ')+pageName(x.page))+'</span></td><td class="code" style="font-size:13px">'+esc(x.code)+'</td><td class="code" style="font-size:14px">'+esc(x.sid)+'</td><td><b>'+esc(x.name)+'</b></td>'
-   +'<td><div class="bar" title="'+x.progress+'/'+tot+'"><i style="width:'+Math.round(x.progress/tot*100)+'%"></i></div></td>'
+   +'<td><div class="bar" title="'+x.progress+'/'+tot+'"><i style="width:'+Math.round(x.progress/tot*100)+'%"></i></div>'+(Object.keys(st.skip||{}).length?'<span style="font-size:12px;color:var(--warn);font-weight:800" title="다 하지 않고 넘어간 단계 '+Object.keys(st.skip).length+'개">⚠️ 넘어감 '+Object.keys(st.skip).length+'</span>':'')+'</td>'
    +'<td class="num">'+x.pct+'</td><td>'+esc(x.tab||'—')+'</td><td class="num">'+subCount(st)+'</td>'
    +'<td class="num">'+(qs.n?qs.ok+'/'+qs.n:'—')+(st.best!=null&&st.best>0?' · '+st.best+'점':'')+'</td><td>'+fmtT(x.updated_at)+'</td>'
    +'<td class="row" style="justify-content:flex-end"><button class="btn sm" data-view="'+i+'">보기</button><button class="btn danger sm" data-del="'+x.token+'">삭제</button></td>';
@@ -281,6 +281,8 @@ function openDetail(x){
  $('#dTitle').textContent='🎒 '+x.sid+' '+x.name+' · '+UNITS[pageUnit(x.page)]+' '+pageName(x.page)+' · '+x.code+' · 진행 '+x.pct+'%';
  const checks=(st.checks||[]).map(c=>typeof c==='object'?c:{l:'항목',ok:c});
  let html='<h4>🎯 진행 항목</h4><div class="chk">'+checks.map(c=>'<span class="'+(c.ok?'on':'')+'">'+(c.ok?'✅':'⬜')+' '+esc(c.l)+'</span>').join('')+'</div>';
+ const sk=st.skip||{};const skKeys=Object.keys(sk);
+ if(skKeys.length)html+='<div class="q" style="border-color:#f7b928;background:#fff8dc"><div class="qt">⚠️ 다 하지 않고 넘어간 단계</div><div class="qa">'+esc(skKeys.map(t=>((sk[t]&&sk[t].name)||t)+(sk[t]&&sk[t].t?' ('+fmtT(sk[t].t)+')':'')).join(' · '))+'</div></div>';
  const texts=st.texts||{};let body='';
  Object.keys(texts).forEach(k=>{if(k==='conclTaFs'||k==='eqTa')return;const lab=(TEXT_LABEL[k]||k)+(sub[k]?' · 📮 제출됨':'');body+=q(lab,texts[k]);});
  if(!Object.keys(texts).length&&st.think){Object.keys(st.think).forEach(k=>{body+=q(TEXT_LABEL[k]||k,st.think[k]);});if(st.concl)body+=q('나의 결론',st.concl);if(st.essay)body+=q('사고력 답',st.essay);}

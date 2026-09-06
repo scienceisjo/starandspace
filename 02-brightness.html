@@ -648,6 +648,19 @@ body.teacher #dashLink{display:inline-flex}
 .rp-sign{margin-top:26px;display:flex;gap:28px;font-size:13px;flex-wrap:wrap}.rp-sign span{border-bottom:1px solid #1c1e21;min-width:150px;display:inline-block;height:20px;vertical-align:bottom;margin-left:8px}
 @media print{html{zoom:1!important}body.reporting>*:not(#reportView){display:none!important}#reportView{position:static;padding:0;background:#fff;overflow:visible}.rp-bar{display:none}.rp-paper{border:none;border-radius:0;padding:0;max-width:none}@page{size:A4;margin:14mm}}
 </style>
+
+<style id="solo-kit3">
+/* ── 🎯 v3: 모드 표시·전환 버튼, 부드러운 잠금, 아직 안 한 곳으로 ── */
+.mode-now{display:inline-flex;align-items:center;font-size:12.5px;font-weight:800;color:var(--m-steel,#5d6c7b);background:var(--m-soft,#f1f4f7);border:1px solid var(--m-hair-soft,#dee3e9);border-radius:100px;padding:0 10px;height:32px;white-space:nowrap}
+body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;border-color:#b7cff5}
+#modeBtn.mode-sw{width:auto;min-width:0;padding:0 13px;font-size:13px;font-weight:800;white-space:nowrap;letter-spacing:-.2px;border-radius:100px}
+.msn-goto{margin-left:auto}
+.goto-flash{animation:gotoflash 1.8s ease}
+@keyframes gotoflash{0%{box-shadow:0 0 0 4px rgba(0,100,224,.6)}100%{box-shadow:0 0 0 16px rgba(0,100,224,0)}}
+#skipGate .gbox{border:2px solid var(--m-warn,#f7b928)}
+#skipGate .gsub{font-size:15px;color:var(--m-ink,#1c1e21)}
+@media(max-width:640px){.mode-now{display:none}}
+</style>
 </head>
 <body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
@@ -691,7 +704,8 @@ body.teacher #dashLink{display:inline-flex}
     <div class="head-right">
       <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
       <button class="hbtn" id="tmodeBtn" title="교사 모드">🧑‍🏫</button>
- <button class="hbtn" id="modeBtn" title="수업 방식 — 🎯 혼자 탐구(학번·이름, 코드는 있으면) / 🧑‍🏫 강의식">🎯</button>
+ <span class="mode-now" id="modeNow">👀 지금: 강의식</span>
+ <button class="hbtn mode-sw" id="modeBtn" title="수업 방식 바꾸기">🎯 혼자 탐구로 전환</button>
  <button class="hbtn" id="pdfBtn" title="학습 결과를 PDF로 저장(인쇄)">📄</button>
  <span class="stu-badge" id="stuBadge"></span>
  <a class="hbtn" id="dashLink" href="teacher.html" target="_blank" rel="noopener" title="학생 기록 보기 (교사 페이지 · 관리 코드 필요)">📊</a>
@@ -1244,14 +1258,22 @@ body.teacher #dashLink{display:inline-flex}
  <input id="gSid" inputmode="numeric" maxlength="6" placeholder="20315" data-ime="off" autocomplete="off">
  <label for="gName">이름</label>
  <input id="gName" maxlength="12" placeholder="홍길동" autocomplete="off">
- <label for="gCode">참여 코드 <span style="font-weight:400;color:var(--m-steel,#5d6c7b)">(숫자 — 예: 8314 · 없으면 비워 두세요)</span></label>
- <input id="gCode" inputmode="numeric" maxlength="12" placeholder="8314" data-ime="off" autocomplete="off" style="letter-spacing:.08em">
+ <label for="gCode">참여 코드 <span style="font-weight:400;color:var(--m-steel,#5d6c7b)">(선생님이 알려 준 숫자 · 없으면 비워 두세요)</span></label>
+ <input id="gCode" inputmode="numeric" maxlength="12" placeholder="선생님이 알려 준 숫자" data-ime="off" autocomplete="off" style="letter-spacing:.08em">
  <div class="gmsg" id="gMsg"></div>
  <div class="gbtns"><button class="btn primary" id="gGo">코드로 시작 🎯</button><button class="btn" id="gLocal">🔓 코드 없이 혼자 탐구</button><button class="btn ghost" id="gCancel">취소</button></div>
  <div class="gnote">코드 없이 하면 서버에 기록되지 않아요. 다 마친 뒤 오른쪽 위 📄 버튼으로 <b>학습 결과를 PDF</b>로 저장해 선생님께 내세요. 참여 코드 없이 <b>🧑‍🏫 강의식</b>으로도 모든 내용을 볼 수 있어요.</div>
  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<div class="gate" id="skipGate" role="dialog" aria-modal="true" aria-labelledby="skipT">
+ <div class="gbox">
+ <h3 id="skipT">⚠️ 아직 다 하지 않았어요</h3>
+ <div class="gsub" id="skipMsg"></div>
+ <div class="gbtns"><button class="btn primary" id="skipBack">🙋 돌아가서 마저 하기</button><button class="btn ghost" id="skipGo">그래도 넘어가기</button></div>
+ <div class="gnote">넘어간 기록(어느 단계를 다 하지 않았는지)은 학습 결과 PDF와 선생님 화면에 함께 표시돼요.</div>
+ </div>
+</div>
 <div id="toast"></div>
 <footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
@@ -1449,7 +1471,7 @@ const A={ctx:null,
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
 
 let S=load()||{tab:'engage',visited:{},poe:null,meas:{},cloze:{},mini:{},essay:'',best:0,medals:{}};
-S.think=S.think||{};S.stu=S.stu||null;S.msn=S.msn||{};S.sub=S.sub||{};S.subTxt=S.subTxt||{};S.visited=S.visited||{};S.qa=S.qa||{};S.eq=S.eq||{};S.mini=S.mini||{};S.cloze=S.cloze||{};
+S.think=S.think||{};S.stu=S.stu||null;S.msn=S.msn||{};S.sub=S.sub||{};S.subTxt=S.subTxt||{};S.visited=S.visited||{};S.qa=S.qa||{};S.eq=S.eq||{};S.mini=S.mini||{};S.cloze=S.cloze||{};S.skip=S.skip||{};
 S.visited=S.visited||{};S.meas=S.meas||{};S.cloze=S.cloze||{};S.mini=S.mini||{};S.medals=S.medals||{};S.essay=S.essay||'';
 let CLOZE_TOTAL=0;
 function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
@@ -1499,7 +1521,7 @@ const soloOn=()=>document.body.classList.contains('solo');
 function msnItems(m,c){c=c||progChecks();return c.filter(x=>stageOf(x.label)===m.stage);}
 function msnDone(m,c){return msnItems(m,c).every(x=>x.ok);}
 function gateOf(id){
- if(!soloOn()||teacherOn()||id==='beyond')return null;
+ if(!soloOn()||id==='beyond')return null;
  const c=progChecks();
  if(id===SUM_TAB){const m=MSN.find(x=>!msnDone(x,c));return m?{sum:true,m:m}:null;}
  const k=MSN.findIndex(x=>x.tab===id);
@@ -1522,7 +1544,7 @@ function paintMissions(){
  if(!bn){const sl=$('#panel-'+m.tab+' .stepline');if(!sl)return;bn=document.createElement('div');bn.className='msn-banner';bn.id='msnb-'+m.tab;sl.insertAdjacentElement('afterend',bn);}
  const items=msnItems(m,c), ok=items.every(x=>x.ok);
  bn.classList.toggle('alldone',ok);
- bn.innerHTML='<span class="mt">🎯 '+m.name+(ok?' — 완수! 🎉':'')+'</span>'+items.map(x=>'<span class="mi'+(x.ok?' on':'')+'">'+(x.ok?'✅':'⬜')+' '+x.label.replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'').replace(/ \([\d·~]+단계\)$/,'')+'</span>').join('');
+ bn.innerHTML='<span class="mt">🎯 '+m.name+(ok?' — 완수! 🎉':'')+'</span>'+items.map(x=>'<span class="mi'+(x.ok?' on':'')+'">'+(x.ok?'✅':'⬜')+' '+x.label.replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'').replace(/ \([\d·~]+단계\)$/,'')+'</span>').join('')+(ok?'':'<button type="button" class="btn ghost sm msn-goto" data-goto="'+m.tab+'">🧭 아직 안 한 곳으로</button>');
  });
  if(!$('#sumGuard')){const sl=$('#panel-'+SUM_TAB+' .stepline');if(sl){const g=document.createElement('div');g.className='sum-guard';g.id='sumGuard';g.innerHTML='🧑‍🏫 <b>여기는 선생님과 함께 여는 마지막 방!</b> 미션을 모두 깬 사람만 들어올 수 있어요. 빈칸은 수업에서 선생님과 <b>하나씩 같이</b> 채웁니다.';sl.insertAdjacentElement('afterend',g);}}
 }
@@ -1536,12 +1558,10 @@ function checkMsnClear(){
  toast(nxt?'🎉 <b>'+m.name+'</b> 완수! — 「'+nxt.name.split(' · ')[1]+'」의 문이 열렸어요 🔓':'🏆 <b>미션을 모두 완수!</b> 이제 📝 개념 정리를 <b>선생님과 함께</b> 열 수 있어요 — 📄 버튼으로 학습 결과도 저장해 보세요');
  });
 }
-function showTab(id,noScroll){
+function showTab(id,noScroll,force){
   if(!TABS.includes(id))return;
-  const g=gateOf(id);
-  if(g){const b=$('#tabNav button[data-tab="'+id+'"]');if(b){b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');}
-   A.blip(210,.14,'sawtooth',.06);
-   toast(g.sum?'🧑‍🏫 <b>개념 정리하기</b>는 미션을 모두 깬 뒤 <b>선생님과 함께</b> 열어요! (남은 미션: '+g.m.name+')':'🔒 아직 잠긴 방이에요 — <b>'+g.m.name+'</b>부터 완수!');return;}
+  const g=force?null:gateOf(id);
+  if(g){askSkip(g,id,noScroll);return;}
   $$('.panel').forEach(p=>p.classList.remove('show'));
   $('#panel-'+id).classList.add('show');
   $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
@@ -1559,7 +1579,7 @@ function refreshCover(){
   $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 💡`:'빛 측정 시작하기 💡';
 }
 $('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
-  document.body.classList.remove('cover-on');A.ensure();A.pop();showTab(gateOf(S.tab||'engage')?landTab():(S.tab||'engage'),true);});
+  document.body.classList.remove('cover-on');A.ensure();A.pop();{showTab(soloOn()?landTab():(S.tab||'engage'),true);if(soloOn())setTimeout(()=>gotoUndone(landTab()),450);}});
 $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classList.remove('hide');
   document.body.classList.add('cover-on');setBg('cover');});
 
@@ -1597,7 +1617,7 @@ const stuGlobal=()=>{try{return JSON.parse(localStorage.getItem(STU_KEY)||'null'
 const joined=()=>!!(S.stu&&(S.stu.token||S.stu.local));
 function paintMode(){
  const solo=soloOn(), b=$('#modeBtn');
- if(b){b.textContent=solo?'🎯':'🧑‍🏫';b.classList.toggle('solo',solo);b.title=solo?'지금: 혼자 탐구 — 미션을 깨야 다음이 열림. 누르면 강의식(전부 개방)으로':'지금: 강의식 — 모든 단계 개방. 누르면 혼자 탐구(학번·이름, 코드는 있으면)로';}
+ if(b){b.textContent=solo?'🧑‍🏫 강의식으로 전환':'🎯 혼자 탐구로 전환';b.classList.toggle('solo',solo);const mn=$('#modeNow');if(mn)mn.textContent=solo?'🎯 지금: 혼자 탐구':'👀 지금: 강의식';b.title=solo?'지금: 혼자 탐구 — 미션을 깨야 다음이 열림. 누르면 강의식(전부 개방)으로':'지금: 강의식 — 모든 단계 개방. 누르면 혼자 탐구(학번·이름, 코드는 있으면)로';}
  const bd=$('#stuBadge');if(bd&&S.stu){bd.textContent=(S.stu.local?'🔓 ':'🎒 ')+(S.stu.sid?S.stu.sid+' ':'')+S.stu.name;bd.title=S.stu.local?'코드 없이 — 이 기기에만 저장돼요. 다 하면 📄 PDF로 저장!':'';}
  const lab=document.querySelector('.hb-wrap .hb-lab[data-for="modeBtn"]');if(lab)lab.textContent=solo?'혼자 탐구':'강의식';
 }
@@ -1617,7 +1637,7 @@ function afterJoin(msg){
  setTimeout(()=>{closeGate();$('#gGo').disabled=false;setMode('solo');
   toast(msg);
   const cv=$('#cover');
-  if(cv&&!cv.classList.contains('hide')){$('#coverGo').click();}else showTab(gateOf(S.tab||MAIN_TABS[0])?landTab():(S.tab||MAIN_TABS[0]),true);
+  if(cv&&!cv.classList.contains('hide')){$('#coverGo').click();}else {showTab(soloOn()?landTab():(S.tab||MAIN_TABS[0]),true);if(soloOn())setTimeout(()=>gotoUndone(landTab()),450);}
  },500);
 }
 $('#gCancel').addEventListener('click',closeGate);
@@ -1628,7 +1648,7 @@ $('#gGo').addEventListener('click',async()=>{
  const msg=$('#gMsg');const say=(t,c)=>{msg.innerHTML=t;msg.className='gmsg '+(c||'');};
  if(!/^\d{4,6}$/.test(sid)){say('학번은 숫자 4~6자리로 써 주세요 — 예: 2학년 3반 15번 → <b>20315</b>','err');$('#gSid').focus();return;}
  if(name.length<1){say('이름을 써 주세요','err');$('#gName').focus();return;}
- if(code.length<3){say('참여 코드를 써 주세요(예: 8314). 코드가 없으면 아래 <b>🔓 코드 없이 혼자 탐구</b>를 누르세요','err');$('#gCode').focus();return;}
+ if(code.length<3){say('참여 코드를 써 주세요. 코드가 없으면 아래 <b>🔓 코드 없이 혼자 탐구</b>를 누르세요','err');$('#gCode').focus();return;}
  $('#gGo').disabled=true;say('확인하는 중…');
  try{
   const r=await OHM.join(code,sid,name);
@@ -1674,7 +1694,7 @@ const OHM={
   const QS=(typeof GAME_QS!=='undefined')?GAME_QS:[];
   return {sid:S.stu&&S.stu.sid,name:S.stu&&S.stu.name,page:this.page,tab:S.tab,progress:done,total:c.length,pct:Math.round(done/c.length*100),
    checks:c.map(x=>({l:x.label,ok:x.ok?1:0})),texts:texts,sub:S.sub||{},best:S.best,medals:S.medals||{},msn:S.msn||{},
-   qa:S.qa||{},eq:S.eq||{},mini:S.mini||{},cloze:Object.keys(S.cloze||{}).length,clozeTotal:(typeof CLOZE_TOTAL!=='undefined'?CLOZE_TOTAL:0),
+   qa:S.qa||{},skip:S.skip||{},eq:S.eq||{},mini:S.mini||{},cloze:Object.keys(S.cloze||{}).length,clozeTotal:(typeof CLOZE_TOTAL!=='undefined'?CLOZE_TOTAL:0),
    qs:QS.map(q=>({id:q.id,t:String(q.stem||q.q||'').replace(/<[^>]+>/g,'').slice(0,60),e:q.type==='essay'?1:0})),
    s:S,savedAt:new Date().toISOString()};
  },
@@ -1862,6 +1882,55 @@ addEventListener('pagehide',()=>{if(OHM.dirty)OHM.flush();});
 })();
 paintMode();
 
+
+/* ── ⚠️ 부드러운 잠금: 넘어갈 수는 있지만 기록에 남는다 · 🧭 아직 안 한 곳으로 ── */
+let _skipPending=null;
+const _eul=w=>{const c=String(w||'').replace(/[^가-힣]+$/,'').slice(-1).charCodeAt(0);return (c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28)?'을':'를';};
+function askSkip(g,id,noScroll){
+ const b=$('#tabNav button[data-tab="'+id+'"]');if(b){b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');}
+ A.blip(210,.14,'sawtooth',.06);
+ _skipPending={id:id,noScroll:noScroll,m:g.m};
+ $('#skipMsg').innerHTML=(g.sum?'<b>📝 개념 정리하기</b>는 미션을 모두 깬 뒤 <b>선생님과 함께</b> 여는 방이에요. ':'')+'아직 <b>'+g.m.name+'</b>'+_eul(g.m.name)+' 다 하지 않았어요.<br><br><b>⚠️ 주의!</b> 넘어갈 수는 있지만 학습 기록은 <b>선생님에게 그대로 전달</b>됩니다. 몰라서 그냥 넘어가는 거라면 <b>선생님을 불러 주세요!</b>';
+ $('#skipGate').classList.add('show');
+}
+$('#skipBack').addEventListener('click',()=>{const p=_skipPending;$('#skipGate').classList.remove('show');_skipPending=null;if(p&&p.m){showTab(p.m.tab,false,true);setTimeout(()=>gotoUndone(p.m.tab),350);}});
+$('#skipGo').addEventListener('click',()=>{const p=_skipPending;$('#skipGate').classList.remove('show');_skipPending=null;if(!p)return;S.skip=S.skip||{};S.skip[p.id]={t:Date.now(),name:p.m?p.m.name:''};save();toast('⚠️ <b>'+(p.m?p.m.name:'미션')+'</b>'+_eul(p.m?p.m.name:'미션')+' 다 하지 않고 넘어갔어요 — 기록에 남습니다');showTab(p.id,p.noScroll,true);});
+$('#skipGate').addEventListener('click',e=>{if(e.target===$('#skipGate')){$('#skipGate').classList.remove('show');_skipPending=null;}});
+function undoneTarget(tab){
+ const m=MSN.find(x=>x.tab===tab), panel=$('#panel-'+tab);if(!m||!panel)return null;
+ const c=progChecks();
+ const items=(typeof msnItems==='function')?msnItems(m,c):m.items.map(i=>c[i]);
+ const it=items.find(x=>!x.ok);if(!it)return null;
+ const lab=it.label, base=lab.replace(/ → 제출$/,'');
+ const inP=el=>(el&&panel.contains(el))?el:null;
+ let el=null;
+ if(/ → 제출$/.test(lab)){
+  const th=(typeof SOLO_THINK!=='undefined'?SOLO_THINK:[]).find(t=>base.indexOf(t.label)>=0);
+  if(th){const ta=$('textarea[data-think="'+th.key+'"]');el=inP(ta&&ta.closest('.think'));}
+  if(!el){const key=(typeof SOLO_SUB!=='undefined')?SOLO_SUB[base]:null;if(key){const bt=$('button[data-submit="'+key+'"]');el=inP(bt&&(bt.closest('.card,.lab,.think')||bt));}}
+  if(!el){const ta=$$('textarea',panel).find(t=>!t.closest('.gate')&&!(t.value||'').trim());el=ta?(ta.closest('.card,.lab,.think')||ta):null;}
+ }
+ if(!el&&/빈칸/.test(lab)){const cz=$('.cloze:not(.revealed)',panel);el=cz?(cz.closest('.cloze-set')||cz):null;}
+ if(!el&&/퀴즈/.test(lab)){const q=$$('.miniquiz .mq-q',panel).find(x=>!x.querySelector('.correct'));el=q||$('.miniquiz',panel);}
+ if(!el&&/확인 문제/.test(lab)){el=$('#gameBox',panel)||$('#gameBody',panel)||$('.card',panel);}
+ if(!el){
+  const toks=base.replace(/^[\d·~]+단계\s*·?\s*/,'').split(/[^가-힣A-Za-z0-9]+/).filter(t=>t.length>=2);
+  let best=null,bs=0;
+  $$('h3,.card-t,.u-t,.eyebrow,p.lead,p.help',panel).forEach(h=>{const t=h.textContent||'';let sc=0;toks.forEach(k=>{if(t.indexOf(k)>=0)sc++;});if(sc>bs){bs=sc;best=h;}});
+  if(best)el=best.closest('.card,.lab')||best;
+ }
+ return {el:el||panel,label:lab};
+}
+function gotoUndone(tab){
+ const t=undoneTarget(tab);
+ if(!t){toast('✅ 이 단계는 다 했어요!');return;}
+ try{t.el.scrollIntoView({block:'center',behavior:(typeof reduceMotion!=='undefined'&&reduceMotion)?'auto':'smooth'});}catch(e){t.el.scrollIntoView();}
+ t.el.classList.remove('goto-flash');void t.el.offsetWidth;t.el.classList.add('goto-flash');
+ setTimeout(()=>t.el.classList.remove('goto-flash'),2000);
+ toast('🧭 아직 안 한 곳 — <b>'+t.label.replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'')+'</b>');
+}
+document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto');if(b)gotoUndone(b.dataset.goto);});
+
 /* ── 📄 학습 결과 PDF — 인쇄 화면(PDF로 저장) ── */
 (function(){
  const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1885,6 +1954,7 @@ paintMode();
   $$('textarea').forEach(t=>{if(t.closest('.gate')||t.id==='conclTaFs'||t.id==='eqTa')return;const v=(t.value||'').trim();if(!v)return;const k=t.dataset.think||t.dataset.essay||t.id;texts.push({l:labelFor(t),v:v,s:!!((S.sub||{})[k])});});
   const QS=(typeof GAME_QS!=='undefined')?GAME_QS:[];
   Object.keys(S.eq||{}).forEach(id=>{const q=QS.find(x=>x.id===id);if(q&&(S.eq[id]||'').trim())texts.push({l:'확인 문제 서술형 — '+strip(q.stem).slice(0,60),v:S.eq[id],s:true});});
+  const sk=Object.keys(S.skip||{});if(sk.length)h+='<div class="rp-q" style="border-color:#f7b928;background:#fff8dc"><div class="t">⚠️ 다 하지 않고 넘어간 단계</div><div class="a">'+esc(sk.map(t=>(S.skip[t]&&S.skip[t].name)||t).join(', '))+'</div></div>';
   h+='<h2>✍️ 내가 쓴 답</h2>'+(texts.length?texts.map(t=>'<div class="rp-q"><div class="t">'+esc(t.l)+(t.s?' · 📮 제출':'')+'</div><div class="a">'+esc(t.v)+'</div></div>').join(''):'<div class="rp-q"><div class="a">(아직 쓴 글이 없어요)</div></div>');
   const qa=S.qa||{};
   if(QS.length){let ok=0,n=0;
@@ -2496,8 +2566,6 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
   var hubBtn = document.querySelector('a.hbtn[href$="index.html"], a.hbtn[href*="허브"], a.hbtn[href*="index"]');
   label(hubBtn, '허브페이지로 이동');
   label(document.getElementById('tmodeBtn'), '교사노트 on/off');
-  label(document.getElementById('modeBtn'), document.body.classList.contains('solo')?'혼자 탐구':'강의식');
-  var _ml=document.querySelector('#modeBtn')&&document.querySelector('#modeBtn').parentNode.querySelector('.hb-lab'); if(_ml)_ml.dataset.for='modeBtn';
   label(document.getElementById('pdfBtn'), '결과 PDF');
   label(document.getElementById('dashLink'), '학생 기록');
 })();
