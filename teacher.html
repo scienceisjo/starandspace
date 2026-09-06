@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>학생 기록 보기 · 별과 우주 혼자 탐구 (교사용)</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a1317;--ink-dim:#1c1e21;--ink-mute:#5d6c7b;--line:#dee3e9;--hair:#ced0d4;--soft:#f1f4f7;--accent:#0064e0;--accent-deep:#0457cb;--ok:#31a24c;--danger:#e41e3f;--warn:#c47f00;
+ --body:'Pretendard',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink-dim);font-family:var(--body);font-size:15.5px;line-height:1.6;letter-spacing:-.16px}
+header{background:#fff;color:var(--ink);border-bottom:1px solid var(--line);padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0;font-weight:700;letter-spacing:-.5px}
+header .sub{font-size:13px;color:var(--ink-mute)}
+header a{color:var(--accent);font-size:13.5px;margin-left:auto;font-weight:700}
+main{max-width:1240px;margin:0 auto;padding:18px 18px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px 24px;margin-top:16px}
+.card h2{font-size:19px;margin:0 0 8px;font-weight:700;letter-spacing:-.4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h2 .r{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select{font-family:var(--body);font-size:15px;padding:9px 12px;border-radius:8px;border:1px solid var(--hair);background:#fff;color:var(--ink);height:44px}
+input:focus,select:focus{outline:none;border:2px solid #1876f2}
+.btn{font-family:var(--body);font-size:14px;font-weight:700;padding:9px 16px;border-radius:100px;border:2px solid #000;background:#000;color:#fff;cursor:pointer;letter-spacing:-.14px}
+.btn:hover{background:#444950;border-color:#444950}
+.btn.ghost{background:transparent;border:2px solid rgba(10,19,23,.14);color:var(--ink)}
+.btn.ghost:hover{background:var(--soft)}
+.btn.sm{font-size:12.5px;padding:5px 12px}
+.btn.danger{background:#fff;border:2px solid rgba(228,30,63,.4);color:var(--danger)}
+.btn.cta{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.cta:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{font-size:14px;color:var(--ink-mute);margin-top:8px;min-height:20px}
+.msg.err{color:var(--danger);font-weight:700}
+.msg.ok{color:var(--ok);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}
+th,td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:12.5px;color:var(--ink-mute);font-weight:700;background:var(--soft)}
+td.num,th.num{text-align:right;font-family:var(--mono)}
+.code{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:.06em}
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;min-width:90px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;border-radius:99px;padding:2px 9px;background:var(--soft);color:var(--ink)}
+.tag.off{color:var(--ink-mute)}
+.tag.page{background:#e8f0fc;color:var(--accent-deep)}
+.tag.u-gas{background:#e6f4ea;color:#1e7d3a}.tag.u-star{background:#efe9fb;color:#5b3fa6}
+.tbl-wrap{overflow-x:auto}
+.empty{color:var(--ink-mute);padding:14px 4px;font-size:14px}
+.detail{position:fixed;inset:0;z-index:100;background:rgba(10,19,23,.55);display:none;align-items:flex-start;justify-content:center;padding:24px 14px;overflow:auto}
+.detail.show{display:flex}
+.detail .box{width:min(980px,100%);background:#fff;border:1px solid var(--line);border-radius:24px;padding:20px 22px;box-shadow:rgba(20,22,26,.3) 0 1px 4px 0}
+.detail h3{font-size:20px;font-weight:700;margin:0 0 4px;display:flex;align-items:center;gap:10px;letter-spacing:-.4px;flex-wrap:wrap}
+.detail h3 .x{margin-left:auto}
+.detail h4{font-size:15px;margin:18px 0 6px;font-weight:800;color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:3px}
+.q{margin-top:10px;padding:11px 14px;border-radius:16px;border:1px solid var(--line);background:#fff}
+.q .qt{font-size:12.5px;font-weight:800;color:var(--accent-deep);margin-bottom:4px}
+.q .qa{white-space:pre-wrap;word-break:break-word;font-size:15px;line-height:1.65}
+.q .qa.none{color:#aaa;font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.chk{display:flex;flex-wrap:wrap;gap:5px 12px;font-size:13px;margin-top:6px}
+.chk span{color:var(--ink-mute)}.chk span.on{color:var(--ok);font-weight:700}
+.note{font-size:13.5px;color:var(--ink-mute);line-height:1.6;margin-top:8px}
+.note b{color:var(--ink-dim)}
+.qa-tbl td.c{text-align:center;font-size:16px}
+.qa-tbl th.qh{max-width:64px;font-size:11.5px;white-space:nowrap;cursor:help}
+.qa-tbl td.rate{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute)}
+.o{color:var(--ok)}.x{color:var(--danger)}.re{color:var(--warn)}
+#app-credit{margin-top:40px;text-align:center;font-size:12.5px;color:var(--ink-mute);border-top:1px solid var(--line);padding-top:20px}
+</style>
+</head>
+<body>
+<header>
+ <div><h1>📊 학생 기록 보기 — 별과 우주 · 혼자 탐구</h1><div class="sub">전기와 자기 · 기체의 성질 · 별과 우주 모든 차시가 이 표 하나에 · 표를 직접 읽는 길은 없고 관리 코드로만 열립니다</div></div>
+ <a href="index.html">← 단원 허브로</a>
+</header>
+<main>
+ <div class="card">
+ <h2>🔑 관리 코드</h2>
+ <div class="row">
+ <input id="adm" placeholder="관리 코드 10자리 (SQL 실행 결과창에 나온 코드)" maxlength="12" style="min-width:320px;text-transform:uppercase;letter-spacing:.08em" autocomplete="off">
+ <button class="btn cta" id="admGo">불러오기</button>
+ <label style="font-size:13px;color:var(--ink-mute)"><input type="checkbox" id="admKeep" checked style="height:auto;padding:0;vertical-align:middle"> 이 기기에 기억</label>
+ </div>
+ <div class="msg" id="admMsg">코드를 넣고 불러오기를 누르세요.</div>
+ </div>
+
+ <div class="card" id="codesCard" hidden>
+ <h2>🎟️ 참여 코드 <span class="r"><input id="newCustom" placeholder="원하는 코드 (예: 8314)" maxlength="12" style="width:160px;letter-spacing:.06em" autocomplete="off"><input id="newLabel" placeholder="이름표 (예: 2-3반)" maxlength="40" style="width:150px"><input id="newDays" type="number" value="120" min="1" max="365" style="width:84px" title="유효 기간(일)"><button class="btn cta sm" id="addCode">+ 이 코드로 발급</button><button class="btn ghost sm" id="newCode">🎲 무작위 코드</button></span></h2>
+ <div class="note">학생은 수업 페이지 오른쪽 위 🎯 버튼 → <b>학번·이름·참여 코드</b>를 넣습니다(숫자 코드가 치기 쉬워요). 한 기기에서 한 번 넣으면 다른 차시·다른 단원도 자동으로 이어집니다. <b>코드 없이 혼자 탐구</b>한 학생은 서버에 남지 않고 📄 PDF로 제출합니다. 코드를 끄면 그 코드로는 더 저장되지 않아요(있는 기록은 남습니다). 삭제하면 그 코드의 학생 기록도 함께 지워집니다.</div>
+ <div class="tbl-wrap"><table id="codesTbl"><thead><tr><th>코드</th><th>이름표</th><th>상태</th><th class="num">기록 수</th><th>마지막 저장</th><th>기한</th><th></th></tr></thead><tbody></tbody></table></div>
+ <div class="msg" id="codesMsg"></div>
+ </div>
+
+ <div class="card" id="stuCard" hidden>
+ <h2>🎒 학생 기록 <span class="r"><select id="unitSel"><option value="">모든 단원</option></select><select id="pageSel"><option value="">모든 차시</option></select><select id="codeSel"><option value="">모든 코드</option></select><button class="btn ghost sm" id="reload">↻ 새로고침</button><button class="btn sm" id="csv">⬇️ CSV 내려받기</button></span></h2>
+ <div class="tbl-wrap"><table id="stuTbl"><thead><tr><th>차시</th><th>코드</th><th>학번</th><th>이름</th><th>진행</th><th class="num">%</th><th>현재 탭</th><th class="num">제출</th><th>확인문제 <small>첫시도 정답/응답 · 최고점</small></th><th>마지막 저장</th><th></th></tr></thead><tbody></tbody></table></div>
+ <div class="empty" id="stuEmpty" hidden>아직 기록이 없어요.</div>
+ <div class="msg" id="stuMsg"></div>
+ </div>
+
+ <div class="card" id="qaCard" hidden>
+ <h2>📝 문항별 정오표 <span class="r"><span class="note" style="margin:0">차시를 하나 고르면 보여요 · ⭕ 첫 시도 정답 · 🔺 다시 풀어 맞힘 · ❌ 틀림 · ✍️ 서술형 씀 · — 아직</span></span></h2>
+ <div class="tbl-wrap"><table id="qaTbl" class="qa-tbl"><thead></thead><tbody></tbody></table></div>
+ </div>
+
+ <div id="app-credit">© 2026 조승재 (과학이조선생) · 해누리중학교 · 최종 업데이트 2026-09-07</div>
+</main>
+
+<div class="detail" id="detail"><div class="box">
+ <h3><span id="dTitle">학생</span><button class="btn ghost sm x" id="dClose">✕ 닫기</button></h3>
+ <div id="dBody"></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script>
+"use strict";
+const URL_='https://vbvtnmnodeoocbbjauap.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidnRubW5vZGVvb2NiYmphdWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0OTQ0OTYsImV4cCI6MjA5NTA3MDQ5Nn0.dvuRrt3qw2Tya_QwGbcXrmGPdfDgI4xmgyH8UjU73Nc';
+const sb=window.supabase.createClient(URL_,KEY,{auth:{persistSession:false}});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtT=t=>{if(!t)return '—';const d=new Date(t);return d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});};
+const UNIT_DEFAULT='star';
+const UNITS={elec:'전기와 자기',gas:'기체의 성질',star:'별과 우주'};
+const PAGES={
+ 'elec-friction':['elec','1 마찰 전기'],'elec-induction':['elec','2 정전기 유도'],'elec-current':['elec','3 전류'],'elec-ohm':['elec','4 옴의 법칙'],'elec-series':['elec','5 직렬·병렬'],'elec-power':['elec','6 소비 전력'],'elec-coil':['elec','7 코일 자기장'],'elec-motor':['elec','8 전동기'],
+ 'gas-pressure':['gas','1 압력'],'gas-gaspressure':['gas','2 기체의 압력'],'gas-boyle':['gas','3 압력과 부피'],'gas-charles':['gas','4 온도와 부피'],'gas-cases':['gas','5 부피 변화 조사'],
+ 'star-parallax':['star','1 연주 시차'],'star-brightness':['star','2 밝기와 거리'],'star-magnitude':['star','3 별의 등급'],'star-color':['star','4 색과 온도'],'star-milkyway':['star','5 우리은하'],'star-objects':['star','6 천체 관측'],'star-nebula':['star','7 성운과 성단'],'star-expanding':['star','8 팽창하는 우주']};
+const pageName=k=>PAGES[k]?PAGES[k][1]:k, pageUnit=k=>PAGES[k]?PAGES[k][0]:(String(k).split('-')[0]);
+const TEXT_LABEL={askTa:'나의 질문/생각',emRule:'표에서 찾은 규칙',essay:'사고력·블록 답',labRule:'실험 규칙',blockAns:'블록 질문 답',ruleTa:'표에서 찾은 규칙',ruleTxt:'표에서 찾은 규칙',conclTa:'나의 결론',conclTaFs:'(전체 화면 결론 메모)',eqTa:'확인 문제 서술형',open:'내 생각(밝기 줄이기)',why:'예상한 까닭',law:'내 말로 옴의 법칙',guess:'내 생각(예상)',summary:'내 말로 정리',note:'표에서 읽어 낸 것',
+ rule:'표에서 찾은 규칙',pin:'누름못 풍선 설명',obs:'관찰 기록',balloon:'풍선 설명',block1:'블록 답(공기가 미는 까닭)',conclusion:'결론 문장',jtube:'J자 관 설명',block2:'봉지 여행 블록',compare:'보일·샤를 구분',topic:'영상 주제',principle:'원리 한 줄',sb1:'스토리보드 1',sb2:'스토리보드 2',sb3:'스토리보드 3',sb4:'스토리보드 4',sb5:'스토리보드 5',sb6:'스토리보드 6',roles:'역할 나누기',review:'오늘의 한 줄'};
+let ADMIN='', CODES=[], STU=[];
+async function rpc(n,a){const r=await sb.rpc(n,a);if(r.error)throw new Error(r.error.message||String(r.error));return r.data;}
+const say=(id,t,c)=>{const m=$(id);m.textContent=t;m.className='msg '+(c||'');};
+$('#admGo').addEventListener('click',load);
+$('#adm').addEventListener('keydown',e=>{if(e.key==='Enter')load();});
+$('#reload').addEventListener('click',()=>loadStudents());
+$('#codeSel').addEventListener('change',()=>paintStudents());
+$('#pageSel').addEventListener('change',()=>paintStudents());
+$('#unitSel').addEventListener('change',()=>{fillPages();paintStudents();});
+try{const k=localStorage.getItem('ohm_admin');if(k){$('#adm').value=k;}}catch(e){}
+Object.keys(UNITS).forEach(u=>{const o=document.createElement('option');o.value=u;o.textContent=UNITS[u];$('#unitSel').appendChild(o);});
+$('#unitSel').value=UNIT_DEFAULT;
+function fillPages(){
+ const u=$('#unitSel').value, sel=$('#pageSel'), cur=sel.value;sel.innerHTML='<option value="">모든 차시</option>';
+ Object.keys(PAGES).filter(k=>!u||PAGES[k][0]===u).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=(u?'':UNITS[PAGES[k][0]]+' · ')+PAGES[k][1];sel.appendChild(o);});
+ sel.value=cur;if(sel.value!==cur)sel.value='';
+}
+fillPages();
+
+async function load(){
+ ADMIN=$('#adm').value.trim().toUpperCase();
+ if(ADMIN.length<6){say('#admMsg','관리 코드를 넣어 주세요','err');return;}
+ $('#admGo').disabled=true;say('#admMsg','확인하는 중…');
+ try{
+  CODES=await rpc('ohm_admin_codes',{p_admin:ADMIN});
+  try{if($('#admKeep').checked)localStorage.setItem('ohm_admin',ADMIN);else localStorage.removeItem('ohm_admin');}catch(e){}
+  say('#admMsg','✅ 관리 코드 확인 — 참여 코드 '+CODES.length+'개','ok');
+  $('#codesCard').hidden=false;$('#stuCard').hidden=false;
+  paintCodes();await loadStudents();
+ }catch(e){
+  const m=String(e.message||e);
+  say('#admMsg',/function|404|not find/i.test(m)?'서버에 아직 표가 없어요 — 옴의법칙_Supabase_SETUP.sql 을 먼저 실행하세요':'❌ '+m,'err');
+ }finally{$('#admGo').disabled=false;}
+}
+function paintCodes(){
+ const tb=$('#codesTbl tbody');tb.innerHTML='';
+ const sel=$('#codeSel');const cur=sel.value;sel.innerHTML='<option value="">모든 코드</option>';
+ CODES.forEach(c=>{
+  const exp=new Date(c.expires_at), expired=exp<new Date();
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td class="code">'+esc(c.code)+'</td><td>'+esc(c.label)+'</td>'
+   +'<td>'+(c.active&&!expired?'<span class="tag">사용 중</span>':'<span class="tag off">'+(expired?'기한 지남':'꺼짐')+'</span>')+'</td>'
+   +'<td class="num">'+c.students+'</td><td>'+fmtT(c.last_seen)+'</td><td>'+exp.toLocaleDateString('ko-KR')+'</td>'
+   +'<td class="row" style="justify-content:flex-end">'
+   +'<button class="btn ghost sm" data-act="toggle" data-code="'+c.code+'">'+(c.active?'끄기':'켜기')+'</button>'
+   +'<button class="btn ghost sm" data-act="extend" data-code="'+c.code+'">+30일</button>'
+   +'<button class="btn danger sm" data-act="del" data-code="'+c.code+'">삭제</button></td>';
+  tb.appendChild(tr);
+  const o=document.createElement('option');o.value=c.code;o.textContent=c.code+' · '+c.label;sel.appendChild(o);
+ });
+ sel.value=cur;
+}
+$('#codesTbl').addEventListener('click',async e=>{
+ const b=e.target.closest('button[data-act]');if(!b)return;
+ const code=b.dataset.code, c=CODES.find(x=>x.code===code);
+ try{
+  if(b.dataset.act==='toggle'){await rpc('ohm_set_code',{p_admin:ADMIN,p_code:code,p_active:!c.active});}
+  else if(b.dataset.act==='extend'){await rpc('ohm_set_code',{p_admin:ADMIN,p_code:code,p_extend_days:30});}
+  else if(b.dataset.act==='del'){if(!confirm('참여 코드 '+code+' 와 그 코드의 기록 '+c.students+'건을 모두 지울까요?\n되돌릴 수 없어요.'))return;await rpc('ohm_delete_code',{p_admin:ADMIN,p_code:code});}
+  CODES=await rpc('ohm_admin_codes',{p_admin:ADMIN});paintCodes();await loadStudents();say('#codesMsg','✅ 반영됐어요','ok');
+ }catch(err){say('#codesMsg','❌ '+(err.message||err),'err');}
+});
+$('#newCode').addEventListener('click',async()=>{
+ try{
+  const r=await rpc('ohm_make_code',{p_admin:ADMIN,p_label:$('#newLabel').value.trim(),p_days:+$('#newDays').value||120});
+  CODES=await rpc('ohm_admin_codes',{p_admin:ADMIN});paintCodes();
+  say('#codesMsg','✅ 새 참여 코드 '+r.code+' — 학생에게 알려 주세요','ok');$('#newLabel').value='';
+ }catch(err){say('#codesMsg','❌ '+(err.message||err),'err');}
+});
+$('#addCode').addEventListener('click',async()=>{
+ const want=$('#newCustom').value.trim();
+ if(!want){say('#codesMsg','원하는 코드를 먼저 적어 주세요 (예: 8314)','err');$('#newCustom').focus();return;}
+ try{
+  const r=await rpc('ohm_add_code',{p_admin:ADMIN,p_code:want,p_label:$('#newLabel').value.trim(),p_days:+$('#newDays').value||120});
+  CODES=await rpc('ohm_admin_codes',{p_admin:ADMIN});paintCodes();
+  say('#codesMsg','✅ 참여 코드 '+r.code+' 발급 — 학생에게 알려 주세요','ok');$('#newLabel').value='';$('#newCustom').value='';
+ }catch(err){const m=String(err.message||err);say('#codesMsg',/function|404|not find/i.test(m)?'서버에 ohm_add_code 가 아직 없어요 — 혼자탐구_코드8314_추가.sql 을 실행하세요':'❌ '+m,'err');}
+});
+async function loadStudents(){
+ try{STU=await rpc('ohm_admin_students',{p_admin:ADMIN});paintStudents();}
+ catch(err){say('#stuMsg','❌ '+(err.message||err),'err');}
+}
+const subCount=st=>Object.keys((st&&st.sub)||{}).length;
+function qaSummary(st){
+ const qa=(st&&st.qa)||{};let n=0,ok=0;Object.keys(qa).forEach(k=>{const r=qa[k];if(r&&r.first!=null){n++;if(r.first)ok++;}});
+ return {n,ok};
+}
+function paintStudents(){
+ const code=$('#codeSel').value, page=$('#pageSel').value, unit=$('#unitSel').value;
+ const list=STU.filter(x=>(!code||x.code===code)&&(!page||x.page===page)&&(!unit||pageUnit(x.page)===unit)).sort((a,b)=>(a.page+a.sid).localeCompare(b.page+b.sid));
+ const tb=$('#stuTbl tbody');tb.innerHTML='';
+ $('#stuEmpty').hidden=list.length>0;
+ list.forEach((x,i)=>{
+  const st=x.state||{};const tot=st.total||((st.checks||[]).length)||1;const qs=qaSummary(st);
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td><span class="tag page u-'+pageUnit(x.page)+'">'+esc((unit?'':UNITS[pageUnit(x.page)]+' · ')+pageName(x.page))+'</span></td><td class="code" style="font-size:13px">'+esc(x.code)+'</td><td class="code" style="font-size:14px">'+esc(x.sid)+'</td><td><b>'+esc(x.name)+'</b></td>'
+   +'<td><div class="bar" title="'+x.progress+'/'+tot+'"><i style="width:'+Math.round(x.progress/tot*100)+'%"></i></div></td>'
+   +'<td class="num">'+x.pct+'</td><td>'+esc(x.tab||'—')+'</td><td class="num">'+subCount(st)+'</td>'
+   +'<td class="num">'+(qs.n?qs.ok+'/'+qs.n:'—')+(st.best!=null&&st.best>0?' · '+st.best+'점':'')+'</td><td>'+fmtT(x.updated_at)+'</td>'
+   +'<td class="row" style="justify-content:flex-end"><button class="btn sm" data-view="'+i+'">보기</button><button class="btn danger sm" data-del="'+x.token+'">삭제</button></td>';
+  tb.appendChild(tr);
+ });
+ tb._list=list;
+ say('#stuMsg',list.length?'기록 '+list.length+'건 (학생 한 명 × 차시 하나 = 한 줄) · 보기를 누르면 쓴 글과 문항별 정오가 보여요':'');
+ paintQa(list,page);
+}
+function qsOf(list){
+ /* 문항 목록: 기록에 실린 문항 정보(qs) 중 가장 긴 것 → 없으면 qa 키 합집합 */
+ let best=null;list.forEach(x=>{const st=x.state||{};if(Array.isArray(st.qs)&&(!best||st.qs.length>best.length))best=st.qs;});
+ if(best)return best;
+ const ids=[];list.forEach(x=>Object.keys(((x.state||{}).qa)||{}).forEach(k=>{if(!ids.includes(k))ids.push(k);}));
+ return ids.map(id=>({id:id,t:'',e:0}));
+}
+function mark(r,ess,st,id){
+ if(ess)return ((st.eq||{})[id]||'').trim()?'<span class="o">✍️</span>':'—';
+ if(!r||r.first==null)return '—';
+ return r.first?'<span class="o">⭕</span>':(r.ok?'<span class="re">🔺</span>':'<span class="x">❌</span>');
+}
+function paintQa(list,page){
+ const card=$('#qaCard');
+ if(!page||!list.length){card.hidden=true;return;}
+ const qs=qsOf(list);
+ if(!qs.length){card.hidden=true;return;}
+ card.hidden=false;
+ const th=$('#qaTbl thead'), tb=$('#qaTbl tbody');
+ th.innerHTML='<tr><th>학번</th><th>이름</th>'+qs.map((q,i)=>'<th class="qh" title="'+esc(q.t||q.id)+'">'+(i+1)+'<br><small>'+esc(q.id)+'</small></th>').join('')+'<th class="num">첫시도</th></tr>';
+ tb.innerHTML='';
+ const okCnt=qs.map(()=>0), ansCnt=qs.map(()=>0);
+ list.forEach(x=>{const st=x.state||{},qa=st.qa||{};const s=qaSummary(st);
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td class="code" style="font-size:13px">'+esc(x.sid)+'</td><td><b>'+esc(x.name)+'</b></td>'+qs.map((q,i)=>{const r=qa[q.id];if(!q.e&&r&&r.first!=null){ansCnt[i]++;if(r.first)okCnt[i]++;}return '<td class="c" title="'+esc(r&&r.c?r.c+(r.tries>1?' · '+r.tries+'번':''):'')+'">'+mark(r,q.e,st,q.id)+'</td>';}).join('')+'<td class="num">'+(s.n?s.ok+'/'+s.n:'—')+'</td>';
+  tb.appendChild(tr);});
+ const tr=document.createElement('tr');tr.innerHTML='<td colspan="2"><b>첫 시도 정답률</b></td>'+qs.map((q,i)=>'<td class="rate">'+(q.e||!ansCnt[i]?'—':Math.round(okCnt[i]/ansCnt[i]*100)+'%')+'</td>').join('')+'<td></td>';
+ tb.appendChild(tr);
+}
+$('#stuTbl').addEventListener('click',async e=>{
+ const v=e.target.closest('button[data-view]');if(v){openDetail($('#stuTbl tbody')._list[+v.dataset.view]);return;}
+ const d=e.target.closest('button[data-del]');if(d){
+  if(!confirm('이 기록을 지울까요? 되돌릴 수 없어요.'))return;
+  try{await rpc('ohm_delete_student',{p_admin:ADMIN,p_token:d.dataset.del});await loadStudents();CODES=await rpc('ohm_admin_codes',{p_admin:ADMIN});paintCodes();}
+  catch(err){say('#stuMsg','❌ '+(err.message||err),'err');}
+ }
+});
+function q(t,a){return '<div class="q"><div class="qt">'+esc(t)+'</div><div class="qa'+(a?'':' none')+'">'+(a?esc(a):'(아직 안 씀)')+'</div></div>';}
+function openDetail(x){
+ const st=x.state||{}, sub=st.sub||{};
+ $('#dTitle').textContent='🎒 '+x.sid+' '+x.name+' · '+UNITS[pageUnit(x.page)]+' '+pageName(x.page)+' · '+x.code+' · 진행 '+x.pct+'%';
+ const checks=(st.checks||[]).map(c=>typeof c==='object'?c:{l:'항목',ok:c});
+ let html='<h4>🎯 진행 항목</h4><div class="chk">'+checks.map(c=>'<span class="'+(c.ok?'on':'')+'">'+(c.ok?'✅':'⬜')+' '+esc(c.l)+'</span>').join('')+'</div>';
+ const texts=st.texts||{};let body='';
+ Object.keys(texts).forEach(k=>{if(k==='conclTaFs'||k==='eqTa')return;const lab=(TEXT_LABEL[k]||k)+(sub[k]?' · 📮 제출됨':'');body+=q(lab,texts[k]);});
+ if(!Object.keys(texts).length&&st.think){Object.keys(st.think).forEach(k=>{body+=q(TEXT_LABEL[k]||k,st.think[k]);});if(st.concl)body+=q('나의 결론',st.concl);if(st.essay)body+=q('사고력 답',st.essay);}
+ const qsList=Array.isArray(st.qs)?st.qs:[];
+ Object.keys(st.eq||{}).forEach(id=>{if(!(st.eq[id]||'').trim())return;const qq=qsList.find(z=>z.id===id);body+=q('확인 문제 서술형 '+id+(qq?' — '+qq.t:''),st.eq[id]);});
+ html+='<h4>✍️ 쓴 글</h4><div class="grid2">'+(body||'<div class="q"><div class="qa none">(아직 쓴 글이 없어요)</div></div>')+'</div>';
+ const qa=st.qa||{};const qs=qsList.length?qsList:Object.keys(qa).map(id=>({id:id,t:'',e:0}));
+ if(qs.length){const s=qaSummary(st);
+  html+='<h4>📝 확인 문제 — 첫 시도 정답 '+s.ok+'/'+s.n+(st.best?' · 최고 점수 '+st.best+'점':'')+(st.medals&&Object.keys(st.medals).length?' · 🏅 '+Object.keys(st.medals).join(', '):'')+'</h4>'
+   +'<table><tr><th>#</th><th>문항</th><th>첫 시도</th><th>최종</th><th class="num">시도</th><th>고른 답</th></tr>'
+   +qs.map((qq,i)=>{const r=qa[qq.id];return '<tr><td>'+(i+1)+' <small>'+esc(qq.id)+'</small></td><td>'+esc(qq.t||'')+'</td><td>'+mark(r,qq.e,st,qq.id)+'</td><td>'+(qq.e?'':(r?(r.ok?'<span class="o">맞힘</span>':'<span class="x">못 맞힘</span>'):'—'))+'</td><td class="num">'+(r?r.tries:'')+'</td><td>'+esc(r&&r.c||'')+'</td></tr>';}).join('')+'</table>';}
+ html+='<h4>✅ 개념 확인</h4><div class="chk"><span class="on">개념 확인 퀴즈 완료 '+Object.keys(st.mini||{}).filter(k=>st.mini[k]).length+'개</span><span class="on">빈칸 채움 '+(st.cloze!=null?st.cloze+(st.clozeTotal?'/'+st.clozeTotal:''):'—')+'</span><span>마지막 저장 '+fmtT(x.updated_at)+' · 처음 참여 '+fmtT(x.created_at)+'</span></div>';
+ $('#dBody').innerHTML=html;
+ $('#detail').classList.add('show');
+}
+$('#dClose').addEventListener('click',()=>$('#detail').classList.remove('show'));
+$('#detail').addEventListener('click',e=>{if(e.target===$('#detail'))$('#detail').classList.remove('show');});
+addEventListener('keydown',e=>{if(e.key==='Escape')$('#detail').classList.remove('show');});
+$('#csv').addEventListener('click',()=>{
+ const list=$('#stuTbl tbody')._list||[];
+ const keys=[];list.forEach(x=>Object.keys((x.state||{}).texts||{}).forEach(k=>{if(k!=='conclTaFs'&&k!=='eqTa'&&!keys.includes(k))keys.push(k);}));
+ const qids=[];list.forEach(x=>Object.keys(((x.state||{}).qa)||{}).forEach(k=>{if(!qids.includes(k))qids.push(k);}));
+ const H=['단원','차시','코드','학번','이름','진행(단계)','진행(%)','현재 탭','제출 수','확인문제 첫시도 정답','확인문제 응답','최고점','마지막 저장'].concat(qids.map(k=>'문항 '+k)).concat(keys.map(k=>TEXT_LABEL[k]||k));
+ const cell=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+ const lines=[H.map(cell).join(',')];
+ list.forEach(x=>{const st=x.state||{},t=st.texts||{},qa=st.qa||{},s=qaSummary(st);
+  lines.push([UNITS[pageUnit(x.page)],pageName(x.page),x.code,x.sid,x.name,x.progress,x.pct,x.tab,subCount(st),s.ok,s.n,st.best,x.updated_at].concat(qids.map(k=>{const r=qa[k];return !r||r.first==null?'':(r.first?'O':(r.ok?'△':'X'));})).concat(keys.map(k=>t[k]||'')).map(cell).join(','));});
+ const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='혼자탐구_학생기록_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+});
+if($('#adm').value)load();
+</script>
+</body>
+</html>
