@@ -580,6 +580,11 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 #skipGate .gsub{font-size:15px;color:var(--m-ink,#1c1e21)}
 @media(max-width:640px){.mode-now{display:none}}
 </style>
+
+<style id="fit-short">
+/* ── 📱 디벗처럼 가로는 넓고 세로가 짧은 화면 — 발표용 확대를 줄여 한 화면에 더 담는다 ── */
+@media (min-width:1000px) and (max-height:860px){html{zoom:1.1}}
+</style>
 </head>
 <body><!-- board-v2: inline font bumped -->
 <div id="bgLayer"></div><div id="bgScrim"></div><canvas id="stars"></canvas>
