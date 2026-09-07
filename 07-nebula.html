@@ -2374,5 +2374,23 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
  document.getElementById('ztNever').addEventListener('click',function(){try{localStorage.setItem(KEY,'never');}catch(e){}hide();});
 })();
 </script>
+<script id="cv-pin">
+/* 🖼 그리기 전 canvas 가 폭에 비례해 부푸는 것 막기 — 설계 높이를 미리 못 박는다 */
+(function(){
+ function pin(){
+  var list=document.querySelectorAll('canvas[height]');
+  for(var i=0;i<list.length;i++){
+   var cv=list[i];
+   if(cv.style.height)continue;                       /* 이미 그려졌으면 그쪽 값이 맞다 */
+   if(cv.id==='stars'||cv.id==='clouds')continue;     /* 배경은 화면을 채워야 한다 */
+   var h=parseInt(cv.getAttribute('height'),10);
+   if(h>0&&h<=1200)cv.style.height=h+'px';
+  }
+ }
+ pin();
+ document.addEventListener('DOMContentLoaded',pin);
+ addEventListener('load',pin);
+})();
+</script>
 </body>
 </html>
