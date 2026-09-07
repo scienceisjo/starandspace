@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#080d1a">
-<title>우주에는 중심이 없다 · 팽창하는 우주</title>
+<title>검게 보이는 것도 천체다 · 성운과 성단의 종류</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,11 +18,11 @@
   --line:#2b3763; --line-soft:#222c54;
   --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
   --accent:#a98bff; --accent2:#c9b6ff; --on-accent:#12082a;
-  --c1:#ff8fb1;  /* 은하 = 붙임딱지 */
-  --c2:#67e8e0;  /* 우주 = 풍선 표면 */
-  --c3:#ffd166;  /* 거리 변화 */
-  --c4:#9ae66e;  /* 138억 년 */
-  --c5:#c4a7ff;  /* 외부 은하 */
+  --c1:#ff6b5c;  /* 방출 성운 */
+  --c2:#67e8e0;  /* 반사 성운 */
+  --c3:#8b93ff;  /* 암흑 성운 */
+  --c4:#ffd166;  /* 산개 성단 */
+  --c5:#c4a7ff;  /* 구상 성단 */
   --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
   --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --body:var(--disp); --mono:"JetBrains Mono",ui-monospace,monospace; --jua:"Jua",var(--disp);
@@ -32,7 +32,7 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--body);color:var(--ink);line-height:1.62;
   background:radial-gradient(1150px 600px at 78% -8%, rgba(169,139,255,.13), transparent 60%),
-    radial-gradient(820px 520px at 10% 10%, rgba(103,232,224,.07), transparent 58%), var(--abyss);
+    radial-gradient(820px 520px at 10% 10%, rgba(255,107,92,.07), transparent 58%), var(--abyss);
   background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
 ::selection{background:rgba(169,139,255,.32);color:#fff}
 #bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .45s}
@@ -49,7 +49,7 @@ body.cover-on .prog-list,body.cover-on #toast{display:none!important}
 .cover-in{width:100%;max-width:720px;text-align:center;animation:coverUp .6s cubic-bezier(.22,1,.36,1)}
 @keyframes coverUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 .cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(169,139,255,.7))}
-.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(28px,5.8vw,50px);line-height:1.16;margin:18px 0 10px;
+.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(27px,5.6vw,48px);line-height:1.16;margin:18px 0 10px;
   letter-spacing:-.6px;text-shadow:0 0 26px rgba(169,139,255,.4),0 2px 20px rgba(0,0,0,.75)}
 .cover-sub{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px)}
 .cover-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
@@ -152,71 +152,67 @@ body.teacher .note.class{display:flex}
 .btn.sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}
 .btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-.choices{display:grid;gap:10px;margin-top:14px}
-.choice{text-align:left;font-family:var(--body);font-size:15.5px;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);
-  border-radius:13px;padding:14px 16px;cursor:pointer;transition:.16s;display:flex;gap:12px;align-items:center;line-height:1.4}
-.choice .key{flex:none;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
-  font-size:14px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
-.choice:hover:not(.done){border-color:var(--accent);background:#2a2450;transform:translateX(3px)}
-.choice.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
-.choice.correct .key{background:var(--ok);color:#06210f}
-.choice.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
-.choice.wrong .key{background:var(--danger);color:#2a060b}
-.choice.dim{opacity:.5}.choice.done{cursor:default}
 .explain{margin-top:14px;border-radius:13px;padding:15px 17px;font-size:14.5px;line-height:1.6;border:1px solid var(--line);
   background:rgba(169,139,255,.08);color:var(--ink-dim);display:none;animation:fade .35s}
 .explain.show{display:block}
-.explain.ok{border-color:#2e6e44;background:rgba(74,222,128,.09)}
-.explain.no{border-color:#7a2f38;background:rgba(255,93,108,.09)}
 .explain b{color:var(--ink)}
 .explain .why{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--accent2);margin-bottom:5px}
 
-/* 🎈 풍선 실험실 */
-.lab{background:linear-gradient(180deg,#1b1a3c,#111a34);border:1.5px solid #4a3a78;border-radius:15px;padding:20px 22px;margin-top:16px}
-.lab h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.simgrid{display:grid;gap:16px;grid-template-columns:1fr;margin-top:14px}
-@media(min-width:900px){.simgrid{grid-template-columns:minmax(0,1fr) 268px;align-items:start}}
-.simstage{background:#05080f;border:1px solid var(--line);border-radius:13px;overflow:hidden}
-.simstage canvas{display:block;width:100%;height:auto}
-.simctl{background:#0e1830;border:1px solid var(--line);border-radius:13px;padding:16px}
-.simctl h4{font-family:var(--jua);font-size:15px;margin-bottom:4px}
-.ctl{margin-top:14px}
-.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-dim);font-weight:600;margin-bottom:7px}
-.ctl label .val{font-family:var(--mono);font-size:14px;color:var(--accent2)}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
-  background:linear-gradient(90deg,var(--accent) 0%,var(--accent) var(--p,0%),#1b2b49 var(--p,0%));outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#f0eaff;
-  border:3px solid var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.5),0 0 10px var(--accent);cursor:grab}
-input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#f0eaff;border:3px solid var(--accent);cursor:grab}
-.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.readout .r{flex:1;min-width:112px;background:#16224a;border:1px solid var(--line);border-radius:11px;padding:10px 12px;text-align:center}
-.readout .r .lab2{font-size:11px;color:var(--ink-mute)}
-.readout .r .v{font-family:var(--mono);font-size:18px;font-weight:700;line-height:1.25}
-.readout .r.near .v{color:var(--c1)} .readout .r.far .v{color:var(--c5)}
-.readout .r .v small{font-size:11px;color:var(--ink-mute);font-weight:400}
-.dl-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
-.dl-head h4{font-family:var(--jua);font-size:16px}
-.dl-head .btn-row{margin:0;margin-left:auto;flex:none}
-.dl-head .btn-row .btn{flex:none}
-.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:12px}
-table.dtable{width:100%;border-collapse:collapse;font-size:13.5px;min-width:420px}
-.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12px;padding:9px 10px;
-  text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
-.dtable td{padding:9px 10px;text-align:center;font-family:var(--mono);border-bottom:1px solid var(--line-soft);white-space:nowrap}
-.dtable td:first-child{font-family:var(--body)}
-.dtable tr:last-child td{border-bottom:0}
-.dtable tr.fresh td{animation:rowIn .5s}
-@keyframes rowIn{from{background:rgba(169,139,255,.22)}to{background:transparent}}
-.dtable td.del{cursor:pointer;color:var(--ink-mute);font-family:var(--body)}
-.dtable td.del:hover{color:var(--danger)}
-.dtable .empty{color:var(--ink-mute);font-family:var(--body);padding:16px;font-size:13px}
-.graph-wrap{margin-top:12px;background:#0e1830;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.graph-wrap canvas{display:block;width:100%;height:auto}
-.legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12.5px;color:var(--ink-mute)}
-.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+/* 견주어 보기 — 5종 카드 */
+.kinds{display:grid;gap:14px;grid-template-columns:1fr;margin-top:16px}
+@media(min-width:700px){.kinds{grid-template-columns:1fr 1fr}}
+.kind{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px;
+  border-top:4px solid var(--kc,var(--accent));display:flex;flex-direction:column;gap:9px}
+.kind .kn{font-family:var(--jua);font-size:18px;color:var(--kc,var(--ink));display:flex;align-items:center;gap:8px}
+.kind .kd{font-size:14.5px;color:var(--ink-dim);line-height:1.6}
+.kind .kk{font-size:12.5px;color:var(--ink-mute);background:#0e1830;border:1px solid var(--line);
+  border-radius:9px;padding:8px 11px;line-height:1.5}
+.kind .kk b{color:var(--kc,var(--ink))}
+
+/* 분류하기 */
+.sortbox{background:linear-gradient(180deg,#1b1a3c,#111a34);border:1.5px solid #4a3a78;border-radius:15px;padding:20px 22px;margin-top:16px}
+.sortbox h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.qcard{background:#0e1830;border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin-top:14px}
+.qcard .qtxt{font-size:15.5px;line-height:1.6;color:var(--ink)}
+.qcard .qtxt b{color:var(--accent2)}
+.qcard .qn{font-family:var(--mono);font-size:11.5px;color:var(--ink-mute);display:block;margin-bottom:6px}
+.bins{display:grid;gap:9px;grid-template-columns:1fr;margin-top:14px}
+@media(min-width:620px){.bins{grid-template-columns:repeat(3,1fr)}}
+.bin{font-family:var(--body);font-weight:800;font-size:14px;color:var(--ink);background:#16224a;
+  border:1.5px solid var(--line);border-radius:11px;padding:13px 10px;cursor:pointer;transition:.15s;text-align:center;line-height:1.35}
+.bin:hover:not(.locked){border-color:var(--accent);transform:translateY(-2px)}
+.bin.correct{border-color:var(--ok);background:rgba(74,222,128,.16)}
+.bin.wrong{border-color:var(--danger);background:rgba(255,93,108,.14);animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.bin.locked{cursor:default}
+.sfb{margin-top:12px;font-size:13.5px;line-height:1.6;color:var(--ink-dim);background:rgba(74,222,128,.08);
+  border:1px solid #2e6e44;border-radius:11px;padding:11px 13px;display:none}
+.sfb.show{display:block;animation:fade .3s}
+.sfb b{color:var(--ink)}
+.sprog{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:13px;color:var(--ink-mute)}
+.sprog .sbar{flex:1;height:7px;border-radius:99px;background:#16203d;overflow:hidden;border:1px solid var(--line)}
+.sprog .sbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+.sortdone{display:none;align-items:center;gap:8px;margin-top:14px;padding:12px 15px;border-radius:12px;
+  background:rgba(255,209,102,.09);border:1px solid #5a4a1e;color:var(--gold);font-weight:700;font-size:14.5px}
+.sortbox.alldone .sortdone{display:flex;animation:fade .4s}
+
+/* 직접 해 보기 */
+.doit{background:linear-gradient(180deg,#22203f,#141c38);border:1.5px solid #4a3a78;border-radius:15px;padding:20px 22px;margin-top:18px}
+.doit h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.doit ol{margin:10px 0 0 20px;display:grid;gap:7px}
+.doit li{font-size:14.5px;color:var(--ink-dim);line-height:1.55}
+.doit li b{color:var(--ink)}
+.checkline{display:flex;align-items:center;gap:11px;margin-top:16px;padding:12px 14px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);cursor:pointer;transition:.18s;font-size:14.5px;font-weight:700}
+.checkline:hover{border-color:var(--accent)}
+.checkline .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;
+  font-size:14px;color:transparent;transition:.18s}
+.checkline.on{border-color:var(--ok);background:rgba(74,222,128,.1)}
+.checkline.on .box{background:var(--ok);border-color:var(--ok);color:#06210f}
+.checkline.on .box::after{content:"✓"}
 
 /* 그림 슬롯 */
-.fig{margin:14px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830;position:relative}
+.fig{margin:12px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830;position:relative}
 .fig img{display:block;width:100%;height:auto}
 .fig figcaption{font-size:12.5px;color:var(--ink-mute);padding:10px 14px;line-height:1.5;text-align:center;border-top:1px solid var(--line-soft)}
 .fig.slot{display:none;border-style:dashed;border-color:#4a3a78;background:rgba(169,139,255,.05);padding:18px 14px;text-align:center}
@@ -224,18 +220,13 @@ body.teacher .fig.slot{display:block}
 .fig.slot .fe{font-size:24px;opacity:.6}
 .fig.slot .fn{font-family:var(--mono);font-size:11.5px;color:var(--accent2);margin-top:7px;word-break:break-all}
 .fig.slot .fd{font-size:12px;color:var(--ink-mute);margin-top:5px;line-height:1.5}
-.use .fig{margin:0 0 4px}
+.kind .fig{margin:0}
 
-.terms{display:grid;gap:12px;grid-template-columns:1fr 1fr}
-@media(min-width:760px){.terms{grid-template-columns:repeat(4,1fr)}}
-.term{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px;border-top:3px solid var(--c,var(--accent))}
-.term .nm{font-family:var(--jua);font-size:17px;margin-bottom:3px}
-.term .de{font-size:13px;color:var(--ink-mute);line-height:1.5}
-.use-grid{display:grid;gap:14px;grid-template-columns:1fr}
-@media(min-width:680px){.use-grid{grid-template-columns:1fr 1fr}}
-.use{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.use .u-t{font-family:var(--jua);font-size:17px;display:flex;align-items:center;gap:8px}
-.use .u-d{font-size:13.5px;color:var(--ink-dim);line-height:1.55}
+.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:14px}
+table.dtable{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12.5px;padding:10px;text-align:center;border-bottom:1px solid var(--line)}
+.dtable td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line-soft);line-height:1.45}
+.dtable tr:last-child td{border-bottom:0}
 
 .cloze-line{font-size:15.5px;line-height:2.05;color:var(--ink-dim)}
 .cloze-line+.cloze-line{margin-top:6px}
@@ -328,7 +319,7 @@ textarea::placeholder{color:var(--ink-mute)}
   #cover,header.top,nav.tabs,#toast,.prog-list,.cta-row,.btn{display:none!important}
   body{background:#fff;color:#111}
   .panel{display:block!important;page-break-after:always}
-  .card,.lab{background:#fff;border-color:#ccc;box-shadow:none}
+  .card,.kind,.sortbox,.doit{background:#fff;border-color:#ccc;box-shadow:none}
   .lead,.muted,.note{color:#333}
   h1.big,h2.sec,h3.card-t{color:#111}
   .note.class{display:flex!important}
@@ -459,38 +450,6 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
   .bogi{background:#fff;border-color:#ccc}
   .bogi li{color:#111}
 }
-</style>
-
-<style id="xsim-css">
-.xsim{margin-top:14px}
-.xsim-stage{position:relative;border:1.5px solid rgba(128,128,128,.35);border-radius:14px;
- overflow:hidden;background:rgba(127,127,127,.07)}
-.xsim-stage canvas{display:block;width:100%;height:auto}
-.xsim-ctl{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.xsim-btn{font-family:inherit;font-size:14px;font-weight:700;padding:8px 15px;border-radius:10px;cursor:pointer;
- border:1.5px solid rgba(128,128,128,.45);background:rgba(127,127,127,.08);color:inherit;transition:.15s}
-.xsim-btn:hover{border-color:currentColor}
-.xsim-btn.on{background:#2c7a44;border-color:#2c7a44;color:#fff}
-.xsim-btn.warn.on{background:#a05c2c;border-color:#a05c2c}
-.xsim-lab{display:flex;align-items:center;gap:8px;font-size:13.5px}
-.xsim-lab b{font-size:13.5px}
-.xsim-ctl input[type=range]{width:150px;accent-color:#2c7a44}
-.xsim-read{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
-.xsim-r{flex:1 1 118px;border:1px solid rgba(128,128,128,.3);border-radius:11px;padding:8px 11px;text-align:center;
- background:rgba(127,127,127,.07)}
-.xsim-r .k{font-size:12px;opacity:.72;line-height:1.35}
-.xsim-r .v{font-size:19px;font-weight:800;margin-top:3px;line-height:1.2}
-.xsim-r .v small{font-size:12px;font-weight:600;opacity:.75}
-.xsim-msg{margin-top:12px;padding:11px 14px;border-radius:11px;font-size:14.5px;line-height:1.62;
- border:1.5px dashed rgba(128,128,128,.4);background:rgba(127,127,127,.05)}
-.xsim-msg.hit{border-style:solid;border-color:#2c7a44;background:rgba(44,122,68,.1)}
-.xsim-scope{display:inline-block;font-size:12px;font-weight:700;padding:2px 11px;border-radius:99px;
- border:1.5px solid #7d5ba6;color:#7d5ba6;background:rgba(125,91,166,.09);margin-bottom:8px}
-.xsim-why{margin-top:12px;padding:12px 15px;border-radius:12px;border:1px solid rgba(128,128,128,.3);
- background:rgba(127,127,127,.05);font-size:14px;line-height:1.68}
-.xsim-why b{font-weight:800}
-.xsim-why .h{font-weight:800;font-size:14.5px;margin-bottom:5px}
-.xsim-why+.xsim-why{margin-top:9px}
 </style>
 
 <style id="sum-css">
@@ -650,27 +609,27 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 
 <div id="cover">
   <div class="cover-in">
-    <div class="cover-emoji">🎈 🌌 ↔️</div>
-    <h1 class="cover-title">우주에는<br>중심이 없다</h1>
-    <p class="cover-sub">풍선 하나로 알아보는 팽창하는 우주 ✨</p>
+    <div class="cover-emoji">🌫️ 🐴 ⚪</div>
+    <h1 class="cover-title">검게 보이는 것도<br>천체다</h1>
+    <p class="cover-sub">성운과 성단에는 어떤 갈래가 있을까 ✨</p>
     <div class="cover-meta">
       <span class="badge">⏱️ 45분</span>
-      <span class="badge">📘 VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ④ · 286~287쪽</span>
+      <span class="badge">📘 VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ③ · 284~285쪽</span>
       <span class="badge gold" id="coverSaved" style="display:none">🔖 이어서 하기</span>
     </div>
     <div class="steps-card">
       <h3>💡 학습 단계 안내</h3>
       <ol>
-        <li><span class="sn">1</span><div><b>생각 열기</b> — 은하들은 왜 서로 멀어지고 있을까</div></li>
-        <li><span class="sn">2</span><div><b>탐구하기</b> — 예측하고, 풍선을 불어 거리를 재기</div></li>
-        <li><span class="sn">3</span><div><b>개념 잡기</b> — 풍선의 무엇이 우주이고 무엇이 은하일까</div></li>
-        <li><span class="sn">4</span><div><b>적용하기</b> — 과거의 우주는 어떤 모습이었을까</div></li>
+        <li><span class="sn">1</span><div><b>마주하기</b> — 밝은 성운과 검은 성운이 나란히 있다</div></li>
+        <li><span class="sn">2</span><div><b>견주어 보기</b> — 성운 3갈래, 성단 2갈래를 나란히 놓기</div></li>
+        <li><span class="sn">3</span><div><b>기준 세우기</b> — 무엇으로 갈리는지 한 줄로 정리</div></li>
+        <li><span class="sn">4</span><div><b>판별하기</b> — 설명만 보고 어느 갈래인지 가려내기</div></li>
         <li><span class="sn">5</span><div><b>확인하기</b> — 배운 것 점검하기</div></li>
-        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 허블이 본 것 · 우주의 끝은 어디인가</div></li>
+        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 적외선으로 보면 암흑 성운 뒤가 보인다</div></li>
       </ol>
     </div>
     <div class="cover-cta">
-      <button class="btn primary xl" id="coverGo">풍선 불러 가기 🎈</button>
+      <button class="btn primary xl" id="coverGo">갈래 나누러 가기 🌫️</button>
       <span class="cover-hint">진행 상황은 이 기기에 자동 저장돼요 · 왼쪽 위 제목을 누르면 이 화면으로 돌아옵니다</span>
  <span class="cover-hint" id="coverModeHint">🎯 <b>혼자 탐구</b>로 하려면 오른쪽 위 🎯 버튼 — 학번·이름(·참여 코드)을 넣으면 미션을 하나씩 깨며 나아가요. 코드가 없어도 할 수 있고, 다 마치면 📄 <b>학습 결과 PDF</b>로 저장해 낼 수 있어요.</span>
     </div>
@@ -680,9 +639,9 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 <header class="top">
   <div class="top-bar">
     <button class="brand" id="brandBtn" title="표지로 돌아가기">
-      <div class="logo">🎈</div>
-      <div><b>우주에는 <span>중심이 없다</span></b>
-        <div class="sub">VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ④ · 중2 과학</div></div>
+      <div class="logo">🌫️</div>
+      <div><b>검게 보이는 것도 <span>천체다</span></b>
+        <div class="sub">VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ③ · 중2 과학</div></div>
     </button>
     <div class="head-right">
       <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
@@ -698,10 +657,10 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
     </div>
   </div>
   <nav class="tabs" id="tabNav">
-    <button data-tab="engage" class="active"><span class="sn"><i>1</i></span>생각 열기</button>
-    <button data-tab="explore"><span class="sn"><i>2</i></span>탐구하기</button>
-    <button data-tab="explain"><span class="sn"><i>3</i></span>개념 잡기</button>
-    <button data-tab="apply"><span class="sn"><i>4</i></span>적용하기</button>
+    <button data-tab="face" class="active"><span class="sn"><i>1</i></span>마주하기</button>
+    <button data-tab="compare"><span class="sn"><i>2</i></span>견주어 보기</button>
+    <button data-tab="rule"><span class="sn"><i>3</i></span>기준 세우기</button>
+    <button data-tab="judge"><span class="sn"><i>4</i></span>판별하기</button>
     <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
     <span class="tab-sep"></span>
  <button data-tab="sum" class="optional"><span class="sn"><i>+</i></span>📝 개념 정리하기</button>
@@ -714,33 +673,33 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 <main>
 
 <!-- 1 -->
-<section class="panel show" id="panel-engage">
-  <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">생각 열기 · 오늘의 수수께끼</span></div>
-  <h1 class="big">우주에는<br><span class="t2">중심</span>이 없다.</h1>
+<section class="panel show" id="panel-face">
+  <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">마주하기 · 오늘의 수수께끼</span></div>
+  <h1 class="big">검게 보이는 것도<br><span class="t3">천체</span>다.</h1>
   <p class="lead" style="margin-top:16px">
-    망원경으로 먼 은하들을 관측한 과학자들은 이상한 것을 발견했습니다.
-    <b class="k">어느 방향을 봐도 은하들이 우리에게서 멀어지고 있었던</b> 거예요.
-    사방이 전부 멀어진다니 — 그렇다면 <b>우리가 우주의 한복판</b>에 있다는 뜻일까요?
-    답은 그보다 훨씬 이상합니다.
+    지난 시간에 만난 <b class="k">말머리성운</b>을 떠올려 보세요. 밝은 배경 앞에 말 머리 모양의
+    <b class="t3">검은 그림자</b>가 서 있었죠. 빛나지도 않는데 왜 '성운'이라고 부를까요?
+    아무것도 없는 빈 구멍이 아니라, <b class="k">거기에 무언가가 있다</b>는 뜻입니다.
   </p>
-  <figure class="fig" data-fig="galaxies"
-    data-alt="여러 은하가 사방으로 흩어지듯 퍼져 있는 깊은 우주"
-    data-cap="우주에는 우리은하 외에도 수많은 은하가 있습니다. 이를 외부 은하라고 해요."></figure>
+  <figure class="fig" data-fig="horsehead"
+    data-alt="밝은 붉은 성운 앞에 말 머리 모양의 검은 성운이 실루엣으로 서 있는 모습"
+    data-cap="말머리성운 — 검게 보이지만 분명히 '있는' 천체입니다."></figure>
 
   <div class="card" style="margin-top:20px">
-    <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🌌 우리은하 밖에도 은하가 있다</h2>
+    <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🌫️ 성운은 한 종류가 아니다</h2>
     <p class="lead" style="font-size:17.5px">
-      우주에는 우리은하 외에도 수많은 은하가 있습니다. 이 은하들을 <b class="t5">외부 은하</b>라고 해요.
-      여러 과학자들은 수많은 외부 은하가 <b class="k">서로 멀어지고 있다</b>는 사실을 관측하여,
-      우주가 팽창하고 있음을 알아냈습니다.</p>
-    <div class="note class"><span class="ic">💬</span><div><b>도입 들어가기</b> — 과학기술 발달로 멀리 있는 천체까지의 거리를 잴 수 있게 되면서 외부 은하의 존재를 알게 되었음을 짚어 주세요. 그 '거리 재는 법'이 바로 1~3차시에서 배운 것들입니다. <b>예시 답안</b>: 우주가 팽창하고 있어서 은하들이 서로 멀어지고 있을 것이다.</div></div>
+      지난 시간에는 <b class="t1">성운</b>과 <b class="t4">성단</b>을 가르는 데까지 왔습니다.
+      그런데 성운끼리도 생김새가 딴판이었죠 — 붉게 <b>밝은 것</b>과 시커멓게 <b>어두운 것</b>.
+      성단도 <b>엉성한 것</b>과 <b>빽빽한 것</b>이 있었고요.
+      오늘은 그 안을 다시 갈라 봅니다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>도입 들어가기</b> — 앞 차시에서 비교·분석한 자료를 다시 띄워 놓고 시작하세요. 학생들이 모은 기록에서 "밝은 것/어두운 것", "엉성한 것/빽빽한 것"이 이미 나와 있습니다. <b>그 말을 그대로 받아</b> 갈래 이름을 붙여 주는 방식이 가장 자연스럽습니다.</div></div>
   </div>
  <div class="card" style="margin-top:18px">
  <h3 class="card-t">🤔 내 생각부터</h3>
  <div class="think" data-stage="1">
- <div class="th">✍️ 은하들이 서로 멀어지는 우주, 내 생각<span class="req">10자 이상</span></div>
- <div class="hint">풍선에 그린 점들을 떠올려 예상해 보세요.</div>
- <textarea data-think="guess" data-ime="submit" rows="3" placeholder="예) 우주가 커지면 은하 사이가 …"></textarea>
+ <div class="th">✍️ 별이 없는 것처럼 보이는 검은 부분, 내 생각<span class="req">10자 이상</span></div>
+ <div class="hint">별이 정말 없는 것인지, 무언가가 가린 것인지.</div>
+ <textarea data-think="guess" data-ime="submit" rows="3" placeholder="예) …이 가려서 …"></textarea>
  <div class="cnt"><span class="n">0자</span><span class="savemark">✔ 저장됨</span></div>
  <div class="sub-row"><button type="button" class="btn primary sm" data-submit="think">📮 제출하기</button><span class="sub-st" data-substatus="think"></span></div>
  </div>
@@ -751,366 +710,215 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
     <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 할 수 있다</h3>
     <div class="grid c2">
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c2);color:#062a28;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
-        <div><b class="k">모형을 이용해 우주가 팽창하고 있음을 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">풍선의 무엇이 우주이고 무엇이 은하인지까지.</span></div>
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#3a0a06;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
+        <div><b class="k">성운의 종류와 특징을 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">방출·반사·암흑 세 갈래.</span></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c3);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
-        <div><b class="k">멀리 있을수록 더 많이 멀어진다는 것을 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">직접 재어 확인한 자료로.</span></div>
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c4);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
+        <div><b class="k">성단의 종류와 특징을 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">산개·구상 두 갈래.</span></div>
       </div>
     </div>
     <div class="pill-list">
-      <span class="pill">핵심어 · <b>외부 은하</b></span><span class="pill"><b>우주 팽창</b></span>
-      <span class="pill"><b>138억 년</b></span><span class="pill"><b>중심이 없다</b></span>
+      <span class="pill">핵심어 · <b>방출 성운</b></span><span class="pill"><b>반사 성운</b></span>
+      <span class="pill"><b>암흑 성운</b></span><span class="pill"><b>산개 성단</b></span><span class="pill"><b>구상 성단</b></span>
     </div>
   </div>
-  <div class="cta-row"><button class="btn primary" data-go="explore">2단계 · 풍선으로 확인하기 →</button></div>
+  <div class="cta-row"><button class="btn primary" data-go="compare">2단계 · 다섯 갈래를 나란히 보기 →</button></div>
 </section>
 
 <!-- 2 -->
-<section class="panel" id="panel-explore">
-  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">탐구하기 · 예측 → 측정 → 설명</span></div>
-  <h2 class="sec">풍선에 붙임딱지를 붙이고 불어 봅시다</h2>
-  <p class="lead">교과서 탐구입니다. 재어 보기 전에 — 먼저 예측부터.</p>
+<section class="panel" id="panel-compare">
+  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">견주어 보기 · 다섯 갈래를 나란히</span></div>
+  <h2 class="sec">성운 세 갈래</h2>
+  <p class="lead">모두 성간 물질이 모인 것인데, <b class="k">빛을 어떻게 다루느냐</b>가 다릅니다.</p>
 
-  <div class="card" style="margin-top:20px">
-    <div class="badge" style="margin-bottom:12px">🔮 ① 예측 (Predict)</div>
-    <h3 class="card-t">풍선을 크게 불면, <span class="t1">가까이 붙은 두 딱지</span>와 <span class="t5">멀리 떨어진 두 딱지</span> 중
-      어느 쪽이 <b>더 많이</b> 멀어질까?</h3>
-    <div class="choices" id="poeChoices">
-      <button class="choice" data-poe="a"><span class="key">가</span>가까운 쪽이 더 많이 멀어진다</button>
-      <button class="choice" data-poe="b"><span class="key">나</span>멀리 있는 쪽이 더 많이 멀어진다</button>
-      <button class="choice" data-poe="c"><span class="key">다</span>둘 다 똑같이 멀어진다</button>
+  <div class="kinds">
+    <div class="kind" style="--kc:var(--c1)">
+      <div class="kn">🔴 방출 성운</div>
+      <figure class="fig" data-fig="emission" data-alt="붉은빛을 스스로 내며 넓게 퍼진 방출 성운"></figure>
+      <div class="kd">성간 물질이 주변의 별빛을 <b>흡수하여 가열되면서</b> 스스로 빛을 내는 성운.</div>
+      <div class="kk">빛을 <b>스스로 낸다</b> · 붉은빛을 띠는 경우가 많다 · 예) 오리온대성운</div>
     </div>
-    <div class="explain" id="poeExplain"></div>
-    <p class="help">'다'를 고르는 학생이 많습니다. 풍선이 고르게 부풀면 다들 똑같이 멀어질 것 같으니까요.</p>
-    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 손을 들어 <b>집계</b>하고 칠판에 적어 두세요. 측정 뒤에 그 숫자를 다시 보여 주면 인지 갈등이 오래 남습니다. 이 예측이 오늘 수업의 핵심 발견으로 이어집니다.</div></div>
-  </div>
-
-  <!-- 풍선 실험실 -->
-  <div class="card" style="margin-top:18px">
-    <div class="badge" style="margin-bottom:12px">📏 ② 측정 (Observe)</div>
-    <div class="lab">
-      <h3>🎈 풍선 우주 실험실</h3>
-      <p class="lead" style="font-size:17px">슬라이더로 풍선을 불어 보세요. 붙임딱지 사이의 거리가 <b>줄자로 잰 것처럼</b> 표시됩니다.</p>
-      <div class="simgrid">
-        <div class="simstage"><canvas id="balcv" height="300"></canvas></div>
-        <div class="simctl">
-          <h4>조작판</h4>
-          <div class="ctl">
-            <label>풍선 불기 <span class="val" id="vS">1.0배</span></label>
-            <input type="range" id="simS" min="100" max="260" step="1" value="100">
-          </div>
-          <div class="readout">
-            <div class="r near"><div class="lab2">가까운 두 딱지 <b>㉮–㉯</b></div><div class="v" id="rNear">—</div></div>
-            <div class="r far"><div class="lab2">먼 두 딱지 <b>㉰–㉱</b></div><div class="v" id="rFar">—</div></div>
-          </div>
-          <div class="readout">
-            <div class="r near"><div class="lab2">㉮–㉯ 거리 변화</div><div class="v" id="dNear">—</div></div>
-            <div class="r far"><div class="lab2">㉰–㉱ 거리 변화</div><div class="v" id="dFar">—</div></div>
-          </div>
-          <p class="help" id="simMsg">풍선을 불면서 두 거리 변화를 비교해 보세요.</p>
-        </div>
-      </div>
-      <p class="honest"><span class="ic">📌</span>화면의 풍선은 <b>옆에서 자른 단면</b>입니다. 딱지는 모두 <b>표면 위</b>에 있어요 — 안쪽이 아닙니다. 이 점이 오늘 가장 중요합니다.</p>
-
-      <div class="dl-head">
-        <h4>📊 붙임딱지 사이의 거리</h4>
-        <div class="btn-row">
-          <button class="btn primary sm" id="simMark">📋 기록하기</button>
-          <button class="btn ghost sm" id="simCopy">표 복사</button>
-          <button class="btn ghost sm" id="simClear">비우기</button>
-        </div>
-      </div>
-      <div class="dtable-wrap"><table class="dtable" id="simTable"></table></div>
-      <div class="graph-wrap"><canvas id="simGraph" height="230"></canvas></div>
-      <div class="legend">
-        <span><i style="background:#ff8fb1"></i>가까운 두 딱지</span>
-        <span><i style="background:#c4a7ff"></i>먼 두 딱지</span>
-      </div>
-      <p class="help">가로축은 <b>처음 거리</b>, 세로축은 <b class="t3">거리 변화</b>입니다. 점이 쌓이면 관계가 보여요.</p>
-      <div class="note class"><span class="ic">💬</span><div><b>탐구 지도 유의점</b> — ① 실제 풍선으로도 꼭 해 보게 하세요. 화면은 예습·복습용입니다. ② 거리가 <b>서로 다른</b> 딱지 쌍을 고르게 해야 이 차시의 핵심(멀수록 더 많이 멀어짐)이 드러납니다. ③ <b>교과서 예시값</b>: 가까운 쌍 6 → 7.5 cm(변화 1.5), 먼 쌍 11.5 → 16 cm(변화 4.5).</div></div>
+    <div class="kind" style="--kc:var(--c2)">
+      <div class="kn">🔵 반사 성운</div>
+      <figure class="fig" data-fig="reflection" data-alt="주변 별빛을 반사해 푸르게 보이는 반사 성운"></figure>
+      <div class="kd">주변의 별빛을 <b>반사하여</b> 밝게 보이는 성운.</div>
+      <div class="kk">빛을 <b>되비춘다</b> · 푸른빛을 띠는 경우가 많다 · 예) 플레이아데스성단 주변</div>
+    </div>
+    <div class="kind" style="--kc:var(--c3)">
+      <div class="kn">⬛ 암흑 성운</div>
+      <figure class="fig" data-fig="dark" data-alt="뒤쪽 별빛을 가로막아 검은 실루엣으로 보이는 암흑 성운"></figure>
+      <div class="kd">뒤쪽에서 오는 별빛을 <b>가로막아</b> 어둡게 보이는 성운.</div>
+      <div class="kk">빛을 <b>막는다</b> · 검은 실루엣으로 보인다 · 예) 말머리성운</div>
+    </div>
+    <div class="kind" style="--kc:var(--ink-mute)">
+      <div class="kn">🧠 한 문장으로</div>
+      <div class="kd">성운 세 갈래는 <b class="t1">스스로 낸다</b> · <b class="t2">되비춘다</b> · <b class="t3">막는다</b>로 갈립니다.
+        셋 다 <b>성간 물질이 모인 천체</b>라는 점은 같아요.</div>
+      <div class="kk">검게 보인다고 '없는 것'이 아니라, <b>막고 있어서</b> 검은 겁니다.</div>
     </div>
   </div>
 
-<div class="card xsim" id="rub-card">
- <span class="xsim-scope">🔎 왜 그럴까 · 성취기준 밖 보조 자료</span>
- <h3 class="card-t">➖ 고무줄 우주 — 어느 은하에서 보아도 똑같다</h3>
- <p class="lead say">풍선 모형에는 한 가지 함정이 있습니다. 풍선 <b>속</b>을 우주라고 착각하기 쉽거든요.
- 그래서 한 줄로 더 단순하게 만들어 봤습니다. 고무줄 위에 은하 다섯 개를 얹고 늘여 볼 거예요.
- <b class="k">기준이 되는 은하를 바꿔 가며</b> 결과가 어떻게 달라지는지 확인해 보세요.</p>
- <div class="keyline-s"><span class="kw">고무줄을 늘인다</span><span class="arw">→</span><span class="kw">모든 은하가 멀어짐</span><span class="arw">→</span><span class="kw hi">기준을 바꿔도 결과가 같다</span><span class="memo"></span></div>
+  <h2 class="sec" style="margin-top:30px">성단 두 갈래</h2>
+  <p class="lead">모두 별이 모인 것인데, <b class="k">어떻게 모여 있느냐</b>가 다릅니다.</p>
 
- <div class="xsim-stage"><canvas id="rubCv" height="250" aria-label="고무줄 위에 놓인 다섯 개의 은하. 고무줄을 늘이면 모든 은하 사이가 멀어지며, 어느 은하를 기준으로 삼아도 멀리 있는 은하일수록 빨리 멀어진다."></canvas></div>
-
- <div class="xsim-ctl">
-  <span class="xsim-lab"><b>고무줄 늘이기</b></span>
-  <input type="range" id="rubS" min="100" max="220" step="1" value="100">
-  <span class="xsim-lab"><b id="rubSV">1.00 배</b></span>
-  <span class="xsim-lab" style="margin-left:14px"><b>기준 은하:</b></span>
-  <button class="xsim-btn on" data-ref="0">A</button>
-  <button class="xsim-btn" data-ref="2">C</button>
-  <button class="xsim-btn" data-ref="4">E</button>
- </div>
-
- <div class="xsim-read" id="rubRead"></div>
- <div class="xsim-msg" id="rubMsg">고무줄을 늘여 보세요. 그다음 <b>기준 은하를 A → C → E로 바꿔</b> 가며 표가 어떻게 되는지 보세요.</div>
-
- <div class="xsim-why"><div class="h">🤯 놀라운 결론 — 중심이 없다</div>
- 어느 은하를 기준으로 잡아도 <b>"멀리 있는 은하일수록 빨리 멀어진다"</b>는 결과가 <b>똑같이</b> 나옵니다.
- A에서 봐도, 한가운데 C에서 봐도, 끝에 있는 E에서 봐도 마찬가지예요.<br>
- 그렇다면 <b>어느 은하가 중심일까요?</b> 정답은 <b>"중심은 없다"</b>입니다. 모두가 "내가 중심인 것 같다"고 느낄 뿐이죠.
- 우리은하에서 관측한 결과가 "사방의 은하가 멀어진다"인 것도 <b>우리가 중심이라서가 아니라</b>,
- <b>공간 자체가 늘어나고 있어서</b>입니다.</div>
- <div class="xsim-why"><div class="h">🎈 풍선 모형과 이어 보기</div>
- 고무줄(1차원)을 풍선 표면(2차원)으로 바꾸면 그것이 풍선 모형입니다. 중요한 건 <b>풍선의 껍질</b>이지 <b>속이 아니에요.</b>
- 우주는 풍선 <b>표면</b> 같은 것 — 그래서 "우주의 중심이 어디냐"는 질문에 답이 없는 겁니다.</div>
-
- <div class="note class"><span class="ic">💬</span><div><b>이야기 각본</b> — ① 기준 A로 늘이기 → "멀리 있을수록 많이 멀어졌죠?" ② <b>기준을 C로 바꿉니다</b> → "어? C에서 봐도 똑같네요?" ③ E로 또 바꿈 → "여기서도!" ④ 질문 — <b>"그럼 누가 중심이죠?"</b> ⑤ "아무도 아닙니다. 늘어난 건 은하가 아니라 <b>은하 사이의 공간</b>이니까요."</div></div>
-</div>
-
-<script>
-(function(){
-  var cv=document.getElementById('rubCv'); if(!cv) return;
-  var cx=cv.getContext('2d'), W=640, H=250;
-  var NAMES=['A','B','C','D','E'], HOME=[0,0.22,0.46,0.72,1.0], ref=0;
-  function fit(){var b=cv.parentElement.clientWidth||640; if(b<10)b=640; W=b;
-    var d=Math.min(devicePixelRatio||1,2); cv.width=W*d; cv.height=H*d;
-    cv.style.height=H+'px'; cx.setTransform(d,0,0,d,0,0);}
-  var sl=document.getElementById('rubS');
-  sl.addEventListener('input',render);
-  document.querySelectorAll('[data-ref]').forEach(function(b){
-    b.addEventListener('click',function(){
-      document.querySelectorAll('[data-ref]').forEach(function(x){x.classList.toggle('on',x===b);});
-      ref=+b.dataset.ref; render();
-    });
-  });
-  function render(){
-    var bw=cv.parentElement.clientWidth; if(bw>10&&Math.abs(bw-W)>2) fit();
-    var k=sl.value/100;
-    var x0=46, span=(W-92);
-    cx.clearRect(0,0,W,H);
-    /* 늘이기 전 (연한 회색) */
-    var y1=88, y2=168;
-    cx.strokeStyle='rgba(128,128,128,.35)'; cx.lineWidth=3;
-    cx.beginPath(); cx.moveTo(x0,y1); cx.lineTo(x0+span*0.62,y1); cx.stroke();
-    cx.font='12.5px Pretendard, sans-serif'; cx.textAlign='left';
-    cx.fillStyle='rgba(127,127,127,.85)'; cx.fillText('늘이기 전', 8, y1-16);
-    for(var i=0;i<5;i++){
-      var gx=x0+span*0.62*HOME[i];
-      cx.fillStyle='rgba(143,208,255,.5)'; cx.beginPath(); cx.arc(gx,y1,9,0,6.2832); cx.fill();
-      cx.fillStyle='rgba(127,127,127,.9)'; cx.font='700 11px Pretendard, sans-serif'; cx.textAlign='center';
-      cx.fillText(NAMES[i], gx, y1-14);
-    }
-    /* 늘인 후 */
-    var stretch=0.62*k;
-    cx.strokeStyle='#6ef0e6'; cx.lineWidth=3;
-    cx.beginPath(); cx.moveTo(x0,y2); cx.lineTo(x0+span*Math.min(1,stretch),y2); cx.stroke();
-    cx.textAlign='left'; cx.fillStyle='rgba(127,127,127,.85)'; cx.font='12.5px Pretendard, sans-serif';
-    cx.fillText('늘인 후', 8, y2-16);
-    var px=[];
-    for(var j=0;j<5;j++){
-      var gx2=x0+span*Math.min(1,stretch)*HOME[j];
-      px.push(gx2);
-      var isRef=(j===ref);
-      cx.fillStyle=isRef?'#a9f07a':'#8fd0ff';
-      cx.beginPath(); cx.arc(gx2,y2,isRef?12:9,0,6.2832); cx.fill();
-      if(isRef){ cx.strokeStyle='#2c7a44'; cx.lineWidth=2.5; cx.stroke(); }
-      cx.fillStyle='rgba(127,127,127,.95)'; cx.font='700 12px Pretendard, sans-serif'; cx.textAlign='center';
-      cx.fillText(NAMES[j], gx2, y2-18);
-      if(isRef){ cx.fillStyle='#2c7a44'; cx.font='700 11px Pretendard, sans-serif';
-        cx.fillText('여기서 관측', gx2, y2+26); }
-    }
-    /* 기준에서 각 은하로 화살표 */
-    for(var m=0;m<5;m++){
-      if(m===ref) continue;
-      var d0=Math.abs(HOME[m]-HOME[ref])*span*0.62;
-      var d1=Math.abs(HOME[m]-HOME[ref])*span*Math.min(1,stretch);
-      var grow=d1-d0;
-      if(grow<2) continue;
-      var dir=(px[m]>px[ref])?1:-1;
-      cx.strokeStyle='rgba(255,159,190,.85)'; cx.lineWidth=2;
-      var ay=y2+46+Math.abs(m-ref)*0;
-      cx.beginPath(); cx.moveTo(px[m]-dir*Math.min(grow,60), ay); cx.lineTo(px[m], ay);
-      cx.lineTo(px[m]-dir*7, ay-4); cx.moveTo(px[m],ay); cx.lineTo(px[m]-dir*7, ay+4); cx.stroke();
-    }
-    cx.fillStyle='rgba(255,159,190,.95)'; cx.font='11.5px Pretendard, sans-serif'; cx.textAlign='center';
-    cx.fillText('분홍 화살표 = 기준 은하에서 볼 때 멀어진 정도', W/2, H-12);
-    /* 표 */
-    var out='';
-    for(var n=0;n<5;n++){
-      if(n===ref) continue;
-      var dist0=Math.abs(HOME[n]-HOME[ref]);
-      var grow2=dist0*(k-1);
-      out+='<div class="xsim-r"><div class="k">'+NAMES[ref]+' → '+NAMES[n]+'<br><small>처음 거리 '+(dist0*10).toFixed(1)+'</small></div>'
-         +'<div class="v" style="color:#ff9fbe">'+(grow2*10).toFixed(2)+'<small> 만큼 멀어짐</small></div></div>';
-    }
-    document.getElementById('rubRead').innerHTML=out;
-    document.getElementById('rubSV').textContent=k.toFixed(2)+' 배';
-    var msg=document.getElementById('rubMsg');
-    if(k>1.05){
-      msg.className='xsim-msg hit';
-      msg.innerHTML='기준 은하 <b>'+NAMES[ref]+'</b>에서 보니 <b>멀리 있는 은하일수록 더 많이 멀어졌습니다.</b> '
-        +'이제 <b>기준을 다른 은하로 바꿔</b> 보세요 — 결과가 똑같다면, 중심은 어디일까요?';
-    } else {
-      msg.className='xsim-msg';
-      msg.innerHTML='고무줄을 늘여 보세요. 그다음 <b>기준 은하를 A → C → E로 바꿔</b> 가며 표가 어떻게 되는지 보세요.';
-    }
-  }
-  addEventListener('resize',function(){fit(); render();});
-  fit(); render();
-})();
-</script>
-
-
-
-  <div class="card" style="margin-top:18px">
-    <div class="badge" style="margin-bottom:12px">💡 ③ 설명 (Explain)</div>
-    <p class="lead" style="font-size:17.5px">
-      풍선의 표면이 팽창할수록 붙임딱지 사이의 거리는 <b class="k">멀어집니다.</b>
-      그런데 딱지의 위치에 따라 <b class="t3">거리 변화 값이 다릅니다</b> —
-      원래 멀리 있던 딱지일수록 더 많이 멀어져요.
-      실제 우주에서도 마찬가지입니다. 우주가 팽창함에 따라 은하들이 서로 멀어지고 있고,
-      <b class="k">멀리 있는 은하일수록 더 빨리 멀어집니다.</b></p>
-    <div class="miniquiz" data-quiz="explore"></div>
+  <div class="kinds">
+    <div class="kind" style="--kc:var(--c4)">
+      <div class="kn">✨ 산개 성단</div>
+      <figure class="fig" data-fig="open" data-alt="별 수십 개가 일정한 모양 없이 느슨하게 흩어져 모인 산개 성단"></figure>
+      <div class="kd">수십 개~수만 개의 별이 <b>일정한 모양 없이 엉성하게</b> 모여 있는 성단.</div>
+      <div class="kk">별 수 <b>수십~수만 개</b> · 느슨하다 · 예) 플레이아데스성단(좀생이별)</div>
+    </div>
+    <div class="kind" style="--kc:var(--c5)">
+      <div class="kn">⚪ 구상 성단</div>
+      <figure class="fig" data-fig="globular" data-alt="수만 개의 별이 공 모양으로 빽빽하게 모인 구상 성단"></figure>
+      <div class="kd">수만 개~수십만 개의 별이 <b>공 모양으로 빽빽하게</b> 모여 있는 성단.</div>
+      <div class="kk">별 수 <b>수만~수십만 개</b> · 빽빽하다 · 공 모양 · 예) M22</div>
+    </div>
   </div>
-  <div class="cta-row"><button class="btn primary" data-go="explain">3단계 · 풍선의 무엇이 우주일까 →</button></div>
+  <p class="honest" style="margin-top:12px"><span class="ic">📌</span>별의 개수는 대략적인 범위입니다. 시험에서는 <b>'엉성하게'와 '공 모양으로 빽빽하게'</b>라는 모양 차이가 핵심이에요.</p>
+
+  <div class="cta-row"><button class="btn primary" data-go="rule">3단계 · 기준을 한 줄로 정리하기 →</button></div>
 </section>
 
 <!-- 3 -->
-<section class="panel" id="panel-explain">
-  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">개념 잡기 · 모형을 정확히 읽기</span></div>
-  <h2 class="sec">풍선의 '표면'이 우주다</h2>
-  <p class="lead">이 모형은 아주 강력하지만, <b class="k">한 군데만 잘못 읽으면 전부 어긋납니다.</b> 그 지점을 먼저 잡고 갑시다.</p>
+<section class="panel" id="panel-rule">
+  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">기준 세우기 · 무엇으로 갈리는가</span></div>
+  <h2 class="sec">외우지 말고, 기준을 잡으세요</h2>
+  <p class="lead">다섯 갈래를 통째로 외우면 사흘이면 사라집니다.
+    <b class="k">"무엇으로 갈리는가"</b> 한 줄만 잡으면 시험장에서도 만들어 낼 수 있어요.</p>
 
   <div class="card" style="margin-top:20px">
-    <div class="note myth"><span class="ic">⚠️</span><div><b>오해 ①</b> — "우주는 부풀어 오르는 풍선의 <b>안쪽 공간</b>이다."<br>
-      → <b class="k">아닙니다.</b> 우주는 풍선의 <b class="t2">표면</b>입니다. 은하는 표면에 붙은 딱지이고요.
-      풍선 안쪽은 이 모형에서 <b>아무 의미가 없습니다.</b></div></div>
-    <div class="note myth"><span class="ic">⚠️</span><div><b>오해 ②</b> — "사방에서 멀어지니까 <b>우리은하가 우주의 중심</b>이다."<br>
-      → <b class="k">아닙니다.</b> 풍선 표면의 <b>어느 딱지</b>에 올라타도 나머지가 전부 멀어지는 것처럼 보입니다.
-      모든 은하가 서로 멀어지고 있으므로, 우주의 중심은 <b>어디에도 없습니다.</b></div></div>
-    <p class="help">두 번째 오해를 깨는 가장 좋은 방법 — 실험실로 돌아가 <b>다른 딱지를 기준으로 상상해</b> 보세요. 그 딱지에서 봐도 나머지는 다 멀어집니다.</p>
-    <div class="note class"><span class="ic">💬</span><div><b>오개념 지도</b> — 교과서가 이 차시에서 오개념을 <b>두 개나</b> 명시한 이유가 있습니다. 풍선 모형은 직관적이라 잘 먹히지만, 바로 그 직관 때문에 '안쪽 공간'과 '중심'을 만들어 냅니다. <b>탐구 활동 중에 반드시 "우주는 풍선의 어디인가?"를 물으세요.</b></div></div>
-  </div>
-
-  <div class="card" style="margin-top:18px">
-    <h3 class="card-t" style="margin-bottom:14px">모형 대응표</h3>
+    <h3 class="card-t">📊 갈림표</h3>
     <div class="dtable-wrap">
       <table class="dtable">
-        <tr><th>풍선 모형에서</th><th>실제 우주에서</th></tr>
-        <tr><td class="t2" style="font-weight:800">풍선의 표면</td><td>우주</td></tr>
-        <tr><td class="t1" style="font-weight:800">붙임딱지</td><td>은하</td></tr>
-        <tr><td>풍선을 부는 것</td><td>우주의 팽창</td></tr>
-        <tr><td>딱지 사이 거리가 멀어짐</td><td>은하 사이 거리가 멀어짐</td></tr>
+        <tr><th>큰 갈래</th><th>가르는 기준</th><th>작은 갈래</th></tr>
+        <tr><td rowspan="3" style="font-weight:800;color:var(--c1)">성운<br><span style="font-size:14.5px;color:var(--ink-mute);font-weight:400">성간 물질이 모임</span></td>
+            <td rowspan="3">빛을 어떻게 하는가</td>
+            <td><b class="t1">방출</b> — 스스로 낸다</td></tr>
+        <tr><td><b class="t2">반사</b> — 되비춘다</td></tr>
+        <tr><td><b class="t3">암흑</b> — 가로막는다</td></tr>
+        <tr><td rowspan="2" style="font-weight:800;color:var(--c4)">성단<br><span style="font-size:14.5px;color:var(--ink-mute);font-weight:400">별이 모임</span></td>
+            <td rowspan="2">어떻게 모여 있는가</td>
+            <td><b class="t4">산개</b> — 엉성하게</td></tr>
+        <tr><td><b class="t5">구상</b> — 공 모양으로 빽빽하게</td></tr>
       </table>
     </div>
-    <div class="terms" style="margin-top:16px">
-      <div class="term" style="--c:var(--c5)"><div class="nm t5">외부 은하</div><div class="de">우리은하 밖에 있는 수많은 은하.</div></div>
-      <div class="term" style="--c:var(--c2)"><div class="nm t2">우주 팽창</div><div class="de">특별한 중심 없이 모든 방향으로 계속 커지는 것.</div></div>
-      <div class="term" style="--c:var(--c4)"><div class="nm t4">138억 년</div><div class="de">과학자들이 추정하는 우주의 나이.</div></div>
-      <div class="term" style="--c:var(--c3)"><div class="nm t3">거리 변화</div><div class="de">멀리 있는 것일수록 더 크다.</div></div>
-    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>판서 팁</b> — 이 표를 칠판에 <b>기준 열만 먼저</b> 쓰고 학생들이 작은 갈래를 채우게 하세요. "빛을 어떻게 하는가"라는 한 줄을 잡으면 방출·반사·암흑이 스스로 나옵니다.</div></div>
   </div>
 
   <!-- 빈칸 -->
   <div class="card cloze-set" style="margin-top:18px">
     <div class="badge" style="margin-bottom:12px">✍️ 빈칸을 눌러 확인 — 먼저 머릿속으로 답한 뒤에</div>
     <p class="cloze-line">
-      우리은하 밖에 있는 수많은 은하를 <span class="cloze" data-ans="외부 은하" data-c="c5">　</span>라고 한다.
+      <span class="cloze" data-ans="방출" data-c="c1">　</span> 성운은 성간 물질이 주변의 별빛을 흡수하여 가열되면서
+      <span class="cloze" data-ans="스스로 빛을 내는" data-c="c1">　</span> 성운이다.
     </p>
     <p class="cloze-line">
-      풍선 모형에서 풍선의 <span class="cloze" data-ans="표면" data-c="c2">　</span>은 우주를,
-      붙임딱지는 <span class="cloze" data-ans="은하" data-c="c1">　</span>를 뜻한다.
+      <span class="cloze" data-ans="반사" data-c="c2">　</span> 성운은 주변의 별빛을
+      <span class="cloze" data-ans="반사하여" data-c="c2">　</span> 밝게 보이는 성운이다.
     </p>
     <p class="cloze-line">
-      풍선이 팽창할수록 붙임딱지 사이의 거리는 <span class="cloze" data-ans="멀어지고" data-c="c3">　</span>,
-      원래 거리가 <span class="cloze" data-ans="멀수록" data-c="c3">　</span> 거리 변화 값이 크다.
+      <span class="cloze" data-ans="암흑" data-c="c3">　</span> 성운은 뒤쪽에서 오는 별빛을
+      <span class="cloze" data-ans="가로막아" data-c="c3">　</span> 어둡게 보이는 성운이다.
     </p>
     <p class="cloze-line">
-      은하가 서로 멀어지고 있는 까닭은 우주가 <span class="cloze" data-ans="팽창" data-c="c2">　</span>하기 때문이다.
-    </p>
-    <p class="cloze-line">
-      우주는 약 <span class="cloze" data-ans="138억 년" data-c="c4">　</span> 전에 탄생한 이후,
-      특별한 <span class="cloze" data-ans="중심 없이" data-c="c2">　</span> 모든 방향으로 계속 팽창해 오늘날과 같은 우주가 되었다.
+      <span class="cloze" data-ans="산개" data-c="c4">　</span> 성단은 별이 일정한 모양 없이
+      <span class="cloze" data-ans="엉성하게" data-c="c4">　</span> 모여 있고,
+      <span class="cloze" data-ans="구상" data-c="c5">　</span> 성단은 별이
+      <span class="cloze" data-ans="공 모양" data-c="c5">　</span>으로 빽빽하게 모여 있다.
     </p>
     <div class="cloze-done">✅ 이 문단은 다 채웠어요!</div>
     <p class="cloze-hint">빈칸을 그냥 눌러 답만 보면 남지 않아요. 소리 내어 답해 보고 누르세요.</p>
   </div>
 
+  <!-- 교과서 해 보기 -->
+  <div class="doit">
+    <h3>🎨 해 보기 — 성운과 성단 모형 만들기</h3>
+    <p class="lead" style="font-size:17px">교과서 활동입니다. 모둠에서 표현하고 싶은 천체를 하나 골라 모형으로 만듭니다.</p>
+    <ol>
+      <li><b>반사 성운 모형</b> — 상자 옆면에 구멍 두 개를 뚫고 한쪽에 셀로판지를 붙입니다.
+        상자 안에 향 연기를 채운 뒤, 셀로판지 쪽에서 손전등을 비추고 <b>다른 구멍으로 안을 들여다봅니다.</b></li>
+      <li><b>구상 성단 모형</b> — 길게 연결된 <b>엘이디 전구</b>를 공 모양으로 뭉친 뒤 전원을 연결합니다.</li>
+      <li>완성한 모형으로 그 천체의 <b>특징을 설명</b>해 봅니다.</li>
+    </ol>
+    <div class="note" style="border-color:var(--danger);background:rgba(255,93,108,.07)">
+      <span class="ic">⚠️</span><div><b>안전</b> — 상자에 <b>향이 직접 닿지 않도록</b> 주의하세요. 연기만 채우는 것이 목적입니다.</div></div>
+    <div class="checkline" id="modelCheck" role="button" tabindex="0">
+      <span class="box"></span><span>모형을 만들고 특징을 설명했어요!</span>
+    </div>
+    <div class="note class"><span class="ic">💬</span><div><b>지도</b> — 모둠마다 다른 갈래를 맡기면 다섯 갈래가 한 교실에 모입니다. 발표 때 <b>"우리 모형은 빛을 ○○한다"</b>는 문장을 꼭 넣게 하세요 — 3단계에서 세운 기준을 말로 확인하는 자리입니다.</div></div>
+  </div>
+
  <div class="card" style="margin-top:18px">
  <h3 class="card-t">✍️ 내 말로 정리</h3>
  <div class="think" data-stage="3">
- <div class="th">✍️ 내 말로 정리 — 팽창하는 우주<span class="req">10자 이상</span></div>
- <div class="hint">「멀수록 빨리」「중심 없음」 중 하나를 넣어서.</div>
- <textarea data-think="summary" data-ime="submit" rows="3" placeholder="예) 멀리 있는 은하일수록 …"></textarea>
+ <div class="th">✍️ 내 말로 정리 — 성운과 성단의 갈래<span class="req">10자 이상</span></div>
+ <div class="hint">「방출·반사·암흑」「산개·구상」 낱말을 넣어서.</div>
+ <textarea data-think="summary" data-ime="submit" rows="3" placeholder="예) 성운은 …로 나뉘고 성단은 …"></textarea>
  <div class="cnt"><span class="n">0자</span><span class="savemark">✔ 저장됨</span></div>
  <div class="sub-row"><button type="button" class="btn primary sm" data-submit="think">📮 제출하기</button><span class="sub-st" data-substatus="think"></span></div>
  </div>
  </div>
-  <div class="miniquiz" data-quiz="explain"></div>
-  <div class="cta-row"><button class="btn primary" data-go="apply">4단계 · 과거의 우주를 상상하기 →</button></div>
+  <div class="cta-row"><button class="btn primary" data-go="judge">4단계 · 직접 가려내기 →</button></div>
 </section>
 
 <!-- 4 -->
-<section class="panel" id="panel-apply">
-  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">적용하기 · 시간을 거꾸로 돌리면</span></div>
-  <h2 class="sec">필름을 거꾸로 감아 봅시다</h2>
-  <p class="lead">지금 우주가 커지고 있다면, 시간을 거꾸로 돌렸을 때 우주는 어떤 모습이었을까요?
-    이 질문 하나가 <b class="k">우주의 시작</b>에 대한 생각으로 이어졌습니다.</p>
+<section class="panel" id="panel-judge">
+  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">판별하기 · 설명만 보고 갈래 찾기</span></div>
+  <h2 class="sec">이건 어느 갈래일까?</h2>
+  <p class="lead">이름은 가렸습니다. <b class="k">설명만 읽고</b> 어느 갈래인지 골라 보세요. 여덟 문제입니다.</p>
 
-  <div class="card" style="margin-top:20px">
+  <div class="sortbox" id="sortBox">
+    <h3>🔍 갈래 가려내기</h3>
+    <div class="qcard" id="qCard"></div>
+    <div class="bins" id="binRow"></div>
+    <div class="sfb" id="sfb"></div>
+    <div class="sprog"><span id="sprogTxt">0 / 8</span><span class="sbar"><i id="sprogBar"></i></span></div>
+    <div class="sortdone">🏅 여덟 문제를 모두 가려냈어요! 기준이 머릿속에 섰습니다.</div>
+    <div class="btn-row"><button class="btn ghost sm" id="sortReset">처음부터 다시</button></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
     <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">사고력</span></h3>
     <p class="lead" style="font-size:17.5px;margin-top:10px">
-      팽창하는 우주의 <b class="k">과거 모습</b>은 현재와 어떤 차이가 있을지 설명해 보세요.</p>
-    <textarea data-ime="submit" id="essay" placeholder="힌트: 풍선을 거꾸로 바람 빼면 딱지들은 어떻게 될까요? 은하 사이의 거리는? 우주의 크기는?"></textarea>
+      아래 그림은 우리은하의 한 영역을 촬영한 것입니다.
+      <b class="k">점선 안쪽에서 별이 거의 보이지 않는 까닭</b>을,
+      우리은하를 구성하는 천체의 특징과 관련지어 설명해 보세요.</p>
+    <figure class="fig" data-fig="darkregion"
+      data-alt="별이 가득한 영역 가운데 점선으로 표시된 부분만 별이 거의 보이지 않는 사진"></figure>
+    <textarea data-ime="submit" id="essay" placeholder="힌트: 별이 '없어진' 걸까요, 아니면 무언가가 '가리고 있는' 걸까요?"></textarea>
     <span class="savemark" id="essaySaved">✔ 저장됨</span>
  <div class="sub-row"><button type="button" class="btn primary sm" data-submit="essay">📮 제출하기</button><span class="sub-st" data-substatus="essay"></span></div>
     <div class="btn-row"><button class="btn ghost sm" id="ansBtn">모범 답안 확인하기</button></div>
     <div class="explain" id="modelAns" style="margin-top:12px">
       <div class="why">✍️ 모범 답안</div>
-      우주는 계속 팽창해 왔으므로, 과거의 우주는 현재보다 <b>크기가 작았고</b>
-      은하와 은하 사이의 <b>거리도 더 가까웠을</b> 것이다.
+      점선 안쪽은 <b>암흑 성운</b>이 있는 영역이다.
+      암흑 성운은 뒤쪽에서 오는 별빛을 <b>가로막기</b> 때문에 그 자리의 별이 거의 보이지 않는다.
     </div>
-    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 여기서 <b>"그럼 아주 먼 과거에는?"</b>까지만 물어 보세요. 학생들이 "한 점"이라고 말하면 그 생각이 <b>빅뱅 우주론</b>이라고 이름만 알려 주고 넘어갑니다. <b>적색 편이·허블 법칙·가속 팽창은 이 차시에서 다루지 않습니다.</b></div></div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — "별이 없다"고 쓰는 학생이 많습니다. <b>"가로막는다"</b>는 낱말이 문장에 들어갔는지 서로 점검하게 하세요. 오늘 수업의 후킹 문장("검게 보이는 것도 천체다")이 여기서 회수됩니다.</div></div>
   </div>
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎲 한 문제 더 <span class="badge" style="vertical-align:middle">사고력</span></h3>
     <p class="lead" style="font-size:16px;margin-top:8px">같은 개념, 다른 상황입니다. 먼저 <b>자기 문장으로</b> 말해 보거나 공책에 쓴 뒤, 모범 답안을 여세요.</p>
     <div style="border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px">
-      <p class="lead" style="font-size:16.5px;margin:0"><b>Q1.</b> 풍선 모형에서 스티커(은하) 사이는 멀어지지만 <b>스티커 자체는 커지지 않았습니다.</b> 실제 우주에서도 은하 사이는 멀어지는데 은하 자신, 별, 지구, 우리 몸은 커지지 않아요. 그 까닭을 추리해 보세요.</p>
+      <p class="lead" style="font-size:16.5px;margin:0"><b>Q1.</b> 밤하늘 사진에서 어떤 성운은 <b>붉게</b>, 어떤 성운은 <b>파랗게</b> 빛납니다. 두 성운 모두 스스로 빛을 내지 못하는 가스와 먼지 덩어리일 뿐인데, 색이 다른 까닭을 <b>곁에 있는 별</b>과 관련지어 설명해 보세요.</p>
       <details style="margin-top:10px">
         <summary style="cursor:pointer;font-weight:700;color:var(--c2)">✍️ 모범 답안 보기</summary>
-        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">팽창은 은하 사이의 <b>텅 빈 광대한 공간</b>에서 일어납니다. 은하 안에서는 별과 물질이 <b>서로 당기는 힘(중력)으로 단단히 묶여</b> 있어서, 공간이 팽창해도 흩어지지 않고 뭉친 채로 있어요. 그래서 은하 <b>사이의 거리만</b> 멀어지고, 은하·별·지구·우리 몸의 크기는 그대로입니다.</div>
+        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">붉은 성운(<b>방출 성운</b>)은 근처의 뜨거운 별에서 에너지를 받아 가스가 스스로 <b>붉게 빛나는</b> 것이고, 파란 성운(<b>반사 성운</b>)은 별빛을 <b>반사</b>해서 파랗게 보이는 것입니다. 성운의 색은 성운 자신이 아니라 <b>곁의 별과 빛을 주고받는 방식</b>이 정해요. 별빛을 아예 가로막으면 검게 보이는 암흑 성운이 됩니다.</div>
       </details>
     </div>
     <div style="border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px">
-      <p class="lead" style="font-size:16.5px;margin:0"><b>Q2.</b> 아주 먼 은하에 사는 외계 과학자도 하늘을 관측하면 "모든 은하가 <b>우리에게서</b> 멀어진다"고 결론 내릴 것입니다. 그 은하도, 우리은하도 우주의 중심이 아닌데 둘 다 자기가 중심인 것처럼 보이는 까닭을 풍선 모형으로 설명해 보세요.</p>
+      <p class="lead" style="font-size:16.5px;margin:0"><b>Q2.</b> 산개 성단에는 <b>파란 별</b>이 많고, 구상 성단에는 <b>붉은 별</b>이 많습니다. 파랗고 뜨거운 별일수록 연료를 빨리 써 버려 <b>수명이 짧다</b>는 사실을 함께 쓰면, 두 성단의 나이에 대해 어떤 추리를 할 수 있을까요?</p>
       <details style="margin-top:10px">
         <summary style="cursor:pointer;font-weight:700;color:var(--c2)">✍️ 모범 답안 보기</summary>
-        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">풍선이 부풀 때 <b>어느 스티커 위에서 보아도</b> 다른 스티커들이 모두 멀어지고, 멀리 있는 스티커일수록 더 빨리 멀어집니다. 풍선 표면에 "팽창의 중심"이라 할 지점이 없는 것처럼, <b>우주의 팽창에도 특별한 중심이 없어요.</b> 그래서 어느 은하에서 관측해도 자신이 중심인 것처럼 보이는 것입니다.</div>
+        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">파란 별은 수명이 짧아 <b>생긴 지 오래되지 않은 집단에서만</b> 볼 수 있습니다. 산개 성단에 파란 별이 많다는 것은 별들이 <b>젊다</b>는 뜻이에요. 반대로 구상 성단에 붉은 별만 남았다는 것은, 파란 별들이 이미 수명을 다해 사라질 만큼 <b>늙은 집단</b>이라는 뜻입니다. 색만 보고도 성단의 나이를 추리할 수 있어요.</div>
       </details>
     </div>
   </div>
 
 
-  <h3 class="card-t" style="margin-top:26px">🌍 생활 속에서 견주어 보기</h3>
-  <div class="use-grid" style="margin-top:14px">
-    <div class="use">
-      <figure class="fig" data-fig="dough" data-alt="건포도가 박힌 반죽이 부풀면서 건포도 사이가 멀어지는 모습"></figure>
-      <div class="u-t">🍞 부풀어 오르는 건포도 빵</div>
-      <div class="u-d">반죽이 부풀면 건포도들이 서로 멀어집니다. 건포도가 스스로 기어간 게 아니라
-        <b class="k">사이의 반죽이 늘어난</b> 거죠. 어느 건포도에서 봐도 나머지가 다 멀어집니다.</div>
-    </div>
-    <div class="use">
-      <figure class="fig" data-fig="rubber" data-alt="점이 찍힌 고무줄을 양쪽으로 당기면 점 사이 간격이 벌어지는 모습"></figure>
-      <div class="u-t">➰ 점 찍은 고무줄 늘이기</div>
-      <div class="u-d">고무줄에 점을 여러 개 찍고 잡아당겨 보세요. 이웃한 점보다
-        <b class="t3">멀리 있던 점이 훨씬 많이</b> 벌어집니다. 오늘 풍선에서 확인한 것과 똑같아요.</div>
-    </div>
-  </div>
-  <p class="help">두 비유 모두 <b>공간 자체가 늘어난다</b>는 점이 핵심입니다. 은하가 공간 속을 날아다니는 게 아니에요.</p>
-
+  <div class="miniquiz" data-quiz="judge"></div>
   <div class="cta-row"><button class="btn primary" data-go="check">5단계 · 얼마나 알게 됐는지 확인 →</button></div>
 </section>
 
@@ -1169,45 +977,41 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 
 <section class="panel" id="panel-beyond">
   <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
-  <h2 class="sec">허블이 본 것, 그리고 우주의 끝</h2>
+  <h2 class="sec">검은 커튼을 통과하는 빛</h2>
   <p class="lead">여기서부터는 교과서 밖 이야기입니다. 외울 필요 없어요.</p>
 
   <div class="grid c2" style="margin-top:20px">
     <div class="card">
-      <h3 class="card-t">🔭 허블이 알아낸 방법</h3>
+      <h3 class="card-t">🔦 적외선으로 보면 뒤가 보인다</h3>
       <p class="lead" style="font-size:17.5px;margin-top:8px">
-        <b class="k">에드윈 허블</b>은 외부 은하들을 관측하다가 두 가지를 발견했습니다.
-        여러 은하가 <b>서로 멀어지고 있고</b>, 게다가 <b class="t3">멀리 떨어진 은하일수록 더 빠른 속도로</b> 멀어지고 있다는 것.
-        그는 이 관측 결과를 근거로 <b>우주가 팽창하고 있다</b>는 사실을 밝혀냈습니다.<br><br>
-        그 뒤 많은 과학자들은 <b class="k">우주가 한 점에서 시작해 팽창했다</b>는 빅뱅 우주론을 내놓게 됩니다.</p>
-      <p class="help">여러분이 오늘 풍선에서 찾아낸 "멀수록 더 많이 멀어진다"가 바로 허블이 별을 보며 알아낸 것과 같은 관계입니다.</p>
+        암흑 성운을 <b class="k">파장이 긴 적외선</b>으로 관측하면, 그 뒤에 숨어 있던 별들이 나타납니다.
+        빛은 일반적으로 <b>파장이 길수록 흡수와 산란이 적게</b> 일어나서, 성간 물질에 크게 방해받지 않고
+        우리 눈(정확히는 관측 장비)까지 도달하거든요.</p>
+      <p class="help">그래서 제임스 웹 우주 망원경은 적외선으로 봅니다. 먼지 커튼 뒤에서 <b>막 태어나는 별</b>을 보려고요.</p>
     </div>
     <div class="card">
-      <h3 class="card-t">🌐 그럼 우주의 끝은 어디?</h3>
+      <h3 class="card-t">🗺️ 어디에 모여 있을까</h3>
       <p class="lead" style="font-size:17.5px;margin-top:8px">
-        풍선 표면에 사는 개미를 상상해 보세요. 개미가 아무리 걸어도 <b>끝(가장자리)을 만날 수 없습니다.</b>
-        그렇다고 표면이 무한한 것도 아니에요 — 넓이는 분명히 정해져 있죠.
-        <b class="k">끝은 없는데 무한하지도 않은</b> 이상한 상태입니다.<br><br>
-        우주도 그럴 수 있습니다. 그래서 "우주의 끝에 가면 뭐가 있어요?"라는 질문에
-        과학자들은 <b>"끝이 있다는 전제부터 다시 보자"</b>고 답합니다.</p>
+        두 성단은 우리은하 안에서 <b>사는 동네가 다릅니다.</b><br>
+        <b class="t4">산개 성단</b>은 주로 <b>나선팔</b>에 분포하고,<br>
+        <b class="t5">구상 성단</b>은 주로 <b>중심부</b>와 우리은하 전체를 감싼 <b>공 모양 공간(헤일로)</b>에 분포해요.</p>
+      <p class="help">5차시에서 만난 <b>헤일로</b>가 여기서 다시 나옵니다. 성간 물질과 성운도 주로 나선팔에 많아서, 은하수를 보면 밝은 부분과 함께 군데군데 어두운 부분이 나타나죠.</p>
     </div>
   </div>
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
     <p class="lead" style="font-size:18.5px;margin-top:10px">
-      <b class="k">"우주에는 중심이 없다."</b><br><br>
-      사방의 은하가 전부 우리에게서 멀어지는 걸 보고, 사람들은 잠깐
-      <b>우리가 우주의 한복판에 있나</b> 생각했습니다.
-      하지만 풍선 표면의 어느 딱지에 올라타도 똑같은 풍경이 보이죠.
-      멀어지는 건 은하가 아니라 <b class="t2">그 사이의 공간</b>이었으니까요.<br><br>
-      과학의 역사는 <b class="k">인간을 중심에서 밀어내는 역사</b>이기도 했습니다.
-      지구가 우주의 중심이 아니라는 것(코페르니쿠스), 태양계도 은하의 중심이 아니라는 것(5차시에서 배웠죠 — 8500 pc 벗어난 나선팔),
-      그리고 오늘, <b>우주에는 중심이라는 자리 자체가 없다</b>는 것.<br><br>
-      우리는 특별한 자리에 있지 않습니다. 그런데도 이 모든 걸 알아냈다는 게, 어쩌면 더 특별한 일이에요.
+      <b class="k">"검게 보이는 것도 천체다."</b><br><br>
+      말머리성운이 검은 이유는 거기에 <b>아무것도 없어서</b>가 아니라,
+      오히려 <b class="t3">무언가가 잔뜩 있어서</b>였습니다. 뒤에서 오는 빛을 가로막을 만큼요.<br><br>
+      게다가 그 검은 커튼 안쪽에서는 <b class="k">새로운 별이 태어나고 있습니다.</b>
+      우리 눈에 가장 아무것도 없어 보이던 자리가, 사실은 가장 활발하게 무언가 만들어지는 곳이었던 거죠.<br><br>
+      "안 보인다"와 "없다"는 다른 말입니다. 이 단원에서 우리가 계속 배우고 있는 게 바로 그것이에요.
     </p>
     <div class="cta-row" style="justify-content:center">
-      <button class="btn ghost" data-go="engage">1단계로 돌아가기 ↑</button>
+      <button class="btn ghost" data-go="face">1단계로 돌아가기 ↑</button>
+      <a class="btn ghost" href="3d-milkyway.html" target="_blank">🌌 3D 은하에서 성단 분포 보기 ↗</a>
       <a class="btn ghost" href="index.html">🌌 단원 허브로</a>
     </div>
   </div>
@@ -1246,173 +1050,181 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
  <div class="zt-r"><button type="button" class="btn primary sm" id="ztOk">알겠어요</button><button type="button" class="zt-x" id="ztNever">다시 보지 않기</button></div>
 </div>
 <div id="toast"></div>
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">제작 : 과학을 사랑하는 선생님 · © 2026 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
 <script>
 "use strict";
 const FIGS={
-  galaxies:'img/e-galaxies.jpg', dough:'img/e-dough.jpg', rubber:'img/e-rubber.jpg'
+  horsehead:'img/n-horsehead.jpg', emission:'img/n-emission.jpg', reflection:'img/n-reflection.jpg',
+  dark:'img/n-dark.jpg', open:'img/n-open.jpg', globular:'img/n-globular.jpg', darkregion:'img/n-darkregion.jpg'
 };
-const BG_IMAGES={cover:'',engage:'',explore:'',explain:'',apply:'',check:'',sum:'',beyond:''};
+const BG_IMAGES={cover:'',face:'',compare:'',rule:'',judge:'',check:'',sum:'',beyond:''};
 const BG_FALLBACK={
-  cover:'radial-gradient(120% 90% at 50% 0%, #2a3a5e, #070c1a 68%)',
-  engage:'radial-gradient(110% 80% at 50% 0%, #2a3a5e, #070c1a 66%)',
-  explore:'radial-gradient(100% 80% at 50% 20%, #262a56, #070c1a 70%)',
-  explain:'linear-gradient(180deg, #24284c, #070c1a 74%)',
-  apply:'radial-gradient(90% 80% at 68% 15%, #221f4a, #070c1a 70%)',
+  cover:'radial-gradient(120% 90% at 50% 0%, #4a2a3e, #070c1a 68%)',
+  face:'radial-gradient(110% 80% at 50% 0%, #4a2a3e, #070c1a 66%)',
+  compare:'radial-gradient(100% 80% at 50% 20%, #2e2a56, #070c1a 70%)',
+  rule:'linear-gradient(180deg, #262450, #070c1a 74%)',
+  judge:'radial-gradient(90% 80% at 68% 15%, #221f4a, #070c1a 70%)',
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
   sum:'radial-gradient(105% 85% at 50% 10%, rgba(127,127,127,.06), transparent 68%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
-const SAVE='galaxy_expand_v2';
+const SAVE='galaxy_nebula_v2';
 
-const POE_ANSWER='b';
-const POE_WHY={
-  right:'맞았어요! 원래 <b>멀리 있던 것일수록 더 많이</b> 멀어집니다. 아래 실험실에서 직접 재어 확인해 봅시다.',
-  wrong:'많은 사람이 그렇게 생각해요 — 풍선이 고르게 부니까 다 똑같을 것 같죠. 하지만 실제로는 <b>원래 멀리 있던 쪽이 훨씬 많이</b> 멀어집니다. 아래에서 직접 재어 보세요.'
-};
-
-/* 풍선 모형 — 표면 위 네 딱지. 호의 길이로 거리를 잰다. */
-const NEAR_A=0.30, FAR_A=0.575;   // 라디안 간격 (기준 반지름에서 6cm, 11.5cm)
-const R_UNIT=20;                  // R×각도 = cm (교과서 예시값에 맞춤)
+/* 판별 문제 8개 — 이름을 가리고 설명만 제시 */
+const KINDS=[
+  {k:'emission',  nm:'방출 성운', c:'c1'},
+  {k:'reflection',nm:'반사 성운', c:'c2'},
+  {k:'dark',      nm:'암흑 성운', c:'c3'},
+  {k:'open',      nm:'산개 성단', c:'c4'},
+  {k:'globular',  nm:'구상 성단', c:'c5'}
+];
+const JUDGE=[
+  {q:'성간 물질이 주변의 <b>별빛을 흡수하여 가열</b>되면서 스스로 빛을 낸다.', a:'emission',
+   why:'스스로 빛을 내면 <b>방출 성운</b>입니다.'},
+  {q:'수만 개~수십만 개의 별이 <b>공 모양으로 빽빽하게</b> 모여 있다.', a:'globular',
+   why:'공 모양 + 빽빽 → <b>구상 성단</b>입니다.'},
+  {q:'뒤쪽에서 오는 <b>별빛을 가로막아</b> 어둡게 보인다.', a:'dark',
+   why:'막아서 검게 보이면 <b>암흑 성운</b>. 없는 게 아니라 있는 겁니다.'},
+  {q:'수십 개~수만 개의 별이 <b>일정한 모양 없이 엉성하게</b> 모여 있다.', a:'open',
+   why:'느슨하게 흩어져 모이면 <b>산개 성단</b>입니다.'},
+  {q:'주변의 <b>별빛을 반사하여</b> 밝게 보인다.', a:'reflection',
+   why:'스스로 내는 게 아니라 되비추면 <b>반사 성운</b>입니다.'},
+  {q:'말머리 모양의 <b>검은 실루엣</b>으로 보이는 오리온자리의 천체.', a:'dark',
+   why:'말머리성운 — 대표적인 <b>암흑 성운</b>입니다.'},
+  {q:'좀생이별이라고도 불리며, 파랗게 빛나는 별 예닐곱 개가 <b>느슨하게</b> 모여 맨눈으로도 보인다.', a:'open',
+   why:'플레이아데스성단 — <b>산개 성단</b>입니다. 주변에 반사 성운도 있어요.'},
+  {q:'오리온자리에 있으며 <b>붉은색으로 밝게</b> 빛나는 대표적인 성운.', a:'emission',
+   why:'오리온대성운 — <b>방출 성운</b>입니다.'}
+];
 
 const QUIZ_SETS={
-  explore:{title:'측정 결과 확인', qs:[
-    {q:'풍선을 크게 불었을 때, 거리 변화 값이 더 큰 쪽은?',
-     ch:[{t:'원래 멀리 떨어져 있던 두 딱지',ok:1},{t:'원래 가까이 붙어 있던 두 딱지',ok:0},{t:'둘이 같다',ok:0}],
-     why:'원래 거리가 <b>멀수록</b> 거리 변화 값이 큽니다.'},
-    {q:'붙임딱지가 스스로 기어서 멀어진 걸까?',
-     ch:[{t:'아니다 — 사이의 풍선 표면이 늘어난 것이다',ok:1},{t:'그렇다 — 딱지가 표면 위를 이동했다',ok:0}],
-     why:'딱지는 제자리입니다. <b>사이의 공간</b>이 늘어난 거예요. 실제 은하도 마찬가지입니다.'}
-  ]},
-  explain:{title:'모형 정확히 읽기', qs:[
-    {q:'풍선 모형에서 우주에 해당하는 것은?',
-     ch:[{t:'풍선의 표면',ok:1},{t:'풍선의 안쪽 공간',ok:0},{t:'풍선을 부는 사람',ok:0}],
-     why:'우주는 <b>표면</b>입니다. 안쪽은 이 모형에서 의미가 없어요.'},
-    {q:'우리은하가 우주의 중심이라고 할 수 있을까?',
-     ch:[{t:'없다 — 모든 은하가 서로 멀어지고 있다',ok:1},
-         {t:'있다 — 모든 은하가 우리에게서 멀어지므로',ok:0}],
-     why:'어느 은하에서 봐도 나머지가 다 멀어져 보입니다. 중심은 <b>어디에도 없어요.</b>'}
+  judge:{title:'갈래 확인', qs:[
+    {q:'성운을 세 갈래로 나누는 기준은 무엇일까?',
+     ch:[{t:'빛을 어떻게 하는가(스스로 냄·반사·가로막음)',ok:1},
+         {t:'별이 모여 있는 정도',ok:0},
+         {t:'우리은하 안에서의 위치',ok:0}],
+     why:'두 번째는 <b>성단</b>을 가르는 기준입니다.'},
+    {q:'암흑 성운이 검게 보이는 까닭은?',
+     ch:[{t:'뒤쪽에서 오는 별빛을 가로막기 때문',ok:1},
+         {t:'그 자리에 아무것도 없기 때문',ok:0},
+         {t:'별이 모두 사라졌기 때문',ok:0}],
+     why:'없어서가 아니라 <b>있어서</b> 검은 겁니다.'}
   ]}
 };
 
 const GAME_QS=[
- {id:"u1",
+ {id:"n1",
   difficulty:"하",
-  intent:"허블의 관측 사실과 그 결론(우주 팽창)을 아는지 확인한다.",
-  stem:"다음은 우주 팽창에 대한 설명이다. ( ) 안에 들어갈 말을 옳게 짝 지은 것은?<br><br>「허블은 외부 은하를 관측하여 은하들이 서로 ( ㉠ ) 있다는 사실을 알아냈다. 이를 통해 우주가 ( ㉡ )하고 있다는 것을 알아냈다.」",
-  ch:[{t:"㉠ 멀어지고, ㉡ 팽창",ok:1},{t:"㉠ 가까워지고, ㉡ 수축",ok:0},{t:"㉠ 멀어지고, ㉡ 수축",ok:0},{t:"㉠ 가까워지고, ㉡ 팽창",ok:0},{t:"㉠ 멈추어, ㉡ 팽창",ok:0}],
-  why:"허블은 외부 은하들이 우리은하로부터 <b>멀어지고</b> 있으며, 멀리 있는 은하일수록 더 빠르게 멀어진다는 것을 관측했습니다. 은하 사이 공간이 늘어나고 있다는 뜻이므로 우주는 <b>팽창</b>하고 있어요."},
+  intent:"성운과 성단을 구분하고 성운의 세 종류를 아는지 확인한다.",
+  stem:"성운에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+  boxes:["모든 성운은 스스로 빛을 낸다.", "수많은 별이 모여 무리를 이루고 있는 천체이다.", "성운의 종류에는 방출 성운, 반사 성운, 암흑 성운 등이 있다."],
+  boxVerdicts:[false, false, true],
+  ch:[{t:"ㄱ",ok:0},{t:"ㄷ",ok:1},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0}],
+  why:"성운은 별이 아니라 <b>성간 물질(가스와 티끌)</b>이 구름처럼 모인 것입니다(ㄴ ✗, 그것은 성단). 스스로 빛을 내는 것은 방출 성운뿐이고, 반사 성운은 별빛을 반사하며 암흑 성운은 어둡게 보여요(ㄱ ✗, ㄷ ○)."},
 
- {id:"u2",
+ {id:"n2",
+  difficulty:"중",
+  intent:"방출·반사·암흑 성운의 빛나는 원리와 색을 정확히 구분하는지 확인한다.",
+  stem:"여러 가지 성운에 대한 설명으로 옳은 것은?",
+  ch:[{t:"방출 성운, 반사 성운, 암흑 성운은 모두 가스와 티끌 등의 성간 물질이 모여 형성되었다.",ok:1},{t:"암흑 성운은 별빛을 흡수하여 스스로 빛을 낸다.",ok:0},{t:"방출 성운은 주변의 별빛을 반사하여 밝게 보인다.",ok:0},{t:"반사 성운은 뒤쪽에서 오는 별빛을 가로막아 어둡게 보인다.",ok:0},{t:"방출 성운은 주로 파란색으로 보이고, 반사 성운은 주로 붉은색으로 보인다.",ok:0}],
+  why:"세 성운 모두 재료는 같은 <b>성간 물질</b>이고, 근처에 별이 있는지·어떻게 빛을 받는지에 따라 다르게 보입니다. 방출 성운은 가열되어 <b>스스로 붉게</b> 빛나고, 반사 성운은 별빛을 반사해 <b>파랗게</b> 보이며, 암흑 성운은 뒤쪽 별빛을 가로막아 어둡게 보여요."},
+
+ {id:"n3",
   difficulty:"하",
-  intent:"우주 팽창의 기본 성질(균일·지속·과거의 크기)을 아는지 확인한다.",
-  stem:"우주 팽창에 대한 설명으로 옳지 <u>않은</u> 것은?",
-  ch:[{t:"시간이 흐를수록 은하 사이의 거리는 계속 멀어진다.",ok:0},{t:"팽창하고 있는 우주의 시간을 과거로 되돌린다면 우주의 크기는 현재와 동일할 것이다.",ok:1},{t:"우주는 특별한 중심 없이 모든 방향으로 팽창한다.",ok:0},{t:"우주는 모든 지점에서 균일하게 팽창한다.",ok:0},{t:"시간이 흐를수록 우주의 크기는 점점 커진다.",ok:0}],
-  why:"지금 팽창하고 있으니 필름을 거꾸로 감듯 과거로 되돌리면 우주는 지금보다 <b>작았을</b> 것입니다. 우주는 특별한 중심 없이 모든 곳에서 균일하게 팽창하고, 그래서 은하 사이 거리는 계속 멀어져요."},
+  intent:"설명문을 읽고 성단·성운의 종류를 가려내는지 확인한다.",
+  stem:"다음은 우리은하를 이루는 천체에 대한 설명이다. (가)~(다)에 해당하는 천체를 옳게 짝 지은 것은?<br><br>(가) 수만 개~수십만 개의 별이 빽빽하게 모여서 공 모양을 이루고 있다.<br>(나) 성간 물질이 근처에 있는 고온의 별로부터 에너지를 받아 가열되어 스스로 빛을 낸다.<br>(다) 가스와 티끌이 뒤쪽에서 오는 별빛을 가로막아 어둡게 보인다.",
+  ch:[{t:"(가) 암흑 성운, (나) 반사 성운, (다) 구상 성단",ok:0},{t:"(가) 구상 성단, (나) 방출 성운, (다) 암흑 성운",ok:1},{t:"(가) 구상 성단, (나) 반사 성운, (다) 산개 성단",ok:0},{t:"(가) 산개 성단, (나) 방출 성운, (다) 암흑 성운",ok:0},{t:"(가) 산개 성단, (나) 산개 성단, (다) 반사 성운",ok:0}],
+  why:"공 모양으로 빽빽한 별 무리는 <b>구상 성단</b>, 가열되어 스스로 빛나는 구름은 <b>방출 성운</b>, 별빛을 가로막아 어두운 구름은 <b>암흑 성운</b>입니다. 별 무리인지(성단) 성간 물질인지(성운)부터 가르면 쉬워요."},
 
- {id:"u3",
+ {id:"n4",
   difficulty:"중",
-  intent:"풍선 모형의 대응 관계와 결과 표(1.5배)를 해석하고, 모형의 한계(딱지 크기)를 아는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 ㄱ·ㄴ·ㄷ의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 작게 불었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 더 크게 불었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄴ</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄴ과 ㄷ</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄷ</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">작게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">5</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">크게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">7.5</text></svg>",
-  stem:"그림과 표는 풍선에 붙임딱지 ㄱ~ㄷ을 붙이고 바람을 넣으며 붙임딱지 사이의 거리를 잰 탐구 결과이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["풍선 표면은 우주 공간에, 붙임딱지는 은하에 해당한다.", "풍선이 커지면 모든 붙임딱지 사이의 거리가 같은 비율(1.5배)로 멀어진다.", "풍선이 커지면 붙임딱지 자체의 크기도 1.5배로 커진다."],
-  boxVerdicts:[true, true, false],
-  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"풍선 <b>표면</b>이 우주 공간, <b>붙임딱지</b>가 은하입니다(ㄱ ○). 2 → 3, 3 → 4.5, 5 → 7.5로 모든 거리가 <b>1.5배</b>가 되었어요(ㄴ ○). 붙임딱지는 늘어나지 않으므로 은하 자체가 커지는 것이 아니라 은하 <b>사이의 공간</b>이 늘어난다는 뜻입니다(ㄷ ✗)."},
+  intent:"산개 성단과 구상 성단의 특징(모양·별의 수·나이·색·분포)을 비교하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 226\" width=\"560\" height=\"226\" role=\"img\" aria-label=\"(가) 산개 성단: 파란색 별 십여 개가 일정한 모양 없이 듬성듬성 모여 있다. (나) 구상 성단: 붉은색 별 수백 개가 공 모양으로 빽빽하게 모여 있다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"30\" y=\"20\" width=\"230\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"75\" cy=\"75\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"100\" cy=\"115\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"125\" cy=\"60\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"155\" cy=\"125\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"180\" cy=\"80\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"205\" cy=\"120\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"135\" cy=\"150\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"195\" cy=\"150\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"90\" cy=\"155\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"170\" cy=\"50\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"220\" cy=\"65\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"65\" cy=\"130\" r=\"3.0\" fill=\"#9ec5ff\"/><text x=\"145\" y=\"212\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">(가) 산개 성단</text><rect x=\"300\" y=\"20\" width=\"230\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.7\" cy=\"110.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.8\" cy=\"95.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.3\" cy=\"118.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"399.0\" cy=\"102.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"427.1\" cy=\"97.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.2\" cy=\"127.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"405.5\" cy=\"87.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"431.0\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"390.3\" cy=\"115.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"424.5\" cy=\"84.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.8\" cy=\"122.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"389.3\" cy=\"90.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"439.1\" cy=\"99.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"394.4\" cy=\"135.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.5\" cy=\"73.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"435.0\" cy=\"121.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"376.5\" cy=\"107.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"437.7\" cy=\"81.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"414.3\" cy=\"131.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"388.8\" cy=\"74.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"448.1\" cy=\"108.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"393.7\" cy=\"120.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.1\" cy=\"64.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"432.4\" cy=\"133.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"368.1\" cy=\"91.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.1\" cy=\"86.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"402.9\" cy=\"136.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.0\" cy=\"58.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.2\" cy=\"123.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.4\" cy=\"114.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"440.7\" cy=\"62.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"423.2\" cy=\"145.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"388.9\" cy=\"86.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"464.4\" cy=\"99.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"388.5\" cy=\"135.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"413.3\" cy=\"46.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.6\" cy=\"104.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.2\" cy=\"96.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"413.1\" cy=\"118.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.2\" cy=\"95.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.5\" cy=\"109.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"399.5\" cy=\"113.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"419.6\" cy=\"90.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.1\" cy=\"126.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"396.0\" cy=\"97.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"444.1\" cy=\"94.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"402.5\" cy=\"128.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.3\" cy=\"83.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"443.4\" cy=\"123.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"386.7\" cy=\"110.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"429.2\" cy=\"86.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"418.1\" cy=\"140.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"392.9\" cy=\"84.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"438.8\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"387.7\" cy=\"130.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"417.6\" cy=\"74.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"442.4\" cy=\"140.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"377.5\" cy=\"98.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"440.9\" cy=\"88.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"403.4\" cy=\"149.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"397.0\" cy=\"71.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"443.9\" cy=\"115.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"372.2\" cy=\"123.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"430.9\" cy=\"70.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"424.4\" cy=\"133.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"374.3\" cy=\"82.1\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.2\" cy=\"96.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.9\" cy=\"150.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"408.3\" cy=\"58.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"444.1\" cy=\"128.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"359.7\" cy=\"108.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"447.1\" cy=\"71.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.1\" cy=\"98.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.2\" cy=\"106.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"407.2\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"418.3\" cy=\"88.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.0\" cy=\"118.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"392.0\" cy=\"98.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.2\" cy=\"95.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.4\" cy=\"122.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"404.7\" cy=\"78.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"436.9\" cy=\"115.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"395.8\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"430.9\" cy=\"78.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.3\" cy=\"130.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"398.0\" cy=\"92.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"447.8\" cy=\"101.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.1\" cy=\"125.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"413.7\" cy=\"64.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"439.1\" cy=\"129.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"387.0\" cy=\"103.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"447.3\" cy=\"78.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.1\" cy=\"139.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"399.0\" cy=\"81.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"456.8\" cy=\"114.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"384.0\" cy=\"122.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"423.6\" cy=\"78.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"433.2\" cy=\"144.5\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"382.1\" cy=\"91.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"463.7\" cy=\"87.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"394.8\" cy=\"143.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"405.9\" cy=\"70.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"458.9\" cy=\"133.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"372.2\" cy=\"112.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"436.0\" cy=\"77.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"419.7\" cy=\"156.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.2\" cy=\"76.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"448.6\" cy=\"104.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.6\" cy=\"98.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.5\" cy=\"115.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"401.2\" cy=\"102.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.8\" cy=\"98.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.8\" cy=\"125.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"406.1\" cy=\"88.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"430.0\" cy=\"110.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"391.7\" cy=\"114.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"424.0\" cy=\"85.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.5\" cy=\"121.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"390.3\" cy=\"91.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"438.1\" cy=\"99.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"395.2\" cy=\"134.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.6\" cy=\"75.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.4\" cy=\"120.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"377.6\" cy=\"107.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"437.0\" cy=\"82.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"414.4\" cy=\"130.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"389.3\" cy=\"75.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"447.3\" cy=\"108.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"394.3\" cy=\"120.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"422.8\" cy=\"65.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"432.1\" cy=\"133.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"369.0\" cy=\"91.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"451.3\" cy=\"86.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"403.2\" cy=\"135.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.1\" cy=\"59.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"451.6\" cy=\"122.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415\" cy=\"105\" r=\"14\" fill=\"#fff0d0\" opacity=\".85\"/><text x=\"415\" y=\"212\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">(나) 구상 성단</text></svg>",
+  stem:"그림은 산개 성단과 구상 성단의 모습이다. (가)와 (나)의 특징을 비교한 것으로 옳은 것은?",
+  ch:[{t:"별의 색 — (가): 붉은색, (나): 파란색",ok:0},{t:"주요 분포 위치 — (가): 우리은하의 중심부, (나): 우리은하의 나선팔",ok:0},{t:"모양 — (가): 일정하지 않은 모양, (나): 빽빽한 공 모양",ok:1},{t:"별의 수 — (가): 수만 개~수십만 개, (나): 수십 개~수만 개",ok:0},{t:"별의 나이 — (가): 많다, (나): 적다",ok:0}],
+  why:"산개 성단(가)은 <b>수십~수만 개</b>의 <b>파란색 젊은 별</b>이 일정한 모양 없이 모여 있고 주로 <b>나선팔</b>에 있습니다. 구상 성단(나)은 <b>수만~수십만 개</b>의 <b>붉은색 늙은 별</b>이 공 모양으로 빽빽하며 주로 <b>중심부와 은하 원반을 둘러싼 공간</b>에 있어요. 모양 비교만 바르게 되어 있습니다."},
 
- {id:"u4",
-  difficulty:"중",
-  intent:"풍선 모형에서 팽창의 중심이 없음과 먼 딱지일수록 더 많이 멀어짐을 해석하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 A·B·C의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(가) 바람을 조금 넣었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(나) 바람을 더 넣었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 B 사이</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">B와 C 사이</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 C 사이</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(가) 바람을 조금 넣었을 때(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(나) 바람을 더 넣었을 때(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1.5</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text></svg>",
-  stem:"그림과 표는 붙임딱지 A~C를 붙인 풍선에 바람을 넣기 전과 후를 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["풍선 표면에는 팽창의 중심이 존재한다.", "A에서 볼 때, 같은 시간 동안 C는 B보다 더 많이 멀어진다.", "이 탐구를 통해 우주가 팽창하고 있다는 것을 설명할 수 있다."],
-  boxVerdicts:[false, true, true],
-  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"풍선 표면의 모든 붙임딱지가 서로 멀어질 뿐, 표면 위에 특별한 <b>중심은 없습니다</b>(ㄱ ✗). A–B는 1 → 1.5(0.5 cm 증가), A–C는 3 → 4.5(1.5 cm 증가)로 <b>멀리 있던 딱지가 더 많이</b> 멀어졌어요(ㄴ ○). 이것이 허블이 관측한 우주 팽창의 모습입니다(ㄷ ○)."},
-
- {id:"u5",
+ {id:"n5",
   difficulty:"상",
-  intent:"표의 규칙(2배)으로 빈칸을 추정하고, 팽창 중심이 없음을 근거로 해석하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 A·B·C의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(나) 바람을 조금 넣은 뒤</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(다) 바람을 더 넣은 뒤</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 B 사이</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">B와 C 사이</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 C 사이</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">과정 (나)에서 잰 간격(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">과정 (다)에서 잰 간격(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">㉠</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">6</text></svg>",
-  stem:"다음은 우주 팽창을 알아보기 위한 모형실험이다.<br><br>(가) 풍선에 바람을 조금 넣은 뒤 표면에 붙임딱지 A~C를 붙인다.<br>(나) 줄자로 붙임딱지 사이의 간격을 측정한다.<br>(다) 풍선에 바람을 더 넣은 뒤 붙임딱지 사이의 간격을 측정한다.<br><br>이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["㉠에 알맞은 숫자는 4이다.", "풍선 표면은 A를 중심으로 팽창한다.", "과정 (다)에서 A~C 사이의 거리는 모두 멀어진다."],
+  intent:"분류 기준(색·별빛 가로막음)으로 성운의 종류를 가려내고 특징을 추론하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 285\" width=\"560\" height=\"285\" role=\"img\" aria-label=\"분류 흐름도. 성운 A, B, C에서 시작해 「파란색으로 보이는가?」에 예이면 A, 아니요이면 「뒤에서 오는 별빛을 가로막는가?」로 가서 예이면 B, 아니요이면 C.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"150\" y=\"14\" width=\"150\" height=\"32\" rx=\"8\" fill=\"#e6dcc8\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"225.0\" y=\"35.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">성운 A, B, C</text><polyline points=\"225,46 225,66\" fill=\"none\" stroke=\"#2e2315\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><polygon points=\"225,66 335,96 225,126 115,96\" fill=\"#eef1ff\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"225\" y=\"101\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">파란색으로 보이는가?</text><polyline points=\"335,96 395,96\" fill=\"none\" stroke=\"#2e2315\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text x=\"365\" y=\"90\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">예</text><rect x=\"395\" y=\"80\" width=\"60\" height=\"32\" rx=\"8\" fill=\"#fff2b0\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"425.0\" y=\"101.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><polyline points=\"225,126 225,150\" fill=\"none\" stroke=\"#2e2315\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text x=\"240\" y=\"142\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">아니요</text><polygon points=\"225,152 350,182 225,212 100,182\" fill=\"#eef1ff\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"225\" y=\"187\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">뒤에서 오는 별빛을 가로막는가?</text><polyline points=\"350,182 395,182\" fill=\"none\" stroke=\"#2e2315\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text x=\"372\" y=\"176\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">예</text><rect x=\"395\" y=\"166\" width=\"60\" height=\"32\" rx=\"8\" fill=\"#fff2b0\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"425.0\" y=\"187.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><polyline points=\"225,212 225,236\" fill=\"none\" stroke=\"#2e2315\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text x=\"240\" y=\"228\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">아니요</text><rect x=\"195\" y=\"238\" width=\"60\" height=\"32\" rx=\"8\" fill=\"#fff2b0\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"225.0\" y=\"259.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">C</text></svg>",
+  stem:"그림은 서로 다른 종류의 성운 A~C를 특징에 따라 분류한 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은? (단, A~C는 각각 방출 성운, 반사 성운, 암흑 성운 중 하나이다.)",
+  boxes:["A는 방출 성운이다.", "B는 가장 어둡게 보인다.", "C는 주변의 별빛을 반사하여 밝게 보인다."],
+  boxVerdicts:[false, true, false],
+  ch:[{t:"ㄱ",ok:0},{t:"ㄴ",ok:1},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0}],
+  why:"파란색으로 보이는 A는 별빛을 반사하는 <b>반사 성운</b>(ㄱ ✗), 뒤쪽 별빛을 가로막는 B는 <b>암흑 성운</b>으로 가장 어둡게 보입니다(ㄴ ○). 남은 C는 스스로 붉게 빛나는 <b>방출 성운</b>이므로 반사가 아니에요(ㄷ ✗)."},
+
+ {id:"n6",
+  difficulty:"중",
+  intent:"두 성단 사진을 보고 종류를 판단하고 별의 수·색·나이·분포를 비교하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 226\" width=\"560\" height=\"226\" role=\"img\" aria-label=\"(가) 산개 성단: 파란색 별 십여 개가 일정한 모양 없이 듬성듬성 모여 있다. (나) 구상 성단: 붉은색 별 수백 개가 공 모양으로 빽빽하게 모여 있다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"30\" y=\"20\" width=\"230\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"75\" cy=\"75\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"100\" cy=\"115\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"125\" cy=\"60\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"155\" cy=\"125\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"180\" cy=\"80\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"205\" cy=\"120\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"135\" cy=\"150\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"195\" cy=\"150\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"90\" cy=\"155\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"170\" cy=\"50\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"220\" cy=\"65\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"65\" cy=\"130\" r=\"3.0\" fill=\"#9ec5ff\"/><text x=\"145\" y=\"212\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">(가) 산개 성단</text><rect x=\"300\" y=\"20\" width=\"230\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.7\" cy=\"110.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.8\" cy=\"95.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.3\" cy=\"118.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"399.0\" cy=\"102.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"427.1\" cy=\"97.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.2\" cy=\"127.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"405.5\" cy=\"87.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"431.0\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"390.3\" cy=\"115.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"424.5\" cy=\"84.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.8\" cy=\"122.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"389.3\" cy=\"90.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"439.1\" cy=\"99.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"394.4\" cy=\"135.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.5\" cy=\"73.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"435.0\" cy=\"121.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"376.5\" cy=\"107.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"437.7\" cy=\"81.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"414.3\" cy=\"131.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"388.8\" cy=\"74.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"448.1\" cy=\"108.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"393.7\" cy=\"120.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.1\" cy=\"64.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"432.4\" cy=\"133.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"368.1\" cy=\"91.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.1\" cy=\"86.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"402.9\" cy=\"136.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.0\" cy=\"58.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.2\" cy=\"123.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.4\" cy=\"114.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"440.7\" cy=\"62.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"423.2\" cy=\"145.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"388.9\" cy=\"86.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"464.4\" cy=\"99.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"388.5\" cy=\"135.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"413.3\" cy=\"46.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.6\" cy=\"104.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.2\" cy=\"96.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"413.1\" cy=\"118.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.2\" cy=\"95.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.5\" cy=\"109.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"399.5\" cy=\"113.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"419.6\" cy=\"90.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.1\" cy=\"126.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"396.0\" cy=\"97.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"444.1\" cy=\"94.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"402.5\" cy=\"128.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.3\" cy=\"83.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"443.4\" cy=\"123.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"386.7\" cy=\"110.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"429.2\" cy=\"86.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"418.1\" cy=\"140.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"392.9\" cy=\"84.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"438.8\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"387.7\" cy=\"130.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"417.6\" cy=\"74.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"442.4\" cy=\"140.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"377.5\" cy=\"98.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"440.9\" cy=\"88.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"403.4\" cy=\"149.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"397.0\" cy=\"71.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"443.9\" cy=\"115.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"372.2\" cy=\"123.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"430.9\" cy=\"70.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"424.4\" cy=\"133.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"374.3\" cy=\"82.1\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.2\" cy=\"96.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.9\" cy=\"150.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"408.3\" cy=\"58.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"444.1\" cy=\"128.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"359.7\" cy=\"108.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"447.1\" cy=\"71.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.1\" cy=\"98.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.2\" cy=\"106.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"407.2\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"418.3\" cy=\"88.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.0\" cy=\"118.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"392.0\" cy=\"98.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.2\" cy=\"95.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.4\" cy=\"122.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"404.7\" cy=\"78.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"436.9\" cy=\"115.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"395.8\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"430.9\" cy=\"78.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.3\" cy=\"130.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"398.0\" cy=\"92.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"447.8\" cy=\"101.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.1\" cy=\"125.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"413.7\" cy=\"64.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"439.1\" cy=\"129.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"387.0\" cy=\"103.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"447.3\" cy=\"78.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.1\" cy=\"139.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"399.0\" cy=\"81.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"456.8\" cy=\"114.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"384.0\" cy=\"122.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"423.6\" cy=\"78.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"433.2\" cy=\"144.5\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"382.1\" cy=\"91.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"463.7\" cy=\"87.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"394.8\" cy=\"143.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"405.9\" cy=\"70.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"458.9\" cy=\"133.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"372.2\" cy=\"112.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"436.0\" cy=\"77.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"419.7\" cy=\"156.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.2\" cy=\"76.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"448.6\" cy=\"104.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.6\" cy=\"98.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.5\" cy=\"115.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"401.2\" cy=\"102.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.8\" cy=\"98.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.8\" cy=\"125.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"406.1\" cy=\"88.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"430.0\" cy=\"110.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"391.7\" cy=\"114.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"424.0\" cy=\"85.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.5\" cy=\"121.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"390.3\" cy=\"91.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"438.1\" cy=\"99.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"395.2\" cy=\"134.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.6\" cy=\"75.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.4\" cy=\"120.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"377.6\" cy=\"107.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"437.0\" cy=\"82.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"414.4\" cy=\"130.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"389.3\" cy=\"75.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"447.3\" cy=\"108.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"394.3\" cy=\"120.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"422.8\" cy=\"65.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"432.1\" cy=\"133.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"369.0\" cy=\"91.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"451.3\" cy=\"86.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"403.2\" cy=\"135.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.1\" cy=\"59.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"451.6\" cy=\"122.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415\" cy=\"105\" r=\"14\" fill=\"#fff0d0\" opacity=\".85\"/><text x=\"415\" y=\"212\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">(나) 구상 성단</text></svg>",
+  stem:"그림은 서로 다른 두 성단의 모습이다. 이에 대한 설명으로 옳은 것은?",
+  ch:[{t:"(가)는 구상 성단, (나)는 산개 성단이다.",ok:0},{t:"(가)는 주로 우리은하의 중심부에 분포한다.",ok:0},{t:"(나)를 이루는 별은 대체로 (가)를 이루는 별보다 나이가 적다.",ok:0},{t:"(나)는 (가)보다 별의 수가 많다.",ok:1},{t:"(나)는 주로 파란색 별로 이루어져 있다.",ok:0}],
+  why:"공 모양으로 빽빽한 (나)가 <b>구상 성단</b>이며 별의 수가 훨씬 많습니다. 구상 성단은 <b>붉은색의 늙은 별</b>로 이루어져 중심부와 은하 원반을 둘러싼 공간에 분포하고, 듬성듬성한 (가) 산개 성단은 <b>파란색의 젊은 별</b>로 주로 나선팔에 있어요."},
+
+ {id:"n7",
+  difficulty:"하",
+  intent:"분포 위치와 모양 설명으로 구상 성단을 가려내는지 확인한다.",
+  stem:"우리은하를 구성하는 천체 중 다음 설명에 해당하는 것은?<br><br>• 별들이 공 모양으로 빽빽하게 모여 있다.<br>• 주로 우리은하의 중심부와 은하 원반을 둘러싼 구형의 공간에 분포한다.",
+  ch:[{t:"방출 성운",ok:0},{t:"반사 성운",ok:0},{t:"암흑 성운",ok:0},{t:"산개 성단",ok:0},{t:"구상 성단",ok:1}],
+  why:"별들이 <b>공 모양</b>으로 모여 있으면 성운이 아닌 성단이고, 그중 중심부와 은하 원반을 둘러싼 공간에 분포하는 것은 <b>구상 성단</b>입니다. 산개 성단은 주로 나선팔에 흩어져 있어요."},
+
+ {id:"n8",
+  difficulty:"중",
+  intent:"방출 성운과 반사 성운의 형성 원리와 색을 연결하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 216\" width=\"560\" height=\"216\" role=\"img\" aria-label=\"(가) 붉은 성간 물질 구름이 근처 별의 에너지를 받아 스스로 빛을 낸다. (나) 파란 성간 물질 구름이 근처 별의 빛을 반사한다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"30\" y=\"20\" width=\"230\" height=\"160\" rx=\"10\" fill=\"#101a36\"/><ellipse cx=\"180\" cy=\"95\" rx=\"62\" ry=\"40\" fill=\"#e0563f\" opacity=\".55\"/><ellipse cx=\"160\" cy=\"80\" rx=\"40\" ry=\"28\" fill=\"#e0563f\" opacity=\".5\"/><circle cx=\"90\" cy=\"60\" r=\"7\" fill=\"#fff6d6\"/><line x1=\"102.0\" y1=\"60.0\" x2=\"139.6\" y2=\"46.3\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"145.2,44.2 136.3,51.3 133.8,44.6\" fill=\"#ffe9a8\"/><line x1=\"102.0\" y1=\"60.0\" x2=\"142.0\" y2=\"60.0\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"148.0,60.0 137.2,63.6 137.2,56.4\" fill=\"#ffe9a8\"/><line x1=\"102.0\" y1=\"60.0\" x2=\"139.6\" y2=\"73.7\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"145.2,75.8 133.8,75.4 136.3,68.7\" fill=\"#ffe9a8\"/><text x=\"90\" y=\"44\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#ffe9a8\">별</text><text x=\"145\" y=\"203\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(가) 성간 물질이 가열되어 스스로 빛낸다</text><rect x=\"300\" y=\"20\" width=\"230\" height=\"160\" rx=\"10\" fill=\"#101a36\"/><ellipse cx=\"450\" cy=\"95\" rx=\"62\" ry=\"40\" fill=\"#6f9bff\" opacity=\".55\"/><ellipse cx=\"430\" cy=\"80\" rx=\"40\" ry=\"28\" fill=\"#6f9bff\" opacity=\".5\"/><circle cx=\"360\" cy=\"60\" r=\"7\" fill=\"#fff6d6\"/><line x1=\"372.0\" y1=\"60.0\" x2=\"409.6\" y2=\"46.3\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"415.2,44.2 406.3,51.3 403.8,44.6\" fill=\"#ffe9a8\"/><line x1=\"372.0\" y1=\"60.0\" x2=\"412.0\" y2=\"60.0\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"418.0,60.0 407.2,63.6 407.2,56.4\" fill=\"#ffe9a8\"/><line x1=\"372.0\" y1=\"60.0\" x2=\"409.6\" y2=\"73.7\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"415.2,75.8 403.8,75.4 406.3,68.7\" fill=\"#ffe9a8\"/><line x1=\"430.0\" y1=\"100.0\" x2=\"406.5\" y2=\"132.3\" stroke=\"#bfe9ff\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"402.9,137.2 406.4,126.3 412.2,130.6\" fill=\"#bfe9ff\"/><line x1=\"430.0\" y1=\"100.0\" x2=\"395.7\" y2=\"120.6\" stroke=\"#bfe9ff\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"390.6,123.7 398.0,115.1 401.7,121.2\" fill=\"#bfe9ff\"/><text x=\"340\" y=\"150\" text-anchor=\"start\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11\" fill=\"#bfe9ff\">반사된 빛</text><text x=\"360\" y=\"44\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#ffe9a8\">별</text><text x=\"415\" y=\"203\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(나) 성간 물질이 주변 별빛을 반사한다</text></svg>",
+  stem:"그림 (가)와 (나)는 서로 다른 성운이 빛나는 원리를 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+  boxes:["(가)는 주로 붉은색으로 보인다.", "(나)는 주로 어두운 색으로 보인다.", "(가)는 방출 성운, (나)는 반사 성운이 빛나는 원리이다."],
   boxVerdicts:[true, false, true],
   ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"A–B가 1 → 2, A–C가 3 → 6으로 모두 <b>2배</b>가 되었으니 B–C도 2 → <b>4</b>입니다(ㄱ ○). 모든 간격이 같은 비율로 늘어난 것은 어느 딱지도 중심이 아니라는 뜻이에요(ㄴ ✗). 바람을 넣으면 모든 딱지 사이가 멀어집니다(ㄷ ○)."},
+  why:"가열되어 스스로 빛나는 (가)는 <b>방출 성운</b>으로 붉게 보이고(ㄱ·ㄷ ○), 별빛을 반사하는 (나)는 <b>반사 성운</b>으로 파랗게 보입니다(ㄴ ✗). 어둡게 보이는 것은 별빛을 가로막는 암흑 성운이에요."},
 
- {id:"u6",
-  difficulty:"중",
-  intent:"어느 은하에서 관측해도 다른 은하들이 멀어짐(중심 없음)을 적용하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 170\" width=\"560\" height=\"170\" role=\"img\" aria-label=\"한 직선 위에 왼쪽부터 외부 은하 A, 우리은하, 외부 은하 B, C가 차례로 놓여 있다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><polyline points=\"40,110 520,110\" fill=\"none\" stroke=\"#c1ac82\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse cx=\"90\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#8fb4ff\" opacity=\".9\"/><circle cx=\"90\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"90\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">A</text><ellipse cx=\"230\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#ffd27a\" opacity=\".9\"/><circle cx=\"230\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"230\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">우리은하</text><ellipse cx=\"340\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#8fb4ff\" opacity=\".9\"/><circle cx=\"340\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"340\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">B</text><ellipse cx=\"470\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#8fb4ff\" opacity=\".9\"/><circle cx=\"470\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"470\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">C</text></svg>",
-  stem:"그림은 우리은하와 외부 은하 A~C의 위치를 나타낸 것이다. 우주가 팽창할 때에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["우리은하에서 관측하면 A~C는 모두 멀어지고 있다.", "B에서 관측하면 A와 우리은하는 서로 가까워지고 있다.", "C에서 관측하면 우리은하는 가까워지고 A는 멀어지고 있다."],
-  boxVerdicts:[true, false, false],
-  ch:[{t:"ㄱ",ok:1},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"우주는 모든 곳에서 균일하게 팽창하므로 <b>어느 은하에서 보아도</b> 다른 은하들은 모두 멀어집니다(ㄱ ○). B에서 보아도, C에서 보아도 나머지 은하는 전부 멀어져요(ㄴ·ㄷ ✗). 고무줄 위의 점들이 서로 멀어지는 것과 같습니다."},
-
- {id:"u7",
-  difficulty:"중",
-  intent:"우주 팽창의 중심·은하의 운동·과거의 크기를 종합해 아는지 확인한다.",
-  stem:"우주 팽창에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["우리은하는 팽창하는 우주의 중심에 있다.", "시간이 흐를수록 외부 은하들은 서로 멀어진다.", "우주의 시간을 과거로 되돌린다면 우주의 크기는 점점 작아질 것이다."],
-  boxVerdicts:[false, true, true],
-  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"우리은하에서 다른 은하들이 멀어져 보인다고 해서 우리가 중심인 것은 아닙니다. <b>어느 은하에서 보아도 똑같이</b> 보이므로 중심은 없어요(ㄱ ✗). 팽창을 거꾸로 돌리면 은하들이 모이고 우주는 작아집니다(ㄴ·ㄷ ○)."},
-
- {id:"u8",
+ {id:"n9",
   difficulty:"하",
-  intent:"풍선 모형과 실제 우주의 대응 관계를 아는지 확인한다.",
-  stem:"붙임딱지를 붙인 풍선을 부는 우주 팽창 모형실험에서, 모형과 실제 우주의 대응 관계로 옳은 것은?",
-  ch:[{t:"풍선 표면 – 우주 공간, 붙임딱지 – 은하, 바람 넣기 – 은하의 자전",ok:0},{t:"풍선 속 공기 – 우주 공간, 붙임딱지 – 성단, 바람 넣기 – 우주 팽창",ok:0},{t:"풍선 표면 – 우주 공간, 붙임딱지 – 은하, 바람 넣기 – 우주 팽창",ok:1},{t:"풍선 표면 – 은하, 붙임딱지 – 별, 바람 넣기 – 별의 탄생",ok:0},{t:"풍선 표면 – 우리은하, 붙임딱지 – 태양계, 바람 넣기 – 지구의 공전",ok:0}],
-  why:"풍선의 <b>표면</b>이 우주 공간, 표면 위의 <b>붙임딱지</b>가 은하, 바람을 넣어 표면이 늘어나는 것이 <b>우주 팽창</b>입니다. 풍선 속 공기가 아니라 표면이 우주라는 점이 이 모형의 핵심이에요."},
+  intent:"산개 성단과 구상 성단의 별의 수와 색 수치를 아는지 확인한다.",
+  stem:"다음은 산개 성단과 구상 성단에 대한 설명이다. ( ) 안에 들어갈 말을 옳게 짝 지은 것은?<br><br>「산개 성단은 ( ㉠ )의 별이 일정한 모양 없이 모여 있으며 주로 ( ㉡ )을 띠는 별들로 구성되어 있고, 구상 성단은 ( ㉢ )의 별이 빽빽하게 모여 공 모양을 이루고 있으며 주로 ( ㉣ )을 띠는 별들로 구성되어 있다.」",
+  ch:[{t:"㉠ 수십 개~수만 개, ㉡ 파란색, ㉢ 수만 개~수십만 개, ㉣ 붉은색",ok:1},{t:"㉠ 수십 개~수만 개, ㉡ 붉은색, ㉢ 수만 개~수십만 개, ㉣ 파란색",ok:0},{t:"㉠ 수만 개~수십만 개, ㉡ 파란색, ㉢ 수십 개~수만 개, ㉣ 붉은색",ok:0},{t:"㉠ 수만 개~수십만 개, ㉡ 붉은색, ㉢ 수십 개~수만 개, ㉣ 파란색",ok:0},{t:"㉠ 수십 개~수만 개, ㉡ 파란색, ㉢ 수십 개~수만 개, ㉣ 파란색",ok:0}],
+  why:"산개 성단은 <b>수십~수만 개</b>의 <b>파란색</b> 별, 구상 성단은 <b>수만~수십만 개</b>의 <b>붉은색</b> 별입니다. 파란 별은 표면 온도가 높은 젊은 별, 붉은 별은 나이가 많은 별이라는 것과 함께 기억하세요."},
 
- {id:"u9",
+ {id:"n10",
   difficulty:"상",
-  intent:"관측 위치를 바꾸어도 팽창의 모습이 같다는 것을 추론하는지 확인한다.",
-  stem:"한 직선 위에 은하 A, B, C가 차례로 놓여 있다. 은하 B에서 관측했을 때 A와 C가 모두 B로부터 멀어지고 있다면, 은하 A에서 관측할 때 B와 C의 움직임으로 옳은 것은?",
-  ch:[{t:"B는 멀어지고 C는 제자리에 있다.",ok:0},{t:"B와 C 모두 제자리에 있고 A만 움직인다.",ok:0},{t:"B는 가까워지고 C는 멀어진다.",ok:0},{t:"B와 C 모두 멀어진다.",ok:1},{t:"B와 C 모두 가까워진다.",ok:0}],
-  why:"고무줄에 점 세 개를 찍고 늘여 보세요. 어느 점을 잡고 보아도 나머지 점은 <b>모두 멀어집니다</b>. 팽창하는 우주에는 특별한 중심이 없으므로 A에서 보아도 B와 C는 모두 멀어지고, 더 멀리 있는 C가 더 빠르게 멀어져요."},
+  intent:"관측된 특징(색·배열)만으로 성단의 종류와 별의 나이·분포를 추론하는지 확인한다.",
+  stem:"어떤 천체를 관측했더니 파란색 별 수십 개가 일정한 모양 없이 듬성듬성 모여 있었다. 이 천체에 대한 추론으로 가장 알맞은 것은?",
+  ch:[{t:"나이가 많은 붉은 별들이 모여 있다가 흩어진 것일 것이다.",ok:0},{t:"나이가 상대적으로 적은 별들로 이루어진 산개 성단일 것이다.",ok:1},{t:"주로 우리은하의 중심부와 은하 원반을 둘러싼 공간에 분포하는 천체일 것이다.",ok:0},{t:"수십만 개의 별이 공 모양으로 모인 구상 성단일 것이다.",ok:0},{t:"성간 물질이 주변 별빛을 반사하여 파랗게 보이는 반사 성운일 것이다.",ok:0}],
+  why:"별(점)들이 모여 있으니 성운이 아닌 <b>성단</b>이고, 파란색 별이 모양 없이 듬성듬성하면 <b>산개 성단</b>입니다. 파란 별은 표면 온도가 높은 <b>젊은 별</b>이며, 산개 성단은 주로 나선팔에 분포해요. 뿌연 구름처럼 보였다면 반사 성운을 의심해야 합니다."},
 
- {id:"u10",
+ {id:"n11",
   difficulty:"중",
-  intent:"우주의 탄생 이후 크기 변화와 은하 사이 거리 변화를 시간 순서로 이해하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 205\" width=\"560\" height=\"205\" role=\"img\" aria-label=\"왼쪽의 대폭발에서 시작해 시간이 흐를수록 우주(원)가 점점 커지고, 그 안의 은하(점) 사이 거리도 멀어진다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><text x=\"60\" y=\"40\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#b23a30\" font-weight=\"800\">대폭발</text><polygon points=\"60,58 66,72 80,74 68,84 72,98 60,90 48,98 52,84 40,74 54,72\" fill=\"#f6a23a\"/><circle cx=\"120\" cy=\"80\" r=\"14\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"123.0\" cy=\"87.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"114.7\" cy=\"86.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"111.7\" cy=\"78.7\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"117.0\" cy=\"72.1\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"125.3\" cy=\"73.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"128.3\" cy=\"81.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"180\" cy=\"80\" r=\"26\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"176.5\" cy=\"95.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"165.1\" cy=\"84.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"168.7\" cy=\"69.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"183.7\" cy=\"64.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"195.0\" cy=\"75.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"191.2\" cy=\"90.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265\" cy=\"80\" r=\"42\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"242.8\" cy=\"91.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"243.6\" cy=\"66.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265.9\" cy=\"54.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"287.3\" cy=\"68.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"286.3\" cy=\"93.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"263.8\" cy=\"105.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"390\" cy=\"80\" r=\"66\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"361.3\" cy=\"52.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"399.3\" cy=\"41.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"428.0\" cy=\"68.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"418.5\" cy=\"107.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"380.4\" cy=\"118.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"351.9\" cy=\"90.7\" r=\"1.8\" fill=\"#dfe6f2\"/><line x1=\"40.0\" y1=\"170.0\" x2=\"500.0\" y2=\"170.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"508.0,170.0 493.6,174.8 493.6,165.2\" fill=\"#2e2315\"/><text x=\"280\" y=\"195\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">시간 →</text><text x=\"280\" y=\"20\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">우주의 크기</text></svg>",
-  stem:"그림은 우주 팽창을 모식적으로 나타낸 것이다. 이에 대한 설명으로 옳은 것은?",
-  ch:[{t:"우주는 팽창하다가 현재는 팽창을 멈춘 상태이다.",ok:0},{t:"우주가 팽창하면 은하 자체의 크기도 함께 커진다.",ok:0},{t:"우주의 한가운데 중심점에서 은하들이 바깥으로 날아가고 있다.",ok:0},{t:"과거의 우주는 현재보다 크기가 컸다.",ok:0},{t:"약 138억 년 전 대폭발로 탄생한 우주는 지금까지 계속 팽창하고 있으며, 은하 사이의 거리는 점점 멀어진다.",ok:1}],
-  why:"대폭발 이후 우주는 지금도 <b>계속 팽창</b> 중이고, 늘어나는 것은 은하 사이의 <b>공간</b>이라 은하 자체가 커지지는 않습니다. 중심점에서 날아가는 폭발이 아니라 공간이 모든 곳에서 균일하게 늘어나는 것이며, 과거의 우주는 지금보다 작았어요."},
-
- {id:"u11",
-  difficulty:"하",
-  intent:"허블의 발견(먼 은하일수록 빠르게 멀어짐)에 해당하는 모형 관찰 결과를 찾는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 ㄱ·ㄴ·ㄷ의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 작게 불었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 더 크게 불었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄴ</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄴ과 ㄷ</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄷ</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">작게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">5</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">크게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">7.5</text></svg>",
-  stem:"허블은 멀리 있는 은하일수록 더 빠르게 멀어진다는 것을 발견했다. 풍선 탐구의 결과 중 이에 해당하는 것은?",
-  ch:[{t:"처음에 멀리 떨어져 있던 두 붙임딱지 사이의 거리가 같은 시간 동안 더 많이 늘어난다.",ok:1},{t:"바람을 넣으면 붙임딱지가 풍선 꼭지 쪽으로 몰린다.",ok:0},{t:"바람을 넣으면 붙임딱지의 크기가 커진다.",ok:0},{t:"모든 붙임딱지 사이의 거리가 같은 길이(cm)만큼 늘어난다.",ok:0},{t:"처음에 가까이 있던 두 붙임딱지가 더 많이 멀어진다.",ok:0}],
-  why:"ㄱ–ㄴ는 2 → 3(1 cm 증가), ㄱ–ㄷ는 5 → 7.5(2.5 cm 증가)입니다. 같은 시간 동안 <b>멀리 있던 딱지 사이가 더 많이</b> 늘어났으니 더 빠르게 멀어진 것이고, 이것이 허블의 발견과 같은 모습이에요. 늘어나는 비율(1.5배)은 같지만 늘어난 길이는 다릅니다."},
+  intent:"암흑 성운이 어둡게 보이는 까닭을 빛의 가로막힘으로 설명하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 224\" width=\"560\" height=\"224\" role=\"img\" aria-label=\"밤하늘의 별들 사이에 별빛이 전혀 보이지 않는 검은 구름 모양의 영역이 있다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"120\" y=\"20\" width=\"320\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"130\" cy=\"28\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"183\" cy=\"65\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"236\" cy=\"102\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"289\" cy=\"139\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"342\" cy=\"176\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"395\" cy=\"63\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"148\" cy=\"100\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"201\" cy=\"137\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"254\" cy=\"174\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"307\" cy=\"61\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"360\" cy=\"98\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"413\" cy=\"135\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"166\" cy=\"172\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"219\" cy=\"59\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"272\" cy=\"96\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"325\" cy=\"133\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"378\" cy=\"170\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"131\" cy=\"57\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"184\" cy=\"94\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"237\" cy=\"131\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"290\" cy=\"168\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"343\" cy=\"55\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"396\" cy=\"92\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"149\" cy=\"129\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"202\" cy=\"166\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"255\" cy=\"53\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"308\" cy=\"90\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"361\" cy=\"127\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"414\" cy=\"164\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"167\" cy=\"51\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"220\" cy=\"88\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"273\" cy=\"125\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"326\" cy=\"162\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"379\" cy=\"49\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"132\" cy=\"86\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"185\" cy=\"123\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"238\" cy=\"160\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"291\" cy=\"47\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"344\" cy=\"84\" r=\"1.6\" fill=\"#f3eecf\"/><circle cx=\"397\" cy=\"121\" r=\"1.6\" fill=\"#f3eecf\"/><path d=\"M 200 170 C 190 120, 230 90, 260 100 C 275 70, 320 80, 330 110 C 360 110, 370 150, 350 170 Z\" fill=\"#0a0d18\" stroke=\"#2a2f45\" stroke-width=\"1.5\"/><text x=\"280\" y=\"210\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">뒤쪽 별빛이 가려져 검게 보이는 부분</text></svg>",
+  stem:"그림은 별들 사이에 검게 보이는 암흑 성운의 모습이다. 암흑 성운이 어둡게 보이는 까닭으로 옳은 것은?",
+  ch:[{t:"블랙홀이 주변의 빛을 모두 빨아들이기 때문이다.",ok:0},{t:"너무 멀리 있어서 별빛이 지구까지 도달하지 못하기 때문이다.",ok:0},{t:"성간 물질이 뒤쪽에서 오는 별빛을 가로막고 스스로 빛을 내지도 못하기 때문이다.",ok:1},{t:"온도가 매우 낮은 별들이 검은색 빛을 방출하기 때문이다.",ok:0},{t:"그 부분에는 별도 성간 물질도 없는 텅 빈 공간이기 때문이다.",ok:0}],
+  why:"암흑 성운도 재료는 다른 성운과 같은 <b>성간 물질</b>입니다. 근처에 빛을 줄 별이 없어 스스로 빛나지 못하고, 짙은 티끌이 <b>뒤쪽 별빛을 가로막아</b> 검은 구멍처럼 보여요. 적외선으로 보면 가려진 뒤쪽 별이 보입니다."},
 
  {id:"e1",
   difficulty:"중",
   type:"essay",
-  intent:"풍선 모형의 대응 관계를 바탕으로 우주 팽창에 따른 은하 사이 거리 변화를 설명하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 A·B·C의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(가) 바람을 조금 넣었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(나) 바람을 더 넣었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 B 사이</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">B와 C 사이</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 C 사이</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(가) 바람을 조금 넣었을 때(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(나) 바람을 더 넣었을 때(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1.5</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text></svg>",
-  stem:"그림은 붙임딱지를 붙인 풍선을 이용한 우주 팽창 모형이다. 풍선 <b>표면</b>과 붙임딱지가 실제 우주에서 각각 무엇에 해당하는지 쓰고, 이 모형을 바탕으로 우주가 팽창하면 <b>은하</b> 사이의 거리가 어떻게 변하는지 서술하시오.",
-  model:"풍선 표면은 우주 공간에, 붙임딱지는 은하에 해당한다. 풍선에 바람을 넣어 표면이 팽창하면 모든 붙임딱지 사이의 거리가 멀어지는 것처럼, 우주가 팽창하면 은하 사이의 거리는 모두 멀어지며, 멀리 떨어진 은하일수록 같은 시간 동안 더 많이 멀어진다.",
-  rubric:[{t:"풍선 표면 = 우주 공간, 붙임딱지 = 은하로 대응함",p:2},{t:"우주가 팽창하면 은하 사이의 거리가 멀어진다고 씀",p:2},{t:"멀리 있는 은하일수록 더 많이(빠르게) 멀어진다는 점을 언급함",p:1}],
-  reject:["풍선 속 공기를 우주 공간이라고 쓴 답", "은하 자체가 커진다고 쓴 답"],
-  keys:["표면", "은하"],
+  intent:"산개 성단과 구상 성단의 모습을 비교하고, 별의 색과 나이의 관계를 서술하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 226\" width=\"560\" height=\"226\" role=\"img\" aria-label=\"(가) 산개 성단: 파란색 별 십여 개가 일정한 모양 없이 듬성듬성 모여 있다. (나) 구상 성단: 붉은색 별 수백 개가 공 모양으로 빽빽하게 모여 있다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"30\" y=\"20\" width=\"230\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"75\" cy=\"75\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"100\" cy=\"115\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"125\" cy=\"60\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"155\" cy=\"125\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"180\" cy=\"80\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"205\" cy=\"120\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"135\" cy=\"150\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"195\" cy=\"150\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"90\" cy=\"155\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"170\" cy=\"50\" r=\"4.5\" fill=\"#9ec5ff\"/><circle cx=\"220\" cy=\"65\" r=\"3.0\" fill=\"#9ec5ff\"/><circle cx=\"65\" cy=\"130\" r=\"3.0\" fill=\"#9ec5ff\"/><text x=\"145\" y=\"212\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">(가) 산개 성단</text><rect x=\"300\" y=\"20\" width=\"230\" height=\"170\" rx=\"10\" fill=\"#101a36\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.7\" cy=\"110.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.8\" cy=\"95.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.3\" cy=\"118.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"399.0\" cy=\"102.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"427.1\" cy=\"97.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.2\" cy=\"127.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"405.5\" cy=\"87.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"431.0\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"390.3\" cy=\"115.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"424.5\" cy=\"84.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.8\" cy=\"122.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"389.3\" cy=\"90.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"439.1\" cy=\"99.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"394.4\" cy=\"135.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.5\" cy=\"73.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"435.0\" cy=\"121.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"376.5\" cy=\"107.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"437.7\" cy=\"81.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"414.3\" cy=\"131.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"388.8\" cy=\"74.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"448.1\" cy=\"108.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"393.7\" cy=\"120.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.1\" cy=\"64.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"432.4\" cy=\"133.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"368.1\" cy=\"91.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.1\" cy=\"86.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"402.9\" cy=\"136.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.0\" cy=\"58.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.2\" cy=\"123.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.4\" cy=\"114.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"440.7\" cy=\"62.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"423.2\" cy=\"145.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"388.9\" cy=\"86.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"464.4\" cy=\"99.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"388.5\" cy=\"135.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"413.3\" cy=\"46.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.6\" cy=\"104.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.2\" cy=\"96.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"413.1\" cy=\"118.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.2\" cy=\"95.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.5\" cy=\"109.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"399.5\" cy=\"113.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"419.6\" cy=\"90.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.1\" cy=\"126.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"396.0\" cy=\"97.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"444.1\" cy=\"94.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"402.5\" cy=\"128.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.3\" cy=\"83.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"443.4\" cy=\"123.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"386.7\" cy=\"110.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"429.2\" cy=\"86.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"418.1\" cy=\"140.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"392.9\" cy=\"84.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"438.8\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"387.7\" cy=\"130.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"417.6\" cy=\"74.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"442.4\" cy=\"140.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"377.5\" cy=\"98.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"440.9\" cy=\"88.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"403.4\" cy=\"149.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"397.0\" cy=\"71.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"443.9\" cy=\"115.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"372.2\" cy=\"123.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"430.9\" cy=\"70.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"424.4\" cy=\"133.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"374.3\" cy=\"82.1\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"452.2\" cy=\"96.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.9\" cy=\"150.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"408.3\" cy=\"58.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"444.1\" cy=\"128.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"359.7\" cy=\"108.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"447.1\" cy=\"71.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.1\" cy=\"98.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.2\" cy=\"106.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"407.2\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"418.3\" cy=\"88.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.0\" cy=\"118.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"392.0\" cy=\"98.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.2\" cy=\"95.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"408.4\" cy=\"122.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"404.7\" cy=\"78.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"436.9\" cy=\"115.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"395.8\" cy=\"110.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"430.9\" cy=\"78.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.3\" cy=\"130.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"398.0\" cy=\"92.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"447.8\" cy=\"101.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.1\" cy=\"125.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"413.7\" cy=\"64.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"439.1\" cy=\"129.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"387.0\" cy=\"103.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"447.3\" cy=\"78.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.1\" cy=\"139.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"399.0\" cy=\"81.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"456.8\" cy=\"114.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"384.0\" cy=\"122.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"423.6\" cy=\"78.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"433.2\" cy=\"144.5\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"382.1\" cy=\"91.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"463.7\" cy=\"87.4\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"394.8\" cy=\"143.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"405.9\" cy=\"70.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"458.9\" cy=\"133.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"372.2\" cy=\"112.6\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"436.0\" cy=\"77.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"419.7\" cy=\"156.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"383.2\" cy=\"76.0\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"448.6\" cy=\"104.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.0\" cy=\"105.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"415.6\" cy=\"98.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"423.5\" cy=\"115.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"401.2\" cy=\"102.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"425.8\" cy=\"98.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"409.8\" cy=\"125.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"406.1\" cy=\"88.4\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"430.0\" cy=\"110.3\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"391.7\" cy=\"114.9\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"424.0\" cy=\"85.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"420.5\" cy=\"121.8\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"390.3\" cy=\"91.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"438.1\" cy=\"99.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"395.2\" cy=\"134.2\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"410.6\" cy=\"75.0\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"434.4\" cy=\"120.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"377.6\" cy=\"107.3\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"437.0\" cy=\"82.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"414.4\" cy=\"130.5\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"389.3\" cy=\"75.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"447.3\" cy=\"108.6\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"394.3\" cy=\"120.2\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"422.8\" cy=\"65.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"432.1\" cy=\"133.1\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"369.0\" cy=\"91.7\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"451.3\" cy=\"86.9\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"403.2\" cy=\"135.7\" r=\"2.2\" fill=\"#ffb27a\"/><circle cx=\"397.1\" cy=\"59.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"451.6\" cy=\"122.8\" r=\"1.6\" fill=\"#ffb27a\"/><circle cx=\"415\" cy=\"105\" r=\"14\" fill=\"#fff0d0\" opacity=\".85\"/><text x=\"415\" y=\"212\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">(나) 구상 성단</text></svg>",
+  stem:"그림은 산개 성단과 구상 성단의 모습이다. ① (가)와 (나)의 모습을 별의 배열과 수를 들어 비교하여 쓰고, ② 두 성단을 이루는 별의 색과 나이를 <b>파란색</b>·<b>붉은색</b>이라는 낱말을 넣어 비교하여 서술하시오.",
+  model:"① 산개 성단(가)은 수십~수만 개의 별이 일정한 모양 없이 듬성듬성 모여 있고, 구상 성단(나)은 수만~수십만 개의 별이 공 모양으로 빽빽하게 모여 있다. ② 산개 성단은 주로 파란색 별로 이루어져 있으며 별의 나이가 상대적으로 적고, 구상 성단은 주로 붉은색 별로 이루어져 있으며 별의 나이가 상대적으로 많다.",
+  rubric:[{t:"산개 성단은 모양 없이 듬성듬성, 구상 성단은 공 모양으로 빽빽하다고 비교함",p:2},{t:"별의 수를 산개(수십~수만) < 구상(수만~수십만)으로 비교함",p:1},{t:"산개 = 파란색·나이 적음, 구상 = 붉은색·나이 많음으로 서술함",p:2}],
+  reject:["산개 성단이 붉은색, 구상 성단이 파란색이라고 쓴 답", "성단을 성간 물질(성운)이라고 쓴 답"],
+  keys:["파란색", "붉은색"],
   lines:4,
   why:""},
 
  {id:"e2",
   difficulty:"상",
   type:"essay",
-  intent:"팽창에 중심이 없음을 모형으로 설명하고, 시간을 거꾸로 돌렸을 때의 우주를 추론하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 205\" width=\"560\" height=\"205\" role=\"img\" aria-label=\"왼쪽의 대폭발에서 시작해 시간이 흐를수록 우주(원)가 점점 커지고, 그 안의 은하(점) 사이 거리도 멀어진다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><text x=\"60\" y=\"40\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#b23a30\" font-weight=\"800\">대폭발</text><polygon points=\"60,58 66,72 80,74 68,84 72,98 60,90 48,98 52,84 40,74 54,72\" fill=\"#f6a23a\"/><circle cx=\"120\" cy=\"80\" r=\"14\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"123.0\" cy=\"87.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"114.7\" cy=\"86.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"111.7\" cy=\"78.7\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"117.0\" cy=\"72.1\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"125.3\" cy=\"73.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"128.3\" cy=\"81.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"180\" cy=\"80\" r=\"26\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"176.5\" cy=\"95.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"165.1\" cy=\"84.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"168.7\" cy=\"69.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"183.7\" cy=\"64.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"195.0\" cy=\"75.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"191.2\" cy=\"90.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265\" cy=\"80\" r=\"42\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"242.8\" cy=\"91.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"243.6\" cy=\"66.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265.9\" cy=\"54.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"287.3\" cy=\"68.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"286.3\" cy=\"93.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"263.8\" cy=\"105.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"390\" cy=\"80\" r=\"66\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"361.3\" cy=\"52.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"399.3\" cy=\"41.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"428.0\" cy=\"68.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"418.5\" cy=\"107.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"380.4\" cy=\"118.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"351.9\" cy=\"90.7\" r=\"1.8\" fill=\"#dfe6f2\"/><line x1=\"40.0\" y1=\"170.0\" x2=\"500.0\" y2=\"170.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"508.0,170.0 493.6,174.8 493.6,165.2\" fill=\"#2e2315\"/><text x=\"280\" y=\"195\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">시간 →</text><text x=\"280\" y=\"20\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">우주의 크기</text></svg>",
-  stem:"그림은 대폭발 이후 시간에 따른 우주의 크기 변화를 나타낸 것이다. ① 우리은하에서 볼 때 모든 외부 은하가 멀어지는데도 우리은하가 우주 팽창의 <b>중심</b>이 아니라고 말할 수 있는 까닭을 풍선 모형을 이용해 서술하고, ② 우주의 시간을 과거로 되돌린다면 우주의 크기와 은하 사이의 거리가 어떻게 되는지 「<b>작아</b>진다」는 표현을 넣어 쓰시오.",
-  model:"① 풍선 표면의 붙임딱지는 어느 딱지에서 보아도 나머지 딱지가 모두 멀어지지만 표면 위에 팽창의 중심은 없다. 마찬가지로 우주는 모든 곳에서 균일하게 팽창하므로 어느 은하에서 관측해도 다른 은하들이 멀어지며, 우리은하가 특별한 중심인 것은 아니다. ② 시간을 과거로 되돌리면 우주의 크기는 점점 작아지고 은하 사이의 거리도 가까워져, 결국 한 점에 모여 있던 대폭발의 순간에 이른다.",
-  rubric:[{t:"풍선 표면의 어느 딱지에서 보아도 나머지가 모두 멀어진다는 모형의 성질을 씀",p:2},{t:"우주는 어디서나 균일하게 팽창하므로 특별한 중심이 없다고 결론지음",p:2},{t:"과거로 되돌리면 우주 크기가 작아지고 은하 사이 거리가 가까워진다고 씀",p:2}],
-  reject:["우리은하가 우주의 중심이라고 쓴 답", "과거의 우주가 지금보다 컸다고 쓴 답"],
-  keys:["중심", "작아"],
+  intent:"세 성운의 재료가 같음을 알고, 보이는 모습이 다른 까닭을 빛의 원리로 설명하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 216\" width=\"560\" height=\"216\" role=\"img\" aria-label=\"(가) 붉은 성간 물질 구름이 근처 별의 에너지를 받아 스스로 빛을 낸다. (나) 파란 성간 물질 구름이 근처 별의 빛을 반사한다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"30\" y=\"20\" width=\"230\" height=\"160\" rx=\"10\" fill=\"#101a36\"/><ellipse cx=\"180\" cy=\"95\" rx=\"62\" ry=\"40\" fill=\"#e0563f\" opacity=\".55\"/><ellipse cx=\"160\" cy=\"80\" rx=\"40\" ry=\"28\" fill=\"#e0563f\" opacity=\".5\"/><circle cx=\"90\" cy=\"60\" r=\"7\" fill=\"#fff6d6\"/><line x1=\"102.0\" y1=\"60.0\" x2=\"139.6\" y2=\"46.3\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"145.2,44.2 136.3,51.3 133.8,44.6\" fill=\"#ffe9a8\"/><line x1=\"102.0\" y1=\"60.0\" x2=\"142.0\" y2=\"60.0\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"148.0,60.0 137.2,63.6 137.2,56.4\" fill=\"#ffe9a8\"/><line x1=\"102.0\" y1=\"60.0\" x2=\"139.6\" y2=\"73.7\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"145.2,75.8 133.8,75.4 136.3,68.7\" fill=\"#ffe9a8\"/><text x=\"90\" y=\"44\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#ffe9a8\">별</text><text x=\"145\" y=\"203\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(가) 성간 물질이 가열되어 스스로 빛낸다</text><rect x=\"300\" y=\"20\" width=\"230\" height=\"160\" rx=\"10\" fill=\"#101a36\"/><ellipse cx=\"450\" cy=\"95\" rx=\"62\" ry=\"40\" fill=\"#6f9bff\" opacity=\".55\"/><ellipse cx=\"430\" cy=\"80\" rx=\"40\" ry=\"28\" fill=\"#6f9bff\" opacity=\".5\"/><circle cx=\"360\" cy=\"60\" r=\"7\" fill=\"#fff6d6\"/><line x1=\"372.0\" y1=\"60.0\" x2=\"409.6\" y2=\"46.3\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"415.2,44.2 406.3,51.3 403.8,44.6\" fill=\"#ffe9a8\"/><line x1=\"372.0\" y1=\"60.0\" x2=\"412.0\" y2=\"60.0\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"418.0,60.0 407.2,63.6 407.2,56.4\" fill=\"#ffe9a8\"/><line x1=\"372.0\" y1=\"60.0\" x2=\"409.6\" y2=\"73.7\" stroke=\"#ffe9a8\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"415.2,75.8 403.8,75.4 406.3,68.7\" fill=\"#ffe9a8\"/><line x1=\"430.0\" y1=\"100.0\" x2=\"406.5\" y2=\"132.3\" stroke=\"#bfe9ff\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"402.9,137.2 406.4,126.3 412.2,130.6\" fill=\"#bfe9ff\"/><line x1=\"430.0\" y1=\"100.0\" x2=\"395.7\" y2=\"120.6\" stroke=\"#bfe9ff\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"390.6,123.7 398.0,115.1 401.7,121.2\" fill=\"#bfe9ff\"/><text x=\"340\" y=\"150\" text-anchor=\"start\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11\" fill=\"#bfe9ff\">반사된 빛</text><text x=\"360\" y=\"44\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#ffe9a8\">별</text><text x=\"415\" y=\"203\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(나) 성간 물질이 주변 별빛을 반사한다</text></svg>",
+  stem:"그림은 두 성운이 빛나는 원리를 나타낸 것이다. 방출 성운, 반사 성운, 암흑 성운은 모두 같은 성간 물질로 이루어져 있는데도 서로 다르게 보인다. ① (가)와 (나)가 각각 어떤 색으로 보이는지 그 까닭과 함께 쓰고, ② 암흑 성운이 어둡게 보이는 까닭을 별빛을 <b>가로막</b>는다는 표현과 <b>반사</b>라는 낱말을 넣어 서술하시오.",
+  model:"① (가) 방출 성운은 성간 물질이 근처의 고온 별로부터 에너지를 받아 가열되어 스스로 빛을 내므로 주로 붉은색으로 보이고, (나) 반사 성운은 성간 물질이 근처 별의 빛을 반사하므로 주로 파란색으로 보인다. ② 암흑 성운은 근처에 빛을 비추어 줄 별이 없어 스스로 빛을 내거나 별빛을 반사하지 못하고, 짙은 성간 물질이 뒤쪽에서 오는 별빛을 가로막기 때문에 어둡게 보인다.",
+  rubric:[{t:"방출 성운은 가열되어 스스로 빛을 내며 붉은색이라고 씀",p:2},{t:"반사 성운은 별빛을 반사하며 파란색이라고 씀",p:2},{t:"암흑 성운은 뒤쪽 별빛을 가로막고, 스스로 빛내거나 반사하지 못해 어둡다고 씀",p:2}],
+  reject:["암흑 성운이 빛을 흡수해 스스로 검은빛을 낸다고 쓴 답", "방출 성운이 파란색, 반사 성운이 붉은색이라고 쓴 답", "암흑 성운을 별이 없는 빈 공간이라고 쓴 답"],
+  keys:["가로막", "반사"],
   lines:5,
   why:""}
 ];
@@ -1421,25 +1233,15 @@ const GAME_QS=[
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const TAU=Math.PI*2;
-const TABS=['engage','explore','explain','apply','check','sum','beyond'];
+const TABS=['face','compare','rule','judge','check','sum','beyond'];
 const CS=getComputedStyle(document.documentElement);
 const CV=k=>CS.getPropertyValue('--'+k).trim();
-const C={accent:CV('accent'),accent2:CV('accent2'),c1:CV('c1'),c2:CV('c2'),c3:CV('c3'),c4:CV('c4'),c5:CV('c5'),
-  line:CV('line'),linesoft:CV('line-soft'),ink:CV('ink'),inkdim:CV('ink-dim'),inkmute:CV('ink-mute'),
-  ok:CV('ok'),danger:CV('danger'),gold:CV('gold')};
 
 function setBg(tab){
   const L=$('#bgLayer'); if(!L)return;
-  const img=BG_IMAGES[tab]||(tab==='cover'?BG_IMAGES.engage:'');
+  const img=BG_IMAGES[tab]||(tab==='cover'?BG_IMAGES.face:'');
   L.style.opacity='0';
-  setTimeout(()=>{L.style.backgroundImage=img?`url("${img}")`:(BG_FALLBACK[tab]||BG_FALLBACK.engage);L.style.opacity='1';},150);
-}
-function fit(cv){
-  const dpr=Math.min(devicePixelRatio||1,2.5);
-  const w=cv.clientWidth||cv.parentElement.clientWidth||320;
-  const h=parseInt(cv.getAttribute('height'))||300;
-  cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
-  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};
+  setTimeout(()=>{L.style.backgroundImage=img?`url("${img}")`:(BG_FALLBACK[tab]||BG_FALLBACK.face);L.style.opacity='1';},150);
 }
 const A={ctx:null,
   ensure(){if(!this.ctx){try{this.ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
@@ -1454,28 +1256,29 @@ const A={ctx:null,
   win(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.blip(f,.22,'sine',.15),i*110));}};
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
 
-let S=load()||{tab:'engage',visited:{},poe:null,log:[],cloze:{},mini:{},essay:'',best:0,medals:{}};
+let S=load()||{tab:'face',visited:{},jIdx:0,jDone:0,model:false,cloze:{},mini:{},essay:'',best:0,medals:{}};
 S.think=S.think||{};S.stu=S.stu||null;S.msn=S.msn||{};S.sub=S.sub||{};S.subTxt=S.subTxt||{};S.visited=S.visited||{};S.qa=S.qa||{};S.eq=S.eq||{};S.mini=S.mini||{};S.cloze=S.cloze||{};S.skip=S.skip||{};
-S.visited=S.visited||{};S.log=S.log||[];S.cloze=S.cloze||{};S.mini=S.mini||{};S.medals=S.medals||{};S.essay=S.essay||'';
+S.visited=S.visited||{};S.cloze=S.cloze||{};S.mini=S.mini||{};S.medals=S.medals||{};S.essay=S.essay||'';
+S.jIdx=S.jIdx||0;S.jDone=S.jDone||0;
 let CLOZE_TOTAL=0;
 function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
 function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
 
 function progChecks(){
   return [
-    {label:'1단계 열어 보기',            ok:!!S.visited.engage},
-    {label:'2단계 · 결과 예측하기',      ok:!!S.poe},
-    {label:'2단계 · 풍선 3회 기록',      ok:(S.log||[]).length>=3},
-    {label:'2단계 · 측정 결과 퀴즈',     ok:!!S.mini.explore},
+    {label:'1단계 열어 보기',           ok:!!S.visited.face},
+    {label:'2단계 · 다섯 갈래 살펴보기', ok:!!S.visited.compare},
     {label:'3단계 · 빈칸 모두 채우기',   ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
-    {label:'3단계 · 모형 읽기 퀴즈',     ok:!!S.mini.explain},
+    {label:'3단계 · 모형 만들기',        ok:!!S.model},
+    {label:'4단계 · 여덟 문제 가려내기', ok:S.jDone>=JUDGE.length},
     {label:'4단계 · 사고력 문제 답쓰기', ok:(S.essay||'').trim().length>=15},
+    {label:'4단계 · 갈래 확인 퀴즈',     ok:!!S.mini.judge},
     {label:'5단계 · 확인 문제 완주',     ok:S.best>0}
   ];
 }
 
 /* ── 🎯 혼자 탐구: 서술 항목은 제출해야 완료 + 생각 쓰기 칸 항목 (단계 순으로 정렬) ── */
-const SOLO_SUB={'4단계 · 사고력 문제 답쓰기':'essay'}, SOLO_THINK=[{key:'guess',stage:1,label:'은하들이 서로 멀어지는 우주, 내 생각'},{key:'summary',stage:3,label:'내 말로 정리 — 팽창하는 우주'}];
+const SOLO_SUB={'4단계 · 사고력 문제 답쓰기':'essay'}, SOLO_THINK=[{key:'guess',stage:1,label:'별이 없는 것처럼 보이는 검은 부분, 내 생각'},{key:'summary',stage:3,label:'내 말로 정리 — 성운과 성단의 갈래'}];
 const thinkLen=k=>((S.think||{})[k]||'').trim().length;
 const _progChecks0=progChecks;
 progChecks=function(){const c=_progChecks0();c.forEach(x=>{const k=SOLO_SUB[x.label];if(k){x.ok=x.ok&&!!(S.sub||{})[k];x.label=x.label+' → 제출';}});SOLO_THINK.forEach(t=>c.push({label:t.stage+'단계 · '+t.label+' → 제출',ok:thinkLen(t.key)>=10&&!!(S.sub||{})[t.key]}));const st=l=>{const d=(String(l).split('단계')[0].match(/\d/g)||[]).map(Number);return d.length?Math.max(...d):0;};return c.map((x,i)=>({x,i,s:st(x.label)})).sort((a,b)=>a.s-b.s||a.i-b.i).map(o=>o.x);};
@@ -1549,7 +1352,6 @@ function showTab(id,noScroll,force){
   $('#panel-'+id).classList.add('show');
   $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
   setBg(id);S.tab=id;S.visited[id]=true;save();updateProgress();
-  if(id==='explore'&&window.__balResize)window.__balResize();
   if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
 }
 $('#tabNav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
@@ -1558,10 +1360,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b
 function refreshCover(){
   const any=progChecks().some(x=>x.ok);
   $('#coverSaved').style.display=any?'inline-flex':'none';
-  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 🎈`:'풍선 불러 가기 🎈';
+  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 🌫️`:'갈래 나누러 가기 🌫️';
 }
 $('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
-  document.body.classList.remove('cover-on');A.ensure();A.pop();{showTab(soloOn()?landTab():(S.tab||'engage'),true);if(soloOn())setTimeout(()=>gotoUndone(landTab()),450);}});
+  document.body.classList.remove('cover-on');A.ensure();A.pop();{showTab(soloOn()?landTab():(S.tab||'face'),true);if(soloOn())setTimeout(()=>gotoUndone(landTab()),450);}});
 $('#brandBtn').addEventListener('click',()=>{refreshCover();$('#cover').classList.remove('hide');
   document.body.classList.add('cover-on');setBg('cover');});
 
@@ -1656,11 +1458,11 @@ $('#gLocal').addEventListener('click',()=>{
  afterJoin('🔓 <b>코드 없이 혼자 탐구!</b> 미션을 다 깨면 오른쪽 위 📄 버튼으로 <b>학습 결과를 PDF</b>로 저장하세요');
 });
 
-/* ── ☁️ 서버 기록 (Supabase · 과학이조선생) — 표는 RPC 로만. 코드 없이(local)면 아무것도 보내지 않는다 ── */
+/* ── ☁️ 서버 기록 (Supabase · 선생님) — 표는 RPC 로만. 코드 없이(local)면 아무것도 보내지 않는다 ── */
 const OHM={
  url:'https://vbvtnmnodeoocbbjauap.supabase.co',
  key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidnRubW5vZGVvb2NiYmphdWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0OTQ0OTYsImV4cCI6MjA5NTA3MDQ5Nn0.dvuRrt3qw2Tya_QwGbcXrmGPdfDgI4xmgyH8UjU73Nc',
- page:'star-expanding', sb:null, timer:null, last:'', busy:false, dirty:false,
+ page:'star-nebula', sb:null, timer:null, last:'', busy:false, dirty:false,
  client(){if(this.sb)return this.sb;if(!window.supabase||!window.supabase.createClient)return null;this.sb=window.supabase.createClient(this.url,this.key,{auth:{persistSession:false}});return this.sb;},
  device(){try{let d=localStorage.getItem('elec_device');if(!d){d=Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem('elec_device',d);}return d;}catch(e){return 'na';}},
  async rpc(name,args){const c=this.client();if(!c)throw new Error('supabase 라이브러리를 불러오지 못했어요');const r=await c.rpc(name,args);if(r.error)throw new Error(r.error.message||String(r.error));return r.data;},
@@ -1978,165 +1780,59 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
   });
 })();
 
-/* 예측 */
+/* ═══════ 🔍 갈래 가려내기 ═══════ */
 (function(){
-  const wrap=$('#poeChoices'),exp=$('#poeExplain');
-  function lock(pick){
-    $$('.choice',wrap).forEach(b=>{b.classList.add('done');
-      if(b.dataset.poe===POE_ANSWER)b.classList.add('correct');
-      else if(b.dataset.poe===pick)b.classList.add('wrong');else b.classList.add('dim');});
-    const ok=pick===POE_ANSWER;
-    exp.className='explain show '+(ok?'ok':'no');
-    exp.innerHTML=`<div class="why">${ok?'✅ 예측 성공':'🔍 다시 생각해 보기'}</div>${ok?POE_WHY.right:POE_WHY.wrong}`;}
-  wrap.addEventListener('click',e=>{
-    const b=e.target.closest('.choice');if(!b||S.poe)return;
-    S.poe=b.dataset.poe;save();updateProgress();
-    (S.poe===POE_ANSWER?A.correct:A.wrong).call(A);lock(S.poe);});
-  if(S.poe)lock(S.poe);
+  const box=$('#sortBox'), qc=$('#qCard'), row=$('#binRow'), fb=$('#sfb');
+  let locked=false;
+  function render(){
+    const i=S.jIdx;
+    if(i>=JUDGE.length){
+      qc.innerHTML='<div class="qtxt">여덟 문제를 모두 마쳤습니다. 아래 버튼으로 다시 풀 수 있어요.</div>';
+      row.innerHTML=''; fb.className='sfb'; box.classList.add('alldone'); paintProg(); return;
+    }
+    box.classList.remove('alldone');
+    const j=JUDGE[i];
+    qc.innerHTML=`<span class="qn">Q${i+1} / ${JUDGE.length}</span><div class="qtxt">${j.q}</div>`;
+    row.innerHTML=KINDS.map(k=>`<button class="bin" data-k="${k.k}" style="--kc:var(--${k.c})">${k.nm}</button>`).join('');
+    fb.className='sfb'; locked=false; paintProg();
+  }
+  function paintProg(){
+    $('#sprogTxt').textContent=`${S.jDone} / ${JUDGE.length}`;
+    $('#sprogBar').style.width=(S.jDone/JUDGE.length*100)+'%';
+  }
+  row.addEventListener('click',e=>{
+    const b=e.target.closest('.bin'); if(!b||locked)return;
+    const j=JUDGE[S.jIdx];
+    if(b.dataset.k===j.a){
+      locked=true; b.classList.add('correct');
+      $$('.bin',row).forEach(x=>x.classList.add('locked'));
+      A.correct();
+      const nm=KINDS.find(k=>k.k===j.a).nm;
+      fb.className='sfb show'; fb.innerHTML=`<b>${nm}</b> — ${j.why}`;
+      S.jDone=Math.max(S.jDone,S.jIdx+1); save(); paintProg(); updateProgress();
+      setTimeout(()=>{S.jIdx++;save();render();
+        if(S.jIdx>=JUDGE.length){A.win();toast('여덟 문제 완주! 기준이 잡혔습니다 🏅','good');}
+      },1700);
+    }else{
+      b.classList.add('wrong'); A.wrong();
+      setTimeout(()=>b.classList.remove('wrong'),430);
+      fb.className='sfb show'; fb.style.background='rgba(255,93,108,.08)'; fb.style.borderColor='#7a2f38';
+      fb.innerHTML='다시 볼까요 — <b>성간 물질</b>이 모인 것인가요, <b>별</b>이 모인 것인가요? 그다음 기준을 적용해 보세요.';
+      setTimeout(()=>{fb.style.background='';fb.style.borderColor='';},1600);
+    }
+  });
+  $('#sortReset').addEventListener('click',()=>{S.jIdx=0;S.jDone=0;save();render();updateProgress();A.pop();});
+  render();
 })();
 
-/* ═══════ 🎈 풍선 우주 실험실 ═══════ */
+/* 모형 체크 */
 (function(){
-  const cv=$('#balcv'), gcv=$('#simGraph'), sl=$('#simS');
-  let ctx,w,h,gctx,gw,gh;
-  const scale=()=>+sl.value/100;
-  const nearD=s=>R_UNIT*NEAR_A*s;   // cm
-  const farD =s=>R_UNIT*FAR_A *s;
-  /* 딱지 각도 (라디안, 화면 좌표계) */
-  const ANG={a:-1.15, b:-1.15+NEAR_A, c:0.55, d:0.55+FAR_A};
-  function syncSlider(el){el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');}
-  function resize(){({ctx,w,h}=fit(cv));({ctx:gctx,w:gw,h:gh}=fit(gcv));draw();drawGraph();}
-
-  function draw(){
-    if(!ctx)return;
-    const s=scale();
-    ctx.clearRect(0,0,w,h);
-    const cx=w/2, cy=h/2+6, R=Math.min(w,h)*0.16*s;
-    /* 기준 풍선(처음 크기) */
-    ctx.setLineDash([4,6]); ctx.strokeStyle='rgba(168,182,220,.35)'; ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.arc(cx,cy,Math.min(w,h)*0.16,0,TAU); ctx.stroke(); ctx.setLineDash([]);
-    /* 풍선 표면 */
-    const g=ctx.createRadialGradient(cx,cy,R*0.75,cx,cy,R*1.05);
-    g.addColorStop(0,'rgba(103,232,224,0)'); g.addColorStop(1,'rgba(103,232,224,.16)');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.05,0,TAU); ctx.fill();
-    ctx.strokeStyle=C.c2; ctx.lineWidth=2.6; ctx.shadowColor=C.c2; ctx.shadowBlur=12;
-    ctx.beginPath(); ctx.arc(cx,cy,R,0,TAU); ctx.stroke(); ctx.shadowBlur=0;
-    /* 호(거리) 표시 */
-    function arcMark(a1,a2,col,label){
-      ctx.strokeStyle=col; ctx.lineWidth=5; ctx.globalAlpha=.9;
-      ctx.beginPath(); ctx.arc(cx,cy,R,a1,a2); ctx.stroke(); ctx.globalAlpha=1;
-      const mid=(a1+a2)/2, lx=cx+Math.cos(mid)*(R+22), ly=cy+Math.sin(mid)*(R+22);
-      ctx.font='700 12.5px Pretendard, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle='rgba(5,8,15,.75)';
-      const wd=ctx.measureText(label).width+12;
-      ctx.fillRect(lx-wd/2,ly-10,wd,20);
-      ctx.fillStyle=col; ctx.fillText(label,lx,ly);
-    }
-    arcMark(ANG.a,ANG.b,C.c1,nearD(s).toFixed(1)+' cm');
-    arcMark(ANG.c,ANG.d,C.c5,farD(s).toFixed(1)+' cm');
-    /* 딱지 */
-    const dots=[['a',C.c1,'㉮'],['b',C.c1,'㉯'],['c',C.c5,'㉰'],['d',C.c5,'㉱']];
-    dots.forEach(([k,col,nm])=>{
-      const x=cx+Math.cos(ANG[k])*R, y=cy+Math.sin(ANG[k])*R;
-      ctx.beginPath(); ctx.arc(x,y,7,0,TAU);
-      ctx.fillStyle=col; ctx.shadowColor=col; ctx.shadowBlur=10; ctx.fill(); ctx.shadowBlur=0;
-      ctx.font='700 12px Pretendard, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle='#06121f'; ctx.fillText(nm,x,y+.5);
-    });
-    /* 안내 */
-    ctx.font='600 12px Pretendard, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
-    ctx.fillStyle=C.inkmute;
-    ctx.fillText('풍선을 옆에서 자른 단면 — 딱지는 모두 표면 위에 있습니다',w/2,h-10);
-    ctx.fillStyle='rgba(168,182,220,.5)';
-    ctx.fillText('점선 = 처음 크기',w/2,18);
-  }
-
-  function updateOut(){
-    const s=scale();
-    $('#vS').textContent=s.toFixed(2)+'배';
-    $('#rNear').innerHTML=nearD(s).toFixed(1)+'<small> cm</small>';
-    $('#rFar').innerHTML=farD(s).toFixed(1)+'<small> cm</small>';
-    const dn=nearD(s)-nearD(1), df=farD(s)-farD(1);
-    $('#dNear').innerHTML='+'+dn.toFixed(1)+'<small> cm</small>';
-    $('#dFar').innerHTML='+'+df.toFixed(1)+'<small> cm</small>';
-    $('#simMsg').innerHTML = s<=1.01 ? '풍선을 불면서 두 거리 변화를 비교해 보세요.'
-      : `먼 쪽이 가까운 쪽보다 <b class="t3">약 ${(df/dn).toFixed(1)}배</b> 더 많이 멀어졌어요.`;
-  }
-
-  /* 기록 */
-  function rows(){return S.log||[];}
-  function renderLog(fresh){
-    const tb=$('#simTable'), rs=rows();
-    if(!rs.length){
-      tb.innerHTML='<tr><td class="empty" colspan="6">아직 기록이 없어요. 풍선을 불고 <b>📋 기록하기</b>를 눌러 보세요.</td></tr>';
-      drawGraph(); return;
-    }
-    tb.innerHTML='<tr><th>#</th><th>풍선 크기</th><th>㉮–㉯</th><th>㉰–㉱</th><th>㉮–㉯ 변화</th><th>㉰–㉱ 변화</th><th></th></tr>'+
-      rs.map((r,i)=>`<tr class="${i===fresh?'fresh':''}"><td>${i+1}</td><td>${r.s.toFixed(2)}배</td>
-        <td>${nearD(r.s).toFixed(1)}</td><td>${farD(r.s).toFixed(1)}</td>
-        <td style="color:${C.c1}">+${(nearD(r.s)-nearD(1)).toFixed(1)}</td>
-        <td style="color:${C.c5}">+${(farD(r.s)-farD(1)).toFixed(1)}</td>
-        <td class="del" data-del="${r.id}" title="이 기록 지우기">✕</td></tr>`).join('');
-    tb.onclick=e=>{const d=e.target.closest('[data-del]');if(!d)return;
-      S.log=S.log.filter(r=>r.id!==+d.dataset.del);save();renderLog();updateProgress();A.pop();};
-    drawGraph();
-  }
-  function drawGraph(){
-    if(!gctx)return;
-    gctx.clearRect(0,0,gw,gh);
-    const pad={l:52,r:16,t:16,b:34}, rs=rows();
-    const xmax=14, ymax=Math.max(2, ...rs.map(r=>farD(r.s)-farD(1)))*1.15;
-    const px=v=>pad.l+v/xmax*(gw-pad.l-pad.r);
-    const py=v=>gh-pad.b-v/ymax*(gh-pad.t-pad.b);
-    gctx.strokeStyle=C.line;gctx.lineWidth=1;
-    gctx.beginPath();gctx.moveTo(pad.l,pad.t);gctx.lineTo(pad.l,gh-pad.b);gctx.lineTo(gw-pad.r,gh-pad.b);gctx.stroke();
-    gctx.font='600 10.5px "JetBrains Mono", monospace';gctx.fillStyle=C.inkmute;gctx.textAlign='center';
-    [4,8,12].forEach(v=>gctx.fillText(v,px(v),gh-pad.b+15));
-    gctx.font='600 11px Pretendard, sans-serif';
-    gctx.fillText('처음 거리 (cm)',(pad.l+gw-pad.r)/2,gh-6);
-    gctx.textAlign='right';gctx.font='600 10.5px "JetBrains Mono", monospace';
-    [0,ymax/2,ymax].forEach(v=>{gctx.fillText(v.toFixed(1),pad.l-6,py(v)+4);
-      gctx.setLineDash([3,5]);gctx.strokeStyle=C.linesoft||C.line;
-      gctx.beginPath();gctx.moveTo(pad.l,py(v));gctx.lineTo(gw-pad.r,py(v));gctx.stroke();gctx.setLineDash([]);});
-    gctx.save();gctx.translate(14,(pad.t+gh-pad.b)/2);gctx.rotate(-Math.PI/2);
-    gctx.textAlign='center';gctx.font='600 11px Pretendard, sans-serif';gctx.fillStyle=C.inkmute;
-    gctx.fillText('거리 변화 (cm)',0,0);gctx.restore();
-    if(!rs.length){
-      gctx.fillStyle=C.inkmute;gctx.font='600 12.5px Pretendard, sans-serif';gctx.textAlign='center';
-      gctx.fillText('기록이 쌓이면 점이 찍힙니다',gw/2,gh/2);return;
-    }
-    rs.forEach(r=>{
-      const dn=nearD(r.s)-nearD(1), df=farD(r.s)-farD(1);
-      [[nearD(1),dn,C.c1],[farD(1),df,C.c5]].forEach(([x,y,col])=>{
-        gctx.beginPath();gctx.arc(px(x),py(y),5,0,TAU);
-        gctx.fillStyle=col;gctx.shadowColor=col;gctx.shadowBlur=9;gctx.fill();gctx.shadowBlur=0;});
-      /* 같은 회차의 두 점을 잇는 옅은 선 */
-      gctx.strokeStyle='rgba(168,182,220,.28)';gctx.lineWidth=1.2;
-      gctx.beginPath();gctx.moveTo(px(nearD(1)),py(dn));gctx.lineTo(px(farD(1)),py(df));gctx.stroke();
-    });
-  }
-
-  sl.addEventListener('input',()=>{syncSlider(sl);updateOut();draw();});
-  $('#simMark').addEventListener('click',()=>{
-    const s=scale();
-    if(s<=1.01)return toast('풍선을 먼저 불어 주세요 🎈','bad');
-    S.log=S.log||[];
-    if(S.log.some(r=>Math.abs(r.s-s)<0.02))return toast('이미 비슷한 크기를 기록했어요. 더 크게 불어 보세요','bad');
-    S.log.push({id:S.log.length?Math.max(...S.log.map(r=>r.id))+1:1, s});
-    save();renderLog(S.log.length-1);updateProgress();A.pop();
-    const n=S.log.length;
-    toast(n>=3?'기록 3회 완료! 그래프에서 두 색 점의 높이를 비교해 보세요 📈':`기록 ${n}회 — 더 크게 불어 한 번 더!`, n>=3?'good':'');
-  });
-  $('#simClear').addEventListener('click',()=>{S.log=[];save();renderLog();updateProgress();A.pop();});
-  $('#simCopy').addEventListener('click',async()=>{
-    const rs=rows(); if(!rs.length)return toast('기록이 없어요','bad');
-    const text=['#\t풍선크기\t㉮–㉯(cm)\t㉰–㉱(cm)\t㉮–㉯변화\t㉰–㉱변화']
-      .concat(rs.map((r,i)=>`${i+1}\t${r.s.toFixed(2)}\t${nearD(r.s).toFixed(1)}\t${farD(r.s).toFixed(1)}\t${(nearD(r.s)-nearD(1)).toFixed(1)}\t${(farD(r.s)-farD(1)).toFixed(1)}`)).join('\n');
-    try{await navigator.clipboard.writeText(text);toast('표를 복사했어요 📋','good');}catch(e){toast('복사에 실패했어요','bad');}
-  });
-  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(resize,180);});
-  window.__balResize=resize;
-  syncSlider(sl);updateOut();renderLog();resize();
+  const el=$('#modelCheck');
+  const set=silent=>{S.model=true;save();el.classList.add('on');updateProgress();
+    if(!silent){A.pop();toast('좋아요! 손으로 만든 모형은 오래 갑니다 🎨','good');}};
+  el.addEventListener('click',()=>{if(!S.model)set(false);});
+  el.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!S.model){e.preventDefault();set(false);}});
+  if(S.model)set(true);
 })();
 
 /* 빈칸 */
@@ -2332,7 +2028,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
     ctx.setTransform(dpr,0,0,dpr,0,0);
     const n=Math.round(Math.min(130,w*h/10500));
     stars=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.3,
-      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#cfe0ff','#d6c2ff','#a9f2ec'][i%4]}));}
+      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#cfe0ff','#d6c2ff','#ffb0a0'][i%4]}));}
   function draw(){
     ctx.clearRect(0,0,w,h);
     stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.6:(.35+.4*Math.sin(t*st.s+st.p));
@@ -2346,7 +2042,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
 
 (function init(){
   updateProgress();
-  const start=TABS.includes(S.tab)?S.tab:'engage';
+  const start=TABS.includes(S.tab)?S.tab:'face';
   $$('.panel').forEach(p=>p.classList.remove('show'));
   $('#panel-'+start).classList.add('show');
   $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===start));
@@ -2402,7 +2098,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
 <script id="sim-quiz">
 /* 시뮬 개념확인 카드 — 시뮬 조작 후 바로 답해 보는 1~2문항, 정답 시 해설 공개 */
 (function(){
-  var CFG = [{"at": {"cv": "balcv"}, "qs": [{"q": "풍선 모형에서 '우주'에 해당하는 것은?", "c": ["풍선의 표면", "풍선 속의 공기", "풍선을 부는 사람"], "ok": 0, "w": "우주 = 풍선의 <b>표면</b>(내부가 아님!) — 그래서 표면 위 어느 딱지에서 보아도 서로 멀어질 뿐, 중심이 없습니다."}, {"q": "풍선을 불면 더 멀리 있는 붙임딱지일수록?", "c": ["더 빨리 멀어진다", "더 천천히 멀어진다", "똑같은 빠르기로 멀어진다"], "ok": 0, "w": "거리가 멀수록 사이의 고무(공간)가 많아 늘어나는 양도 많다 — <b>멀수록 빨리</b>, 우주 팽창의 핵심 규칙."}]}];
+  var CFG = [{"at": {"h3": "갈래 가려내기"}, "qs": [{"q": "성간 물질이 별빛을 흡수해 가열되며 스스로 빛을 내는 성운은?", "c": ["방출 성운", "반사 성운", "암흑 성운"], "ok": 0, "w": "스스로 빛을 내면 <b>방출</b>, 남의 빛을 되비추면 반사, 뒤의 빛을 가리면 암흑 — 빛과의 관계로 셋이 갈립니다."}, {"q": "암흑 성운이 검게 보이는 까닭은?", "c": ["뒤에서 오는 별빛을 가로막아서", "빛을 모두 반사해서", "그 자리에 별이 없어서"], "ok": 0, "w": "별이 없는 구멍이 아니라, 짙은 성간 물질이 <b>뒷별의 빛을 가린</b> 그림자 — 적외선으로 보면 뒤가 보입니다."}]}];
   var st = document.createElement('style');
   st.textContent = '.sq-card{margin:16px 0 4px;border-radius:14px;padding:14px 17px;'+
     'border:1.5px solid rgba(128,128,128,.35);background:rgba(127,127,127,.09)}'+
@@ -2518,16 +2214,14 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
 <script id="sum-js">
 (function(){
   var SUM=[
- {t:'외부 은하', lines:[
-  ['', {a:'우리은하', alt:['우리은하']}, ' 밖에 있는 은하 — 허블이 처음 발견'],
-  ['우주에 약 1,000억 개 · 모양을 기준으로 분류할 수 있다']]},
- {t:'우주 팽창', lines:[
-  ['은하 사이의 ', {a:'공간', alt:['공간']}, ' 자체가 늘어나 은하들이 서로 멀어진다'],
-  ['', {a:'멀수록', alt:['멀수록','멀리있을수록']}, ' 더 빨리 멀어진다 — 풍선 위 붙임딱지처럼'],
-  ['팽창의 중심은 ', {a:'없다', alt:['없다','없음']}, ' — 어디서 보아도 서로 멀어져 보인다']]},
- {t:'대폭발 우주론 (빅뱅)', lines:[
-  ['약 ', {a:'138억', alt:['138억','백삼십팔억']}, ' 년 전, 뜨겁고 밀도가 큰 한 점의 대폭발로 우주가 시작'],
-  ['이후 식으면서 별과 은하가 만들어졌고, 지금도 ', {a:'팽창', alt:['팽창']}, ' 중']]}
+ {t:'성운 — 성간 물질의 구름', lines:[
+  ['', {a:'성간 물질', alt:['성간물질','성간 물질']}, '이 많이 모여 구름처럼 보이는 것'],
+  ['방출 성운 : 별빛을 흡수해 가열되어 ', {a:'스스로', alt:['스스로','직접']}, ' 빛을 냄'],
+  ['반사 성운 : 주변 별빛을 ', {a:'반사', alt:['반사']}, '하여 밝게 보임'],
+  ['암흑 성운 : 뒤에서 오는 별빛을 ', {a:'가로막아', alt:['가로막','가려','막아']}, ' 검게 보임']]},
+ {t:'성단 — 별들의 무리', lines:[
+  ['산개 성단 : ', {a:'엉성', alt:['엉성']}, '하게 모임 · ', {a:'파란색', alt:['파란색','파랑','청색']}, ' · 젊음 · 나선팔에 분포'],
+  ['구상 성단 : 공 모양으로 빽빽 · ', {a:'붉은색', alt:['붉은색','빨강','적색']}, ' · 늙음 · 은하 ', {a:'중심부', alt:['중심부','중심']}, '와 은하를 감싼 공간에 분포']]}
 ];
 
   var wrap=document.getElementById('sumWrap'); if(!wrap) return;

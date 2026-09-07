@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#080d1a">
-<title>우주에는 중심이 없다 · 팽창하는 우주</title>
+<title>밝게 보이는 별이 밝은 별은 아니다 · 겉보기 등급과 절대 등급</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,12 +17,12 @@
   --abyss:#080d1a; --deep:#0f1630; --surface:#161f3d; --surface2:#1e2950;
   --line:#2b3763; --line-soft:#222c54;
   --ink:#eaf0ff; --ink-dim:#a8b6dc; --ink-mute:#7382ad;
-  --accent:#a98bff; --accent2:#c9b6ff; --on-accent:#12082a;
-  --c1:#ff8fb1;  /* 은하 = 붙임딱지 */
-  --c2:#67e8e0;  /* 우주 = 풍선 표면 */
-  --c3:#ffd166;  /* 거리 변화 */
-  --c4:#9ae66e;  /* 138억 년 */
-  --c5:#c4a7ff;  /* 외부 은하 */
+  --accent:#a9c0ff; --accent2:#d3e0ff; --on-accent:#08112a;
+  --c1:#ffd166;  /* 겉보기 등급 */
+  --c2:#67e8e0;  /* 절대 등급 */
+  --c3:#9ae66e;  /* 10 pc 기준 */
+  --c4:#ff8fb1;  /* 실제 밝기 */
+  --c5:#c4a7ff;  /* 등급 차 */
   --gold:#ffd166; --ok:#4ade80; --danger:#ff5d6c;
   --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --body:var(--disp); --mono:"JetBrains Mono",ui-monospace,monospace; --jua:"Jua",var(--disp);
@@ -31,10 +31,10 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{font-family:var(--body);color:var(--ink);line-height:1.62;
-  background:radial-gradient(1150px 600px at 78% -8%, rgba(169,139,255,.13), transparent 60%),
-    radial-gradient(820px 520px at 10% 10%, rgba(103,232,224,.07), transparent 58%), var(--abyss);
+  background:radial-gradient(1150px 600px at 78% -8%, rgba(169,192,255,.11), transparent 60%),
+    radial-gradient(820px 520px at 10% 10%, rgba(255,209,102,.08), transparent 58%), var(--abyss);
   background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
-::selection{background:rgba(169,139,255,.32);color:#fff}
+::selection{background:rgba(169,192,255,.32);color:#fff}
 #bgLayer{position:fixed;inset:0;z-index:-3;background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .45s}
 #bgScrim{position:fixed;inset:0;z-index:-2;pointer-events:none;
   background:linear-gradient(180deg,rgba(6,10,22,calc(var(--scrim)*.84)),rgba(6,10,22,var(--scrim)) 58%,rgba(6,10,22,calc(var(--scrim)*1.12)))}
@@ -44,13 +44,14 @@ body{font-family:var(--body);color:var(--ink);line-height:1.62;
 #cover{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:26px 18px;overflow-y:auto;
   background:linear-gradient(180deg,rgba(6,10,22,.5),rgba(6,10,22,.86))}
 #cover.hide{display:none}
+/* 표지가 떠 있는 동안엔 본문을 아예 감춘다 (뒤에 비쳐 보이지 않도록) */
 body.cover-on header.top,body.cover-on main,body.cover-on #app-credit,
 body.cover-on .prog-list,body.cover-on #toast{display:none!important}
 .cover-in{width:100%;max-width:720px;text-align:center;animation:coverUp .6s cubic-bezier(.22,1,.36,1)}
 @keyframes coverUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-.cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(169,139,255,.7))}
-.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(28px,5.8vw,50px);line-height:1.16;margin:18px 0 10px;
-  letter-spacing:-.6px;text-shadow:0 0 26px rgba(169,139,255,.4),0 2px 20px rgba(0,0,0,.75)}
+.cover-emoji{font-size:clamp(30px,7vw,44px);letter-spacing:.18em;line-height:1;filter:drop-shadow(0 0 18px rgba(169,192,255,.7))}
+.cover-title{font-family:var(--disp);font-weight:800;font-size:clamp(26px,5.6vw,46px);line-height:1.16;margin:18px 0 10px;
+  letter-spacing:-.6px;text-shadow:0 0 26px rgba(169,192,255,.4),0 2px 20px rgba(0,0,0,.75)}
 .cover-sub{color:var(--ink-dim);font-size:clamp(14px,2.6vw,17px)}
 .cover-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
 .steps-card{background:rgba(22,31,61,.85);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;
@@ -71,9 +72,9 @@ header.top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rg
 .top-bar{max-width:1180px;margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:12px;padding:0 16px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;cursor:pointer;font-family:var(--body);color:inherit;text-align:left;padding:0}
 .brand .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:18px;
-  background:radial-gradient(circle at 30% 30%,#453168,#0d1533);border:1px solid var(--line)}
+  background:radial-gradient(circle at 30% 30%,#33406e,#0d1533);border:1px solid var(--line)}
 .brand b{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.2px;white-space:nowrap}
-.brand b span{color:var(--accent2)}
+.brand b span{color:var(--accent)}
 .brand .sub{font-size:11px;color:var(--ink-mute);white-space:nowrap}
 @media(max-width:560px){.brand .sub{display:none}}
 .head-right{margin-left:auto;display:flex;align-items:center;gap:9px}
@@ -95,8 +96,8 @@ nav.tabs button{flex:none;display:flex;align-items:center;gap:7px;font-family:va
 nav.tabs button .sn{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);
   font-size:11px;font-weight:700;background:#0e1830;border:1px solid var(--line);color:var(--ink-mute)}
 nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
-nav.tabs button.active{color:#fff;background:linear-gradient(180deg,#b79cff,var(--accent));box-shadow:0 6px 18px -6px var(--accent)}
-nav.tabs button.active .sn{background:#2a1a4d;color:var(--accent2);border-color:transparent}
+nav.tabs button.active{color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));box-shadow:0 6px 18px -6px var(--accent)}
+nav.tabs button.active .sn{background:var(--on-accent);color:var(--accent2);border-color:transparent}
 nav.tabs button.done .sn{background:var(--ok);color:#06210f;border-color:transparent}
 nav.tabs button.done .sn i{display:none}
 nav.tabs button.done .sn::after{content:"✓"}
@@ -110,13 +111,13 @@ main{max-width:1180px;margin:0 auto;padding:20px 16px 90px}
 @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .stepline{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .stepline .sbadge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;letter-spacing:1px;
-  color:#fff;background:linear-gradient(180deg,#b79cff,var(--accent));padding:4px 12px;border-radius:999px;font-weight:700}
+  color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));padding:4px 12px;border-radius:999px;font-weight:700}
 .stepline .swhat{font-size:13px;color:var(--ink-mute)}
-.stepline.opt .sbadge{background:linear-gradient(180deg,#9b87e6,#7358c9)}
+.stepline.opt .sbadge{background:linear-gradient(180deg,#9b87e6,#7358c9);color:#fff}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
 .eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
-h1.big{font-family:var(--disp);font-weight:800;font-size:clamp(28px,6vw,52px);line-height:1.1;letter-spacing:-.6px;text-shadow:0 2px 24px rgba(0,0,0,.65)}
+h1.big{font-family:var(--disp);font-weight:800;font-size:clamp(28px,6.2vw,54px);line-height:1.08;letter-spacing:-.6px;text-shadow:0 2px 24px rgba(0,0,0,.65)}
 h2.sec{font-family:var(--disp);font-weight:800;font-size:clamp(22px,4.2vw,34px);letter-spacing:-.3px;line-height:1.16;margin:0 0 6px;text-shadow:0 2px 16px rgba(0,0,0,.5)}
 h3.card-t{font-family:var(--jua);font-size:20px;letter-spacing:.2px;color:var(--ink)}
 .lead{font-size:clamp(15px,2.4vw,18px);color:var(--ink-dim);max-width:64ch;text-shadow:0 1px 12px rgba(0,0,0,.4)}
@@ -130,11 +131,12 @@ b.k{color:var(--ink);font-weight:800}
 @media(min-width:760px){.grid.c2{grid-template-columns:1fr 1fr}}
 .badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;
   border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-dim)}
+.badge.beyond{background:linear-gradient(180deg,#241b3a,#1a1430);border-color:#4a3a78;color:#d6c2ff}
 .badge.gold{background:rgba(255,209,102,.1);border-color:#5a4a1e;color:var(--gold)}
 .pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .pill{font-size:13px;padding:6px 12px;border-radius:99px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
 .pill b{color:var(--ink)}
-.note{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);background:rgba(169,139,255,.08);
+.note{display:flex;gap:12px;align-items:flex-start;border-left:3px solid var(--accent);background:rgba(169,192,255,.07);
   padding:13px 15px;border-radius:0 12px 12px 0;margin-top:14px;font-size:14.5px;color:var(--ink-dim)}
 .note .ic{flex:none;font-size:17px;line-height:1.4}
 .note.myth{border-color:var(--danger);background:rgba(255,93,108,.07)}
@@ -146,7 +148,7 @@ body.teacher .note.class{display:flex}
 .btn{font-family:var(--body);font-weight:800;font-size:15px;cursor:pointer;padding:12px 20px;border-radius:12px;border:1px solid transparent;
   display:inline-flex;align-items:center;gap:9px;transition:.18s;user-select:none}
 .btn:active{transform:translateY(1px) scale(.99)}
-.btn.primary{background:linear-gradient(180deg,#c9b6ff,var(--accent));color:#fff;box-shadow:0 10px 24px -10px var(--accent)}
+.btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent));color:var(--on-accent);box-shadow:0 10px 24px -10px var(--accent)}
 .btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--ink)}
 .btn.ghost:hover{background:rgba(255,255,255,.08);border-color:var(--accent)}
 .btn.sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
@@ -157,92 +159,87 @@ body.teacher .note.class{display:flex}
   border-radius:13px;padding:14px 16px;cursor:pointer;transition:.16s;display:flex;gap:12px;align-items:center;line-height:1.4}
 .choice .key{flex:none;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
   font-size:14px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
-.choice:hover:not(.done){border-color:var(--accent);background:#2a2450;transform:translateX(3px)}
+.choice:hover:not(.done){border-color:var(--accent);background:#25325c;transform:translateX(3px)}
 .choice.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
 .choice.correct .key{background:var(--ok);color:#06210f}
 .choice.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
 .choice.wrong .key{background:var(--danger);color:#2a060b}
 .choice.dim{opacity:.5}.choice.done{cursor:default}
 .explain{margin-top:14px;border-radius:13px;padding:15px 17px;font-size:14.5px;line-height:1.6;border:1px solid var(--line);
-  background:rgba(169,139,255,.08);color:var(--ink-dim);display:none;animation:fade .35s}
+  background:rgba(169,192,255,.07);color:var(--ink-dim);display:none;animation:fade .35s}
 .explain.show{display:block}
 .explain.ok{border-color:#2e6e44;background:rgba(74,222,128,.09)}
 .explain.no{border-color:#7a2f38;background:rgba(255,93,108,.09)}
 .explain b{color:var(--ink)}
 .explain .why{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;color:var(--accent2);margin-bottom:5px}
 
-/* 🎈 풍선 실험실 */
-.lab{background:linear-gradient(180deg,#1b1a3c,#111a34);border:1.5px solid #4a3a78;border-radius:15px;padding:20px 22px;margin-top:16px}
-.lab h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.simgrid{display:grid;gap:16px;grid-template-columns:1fr;margin-top:14px}
-@media(min-width:900px){.simgrid{grid-template-columns:minmax(0,1fr) 268px;align-items:start}}
-.simstage{background:#05080f;border:1px solid var(--line);border-radius:13px;overflow:hidden}
-.simstage canvas{display:block;width:100%;height:auto}
-.simctl{background:#0e1830;border:1px solid var(--line);border-radius:13px;padding:16px}
-.simctl h4{font-family:var(--jua);font-size:15px;margin-bottom:4px}
-.ctl{margin-top:14px}
-.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-dim);font-weight:600;margin-bottom:7px}
-.ctl label .val{font-family:var(--mono);font-size:14px;color:var(--accent2)}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
-  background:linear-gradient(90deg,var(--accent) 0%,var(--accent) var(--p,0%),#1b2b49 var(--p,0%));outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#f0eaff;
-  border:3px solid var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.5),0 0 10px var(--accent);cursor:grab}
-input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#f0eaff;border:3px solid var(--accent);cursor:grab}
-.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.readout .r{flex:1;min-width:112px;background:#16224a;border:1px solid var(--line);border-radius:11px;padding:10px 12px;text-align:center}
-.readout .r .lab2{font-size:11px;color:var(--ink-mute)}
-.readout .r .v{font-family:var(--mono);font-size:18px;font-weight:700;line-height:1.25}
-.readout .r.near .v{color:var(--c1)} .readout .r.far .v{color:var(--c5)}
-.readout .r .v small{font-size:11px;color:var(--ink-mute);font-weight:400}
-.dl-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
-.dl-head h4{font-family:var(--jua);font-size:16px}
-.dl-head .btn-row{margin:0;margin-left:auto;flex:none}
-.dl-head .btn-row .btn{flex:none}
-.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:12px}
-table.dtable{width:100%;border-collapse:collapse;font-size:13.5px;min-width:420px}
-.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12px;padding:9px 10px;
-  text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
-.dtable td{padding:9px 10px;text-align:center;font-family:var(--mono);border-bottom:1px solid var(--line-soft);white-space:nowrap}
-.dtable td:first-child{font-family:var(--body)}
-.dtable tr:last-child td{border-bottom:0}
-.dtable tr.fresh td{animation:rowIn .5s}
-@keyframes rowIn{from{background:rgba(169,139,255,.22)}to{background:transparent}}
-.dtable td.del{cursor:pointer;color:var(--ink-mute);font-family:var(--body)}
-.dtable td.del:hover{color:var(--danger)}
-.dtable .empty{color:var(--ink-mute);font-family:var(--body);padding:16px;font-size:13px}
-.graph-wrap{margin-top:12px;background:#0e1830;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.graph-wrap canvas{display:block;width:100%;height:auto}
-.legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12.5px;color:var(--ink-mute)}
-.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+/* 등급 비교 도구 */
+.magtool{background:linear-gradient(180deg,#1a2340,#111a34);border:1.5px solid #3a4a7d;border-radius:15px;padding:20px 22px;margin-top:16px}
+.magtool h3{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.magrow{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:700px){.magrow{grid-template-columns:1fr 1fr}}
+.magpick label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--ink-dim);font-weight:700;margin-bottom:8px}
+.magpick label .v{font-family:var(--mono);font-size:16px}
+.segm{display:flex;gap:4px;flex-wrap:wrap}
+.segm button{flex:1;min-width:38px;font-family:var(--mono);font-weight:700;font-size:14px;color:var(--ink-dim);
+  background:#0e1830;border:1.5px solid var(--line);padding:9px 4px;border-radius:9px;cursor:pointer;transition:.15s}
+.segm button:hover{border-color:var(--accent)}
+.segm button.on{color:var(--on-accent)}
+.magstage{margin-top:16px;background:#0a1226;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.magstage canvas{display:block;width:100%;height:auto}
+.magout{margin-top:14px;text-align:center;font-size:clamp(16px,3vw,20px);font-weight:800;line-height:1.5;color:var(--ink)}
+.magout .num{font-family:var(--mono);color:var(--c5);font-size:1.25em}
+
+/* 판별 카드 */
+.judge{display:grid;gap:14px;grid-template-columns:1fr;margin-top:16px}
+@media(min-width:760px){.judge{grid-template-columns:repeat(3,1fr)}}
+.jcard{background:var(--surface2);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:.2s}
+.jcard.solved{border-color:var(--ok);background:rgba(74,222,128,.08)}
+.jcard .jn{font-family:var(--jua);font-size:18px;display:flex;align-items:center;gap:8px}
+.jmag{display:flex;gap:8px;flex-wrap:wrap}
+.jmag span{flex:1;min-width:104px;background:#0e1830;border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:center}
+.jmag span b{display:block;font-family:var(--mono);font-size:17px;margin-top:2px}
+.jmag .app{color:var(--c1)}.jmag .abs{color:var(--c2)}
+.jmag small{font-size:11px;color:var(--ink-mute)}
+.jopts{display:grid;gap:7px}
+.jopt{text-align:left;font-family:var(--body);font-size:13.5px;color:var(--ink);background:#16224a;border:1.5px solid var(--line);
+  border-radius:10px;padding:10px 12px;cursor:pointer;transition:.15s}
+.jopt:hover:not(.locked){border-color:var(--accent)}
+.jopt.correct{border-color:var(--ok);background:rgba(74,222,128,.14)}
+.jopt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
+.jopt.locked{cursor:default}
+.jfb{font-size:12.5px;line-height:1.5;color:var(--ink-dim);display:none;border-top:1px dashed var(--line);padding-top:9px}
+.jfb.show{display:block;animation:fade .3s}
 
 /* 그림 슬롯 */
-.fig{margin:14px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830;position:relative}
+.fig{margin:16px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1830}
 .fig img{display:block;width:100%;height:auto}
 .fig figcaption{font-size:12.5px;color:var(--ink-mute);padding:10px 14px;line-height:1.5;text-align:center;border-top:1px solid var(--line-soft)}
-.fig.slot{display:none;border-style:dashed;border-color:#4a3a78;background:rgba(169,139,255,.05);padding:18px 14px;text-align:center}
+.fig.slot{display:none;border-style:dashed;border-color:#3a4a7d;background:rgba(169,192,255,.045);padding:22px 18px;text-align:center}
 body.teacher .fig.slot{display:block}
-.fig.slot .fe{font-size:24px;opacity:.6}
-.fig.slot .fn{font-family:var(--mono);font-size:11.5px;color:var(--accent2);margin-top:7px;word-break:break-all}
-.fig.slot .fd{font-size:12px;color:var(--ink-mute);margin-top:5px;line-height:1.5}
-.use .fig{margin:0 0 4px}
+.fig.slot .fe{font-size:26px;opacity:.6}
+.fig.slot .fn{font-family:var(--mono);font-size:12px;color:var(--accent2);margin-top:8px;word-break:break-all}
+.fig.slot .fd{font-size:12.5px;color:var(--ink-mute);margin-top:6px;line-height:1.5}
 
 .terms{display:grid;gap:12px;grid-template-columns:1fr 1fr}
 @media(min-width:760px){.terms{grid-template-columns:repeat(4,1fr)}}
 .term{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:14px;border-top:3px solid var(--c,var(--accent))}
 .term .nm{font-family:var(--jua);font-size:17px;margin-bottom:3px}
 .term .de{font-size:13px;color:var(--ink-mute);line-height:1.5}
-.use-grid{display:grid;gap:14px;grid-template-columns:1fr}
-@media(min-width:680px){.use-grid{grid-template-columns:1fr 1fr}}
-.use{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.use .u-t{font-family:var(--jua);font-size:17px;display:flex;align-items:center;gap:8px}
-.use .u-d{font-size:13.5px;color:var(--ink-dim);line-height:1.55}
+
+.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#0e1830;margin-top:14px}
+table.dtable{width:100%;border-collapse:collapse;font-size:14px;min-width:380px}
+.dtable th{background:rgba(255,255,255,.05);color:var(--ink-dim);font-weight:700;font-size:12.5px;padding:10px;text-align:center;border-bottom:1px solid var(--line)}
+.dtable td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line-soft);font-family:var(--mono)}
+.dtable td:first-child{font-family:var(--body)}
+.dtable tr:last-child td{border-bottom:0}
 
 .cloze-line{font-size:15.5px;line-height:2.05;color:var(--ink-dim)}
 .cloze-line+.cloze-line{margin-top:6px}
 .cloze{display:inline-block;min-width:52px;text-align:center;padding:2px 11px;margin:0 2px;border-radius:8px;background:#0e1830;
   border:1.5px dashed var(--line);color:transparent;cursor:pointer;font-weight:800;transition:.16s;user-select:none;line-height:1.3}
 .cloze::after{content:"❓";font-size:12px}
-.cloze:hover{border-color:var(--accent);background:#221d40}
+.cloze:hover{border-color:var(--accent);background:#16224a}
 .cloze.revealed{border-style:solid;cursor:default;animation:clozePop .42s}
 .cloze.revealed::after{content:none}
 @keyframes clozePop{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
@@ -250,9 +247,9 @@ body.teacher .fig.slot{display:block}
 .cloze-set.complete .cloze-done{display:inline-flex;animation:fade .4s}
 .cloze-hint{font-size:12.5px;color:var(--ink-mute);margin-top:10px}
 
-.miniquiz{background:linear-gradient(180deg,#1c1c3e,#0e1730);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.miniquiz{background:linear-gradient(180deg,#152040,#0e1730);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
 .miniquiz .mq-head{display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap}
-.miniquiz .mq-badge{font-size:12px;font-weight:800;color:#fff;background:linear-gradient(180deg,#c9b6ff,var(--accent));padding:4px 10px;border-radius:99px}
+.miniquiz .mq-badge{font-size:12px;font-weight:800;color:var(--on-accent);background:linear-gradient(180deg,var(--accent2),var(--accent));padding:4px 10px;border-radius:99px}
 .miniquiz .mq-prog{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
 /* ── 서술형(자기 채점) ── */
 .eq-ta{width:100%;min-height:104px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--body);
@@ -277,7 +274,7 @@ body.teacher .eq-rej{display:block}
   border-radius:11px;padding:11px 14px;cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:center}
 .mq-opt .k{flex:none;width:23px;height:23px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;
   font-size:12px;background:#0e1830;border:1px solid var(--line);color:var(--ink-dim)}
-.mq-opt:hover:not(.locked){border-color:var(--accent);background:#2a2450}
+.mq-opt:hover:not(.locked){border-color:var(--accent);background:#25325c}
 .mq-opt.correct{border-color:var(--ok);background:rgba(74,222,128,.13)}
 .mq-opt.correct .k{background:var(--ok);color:#06210f}
 .mq-opt.wrong{border-color:var(--danger);background:rgba(255,93,108,.12)}
@@ -305,7 +302,7 @@ body.teacher .eq-rej{display:block}
 .medal .e{font-size:18px}
 textarea{width:100%;font-family:var(--body);font-size:14.5px;color:var(--ink);background:#0e1830;border:1.5px solid var(--line);
   border-radius:12px;padding:12px 14px;min-height:88px;resize:vertical;outline:none;margin-top:8px;line-height:1.55;transition:.18s}
-textarea:focus{border-color:var(--accent);background:#221d40}
+textarea:focus{border-color:var(--accent);background:#16224a}
 textarea::placeholder{color:var(--ink-mute)}
 .savemark{font-size:12px;color:var(--ok);margin-top:6px;display:inline-block;opacity:0;transition:.3s}
 .savemark.on{opacity:1}
@@ -328,7 +325,7 @@ textarea::placeholder{color:var(--ink-mute)}
   #cover,header.top,nav.tabs,#toast,.prog-list,.cta-row,.btn{display:none!important}
   body{background:#fff;color:#111}
   .panel{display:block!important;page-break-after:always}
-  .card,.lab{background:#fff;border-color:#ccc;box-shadow:none}
+  .card,.magtool,.jcard{background:#fff;border-color:#ccc;box-shadow:none}
   .lead,.muted,.note{color:#333}
   h1.big,h2.sec,h3.card-t{color:#111}
   .note.class{display:flex!important}
@@ -459,38 +456,6 @@ input[type=range]::-webkit-slider-thumb{width:24px;height:24px;border-width:4px}
   .bogi{background:#fff;border-color:#ccc}
   .bogi li{color:#111}
 }
-</style>
-
-<style id="xsim-css">
-.xsim{margin-top:14px}
-.xsim-stage{position:relative;border:1.5px solid rgba(128,128,128,.35);border-radius:14px;
- overflow:hidden;background:rgba(127,127,127,.07)}
-.xsim-stage canvas{display:block;width:100%;height:auto}
-.xsim-ctl{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.xsim-btn{font-family:inherit;font-size:14px;font-weight:700;padding:8px 15px;border-radius:10px;cursor:pointer;
- border:1.5px solid rgba(128,128,128,.45);background:rgba(127,127,127,.08);color:inherit;transition:.15s}
-.xsim-btn:hover{border-color:currentColor}
-.xsim-btn.on{background:#2c7a44;border-color:#2c7a44;color:#fff}
-.xsim-btn.warn.on{background:#a05c2c;border-color:#a05c2c}
-.xsim-lab{display:flex;align-items:center;gap:8px;font-size:13.5px}
-.xsim-lab b{font-size:13.5px}
-.xsim-ctl input[type=range]{width:150px;accent-color:#2c7a44}
-.xsim-read{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
-.xsim-r{flex:1 1 118px;border:1px solid rgba(128,128,128,.3);border-radius:11px;padding:8px 11px;text-align:center;
- background:rgba(127,127,127,.07)}
-.xsim-r .k{font-size:12px;opacity:.72;line-height:1.35}
-.xsim-r .v{font-size:19px;font-weight:800;margin-top:3px;line-height:1.2}
-.xsim-r .v small{font-size:12px;font-weight:600;opacity:.75}
-.xsim-msg{margin-top:12px;padding:11px 14px;border-radius:11px;font-size:14.5px;line-height:1.62;
- border:1.5px dashed rgba(128,128,128,.4);background:rgba(127,127,127,.05)}
-.xsim-msg.hit{border-style:solid;border-color:#2c7a44;background:rgba(44,122,68,.1)}
-.xsim-scope{display:inline-block;font-size:12px;font-weight:700;padding:2px 11px;border-radius:99px;
- border:1.5px solid #7d5ba6;color:#7d5ba6;background:rgba(125,91,166,.09);margin-bottom:8px}
-.xsim-why{margin-top:12px;padding:12px 15px;border-radius:12px;border:1px solid rgba(128,128,128,.3);
- background:rgba(127,127,127,.05);font-size:14px;line-height:1.68}
-.xsim-why b{font-weight:800}
-.xsim-why .h{font-weight:800;font-size:14.5px;margin-bottom:5px}
-.xsim-why+.xsim-why{margin-top:9px}
 </style>
 
 <style id="sum-css">
@@ -650,27 +615,27 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 
 <div id="cover">
   <div class="cover-in">
-    <div class="cover-emoji">🎈 🌌 ↔️</div>
-    <h1 class="cover-title">우주에는<br>중심이 없다</h1>
-    <p class="cover-sub">풍선 하나로 알아보는 팽창하는 우주 ✨</p>
+    <div class="cover-emoji">⭐ ⚖️ 🔢</div>
+    <h1 class="cover-title">밝게 보이는 별이<br>밝은 별은 아니다</h1>
+    <p class="cover-sub">겉보기 등급과 절대 등급 — 보이는 밝기와 진짜 밝기 가르기 ✨</p>
     <div class="cover-meta">
       <span class="badge">⏱️ 45분</span>
-      <span class="badge">📘 VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ④ · 286~287쪽</span>
+      <span class="badge">📘 VIII. 별과 우주 · 1. 별 ③ · 274~275쪽</span>
       <span class="badge gold" id="coverSaved" style="display:none">🔖 이어서 하기</span>
     </div>
     <div class="steps-card">
       <h3>💡 학습 단계 안내</h3>
       <ol>
-        <li><span class="sn">1</span><div><b>생각 열기</b> — 은하들은 왜 서로 멀어지고 있을까</div></li>
-        <li><span class="sn">2</span><div><b>탐구하기</b> — 예측하고, 풍선을 불어 거리를 재기</div></li>
-        <li><span class="sn">3</span><div><b>개념 잡기</b> — 풍선의 무엇이 우주이고 무엇이 은하일까</div></li>
-        <li><span class="sn">4</span><div><b>적용하기</b> — 과거의 우주는 어떤 모습이었을까</div></li>
+        <li><span class="sn">1</span><div><b>생각 열기</b> — 시리우스와 베텔게우스, 진짜 밝은 별은?</div></li>
+        <li><span class="sn">2</span><div><b>견주어 보기</b> — 등급이 1 차이 나면 밝기는 얼마나 차이 날까</div></li>
+        <li><span class="sn">3</span><div><b>개념 잡기</b> — 겉보기 등급과 절대 등급 가르기</div></li>
+        <li><span class="sn">4</span><div><b>판별하기</b> — 세 별이 10 pc보다 가까운지 먼지 가려내기</div></li>
         <li><span class="sn">5</span><div><b>확인하기</b> — 배운 것 점검하기</div></li>
-        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 허블이 본 것 · 우주의 끝은 어디인가</div></li>
+        <li class="opt"><span class="sn">+</span><div><b>더 알아보기</b> — 등급이라는 이상한 숫자의 유래</div></li>
       </ol>
     </div>
     <div class="cover-cta">
-      <button class="btn primary xl" id="coverGo">풍선 불러 가기 🎈</button>
+      <button class="btn primary xl" id="coverGo">별 밝기 재판 시작 ⚖️</button>
       <span class="cover-hint">진행 상황은 이 기기에 자동 저장돼요 · 왼쪽 위 제목을 누르면 이 화면으로 돌아옵니다</span>
  <span class="cover-hint" id="coverModeHint">🎯 <b>혼자 탐구</b>로 하려면 오른쪽 위 🎯 버튼 — 학번·이름(·참여 코드)을 넣으면 미션을 하나씩 깨며 나아가요. 코드가 없어도 할 수 있고, 다 마치면 📄 <b>학습 결과 PDF</b>로 저장해 낼 수 있어요.</span>
     </div>
@@ -680,9 +645,9 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 <header class="top">
   <div class="top-bar">
     <button class="brand" id="brandBtn" title="표지로 돌아가기">
-      <div class="logo">🎈</div>
-      <div><b>우주에는 <span>중심이 없다</span></b>
-        <div class="sub">VIII. 별과 우주 · 2. 우리은하와 우주 탐사 ④ · 중2 과학</div></div>
+      <div class="logo">⭐</div>
+      <div><b>밝게 보이는 별이 <span>밝은 별은 아니다</span></b>
+        <div class="sub">VIII. 별과 우주 · 1. 별 ③ · 중2 과학</div></div>
     </button>
     <div class="head-right">
       <a class="hbtn" href="index.html" title="단원 허브로">🌌</a>
@@ -699,9 +664,9 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
   </div>
   <nav class="tabs" id="tabNav">
     <button data-tab="engage" class="active"><span class="sn"><i>1</i></span>생각 열기</button>
-    <button data-tab="explore"><span class="sn"><i>2</i></span>탐구하기</button>
+    <button data-tab="compare"><span class="sn"><i>2</i></span>견주어 보기</button>
     <button data-tab="explain"><span class="sn"><i>3</i></span>개념 잡기</button>
-    <button data-tab="apply"><span class="sn"><i>4</i></span>적용하기</button>
+    <button data-tab="judge"><span class="sn"><i>4</i></span>판별하기</button>
     <button data-tab="check"><span class="sn"><i>5</i></span>확인하기</button>
     <span class="tab-sep"></span>
  <button data-tab="sum" class="optional"><span class="sn"><i>+</i></span>📝 개념 정리하기</button>
@@ -716,31 +681,33 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 <!-- 1 -->
 <section class="panel show" id="panel-engage">
   <div class="stepline"><span class="sbadge">STEP 1</span><span class="swhat">생각 열기 · 오늘의 수수께끼</span></div>
-  <h1 class="big">우주에는<br><span class="t2">중심</span>이 없다.</h1>
+  <h1 class="big">밝게 보이는 별이<br><span class="t4">밝은 별</span>은 아니다.</h1>
   <p class="lead" style="margin-top:16px">
-    망원경으로 먼 은하들을 관측한 과학자들은 이상한 것을 발견했습니다.
-    <b class="k">어느 방향을 봐도 은하들이 우리에게서 멀어지고 있었던</b> 거예요.
-    사방이 전부 멀어진다니 — 그렇다면 <b>우리가 우주의 한복판</b>에 있다는 뜻일까요?
-    답은 그보다 훨씬 이상합니다.
+    겨울 밤하늘에서 가장 눈에 띄는 별은 큰개자리의 <b class="k">시리우스</b>입니다. 오리온자리의
+    <b class="k">베텔게우스</b>보다 훨씬 밝게 보이죠. 그런데 두 별을 나란히 세워 놓고 비교하면
+    <b class="t4">베텔게우스가 시리우스보다 압도적으로 밝습니다.</b> 어떻게 이런 일이 가능할까요?
   </p>
-  <figure class="fig" data-fig="galaxies"
-    data-alt="여러 은하가 사방으로 흩어지듯 퍼져 있는 깊은 우주"
-    data-cap="우주에는 우리은하 외에도 수많은 은하가 있습니다. 이를 외부 은하라고 해요."></figure>
+  <figure class="fig" data-fig="sirius"
+    data-alt="밤하늘에서 시리우스가 베텔게우스보다 밝게 보이는 장면"
+    data-cap="우리 눈에는 시리우스가 더 밝게 보인다. 그런데 실제로는?"></figure>
 
   <div class="card" style="margin-top:20px">
-    <h2 class="sec" style="font-size:clamp(19px,3vw,24px)">🌌 우리은하 밖에도 은하가 있다</h2>
-    <p class="lead" style="font-size:17.5px">
-      우주에는 우리은하 외에도 수많은 은하가 있습니다. 이 은하들을 <b class="t5">외부 은하</b>라고 해요.
-      여러 과학자들은 수많은 외부 은하가 <b class="k">서로 멀어지고 있다</b>는 사실을 관측하여,
-      우주가 팽창하고 있음을 알아냈습니다.</p>
-    <div class="note class"><span class="ic">💬</span><div><b>도입 들어가기</b> — 과학기술 발달로 멀리 있는 천체까지의 거리를 잴 수 있게 되면서 외부 은하의 존재를 알게 되었음을 짚어 주세요. 그 '거리 재는 법'이 바로 1~3차시에서 배운 것들입니다. <b>예시 답안</b>: 우주가 팽창하고 있어서 은하들이 서로 멀어지고 있을 것이다.</div></div>
+    <div class="badge" style="margin-bottom:12px">🔮 먼저 예측해 볼까요</div>
+    <h3 class="card-t">두 별이 <span class="t3">똑같은 거리</span>에 놓인다면, 어느 쪽이 더 밝을까?</h3>
+    <div class="choices" id="poeChoices">
+      <button class="choice" data-poe="a"><span class="key">가</span>시리우스 — 지금도 더 밝게 보이니까</button>
+      <button class="choice" data-poe="b"><span class="key">나</span>베텔게우스 — 멀리 있는데도 저 정도로 보이니까</button>
+      <button class="choice" data-poe="c"><span class="key">다</span>둘이 비슷할 것이다</button>
+    </div>
+    <div class="explain" id="poeExplain"></div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 지난 차시(빛의 밝기와 거리)를 여기서 불러오세요. "멀리 있으면 어두워 보인다는 걸 배웠죠? 그럼 멀리 있는데도 밝게 보이는 별은?"이라고 물으면 학생 스스로 '나'에 도달합니다.</div></div>
   </div>
  <div class="card" style="margin-top:18px">
  <h3 class="card-t">🤔 내 생각부터</h3>
  <div class="think" data-stage="1">
- <div class="th">✍️ 은하들이 서로 멀어지는 우주, 내 생각<span class="req">10자 이상</span></div>
- <div class="hint">풍선에 그린 점들을 떠올려 예상해 보세요.</div>
- <textarea data-think="guess" data-ime="submit" rows="3" placeholder="예) 우주가 커지면 은하 사이가 …"></textarea>
+ <div class="th">✍️ 1등성과 6등성, 어느 쪽이 더 밝을까? 내 생각<span class="req">10자 이상</span></div>
+ <div class="hint">숫자가 작을수록 밝은지 어두운지, 이유와 함께.</div>
+ <textarea data-think="guess" data-ime="submit" rows="3" placeholder="예) 1등성이 … 왜냐하면 …"></textarea>
  <div class="cnt"><span class="n">0자</span><span class="savemark">✔ 저장됨</span></div>
  <div class="sub-row"><button type="button" class="btn primary sm" data-submit="think">📮 제출하기</button><span class="sub-st" data-substatus="think"></span></div>
  </div>
@@ -748,368 +715,212 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 
   <div class="card" style="margin-top:18px">
     <div class="eyebrow" style="margin-bottom:8px">오늘의 목표</div>
-    <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 할 수 있다</h3>
+    <h3 class="card-t" style="margin-bottom:14px">이번 시간이 끝나면 이걸 말할 수 있다</h3>
     <div class="grid c2">
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c2);color:#062a28;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
-        <div><b class="k">모형을 이용해 우주가 팽창하고 있음을 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">풍선의 무엇이 우주이고 무엇이 은하인지까지.</span></div>
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c1);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">1</div>
+        <div><b class="k">별의 등급과 밝기의 관계를 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">등급이 작을수록 밝고, 1등급 차이는 약 2.5배.</span></div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c3);color:#2a1e04;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
-        <div><b class="k">멀리 있을수록 더 많이 멀어진다는 것을 설명할 수 있다.</b><br><span class="muted" style="font-size:16px">직접 재어 확인한 자료로.</span></div>
+        <div style="flex:none;width:30px;height:30px;border-radius:9px;background:var(--c2);color:#062a28;display:grid;place-items:center;font-family:var(--mono);font-weight:700">2</div>
+        <div><b class="k">겉보기 등급과 절대 등급을 구별할 수 있다.</b><br><span class="muted" style="font-size:16px">그리고 두 값을 견주어 거리까지 짐작할 수 있다.</span></div>
       </div>
     </div>
     <div class="pill-list">
-      <span class="pill">핵심어 · <b>외부 은하</b></span><span class="pill"><b>우주 팽창</b></span>
-      <span class="pill"><b>138억 년</b></span><span class="pill"><b>중심이 없다</b></span>
+      <span class="pill">핵심어 · <b>등급</b></span><span class="pill"><b>겉보기 등급</b></span>
+      <span class="pill"><b>절대 등급</b></span><span class="pill"><b>10 pc</b></span>
     </div>
   </div>
-  <div class="cta-row"><button class="btn primary" data-go="explore">2단계 · 풍선으로 확인하기 →</button></div>
+  <div class="cta-row"><button class="btn primary" data-go="compare">2단계 · 등급이라는 자를 배워 봅시다 →</button></div>
 </section>
 
 <!-- 2 -->
-<section class="panel" id="panel-explore">
-  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">탐구하기 · 예측 → 측정 → 설명</span></div>
-  <h2 class="sec">풍선에 붙임딱지를 붙이고 불어 봅시다</h2>
-  <p class="lead">교과서 탐구입니다. 재어 보기 전에 — 먼저 예측부터.</p>
+<section class="panel" id="panel-compare">
+  <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">견주어 보기 · 등급과 밝기</span></div>
+  <h2 class="sec">숫자가 작을수록 밝은, 거꾸로 된 자</h2>
+  <p class="lead">별의 밝기는 <b class="t1">등급</b>으로 나타냅니다. 그런데 이 자는 조금 이상합니다 —
+    숫자가 <b class="k">작을수록</b> 밝아요. 1등급 별이 6등급 별보다 밝습니다.</p>
 
   <div class="card" style="margin-top:20px">
-    <div class="badge" style="margin-bottom:12px">🔮 ① 예측 (Predict)</div>
-    <h3 class="card-t">풍선을 크게 불면, <span class="t1">가까이 붙은 두 딱지</span>와 <span class="t5">멀리 떨어진 두 딱지</span> 중
-      어느 쪽이 <b>더 많이</b> 멀어질까?</h3>
-    <div class="choices" id="poeChoices">
-      <button class="choice" data-poe="a"><span class="key">가</span>가까운 쪽이 더 많이 멀어진다</button>
-      <button class="choice" data-poe="b"><span class="key">나</span>멀리 있는 쪽이 더 많이 멀어진다</button>
-      <button class="choice" data-poe="c"><span class="key">다</span>둘 다 똑같이 멀어진다</button>
-    </div>
-    <div class="explain" id="poeExplain"></div>
-    <p class="help">'다'를 고르는 학생이 많습니다. 풍선이 고르게 부풀면 다들 똑같이 멀어질 것 같으니까요.</p>
-    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 손을 들어 <b>집계</b>하고 칠판에 적어 두세요. 측정 뒤에 그 숫자를 다시 보여 주면 인지 갈등이 오래 남습니다. 이 예측이 오늘 수업의 핵심 발견으로 이어집니다.</div></div>
-  </div>
+    <h3 class="card-t">📏 1등급 차이는 얼마나 큰 차이일까?</h3>
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
+      1등급 별은 6등급 별보다 약 <b class="t5">100배</b> 밝습니다. 그 사이가 5칸이니,
+      한 칸(1등급 차)마다 약 <b class="t5">2.5배</b>씩 차이가 나는 셈이죠.
+      아래에서 두 등급을 골라 직접 비교해 보세요.</p>
 
-  <!-- 풍선 실험실 -->
-  <div class="card" style="margin-top:18px">
-    <div class="badge" style="margin-bottom:12px">📏 ② 측정 (Observe)</div>
-    <div class="lab">
-      <h3>🎈 풍선 우주 실험실</h3>
-      <p class="lead" style="font-size:17px">슬라이더로 풍선을 불어 보세요. 붙임딱지 사이의 거리가 <b>줄자로 잰 것처럼</b> 표시됩니다.</p>
-      <div class="simgrid">
-        <div class="simstage"><canvas id="balcv" height="300"></canvas></div>
-        <div class="simctl">
-          <h4>조작판</h4>
-          <div class="ctl">
-            <label>풍선 불기 <span class="val" id="vS">1.0배</span></label>
-            <input type="range" id="simS" min="100" max="260" step="1" value="100">
-          </div>
-          <div class="readout">
-            <div class="r near"><div class="lab2">가까운 두 딱지 <b>㉮–㉯</b></div><div class="v" id="rNear">—</div></div>
-            <div class="r far"><div class="lab2">먼 두 딱지 <b>㉰–㉱</b></div><div class="v" id="rFar">—</div></div>
-          </div>
-          <div class="readout">
-            <div class="r near"><div class="lab2">㉮–㉯ 거리 변화</div><div class="v" id="dNear">—</div></div>
-            <div class="r far"><div class="lab2">㉰–㉱ 거리 변화</div><div class="v" id="dFar">—</div></div>
-          </div>
-          <p class="help" id="simMsg">풍선을 불면서 두 거리 변화를 비교해 보세요.</p>
+    <div class="magtool">
+      <h3>⚖️ 등급 밝기 비교기</h3>
+      <div class="magrow">
+        <div class="magpick">
+          <label>별 ㉮의 등급 <span class="v t1" id="vA">1</span></label>
+          <div class="segm" id="segA"></div>
+        </div>
+        <div class="magpick">
+          <label>별 ㉯의 등급 <span class="v t2" id="vB">6</span></label>
+          <div class="segm" id="segB"></div>
         </div>
       </div>
-      <p class="honest"><span class="ic">📌</span>화면의 풍선은 <b>옆에서 자른 단면</b>입니다. 딱지는 모두 <b>표면 위</b>에 있어요 — 안쪽이 아닙니다. 이 점이 오늘 가장 중요합니다.</p>
-
-      <div class="dl-head">
-        <h4>📊 붙임딱지 사이의 거리</h4>
-        <div class="btn-row">
-          <button class="btn primary sm" id="simMark">📋 기록하기</button>
-          <button class="btn ghost sm" id="simCopy">표 복사</button>
-          <button class="btn ghost sm" id="simClear">비우기</button>
-        </div>
-      </div>
-      <div class="dtable-wrap"><table class="dtable" id="simTable"></table></div>
-      <div class="graph-wrap"><canvas id="simGraph" height="230"></canvas></div>
-      <div class="legend">
-        <span><i style="background:#ff8fb1"></i>가까운 두 딱지</span>
-        <span><i style="background:#c4a7ff"></i>먼 두 딱지</span>
-      </div>
-      <p class="help">가로축은 <b>처음 거리</b>, 세로축은 <b class="t3">거리 변화</b>입니다. 점이 쌓이면 관계가 보여요.</p>
-      <div class="note class"><span class="ic">💬</span><div><b>탐구 지도 유의점</b> — ① 실제 풍선으로도 꼭 해 보게 하세요. 화면은 예습·복습용입니다. ② 거리가 <b>서로 다른</b> 딱지 쌍을 고르게 해야 이 차시의 핵심(멀수록 더 많이 멀어짐)이 드러납니다. ③ <b>교과서 예시값</b>: 가까운 쌍 6 → 7.5 cm(변화 1.5), 먼 쌍 11.5 → 16 cm(변화 4.5).</div></div>
+      <div class="magstage"><canvas id="magcv" height="180"></canvas></div>
+      <div class="magout" id="magOut">—</div>
+      <p class="help" style="text-align:center">두 별의 등급 차이가 커질수록 밝기 차이가 <b class="k">눈덩이처럼</b> 커집니다.</p>
     </div>
+    <p class="honest"><span class="ic">📌</span>원의 크기는 밝기 차이를 눈으로 느끼게 하려고 과장한 것입니다. 실제 별의 크기와는 관계가 없어요.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>지도상의 유의점</b> — 1등급 차이의 밝기 비(약 2.5배)를 먼저 확인시킨 뒤, 두 별의 밝기 비로 확장하세요. <b>계산 공식은 도입하지 않습니다.</b> "몇 칸 차이인가"로만 다룹니다.</div></div>
   </div>
-
-<div class="card xsim" id="rub-card">
- <span class="xsim-scope">🔎 왜 그럴까 · 성취기준 밖 보조 자료</span>
- <h3 class="card-t">➖ 고무줄 우주 — 어느 은하에서 보아도 똑같다</h3>
- <p class="lead say">풍선 모형에는 한 가지 함정이 있습니다. 풍선 <b>속</b>을 우주라고 착각하기 쉽거든요.
- 그래서 한 줄로 더 단순하게 만들어 봤습니다. 고무줄 위에 은하 다섯 개를 얹고 늘여 볼 거예요.
- <b class="k">기준이 되는 은하를 바꿔 가며</b> 결과가 어떻게 달라지는지 확인해 보세요.</p>
- <div class="keyline-s"><span class="kw">고무줄을 늘인다</span><span class="arw">→</span><span class="kw">모든 은하가 멀어짐</span><span class="arw">→</span><span class="kw hi">기준을 바꿔도 결과가 같다</span><span class="memo"></span></div>
-
- <div class="xsim-stage"><canvas id="rubCv" height="250" aria-label="고무줄 위에 놓인 다섯 개의 은하. 고무줄을 늘이면 모든 은하 사이가 멀어지며, 어느 은하를 기준으로 삼아도 멀리 있는 은하일수록 빨리 멀어진다."></canvas></div>
-
- <div class="xsim-ctl">
-  <span class="xsim-lab"><b>고무줄 늘이기</b></span>
-  <input type="range" id="rubS" min="100" max="220" step="1" value="100">
-  <span class="xsim-lab"><b id="rubSV">1.00 배</b></span>
-  <span class="xsim-lab" style="margin-left:14px"><b>기준 은하:</b></span>
-  <button class="xsim-btn on" data-ref="0">A</button>
-  <button class="xsim-btn" data-ref="2">C</button>
-  <button class="xsim-btn" data-ref="4">E</button>
- </div>
-
- <div class="xsim-read" id="rubRead"></div>
- <div class="xsim-msg" id="rubMsg">고무줄을 늘여 보세요. 그다음 <b>기준 은하를 A → C → E로 바꿔</b> 가며 표가 어떻게 되는지 보세요.</div>
-
- <div class="xsim-why"><div class="h">🤯 놀라운 결론 — 중심이 없다</div>
- 어느 은하를 기준으로 잡아도 <b>"멀리 있는 은하일수록 빨리 멀어진다"</b>는 결과가 <b>똑같이</b> 나옵니다.
- A에서 봐도, 한가운데 C에서 봐도, 끝에 있는 E에서 봐도 마찬가지예요.<br>
- 그렇다면 <b>어느 은하가 중심일까요?</b> 정답은 <b>"중심은 없다"</b>입니다. 모두가 "내가 중심인 것 같다"고 느낄 뿐이죠.
- 우리은하에서 관측한 결과가 "사방의 은하가 멀어진다"인 것도 <b>우리가 중심이라서가 아니라</b>,
- <b>공간 자체가 늘어나고 있어서</b>입니다.</div>
- <div class="xsim-why"><div class="h">🎈 풍선 모형과 이어 보기</div>
- 고무줄(1차원)을 풍선 표면(2차원)으로 바꾸면 그것이 풍선 모형입니다. 중요한 건 <b>풍선의 껍질</b>이지 <b>속이 아니에요.</b>
- 우주는 풍선 <b>표면</b> 같은 것 — 그래서 "우주의 중심이 어디냐"는 질문에 답이 없는 겁니다.</div>
-
- <div class="note class"><span class="ic">💬</span><div><b>이야기 각본</b> — ① 기준 A로 늘이기 → "멀리 있을수록 많이 멀어졌죠?" ② <b>기준을 C로 바꿉니다</b> → "어? C에서 봐도 똑같네요?" ③ E로 또 바꿈 → "여기서도!" ④ 질문 — <b>"그럼 누가 중심이죠?"</b> ⑤ "아무도 아닙니다. 늘어난 건 은하가 아니라 <b>은하 사이의 공간</b>이니까요."</div></div>
-</div>
-
-<script>
-(function(){
-  var cv=document.getElementById('rubCv'); if(!cv) return;
-  var cx=cv.getContext('2d'), W=640, H=250;
-  var NAMES=['A','B','C','D','E'], HOME=[0,0.22,0.46,0.72,1.0], ref=0;
-  function fit(){var b=cv.parentElement.clientWidth||640; if(b<10)b=640; W=b;
-    var d=Math.min(devicePixelRatio||1,2); cv.width=W*d; cv.height=H*d;
-    cv.style.height=H+'px'; cx.setTransform(d,0,0,d,0,0);}
-  var sl=document.getElementById('rubS');
-  sl.addEventListener('input',render);
-  document.querySelectorAll('[data-ref]').forEach(function(b){
-    b.addEventListener('click',function(){
-      document.querySelectorAll('[data-ref]').forEach(function(x){x.classList.toggle('on',x===b);});
-      ref=+b.dataset.ref; render();
-    });
-  });
-  function render(){
-    var bw=cv.parentElement.clientWidth; if(bw>10&&Math.abs(bw-W)>2) fit();
-    var k=sl.value/100;
-    var x0=46, span=(W-92);
-    cx.clearRect(0,0,W,H);
-    /* 늘이기 전 (연한 회색) */
-    var y1=88, y2=168;
-    cx.strokeStyle='rgba(128,128,128,.35)'; cx.lineWidth=3;
-    cx.beginPath(); cx.moveTo(x0,y1); cx.lineTo(x0+span*0.62,y1); cx.stroke();
-    cx.font='12.5px Pretendard, sans-serif'; cx.textAlign='left';
-    cx.fillStyle='rgba(127,127,127,.85)'; cx.fillText('늘이기 전', 8, y1-16);
-    for(var i=0;i<5;i++){
-      var gx=x0+span*0.62*HOME[i];
-      cx.fillStyle='rgba(143,208,255,.5)'; cx.beginPath(); cx.arc(gx,y1,9,0,6.2832); cx.fill();
-      cx.fillStyle='rgba(127,127,127,.9)'; cx.font='700 11px Pretendard, sans-serif'; cx.textAlign='center';
-      cx.fillText(NAMES[i], gx, y1-14);
-    }
-    /* 늘인 후 */
-    var stretch=0.62*k;
-    cx.strokeStyle='#6ef0e6'; cx.lineWidth=3;
-    cx.beginPath(); cx.moveTo(x0,y2); cx.lineTo(x0+span*Math.min(1,stretch),y2); cx.stroke();
-    cx.textAlign='left'; cx.fillStyle='rgba(127,127,127,.85)'; cx.font='12.5px Pretendard, sans-serif';
-    cx.fillText('늘인 후', 8, y2-16);
-    var px=[];
-    for(var j=0;j<5;j++){
-      var gx2=x0+span*Math.min(1,stretch)*HOME[j];
-      px.push(gx2);
-      var isRef=(j===ref);
-      cx.fillStyle=isRef?'#a9f07a':'#8fd0ff';
-      cx.beginPath(); cx.arc(gx2,y2,isRef?12:9,0,6.2832); cx.fill();
-      if(isRef){ cx.strokeStyle='#2c7a44'; cx.lineWidth=2.5; cx.stroke(); }
-      cx.fillStyle='rgba(127,127,127,.95)'; cx.font='700 12px Pretendard, sans-serif'; cx.textAlign='center';
-      cx.fillText(NAMES[j], gx2, y2-18);
-      if(isRef){ cx.fillStyle='#2c7a44'; cx.font='700 11px Pretendard, sans-serif';
-        cx.fillText('여기서 관측', gx2, y2+26); }
-    }
-    /* 기준에서 각 은하로 화살표 */
-    for(var m=0;m<5;m++){
-      if(m===ref) continue;
-      var d0=Math.abs(HOME[m]-HOME[ref])*span*0.62;
-      var d1=Math.abs(HOME[m]-HOME[ref])*span*Math.min(1,stretch);
-      var grow=d1-d0;
-      if(grow<2) continue;
-      var dir=(px[m]>px[ref])?1:-1;
-      cx.strokeStyle='rgba(255,159,190,.85)'; cx.lineWidth=2;
-      var ay=y2+46+Math.abs(m-ref)*0;
-      cx.beginPath(); cx.moveTo(px[m]-dir*Math.min(grow,60), ay); cx.lineTo(px[m], ay);
-      cx.lineTo(px[m]-dir*7, ay-4); cx.moveTo(px[m],ay); cx.lineTo(px[m]-dir*7, ay+4); cx.stroke();
-    }
-    cx.fillStyle='rgba(255,159,190,.95)'; cx.font='11.5px Pretendard, sans-serif'; cx.textAlign='center';
-    cx.fillText('분홍 화살표 = 기준 은하에서 볼 때 멀어진 정도', W/2, H-12);
-    /* 표 */
-    var out='';
-    for(var n=0;n<5;n++){
-      if(n===ref) continue;
-      var dist0=Math.abs(HOME[n]-HOME[ref]);
-      var grow2=dist0*(k-1);
-      out+='<div class="xsim-r"><div class="k">'+NAMES[ref]+' → '+NAMES[n]+'<br><small>처음 거리 '+(dist0*10).toFixed(1)+'</small></div>'
-         +'<div class="v" style="color:#ff9fbe">'+(grow2*10).toFixed(2)+'<small> 만큼 멀어짐</small></div></div>';
-    }
-    document.getElementById('rubRead').innerHTML=out;
-    document.getElementById('rubSV').textContent=k.toFixed(2)+' 배';
-    var msg=document.getElementById('rubMsg');
-    if(k>1.05){
-      msg.className='xsim-msg hit';
-      msg.innerHTML='기준 은하 <b>'+NAMES[ref]+'</b>에서 보니 <b>멀리 있는 은하일수록 더 많이 멀어졌습니다.</b> '
-        +'이제 <b>기준을 다른 은하로 바꿔</b> 보세요 — 결과가 똑같다면, 중심은 어디일까요?';
-    } else {
-      msg.className='xsim-msg';
-      msg.innerHTML='고무줄을 늘여 보세요. 그다음 <b>기준 은하를 A → C → E로 바꿔</b> 가며 표가 어떻게 되는지 보세요.';
-    }
-  }
-  addEventListener('resize',function(){fit(); render();});
-  fit(); render();
-})();
-</script>
-
-
 
   <div class="card" style="margin-top:18px">
-    <div class="badge" style="margin-bottom:12px">💡 ③ 설명 (Explain)</div>
-    <p class="lead" style="font-size:17.5px">
-      풍선의 표면이 팽창할수록 붙임딱지 사이의 거리는 <b class="k">멀어집니다.</b>
-      그런데 딱지의 위치에 따라 <b class="t3">거리 변화 값이 다릅니다</b> —
-      원래 멀리 있던 딱지일수록 더 많이 멀어져요.
-      실제 우주에서도 마찬가지입니다. 우주가 팽창함에 따라 은하들이 서로 멀어지고 있고,
-      <b class="k">멀리 있는 은하일수록 더 빨리 멀어집니다.</b></p>
-    <div class="miniquiz" data-quiz="explore"></div>
+    <h3 class="card-t">👀 그런데 이 등급은 '보이는' 밝기입니다</h3>
+    <p class="lead" style="font-size:17.5px;margin-top:8px">
+      밤하늘을 올려다보고 매긴 등급은 <b class="t1">별까지의 거리를 전혀 고려하지 않은</b> 값입니다.
+      실제로 어두운 별이라도 가까이 있으면 밝게 보이고, 실제로 밝은 별이라도 멀면 어둡게 보이죠.
+      그래서 이 값만으로는 <b class="k">별들의 진짜 밝기를 겨룰 수 없습니다.</b></p>
+    <div class="note myth"><span class="ic">⚠️</span><div><b>가장 흔한 오해</b> — "밝게 보이는 별은 가까운 별이고, 어둡게 보이는 별은 먼 별이다."<br>
+      → <b class="k">보이는 밝기로 거리를 판단할 수 없습니다.</b> 밝기에는 '실제 밝기'와 '거리' 두 가지가 섞여 있으니까요.</div></div>
+    <div class="miniquiz" data-quiz="compare"></div>
   </div>
-  <div class="cta-row"><button class="btn primary" data-go="explain">3단계 · 풍선의 무엇이 우주일까 →</button></div>
+  <div class="cta-row"><button class="btn primary" data-go="explain">3단계 · 그럼 진짜 밝기는 어떻게 겨룰까 →</button></div>
 </section>
 
 <!-- 3 -->
 <section class="panel" id="panel-explain">
-  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">개념 잡기 · 모형을 정확히 읽기</span></div>
-  <h2 class="sec">풍선의 '표면'이 우주다</h2>
-  <p class="lead">이 모형은 아주 강력하지만, <b class="k">한 군데만 잘못 읽으면 전부 어긋납니다.</b> 그 지점을 먼저 잡고 갑시다.</p>
+  <div class="stepline"><span class="sbadge">STEP 3</span><span class="swhat">개념 잡기 · 두 가지 등급 가르기</span></div>
+  <h2 class="sec">모든 별을 같은 출발선에 세운다면</h2>
+  <p class="lead">달리기 실력을 겨루려면 같은 출발선에서 뛰어야죠. 별도 마찬가지입니다.
+    천문학자들은 모든 별을 <b class="t3">10 pc</b>이라는 같은 자리에 세워 놓았다고 <b>가정</b>했습니다.</p>
 
   <div class="card" style="margin-top:20px">
-    <div class="note myth"><span class="ic">⚠️</span><div><b>오해 ①</b> — "우주는 부풀어 오르는 풍선의 <b>안쪽 공간</b>이다."<br>
-      → <b class="k">아닙니다.</b> 우주는 풍선의 <b class="t2">표면</b>입니다. 은하는 표면에 붙은 딱지이고요.
-      풍선 안쪽은 이 모형에서 <b>아무 의미가 없습니다.</b></div></div>
-    <div class="note myth"><span class="ic">⚠️</span><div><b>오해 ②</b> — "사방에서 멀어지니까 <b>우리은하가 우주의 중심</b>이다."<br>
-      → <b class="k">아닙니다.</b> 풍선 표면의 <b>어느 딱지</b>에 올라타도 나머지가 전부 멀어지는 것처럼 보입니다.
-      모든 은하가 서로 멀어지고 있으므로, 우주의 중심은 <b>어디에도 없습니다.</b></div></div>
-    <p class="help">두 번째 오해를 깨는 가장 좋은 방법 — 실험실로 돌아가 <b>다른 딱지를 기준으로 상상해</b> 보세요. 그 딱지에서 봐도 나머지는 다 멀어집니다.</p>
-    <div class="note class"><span class="ic">💬</span><div><b>오개념 지도</b> — 교과서가 이 차시에서 오개념을 <b>두 개나</b> 명시한 이유가 있습니다. 풍선 모형은 직관적이라 잘 먹히지만, 바로 그 직관 때문에 '안쪽 공간'과 '중심'을 만들어 냅니다. <b>탐구 활동 중에 반드시 "우주는 풍선의 어디인가?"를 물으세요.</b></div></div>
+    <h3 class="card-t" style="margin-bottom:14px">용어 지도</h3>
+    <div class="terms">
+      <div class="term" style="--c:var(--c1)"><div class="nm t1">겉보기 등급</div><div class="de">거리를 고려하지 않고, 우리 눈에 보이는 밝기를 등급으로 나타낸 것.</div></div>
+      <div class="term" style="--c:var(--c2)"><div class="nm t2">절대 등급</div><div class="de">별까지의 거리가 10 pc이라고 가정했을 때의 밝기를 등급으로 나타낸 것.</div></div>
+      <div class="term" style="--c:var(--c3)"><div class="nm t3">10 pc</div><div class="de">모든 별을 세워 놓고 겨루는 공통 출발선. 약 32.6광년.</div></div>
+      <div class="term" style="--c:var(--c4)"><div class="nm t4">실제 밝기</div><div class="de">별이 원래 내는 밝기. 절대 등급을 견주면 이걸 비교할 수 있다.</div></div>
+    </div>
+    <figure class="fig" data-fig="tenpc"
+      data-alt="여러 별을 지구에서 10 pc 떨어진 같은 거리의 원 위에 나란히 옮겨 놓고 밝기를 비교하는 개념도"
+      data-cap="모든 별을 10 pc 자리로 옮겨 놓았다고 가정하면, 그때 보이는 밝기가 절대 등급이다."></figure>
   </div>
 
-  <div class="card" style="margin-top:18px">
-    <h3 class="card-t" style="margin-bottom:14px">모형 대응표</h3>
-    <div class="dtable-wrap">
-      <table class="dtable">
-        <tr><th>풍선 모형에서</th><th>실제 우주에서</th></tr>
-        <tr><td class="t2" style="font-weight:800">풍선의 표면</td><td>우주</td></tr>
-        <tr><td class="t1" style="font-weight:800">붙임딱지</td><td>은하</td></tr>
-        <tr><td>풍선을 부는 것</td><td>우주의 팽창</td></tr>
-        <tr><td>딱지 사이 거리가 멀어짐</td><td>은하 사이 거리가 멀어짐</td></tr>
-      </table>
-    </div>
-    <div class="terms" style="margin-top:16px">
-      <div class="term" style="--c:var(--c5)"><div class="nm t5">외부 은하</div><div class="de">우리은하 밖에 있는 수많은 은하.</div></div>
-      <div class="term" style="--c:var(--c2)"><div class="nm t2">우주 팽창</div><div class="de">특별한 중심 없이 모든 방향으로 계속 커지는 것.</div></div>
-      <div class="term" style="--c:var(--c4)"><div class="nm t4">138억 년</div><div class="de">과학자들이 추정하는 우주의 나이.</div></div>
-      <div class="term" style="--c:var(--c3)"><div class="nm t3">거리 변화</div><div class="de">멀리 있는 것일수록 더 크다.</div></div>
-    </div>
-  </div>
-
-  <!-- 빈칸 -->
+  <!-- 빈칸 인출 -->
   <div class="card cloze-set" style="margin-top:18px">
     <div class="badge" style="margin-bottom:12px">✍️ 빈칸을 눌러 확인 — 먼저 머릿속으로 답한 뒤에</div>
     <p class="cloze-line">
-      우리은하 밖에 있는 수많은 은하를 <span class="cloze" data-ans="외부 은하" data-c="c5">　</span>라고 한다.
+      별의 밝기는 등급으로 나타내며, 등급이 <span class="cloze" data-ans="작은" data-c="c1">　</span> 별이
+      등급이 큰 별보다 더 <span class="cloze" data-ans="밝다" data-c="c1">　</span>.
     </p>
     <p class="cloze-line">
-      풍선 모형에서 풍선의 <span class="cloze" data-ans="표면" data-c="c2">　</span>은 우주를,
-      붙임딱지는 <span class="cloze" data-ans="은하" data-c="c1">　</span>를 뜻한다.
+      1등급 별은 6등급 별보다 약 <span class="cloze" data-ans="100배" data-c="c5">　</span> 밝고,
+      각 등급 사이의 밝기는 약 <span class="cloze" data-ans="2.5배" data-c="c5">　</span>씩 차이가 난다.
     </p>
     <p class="cloze-line">
-      풍선이 팽창할수록 붙임딱지 사이의 거리는 <span class="cloze" data-ans="멀어지고" data-c="c3">　</span>,
-      원래 거리가 <span class="cloze" data-ans="멀수록" data-c="c3">　</span> 거리 변화 값이 크다.
+      거리를 고려하지 않고 우리 눈에 보이는 밝기를 나타낸 것이
+      <span class="cloze" data-ans="겉보기 등급" data-c="c1">　</span>이고,
+      거리가 <span class="cloze" data-ans="10 pc" data-c="c3">　</span>이라고 가정했을 때의 밝기를 나타낸 것이
+      <span class="cloze" data-ans="절대 등급" data-c="c2">　</span>이다.
     </p>
     <p class="cloze-line">
-      은하가 서로 멀어지고 있는 까닭은 우주가 <span class="cloze" data-ans="팽창" data-c="c2">　</span>하기 때문이다.
-    </p>
-    <p class="cloze-line">
-      우주는 약 <span class="cloze" data-ans="138억 년" data-c="c4">　</span> 전에 탄생한 이후,
-      특별한 <span class="cloze" data-ans="중심 없이" data-c="c2">　</span> 모든 방향으로 계속 팽창해 오늘날과 같은 우주가 되었다.
+      별의 <span class="cloze" data-ans="실제 밝기" data-c="c4">　</span>를 비교하려면
+      <span class="cloze" data-ans="절대 등급" data-c="c2">　</span>을 견주어야 한다.
     </p>
     <div class="cloze-done">✅ 이 문단은 다 채웠어요!</div>
     <p class="cloze-hint">빈칸을 그냥 눌러 답만 보면 남지 않아요. 소리 내어 답해 보고 누르세요.</p>
   </div>
 
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">🔍 다시, 시리우스와 베텔게우스</h3>
+    <div class="dtable-wrap">
+      <table class="dtable">
+        <tr><th>별</th><th class="t1">겉보기 등급</th><th class="t2">절대 등급</th></tr>
+        <tr><td>시리우스</td><td>더 밝게 보임</td><td>약 1.4</td></tr>
+        <tr><td>베텔게우스</td><td>더 어둡게 보임</td><td>약 −6.0</td></tr>
+      </table>
+    </div>
+    <p class="lead" style="font-size:17.5px;margin-top:12px">
+      절대 등급을 보면 베텔게우스가 <b class="t2">−6.0</b>, 시리우스가 <b class="t2">1.4</b>입니다.
+      등급은 작을수록 밝으니 <b class="k">실제로는 베텔게우스가 시리우스보다 훨씬 밝은 별</b>이에요.
+      그런데도 어둡게 보이는 건 그만큼 <b class="t4">멀리 있기</b> 때문입니다.</p>
+    <div class="note class"><span class="ic">💬</span><div><b>지도상의 유의점</b> — 절대 등급은 별의 실제 밝기 <b>그 자체가 아니라</b>, 실제 밝기를 <b>비교할 수 있게 해 주는 값</b>임을 짚어 주세요.</div></div>
  <div class="card" style="margin-top:18px">
  <h3 class="card-t">✍️ 내 말로 정리</h3>
  <div class="think" data-stage="3">
- <div class="th">✍️ 내 말로 정리 — 팽창하는 우주<span class="req">10자 이상</span></div>
- <div class="hint">「멀수록 빨리」「중심 없음」 중 하나를 넣어서.</div>
- <textarea data-think="summary" data-ime="submit" rows="3" placeholder="예) 멀리 있는 은하일수록 …"></textarea>
+ <div class="th">✍️ 내 말로 정리 — 겉보기 등급과 절대 등급<span class="req">10자 이상</span></div>
+ <div class="hint">「10 pc」「실제 밝기」를 넣어 두 등급의 차이를 써 보세요.</div>
+ <textarea data-think="summary" data-ime="submit" rows="3" placeholder="예) 겉보기 등급은 … 절대 등급은 …"></textarea>
  <div class="cnt"><span class="n">0자</span><span class="savemark">✔ 저장됨</span></div>
  <div class="sub-row"><button type="button" class="btn primary sm" data-submit="think">📮 제출하기</button><span class="sub-st" data-substatus="think"></span></div>
  </div>
  </div>
-  <div class="miniquiz" data-quiz="explain"></div>
-  <div class="cta-row"><button class="btn primary" data-go="apply">4단계 · 과거의 우주를 상상하기 →</button></div>
+    <div class="miniquiz" data-quiz="explain"></div>
+  </div>
+  <div class="cta-row"><button class="btn primary" data-go="judge">4단계 · 직접 판별해 보기 →</button></div>
 </section>
 
 <!-- 4 -->
-<section class="panel" id="panel-apply">
-  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">적용하기 · 시간을 거꾸로 돌리면</span></div>
-  <h2 class="sec">필름을 거꾸로 감아 봅시다</h2>
-  <p class="lead">지금 우주가 커지고 있다면, 시간을 거꾸로 돌렸을 때 우주는 어떤 모습이었을까요?
-    이 질문 하나가 <b class="k">우주의 시작</b>에 대한 생각으로 이어졌습니다.</p>
+<section class="panel" id="panel-judge">
+  <div class="stepline"><span class="sbadge">STEP 4</span><span class="swhat">판별하기 · 두 등급을 견주어 거리 알아내기</span></div>
+  <h2 class="sec">두 숫자만 보면 거리가 보인다</h2>
+  <p class="lead">겉보기 등급과 절대 등급을 견주면 그 별이 10 pc보다 가까운지 먼지 알 수 있습니다. 규칙은 셋뿐이에요.</p>
 
   <div class="card" style="margin-top:20px">
+    <div class="grid c2">
+      <div>
+        <h3 class="card-t" style="margin-bottom:10px">📐 판별 규칙</h3>
+        <p class="lead" style="font-size:17.5px">
+          ① <b class="t1">겉보기</b> = <b class="t2">절대</b> → 그 별까지의 거리는 <b class="t3">딱 10 pc</b><br>
+          ② <b class="t1">겉보기</b> &lt; <b class="t2">절대</b> → <b class="t3">10 pc보다 가까움</b><br>
+          ③ <b class="t1">겉보기</b> &gt; <b class="t2">절대</b> → <b class="t3">10 pc보다 멂</b>
+        </p>
+        <p class="help">외우려 하지 말고 이렇게 생각하세요 — <b class="k">가까이 끌어오면 더 밝아 보인다(=등급이 작아진다).</b>
+          그러니 겉보기가 절대보다 작다면 그건 10 pc보다 가까이 있다는 뜻입니다.</p>
+      </div>
+      <figure class="fig" data-fig="rule" style="margin-top:0"
+        data-alt="지구를 중심으로 반지름 10 pc인 원을 그리고, 원 안쪽과 바깥쪽에 별을 배치해 겉보기 등급과 절대 등급의 대소를 비교한 개념도"
+        data-cap="10 pc 원 안쪽이면 겉보기가 더 작고, 바깥쪽이면 겉보기가 더 크다."></figure>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 class="card-t">📘 해 보기 — 별 (가)·(나)·(다)는 어디에 있을까?</h3>
+    <p class="lead" style="font-size:17.5px;margin-top:8px">교과서 활동입니다. 세 별의 두 등급을 견주어 위치를 판별해 보세요.</p>
+    <div class="judge" id="judgeWrap"></div>
+    <div class="note class"><span class="ic">💬</span><div><b>지도 방향</b> — 첫 번째 블록 질문에 대한 <b>두 번째 단서</b>입니다. 연주 시차(1차시)로는 100 pc 안쪽만 잴 수 있었는데, 등급을 쓰면 더 먼 별까지 거리를 짐작할 수 있다는 점을 연결해 주세요. <b>거리를 구하는 공식은 도입하지 않습니다.</b></div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
     <h3 class="card-t">🤔 생각해 보기 <span class="badge" style="vertical-align:middle">사고력</span></h3>
     <p class="lead" style="font-size:17.5px;margin-top:10px">
-      팽창하는 우주의 <b class="k">과거 모습</b>은 현재와 어떤 차이가 있을지 설명해 보세요.</p>
-    <textarea data-ime="submit" id="essay" placeholder="힌트: 풍선을 거꾸로 바람 빼면 딱지들은 어떻게 될까요? 은하 사이의 거리는? 우주의 크기는?"></textarea>
+      <b class="k">화성</b>에서 태양의 겉보기 등급과 절대 등급을 잰다면, 지구에서 잰 값과 어떻게 다를까요?
+      두 값을 각각 따져 설명해 보세요.</p>
+    <textarea data-ime="submit" id="essay" placeholder="힌트: 화성은 지구보다 태양에서 멀죠. 겉보기 등급은 '보이는 밝기'이고, 절대 등급은 '10 pc에 놓았다고 가정한 밝기'입니다."></textarea>
     <span class="savemark" id="essaySaved">✔ 저장됨</span>
  <div class="sub-row"><button type="button" class="btn primary sm" data-submit="essay">📮 제출하기</button><span class="sub-st" data-substatus="essay"></span></div>
     <div class="btn-row"><button class="btn ghost sm" id="ansBtn">모범 답안 확인하기</button></div>
     <div class="explain" id="modelAns" style="margin-top:12px">
       <div class="why">✍️ 모범 답안</div>
-      우주는 계속 팽창해 왔으므로, 과거의 우주는 현재보다 <b>크기가 작았고</b>
-      은하와 은하 사이의 <b>거리도 더 가까웠을</b> 것이다.
+      겉보기 등급은 거리가 멀수록 큰 값을 가지므로, 화성에서 잰 태양의 겉보기 등급은
+      지구에서 잰 값보다 <b>크다</b>(더 어둡게 보인다).
+      반면 절대 등급은 태양의 실제 밝기를 나타내는 값이므로 어디에서 재든 <b>같다</b>.
     </div>
-    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 여기서 <b>"그럼 아주 먼 과거에는?"</b>까지만 물어 보세요. 학생들이 "한 점"이라고 말하면 그 생각이 <b>빅뱅 우주론</b>이라고 이름만 알려 주고 넘어갑니다. <b>적색 편이·허블 법칙·가속 팽창은 이 차시에서 다루지 않습니다.</b></div></div>
+    <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 학생들이 절대 등급까지 변한다고 답하는 경우가 많습니다. "절대 등급은 <b>어디서 보든 10 pc에 놓았다고 가정</b>한 값"이라는 정의로 돌아가게 하세요.</div></div>
   </div>
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎲 한 문제 더 <span class="badge" style="vertical-align:middle">사고력</span></h3>
     <p class="lead" style="font-size:16px;margin-top:8px">같은 개념, 다른 상황입니다. 먼저 <b>자기 문장으로</b> 말해 보거나 공책에 쓴 뒤, 모범 답안을 여세요.</p>
     <div style="border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px">
-      <p class="lead" style="font-size:16.5px;margin:0"><b>Q1.</b> 풍선 모형에서 스티커(은하) 사이는 멀어지지만 <b>스티커 자체는 커지지 않았습니다.</b> 실제 우주에서도 은하 사이는 멀어지는데 은하 자신, 별, 지구, 우리 몸은 커지지 않아요. 그 까닭을 추리해 보세요.</p>
+      <p class="lead" style="font-size:16.5px;margin:0"><b>Q1.</b> 보름달은 겉보기 등급이 약 −13등급으로 밤하늘의 어떤 별보다 압도적으로 밝습니다. 그런데 <b>절대 등급</b>으로 바꾸면 달은 밤하늘 천체들 중 최하위권으로 떨어져요. 두 값이 이렇게까지 다른 까닭을 설명해 보세요.</p>
       <details style="margin-top:10px">
         <summary style="cursor:pointer;font-weight:700;color:var(--c2)">✍️ 모범 답안 보기</summary>
-        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">팽창은 은하 사이의 <b>텅 빈 광대한 공간</b>에서 일어납니다. 은하 안에서는 별과 물질이 <b>서로 당기는 힘(중력)으로 단단히 묶여</b> 있어서, 공간이 팽창해도 흩어지지 않고 뭉친 채로 있어요. 그래서 은하 <b>사이의 거리만</b> 멀어지고, 은하·별·지구·우리 몸의 크기는 그대로입니다.</div>
+        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">겉보기 등급은 <b>보이는 밝기</b>라서, 지구 바로 곁에 있는 달이 극단적으로 밝게 측정됩니다. 절대 등급은 모든 천체를 <b>10 pc 거리에 두고</b> 비교한 값인데, 달은 스스로 빛을 내지 못하고 햇빛을 반사할 뿐인 작은 천체라 10 pc 밖에 두면 거의 보이지 않아요. 겉보기 등급은 <b>거리의 영향</b>을 크게 받지만, 절대 등급은 <b>실제 밝기</b>를 드러내기 때문입니다.</div>
       </details>
     </div>
     <div style="border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px">
-      <p class="lead" style="font-size:16.5px;margin:0"><b>Q2.</b> 아주 먼 은하에 사는 외계 과학자도 하늘을 관측하면 "모든 은하가 <b>우리에게서</b> 멀어진다"고 결론 내릴 것입니다. 그 은하도, 우리은하도 우주의 중심이 아닌데 둘 다 자기가 중심인 것처럼 보이는 까닭을 풍선 모형으로 설명해 보세요.</p>
+      <p class="lead" style="font-size:16.5px;margin:0"><b>Q2.</b> 별 A는 겉보기 1등급·절대 1등급, 별 B는 겉보기 1등급·절대 4등급입니다. 밤하늘에서는 똑같이 밝아 보이는 두 별에 대해 ① 실제로 더 밝은 별 ② 더 가까운 별을 각각 고르고, 까닭을 설명해 보세요.</p>
       <details style="margin-top:10px">
         <summary style="cursor:pointer;font-weight:700;color:var(--c2)">✍️ 모범 답안 보기</summary>
-        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">풍선이 부풀 때 <b>어느 스티커 위에서 보아도</b> 다른 스티커들이 모두 멀어지고, 멀리 있는 스티커일수록 더 빨리 멀어집니다. 풍선 표면에 "팽창의 중심"이라 할 지점이 없는 것처럼, <b>우주의 팽창에도 특별한 중심이 없어요.</b> 그래서 어느 은하에서 관측해도 자신이 중심인 것처럼 보이는 것입니다.</div>
+        <div style="margin-top:10px;padding:12px 14px;background:rgba(125,125,125,.08);border-left:3px solid var(--c2);border-radius:8px;font-size:15.5px;line-height:1.7">① 실제 밝기는 절대 등급으로 비교합니다. 절대 등급이 작은 <b>A가 실제로 더 밝은</b> 별이에요. ② 거리는 (겉보기 − 절대)의 부호로 판단합니다. A는 1 − 1 = 0이므로 <b>정확히 10 pc</b>, B는 1 − 4 = −3으로 (−)이므로 <b>10 pc보다 가깝습니다.</b> 즉 B가 더 가까워요. 실제로는 어두운 별 B가 가까이 있어서 A와 똑같이 밝아 보이는 것입니다.</div>
       </details>
     </div>
   </div>
-
-
-  <h3 class="card-t" style="margin-top:26px">🌍 생활 속에서 견주어 보기</h3>
-  <div class="use-grid" style="margin-top:14px">
-    <div class="use">
-      <figure class="fig" data-fig="dough" data-alt="건포도가 박힌 반죽이 부풀면서 건포도 사이가 멀어지는 모습"></figure>
-      <div class="u-t">🍞 부풀어 오르는 건포도 빵</div>
-      <div class="u-d">반죽이 부풀면 건포도들이 서로 멀어집니다. 건포도가 스스로 기어간 게 아니라
-        <b class="k">사이의 반죽이 늘어난</b> 거죠. 어느 건포도에서 봐도 나머지가 다 멀어집니다.</div>
-    </div>
-    <div class="use">
-      <figure class="fig" data-fig="rubber" data-alt="점이 찍힌 고무줄을 양쪽으로 당기면 점 사이 간격이 벌어지는 모습"></figure>
-      <div class="u-t">➰ 점 찍은 고무줄 늘이기</div>
-      <div class="u-d">고무줄에 점을 여러 개 찍고 잡아당겨 보세요. 이웃한 점보다
-        <b class="t3">멀리 있던 점이 훨씬 많이</b> 벌어집니다. 오늘 풍선에서 확인한 것과 똑같아요.</div>
-    </div>
-  </div>
-  <p class="help">두 비유 모두 <b>공간 자체가 늘어난다</b>는 점이 핵심입니다. 은하가 공간 속을 날아다니는 게 아니에요.</p>
 
   <div class="cta-row"><button class="btn primary" data-go="check">5단계 · 얼마나 알게 됐는지 확인 →</button></div>
 </section>
@@ -1169,42 +980,47 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 
 <section class="panel" id="panel-beyond">
   <div class="stepline opt"><span class="sbadge">선택</span><span class="swhat">더 알아보기 · 시험에 나오지 않습니다</span></div>
-  <h2 class="sec">허블이 본 것, 그리고 우주의 끝</h2>
+  <h2 class="sec">2,000년 전에 만든 자를 아직도 쓴다</h2>
   <p class="lead">여기서부터는 교과서 밖 이야기입니다. 외울 필요 없어요.</p>
 
   <div class="grid c2" style="margin-top:20px">
     <div class="card">
-      <h3 class="card-t">🔭 허블이 알아낸 방법</h3>
+      <h3 class="card-t">📜 왜 하필 '작을수록 밝다'일까</h3>
       <p class="lead" style="font-size:17.5px;margin-top:8px">
-        <b class="k">에드윈 허블</b>은 외부 은하들을 관측하다가 두 가지를 발견했습니다.
-        여러 은하가 <b>서로 멀어지고 있고</b>, 게다가 <b class="t3">멀리 떨어진 은하일수록 더 빠른 속도로</b> 멀어지고 있다는 것.
-        그는 이 관측 결과를 근거로 <b>우주가 팽창하고 있다</b>는 사실을 밝혀냈습니다.<br><br>
-        그 뒤 많은 과학자들은 <b class="k">우주가 한 점에서 시작해 팽창했다</b>는 빅뱅 우주론을 내놓게 됩니다.</p>
-      <p class="help">여러분이 오늘 풍선에서 찾아낸 "멀수록 더 많이 멀어진다"가 바로 허블이 별을 보며 알아낸 것과 같은 관계입니다.</p>
+        기원전 2세기 그리스의 천문학자 <b class="k">히파르코스</b>가 밤하늘의 별을 눈으로 보고
+        <b>가장 밝은 것부터 1등성, 2등성…</b> 하고 순위를 매긴 데서 시작했습니다.
+        1등이 가장 밝은 거죠. 그 뒤 2,000년이 지나 정밀 측정이 가능해졌을 때,
+        천문학자들은 이 오래된 순위를 버리지 않고 <b>숫자로 정밀하게 다듬어</b> 계속 쓰기로 했습니다.
+        그래서 지금도 등급은 작을수록 밝습니다.</p>
+      <p class="help">1등보다 밝은 별이 나타나자 0등급, 그보다 밝으면 음수 등급이 되었습니다.</p>
     </div>
     <div class="card">
-      <h3 class="card-t">🌐 그럼 우주의 끝은 어디?</h3>
-      <p class="lead" style="font-size:17.5px;margin-top:8px">
-        풍선 표면에 사는 개미를 상상해 보세요. 개미가 아무리 걸어도 <b>끝(가장자리)을 만날 수 없습니다.</b>
-        그렇다고 표면이 무한한 것도 아니에요 — 넓이는 분명히 정해져 있죠.
-        <b class="k">끝은 없는데 무한하지도 않은</b> 이상한 상태입니다.<br><br>
-        우주도 그럴 수 있습니다. 그래서 "우주의 끝에 가면 뭐가 있어요?"라는 질문에
-        과학자들은 <b>"끝이 있다는 전제부터 다시 보자"</b>고 답합니다.</p>
+      <h3 class="card-t">🌕 등급이 음수인 것들</h3>
+      <p class="lead" style="font-size:17.5px;margin-top:8px">우리 눈에 아주 밝게 보이는 천체들의 겉보기 등급입니다.</p>
+      <div class="dtable-wrap">
+        <table class="dtable">
+          <tr><th>천체</th><th>겉보기 등급</th></tr>
+          <tr><td>달</td><td>−12.6</td></tr>
+          <tr><td>금성</td><td>−4.6</td></tr>
+          <tr><td>목성</td><td>−2.94</td></tr>
+          <tr><td>화성</td><td>−2.91</td></tr>
+          <tr><td>토성</td><td>−0.24</td></tr>
+        </table>
+      </div>
+      <p class="help">달과 행성은 스스로 빛을 내지 않는데도 밝게 보입니다. 아주 가깝기 때문이에요.</p>
     </div>
   </div>
 
   <div class="card" style="margin-top:18px">
     <h3 class="card-t">🎬 다시, 처음 그 문장</h3>
     <p class="lead" style="font-size:18.5px;margin-top:10px">
-      <b class="k">"우주에는 중심이 없다."</b><br><br>
-      사방의 은하가 전부 우리에게서 멀어지는 걸 보고, 사람들은 잠깐
-      <b>우리가 우주의 한복판에 있나</b> 생각했습니다.
-      하지만 풍선 표면의 어느 딱지에 올라타도 똑같은 풍경이 보이죠.
-      멀어지는 건 은하가 아니라 <b class="t2">그 사이의 공간</b>이었으니까요.<br><br>
-      과학의 역사는 <b class="k">인간을 중심에서 밀어내는 역사</b>이기도 했습니다.
-      지구가 우주의 중심이 아니라는 것(코페르니쿠스), 태양계도 은하의 중심이 아니라는 것(5차시에서 배웠죠 — 8500 pc 벗어난 나선팔),
-      그리고 오늘, <b>우주에는 중심이라는 자리 자체가 없다</b>는 것.<br><br>
-      우리는 특별한 자리에 있지 않습니다. 그런데도 이 모든 걸 알아냈다는 게, 어쩌면 더 특별한 일이에요.
+      <b class="k">"밝게 보이는 별이 밝은 별은 아니다."</b><br><br>
+      시리우스가 밝게 보이는 건 뛰어나서가 아니라 <b class="t4">가까이 있어서</b>입니다.
+      베텔게우스는 훨씬 밝게 타오르면서도 멀리 있다는 이유로 밤하늘에서 손해를 보고 있죠.<br><br>
+      천문학이 <b class="t2">절대 등급</b>이라는 개념을 만든 이유가 여기 있습니다.
+      <b class="k">보이는 것과 실제를 갈라내는 것</b> — 이게 과학이 하는 일입니다.
+      가까워서 커 보이는 것과 정말 큰 것, 소리가 커서 옳아 보이는 것과 정말 옳은 것.
+      별을 재던 이 태도는 밤하늘 밖에서도 쓸모가 있습니다.
     </p>
     <div class="cta-row" style="justify-content:center">
       <button class="btn ghost" data-go="engage">1단계로 돌아가기 ↑</button>
@@ -1246,187 +1062,200 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
  <div class="zt-r"><button type="button" class="btn primary sm" id="ztOk">알겠어요</button><button type="button" class="zt-x" id="ztNever">다시 보지 않기</button></div>
 </div>
 <div id="toast"></div>
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:15px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">제작 : 과학을 사랑하는 선생님 · © 2026 · All rights reserved<br><span style="font-size:13.5px;opacity:.85;">최종 업데이트: 2026-08-04</span></footer>
 
 <script>
 "use strict";
 const FIGS={
-  galaxies:'img/e-galaxies.jpg', dough:'img/e-dough.jpg', rubber:'img/e-rubber.jpg'
+  sirius:'img/m-sirius.png', tenpc:'img/m-tenpc.png', rule:'img/m-rule.png'
 };
-const BG_IMAGES={cover:'',engage:'',explore:'',explain:'',apply:'',check:'',sum:'',beyond:''};
+const BG_IMAGES={cover:'',engage:'',compare:'',explain:'',judge:'',check:'',sum:'',beyond:''};
 const BG_FALLBACK={
-  cover:'radial-gradient(120% 90% at 50% 0%, #2a3a5e, #070c1a 68%)',
-  engage:'radial-gradient(110% 80% at 50% 0%, #2a3a5e, #070c1a 66%)',
-  explore:'radial-gradient(100% 80% at 50% 20%, #262a56, #070c1a 70%)',
-  explain:'linear-gradient(180deg, #24284c, #070c1a 74%)',
-  apply:'radial-gradient(90% 80% at 68% 15%, #221f4a, #070c1a 70%)',
+  cover:'radial-gradient(120% 90% at 50% 0%, #2b3560, #070c1a 68%)',
+  engage:'radial-gradient(110% 80% at 50% 0%, #2b3560, #070c1a 66%)',
+  compare:'radial-gradient(100% 80% at 50% 20%, #333a63, #070c1a 70%)',
+  explain:'linear-gradient(180deg, #202a52, #070c1a 74%)',
+  judge:'radial-gradient(90% 80% at 68% 15%, #2c2f5e, #070c1a 70%)',
   check:'radial-gradient(100% 85% at 30% 15%, #1e355c, #070c1a 70%)',
   sum:'radial-gradient(105% 85% at 50% 10%, rgba(127,127,127,.06), transparent 68%)',
   beyond:'radial-gradient(110% 85% at 50% 0%, #2a1f4d, #070c1a 66%)'
 };
-const SAVE='galaxy_expand_v2';
-
+const SAVE='star_magnitude_v2';
 const POE_ANSWER='b';
 const POE_WHY={
-  right:'맞았어요! 원래 <b>멀리 있던 것일수록 더 많이</b> 멀어집니다. 아래 실험실에서 직접 재어 확인해 봅시다.',
-  wrong:'많은 사람이 그렇게 생각해요 — 풍선이 고르게 부니까 다 똑같을 것 같죠. 하지만 실제로는 <b>원래 멀리 있던 쪽이 훨씬 많이</b> 멀어집니다. 아래에서 직접 재어 보세요.'
+  right:'맞았어요! 베텔게우스는 시리우스보다 훨씬 멀리 있는데도 저 정도로 보입니다. 같은 거리에 세워 놓으면 <b>비교가 안 될 만큼 베텔게우스가 밝아요.</b> 오늘은 이 "같은 거리에 세워 놓기"를 배웁니다.',
+  wrong:'눈에 보이는 대로라면 그렇게 생각하기 쉽죠. 하지만 실제로는 <b>베텔게우스가 압도적으로 밝습니다.</b> 지난 시간에 배웠죠 — 멀수록 어두워 보인다고. 그렇게 멀리 있는데도 저 정도로 보인다는 건 원래 어마어마하게 밝다는 뜻이에요.'
 };
 
-/* 풍선 모형 — 표면 위 네 딱지. 호의 길이로 거리를 잰다. */
-const NEAR_A=0.30, FAR_A=0.575;   // 라디안 간격 (기준 반지름에서 6cm, 11.5cm)
-const R_UNIT=20;                  // R×각도 = cm (교과서 예시값에 맞춤)
+/* 교과서 해 보기 */
+const STARS=[
+  {id:'ga', nm:'별 (가)', app:-1.5, abs:1.4,  ans:'near',
+   why:'겉보기(−1.5)가 절대(1.4)보다 <b>작습니다</b>. 10 pc보다 가까이 있어서 실제보다 밝게 보이는 별이에요.'},
+  {id:'na', nm:'별 (나)', app:1.1,  abs:1.1,  ans:'same',
+   why:'겉보기와 절대가 <b>같습니다</b>. 이 별까지의 거리는 정확히 10 pc이에요.'},
+  {id:'da', nm:'별 (다)', app:0.4,  abs:-6.0, ans:'far',
+   why:'겉보기(0.4)가 절대(−6.0)보다 <b>큽니다</b>. 10 pc보다 훨씬 멀리 있어서, 실제로는 매우 밝은데도 어둡게 보이는 별이에요.'}
+];
+const JOPTS=[{k:'near',t:'10 pc보다 가깝다'},{k:'same',t:'딱 10 pc이다'},{k:'far',t:'10 pc보다 멀다'}];
 
 const QUIZ_SETS={
-  explore:{title:'측정 결과 확인', qs:[
-    {q:'풍선을 크게 불었을 때, 거리 변화 값이 더 큰 쪽은?',
-     ch:[{t:'원래 멀리 떨어져 있던 두 딱지',ok:1},{t:'원래 가까이 붙어 있던 두 딱지',ok:0},{t:'둘이 같다',ok:0}],
-     why:'원래 거리가 <b>멀수록</b> 거리 변화 값이 큽니다.'},
-    {q:'붙임딱지가 스스로 기어서 멀어진 걸까?',
-     ch:[{t:'아니다 — 사이의 풍선 표면이 늘어난 것이다',ok:1},{t:'그렇다 — 딱지가 표면 위를 이동했다',ok:0}],
-     why:'딱지는 제자리입니다. <b>사이의 공간</b>이 늘어난 거예요. 실제 은하도 마찬가지입니다.'}
+  compare:{title:'등급과 밝기', qs:[
+    {q:'1등급 별과 6등급 별 중 더 밝은 것은?',
+     ch:[{t:'1등급 별',ok:1},{t:'6등급 별',ok:0}],
+     why:'등급은 <b>작을수록 밝습니다.</b> 1등급이 6등급보다 약 100배 밝아요.'},
+    {q:'밤하늘에서 어둡게 보이는 별에 대해 옳게 말한 것은?',
+     ch:[{t:'원래 어둡거나, 멀리 있거나 둘 다 가능하다',ok:1},
+         {t:'반드시 멀리 있는 별이다',ok:0},
+         {t:'반드시 원래 어두운 별이다',ok:0}],
+     why:'보이는 밝기에는 <b>실제 밝기와 거리</b>가 섞여 있어 하나로 단정할 수 없습니다.'}
   ]},
-  explain:{title:'모형 정확히 읽기', qs:[
-    {q:'풍선 모형에서 우주에 해당하는 것은?',
-     ch:[{t:'풍선의 표면',ok:1},{t:'풍선의 안쪽 공간',ok:0},{t:'풍선을 부는 사람',ok:0}],
-     why:'우주는 <b>표면</b>입니다. 안쪽은 이 모형에서 의미가 없어요.'},
-    {q:'우리은하가 우주의 중심이라고 할 수 있을까?',
-     ch:[{t:'없다 — 모든 은하가 서로 멀어지고 있다',ok:1},
-         {t:'있다 — 모든 은하가 우리에게서 멀어지므로',ok:0}],
-     why:'어느 은하에서 봐도 나머지가 다 멀어져 보입니다. 중심은 <b>어디에도 없어요.</b>'}
+  explain:{title:'겉보기 등급과 절대 등급', qs:[
+    {q:'별의 실제 밝기를 서로 비교하려면 무엇을 봐야 할까?',
+     ch:[{t:'절대 등급',ok:1},{t:'겉보기 등급',ok:0}],
+     why:'모든 별을 10 pc에 세워 놓았다고 가정한 값이라 공정한 비교가 됩니다.'},
+    {q:'절대 등급은 별까지의 거리를 얼마라고 가정한 값일까?',
+     ch:[{t:'10 pc',ok:1},{t:'1 pc',ok:0},{t:'100 pc',ok:0}],
+     why:'10 pc은 약 32.6광년입니다.'}
   ]}
 };
 
 const GAME_QS=[
- {id:"u1",
+ {id:"m1",
   difficulty:"하",
-  intent:"허블의 관측 사실과 그 결론(우주 팽창)을 아는지 확인한다.",
-  stem:"다음은 우주 팽창에 대한 설명이다. ( ) 안에 들어갈 말을 옳게 짝 지은 것은?<br><br>「허블은 외부 은하를 관측하여 은하들이 서로 ( ㉠ ) 있다는 사실을 알아냈다. 이를 통해 우주가 ( ㉡ )하고 있다는 것을 알아냈다.」",
-  ch:[{t:"㉠ 멀어지고, ㉡ 팽창",ok:1},{t:"㉠ 가까워지고, ㉡ 수축",ok:0},{t:"㉠ 멀어지고, ㉡ 수축",ok:0},{t:"㉠ 가까워지고, ㉡ 팽창",ok:0},{t:"㉠ 멈추어, ㉡ 팽창",ok:0}],
-  why:"허블은 외부 은하들이 우리은하로부터 <b>멀어지고</b> 있으며, 멀리 있는 은하일수록 더 빠르게 멀어진다는 것을 관측했습니다. 은하 사이 공간이 늘어나고 있다는 뜻이므로 우주는 <b>팽창</b>하고 있어요."},
+  intent:"등급의 기본 약속(작을수록 밝음·5등급 차 100배·절대 등급의 뜻)을 아는지 확인한다.",
+  stem:"별의 등급에 대한 설명으로 옳지 <u>않은</u> 것은?",
+  ch:[{t:"별이 지구에서 멀어지면 겉보기 등급의 숫자는 작아진다.",ok:1},{t:"절대 등급은 모든 별을 10 pc 거리에 두었다고 가정했을 때의 밝기를 등급으로 나타낸 것이다.",ok:0},{t:"등급의 숫자가 작을수록 밝은 별이다.",ok:0},{t:"1등급인 별은 6등급인 별보다 약 100배 밝다.",ok:0},{t:"절대 등급을 비교하면 별의 실제 밝기를 비교할 수 있다.",ok:0}],
+  why:"등급은 <b>거꾸로 된 자</b>라서 숫자가 작을수록 밝습니다. 별이 멀어지면 어둡게 보이므로 겉보기 등급의 숫자는 <b>커집니다</b>. 1등급 차는 약 2.5배, 5등급 차는 100배이고, 절대 등급은 10 pc 출발선에 세웠을 때의 등급이에요."},
 
- {id:"u2",
+ {id:"m2",
   difficulty:"하",
-  intent:"우주 팽창의 기본 성질(균일·지속·과거의 크기)을 아는지 확인한다.",
-  stem:"우주 팽창에 대한 설명으로 옳지 <u>않은</u> 것은?",
-  ch:[{t:"시간이 흐를수록 은하 사이의 거리는 계속 멀어진다.",ok:0},{t:"팽창하고 있는 우주의 시간을 과거로 되돌린다면 우주의 크기는 현재와 동일할 것이다.",ok:1},{t:"우주는 특별한 중심 없이 모든 방향으로 팽창한다.",ok:0},{t:"우주는 모든 지점에서 균일하게 팽창한다.",ok:0},{t:"시간이 흐를수록 우주의 크기는 점점 커진다.",ok:0}],
-  why:"지금 팽창하고 있으니 필름을 거꾸로 감듯 과거로 되돌리면 우주는 지금보다 <b>작았을</b> 것입니다. 우주는 특별한 중심 없이 모든 곳에서 균일하게 팽창하고, 그래서 은하 사이 거리는 계속 멀어져요."},
+  intent:"등급 차를 밝기 비로 바꾸는 계산(5등급 차 = 100배)을 할 수 있는지 확인한다.",
+  stem:"−4등급인 별의 밝기는 6등급인 별의 밝기의 몇 배인가?",
+  ch:[{t:"1000배",ok:0},{t:"10000배",ok:1},{t:"약 2.5배",ok:0},{t:"10배",ok:0},{t:"100배",ok:0}],
+  why:"두 별의 등급 차는 6 − (−4) = <b>10등급</b>입니다. 5등급 차가 100배이므로 10등급 차는 100 × 100 = <b>10000배</b>예요. 등급 차 10을 그대로 10배로 읽으면 안 됩니다."},
 
- {id:"u3",
+ {id:"m3",
+  difficulty:"하",
+  intent:"밝기 비(16배 ≈ 2.5³)를 등급 차로 바꾸어 등급을 구할 수 있는지 확인한다.",
+  stem:"4등급인 별보다 약 16배 밝은 별은 몇 등급인가?",
+  ch:[{t:"−1등급",ok:0},{t:"0등급",ok:0},{t:"1등급",ok:1},{t:"2등급",ok:0},{t:"7등급",ok:0}],
+  why:"2.5 × 2.5 × 2.5 ≈ <b>16</b>이므로 16배 밝다는 것은 <b>3등급 작다</b>는 뜻입니다. 4 − 3 = <b>1등급</b>이에요. 밝을수록 숫자가 작아진다는 것을 잊지 마세요."},
+
+ {id:"m4",
   difficulty:"중",
-  intent:"풍선 모형의 대응 관계와 결과 표(1.5배)를 해석하고, 모형의 한계(딱지 크기)를 아는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 ㄱ·ㄴ·ㄷ의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 작게 불었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 더 크게 불었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄴ</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄴ과 ㄷ</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄷ</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">작게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">5</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">크게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">7.5</text></svg>",
-  stem:"그림과 표는 풍선에 붙임딱지 ㄱ~ㄷ을 붙이고 바람을 넣으며 붙임딱지 사이의 거리를 잰 탐구 결과이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["풍선 표면은 우주 공간에, 붙임딱지는 은하에 해당한다.", "풍선이 커지면 모든 붙임딱지 사이의 거리가 같은 비율(1.5배)로 멀어진다.", "풍선이 커지면 붙임딱지 자체의 크기도 1.5배로 커진다."],
-  boxVerdicts:[true, true, false],
-  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"풍선 <b>표면</b>이 우주 공간, <b>붙임딱지</b>가 은하입니다(ㄱ ○). 2 → 3, 3 → 4.5, 5 → 7.5로 모든 거리가 <b>1.5배</b>가 되었어요(ㄴ ○). 붙임딱지는 늘어나지 않으므로 은하 자체가 커지는 것이 아니라 은하 <b>사이의 공간</b>이 늘어난다는 뜻입니다(ㄷ ✗)."},
+  intent:"여러 별이 모여 밝기가 합쳐질 때 등급이 어떻게 되는지 계산하는지 확인한다.",
+  stem:"1등급인 별 100개가 한곳에 모여 있어 하나의 별처럼 보인다고 하자. 이 집단과 같은 밝기로 보이는 별은 몇 등급인가?",
+  ch:[{t:"4등급",ok:0},{t:"6등급",ok:0},{t:"−5등급",ok:0},{t:"−4등급",ok:1},{t:"0등급",ok:0}],
+  why:"100개가 모이면 밝기가 <b>100배</b>가 되고, 100배 밝으면 등급은 <b>5등급 작아집니다</b>. 1 − 5 = <b>−4등급</b>. 등급은 음수도 있어요(시리우스 −1.5등급, 태양 −26.8등급)."},
 
- {id:"u4",
+ {id:"m5",
   difficulty:"중",
-  intent:"풍선 모형에서 팽창의 중심이 없음과 먼 딱지일수록 더 많이 멀어짐을 해석하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 A·B·C의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(가) 바람을 조금 넣었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(나) 바람을 더 넣었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 B 사이</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">B와 C 사이</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 C 사이</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(가) 바람을 조금 넣었을 때(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(나) 바람을 더 넣었을 때(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1.5</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text></svg>",
-  stem:"그림과 표는 붙임딱지 A~C를 붙인 풍선에 바람을 넣기 전과 후를 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["풍선 표면에는 팽창의 중심이 존재한다.", "A에서 볼 때, 같은 시간 동안 C는 B보다 더 많이 멀어진다.", "이 탐구를 통해 우주가 팽창하고 있다는 것을 설명할 수 있다."],
-  boxVerdicts:[false, true, true],
-  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"풍선 표면의 모든 붙임딱지가 서로 멀어질 뿐, 표면 위에 특별한 <b>중심은 없습니다</b>(ㄱ ✗). A–B는 1 → 1.5(0.5 cm 증가), A–C는 3 → 4.5(1.5 cm 증가)로 <b>멀리 있던 딱지가 더 많이</b> 멀어졌어요(ㄴ ○). 이것이 허블이 관측한 우주 팽창의 모습입니다(ㄷ ○)."},
+  intent:"10 pc(약 32.6광년)에 있는 별은 겉보기 등급과 절대 등급이 같음을 아는지 확인한다.",
+  stem:"지구로부터 약 32.6광년 떨어져 있는 어느 별의 겉보기 등급이 −1등급이다. 이 별의 절대 등급은? (1 pc는 약 3.26광년이다.)",
+  ch:[{t:"0등급",ok:0},{t:"1등급",ok:0},{t:"4등급",ok:0},{t:"−3등급",ok:0},{t:"−1등급",ok:1}],
+  why:"32.6광년은 3.26광년의 10배, 즉 <b>10 pc</b>입니다. 이미 10 pc 출발선에 서 있는 별이므로 옮길 필요가 없고, 절대 등급은 겉보기 등급과 같은 <b>−1등급</b>이에요."},
 
- {id:"u5",
+ {id:"m6",
+  difficulty:"중",
+  intent:"겉보기 등급으로 보이는 밝기를, 절대 등급으로 실제 밝기를 비교하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 130\" width=\"560\" height=\"130\" role=\"img\" aria-label=\"별 A~D의 겉보기 등급과 절대 등급 표. A 0.4/2.7, B 1.3/−8.7, C 2.1/−3.7, D 0.0/4.4.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"60\" y=\"20\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">별</text><rect x=\"190\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><rect x=\"270\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><rect x=\"350\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><rect x=\"430\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">D</text><rect x=\"60\" y=\"48\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">겉보기 등급</text><rect x=\"190\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.4</text><rect x=\"270\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">1.3</text><rect x=\"350\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.1</text><rect x=\"430\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.0</text><rect x=\"60\" y=\"76\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">절대 등급</text><rect x=\"190\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.7</text><rect x=\"270\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−8.7</text><rect x=\"350\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−3.7</text><rect x=\"430\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">4.4</text></svg>",
+  stem:"표는 별 A~D의 겉보기 등급과 절대 등급을 나타낸 것이다. 지구에서 가장 밝게 보이는 별 (가)와 실제로 가장 밝은 별 (나)를 옳게 짝 지은 것은?",
+  ch:[{t:"(가) D, (나) B",ok:1},{t:"(가) D, (나) C",ok:0},{t:"(가) A, (나) D",ok:0},{t:"(가) B, (나) C",ok:0},{t:"(가) C, (나) A",ok:0}],
+  why:"<b>보이는 밝기</b>는 겉보기 등급이 가장 작은 <b>D(0.0)</b>, <b>실제 밝기</b>는 절대 등급이 가장 작은 <b>B(−8.7)</b>입니다. 두 줄을 헷갈리지 않는 것이 핵심이에요."},
+
+ {id:"m7",
+  difficulty:"중",
+  intent:"겉보기 등급과 절대 등급의 크기 비교로 10 pc보다 가까운 별을 판별하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 130\" width=\"560\" height=\"130\" role=\"img\" aria-label=\"별 A~D의 겉보기 등급과 절대 등급 표. A 0.4/2.7, B 1.3/−8.7, C 2.1/−3.7, D 0.0/4.4.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"60\" y=\"20\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">별</text><rect x=\"190\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><rect x=\"270\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><rect x=\"350\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><rect x=\"430\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">D</text><rect x=\"60\" y=\"48\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">겉보기 등급</text><rect x=\"190\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.4</text><rect x=\"270\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">1.3</text><rect x=\"350\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.1</text><rect x=\"430\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.0</text><rect x=\"60\" y=\"76\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">절대 등급</text><rect x=\"190\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.7</text><rect x=\"270\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−8.7</text><rect x=\"350\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−3.7</text><rect x=\"430\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">4.4</text></svg>",
+  stem:"표는 별 A~D의 겉보기 등급과 절대 등급을 나타낸 것이다. 지구로부터 10 pc보다 가까이 있는 별을 모두 고른 것은?",
+  ch:[{t:"A, B",ok:0},{t:"A, D",ok:1},{t:"B, C",ok:0},{t:"A, C, D",ok:0},{t:"B, C, D",ok:0}],
+  why:"10 pc보다 가까우면 실제(10 pc 기준)보다 <b>밝게 보이므로</b> 겉보기 등급 < 절대 등급입니다. A(0.4 < 2.7), D(0.0 < 4.4)가 여기에 해당해요. B와 C는 겉보기 등급이 절대 등급보다 커서 10 pc보다 멀리 있습니다."},
+
+ {id:"m8",
   difficulty:"상",
-  intent:"표의 규칙(2배)으로 빈칸을 추정하고, 팽창 중심이 없음을 근거로 해석하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 A·B·C의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(나) 바람을 조금 넣은 뒤</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(다) 바람을 더 넣은 뒤</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 B 사이</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">B와 C 사이</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 C 사이</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">과정 (나)에서 잰 간격(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">과정 (다)에서 잰 간격(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">㉠</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">6</text></svg>",
-  stem:"다음은 우주 팽창을 알아보기 위한 모형실험이다.<br><br>(가) 풍선에 바람을 조금 넣은 뒤 표면에 붙임딱지 A~C를 붙인다.<br>(나) 줄자로 붙임딱지 사이의 간격을 측정한다.<br>(다) 풍선에 바람을 더 넣은 뒤 붙임딱지 사이의 간격을 측정한다.<br><br>이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["㉠에 알맞은 숫자는 4이다.", "풍선 표면은 A를 중심으로 팽창한다.", "과정 (다)에서 A~C 사이의 거리는 모두 멀어진다."],
+  intent:"(겉보기 등급 − 절대 등급) 값으로 거리를 비교하고, 옮겼을 때의 밝기 변화를 추론하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 130\" width=\"560\" height=\"130\" role=\"img\" aria-label=\"별 A~D의 겉보기 등급과 절대 등급 표. A 0.4/2.7, B 1.3/−8.7, C 2.1/−3.7, D 0.0/4.4.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"60\" y=\"20\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">별</text><rect x=\"190\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><rect x=\"270\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><rect x=\"350\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><rect x=\"430\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">D</text><rect x=\"60\" y=\"48\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">겉보기 등급</text><rect x=\"190\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.4</text><rect x=\"270\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">1.3</text><rect x=\"350\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.1</text><rect x=\"430\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.0</text><rect x=\"60\" y=\"76\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">절대 등급</text><rect x=\"190\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.7</text><rect x=\"270\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−8.7</text><rect x=\"350\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−3.7</text><rect x=\"430\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">4.4</text></svg>",
+  stem:"표는 별 A~D의 겉보기 등급과 절대 등급을 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+  boxes:["A~D 중 지구로부터 가장 멀리 있는 별은 B이다.", "A를 10 pc 거리로 옮기면 지금보다 밝게 보인다.", "C는 지구에서 볼 때 D보다 어둡게 보이지만 실제로는 D보다 밝다."],
   boxVerdicts:[true, false, true],
   ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:1},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"A–B가 1 → 2, A–C가 3 → 6으로 모두 <b>2배</b>가 되었으니 B–C도 2 → <b>4</b>입니다(ㄱ ○). 모든 간격이 같은 비율로 늘어난 것은 어느 딱지도 중심이 아니라는 뜻이에요(ㄴ ✗). 바람을 넣으면 모든 딱지 사이가 멀어집니다(ㄷ ○)."},
+  why:"(겉보기 − 절대) 값이 클수록 멀리 있습니다. B는 1.3 − (−8.7) = <b>10.0</b>으로 가장 큽니다(ㄱ ○). A는 10 pc보다 가까이 있으므로 10 pc로 옮기면 <b>멀어져 어둡게</b> 보여요(ㄴ ✗). C는 겉보기 2.1 > 0.0이라 D보다 어둡게 보이지만 절대 등급 −3.7 < 4.4로 실제로는 더 밝습니다(ㄷ ○)."},
 
- {id:"u6",
+ {id:"m9",
   difficulty:"중",
-  intent:"어느 은하에서 관측해도 다른 은하들이 멀어짐(중심 없음)을 적용하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 170\" width=\"560\" height=\"170\" role=\"img\" aria-label=\"한 직선 위에 왼쪽부터 외부 은하 A, 우리은하, 외부 은하 B, C가 차례로 놓여 있다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><polyline points=\"40,110 520,110\" fill=\"none\" stroke=\"#c1ac82\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse cx=\"90\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#8fb4ff\" opacity=\".9\"/><circle cx=\"90\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"90\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">A</text><ellipse cx=\"230\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#ffd27a\" opacity=\".9\"/><circle cx=\"230\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"230\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">우리은하</text><ellipse cx=\"340\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#8fb4ff\" opacity=\".9\"/><circle cx=\"340\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"340\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">B</text><ellipse cx=\"470\" cy=\"110\" rx=\"26\" ry=\"9\" fill=\"#8fb4ff\" opacity=\".9\"/><circle cx=\"470\" cy=\"110\" r=\"5\" fill=\"#fff6d6\"/><text x=\"470\" y=\"145\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">C</text></svg>",
-  stem:"그림은 우리은하와 외부 은하 A~C의 위치를 나타낸 것이다. 우주가 팽창할 때에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["우리은하에서 관측하면 A~C는 모두 멀어지고 있다.", "B에서 관측하면 A와 우리은하는 서로 가까워지고 있다.", "C에서 관측하면 우리은하는 가까워지고 A는 멀어지고 있다."],
-  boxVerdicts:[true, false, false],
-  ch:[{t:"ㄱ",ok:1},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"우주는 모든 곳에서 균일하게 팽창하므로 <b>어느 은하에서 보아도</b> 다른 은하들은 모두 멀어집니다(ㄱ ○). B에서 보아도, C에서 보아도 나머지 은하는 전부 멀어져요(ㄴ·ㄷ ✗). 고무줄 위의 점들이 서로 멀어지는 것과 같습니다."},
+  intent:"거리가 10배가 되면 밝기가 1/100, 등급이 5등급 커짐을 적용하는지 확인한다.",
+  stem:"겉보기 등급이 2등급인 어느 별이 지구로부터 현재보다 10배 먼 곳으로 옮겨진다면, 이 별의 겉보기 등급은 몇 등급이 되겠는가?",
+  ch:[{t:"2등급",ok:0},{t:"3등급",ok:0},{t:"7등급",ok:1},{t:"−3등급",ok:0},{t:"−1등급",ok:0}],
+  why:"거리가 10배가 되면 밝기는 10² = <b>1/100</b>이 되고, 100배 어두워지면 등급은 <b>5등급 커집니다</b>. 2 + 5 = <b>7등급</b>. 거리가 변해도 실제 밝기(절대 등급)는 그대로예요."},
 
- {id:"u7",
-  difficulty:"중",
-  intent:"우주 팽창의 중심·은하의 운동·과거의 크기를 종합해 아는지 확인한다.",
-  stem:"우주 팽창에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-  boxes:["우리은하는 팽창하는 우주의 중심에 있다.", "시간이 흐를수록 외부 은하들은 서로 멀어진다.", "우주의 시간을 과거로 되돌린다면 우주의 크기는 점점 작아질 것이다."],
-  boxVerdicts:[false, true, true],
-  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:0},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:1},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
-  why:"우리은하에서 다른 은하들이 멀어져 보인다고 해서 우리가 중심인 것은 아닙니다. <b>어느 은하에서 보아도 똑같이</b> 보이므로 중심은 없어요(ㄱ ✗). 팽창을 거꾸로 돌리면 은하들이 모이고 우주는 작아집니다(ㄴ·ㄷ ○)."},
-
- {id:"u8",
-  difficulty:"하",
-  intent:"풍선 모형과 실제 우주의 대응 관계를 아는지 확인한다.",
-  stem:"붙임딱지를 붙인 풍선을 부는 우주 팽창 모형실험에서, 모형과 실제 우주의 대응 관계로 옳은 것은?",
-  ch:[{t:"풍선 표면 – 우주 공간, 붙임딱지 – 은하, 바람 넣기 – 은하의 자전",ok:0},{t:"풍선 속 공기 – 우주 공간, 붙임딱지 – 성단, 바람 넣기 – 우주 팽창",ok:0},{t:"풍선 표면 – 우주 공간, 붙임딱지 – 은하, 바람 넣기 – 우주 팽창",ok:1},{t:"풍선 표면 – 은하, 붙임딱지 – 별, 바람 넣기 – 별의 탄생",ok:0},{t:"풍선 표면 – 우리은하, 붙임딱지 – 태양계, 바람 넣기 – 지구의 공전",ok:0}],
-  why:"풍선의 <b>표면</b>이 우주 공간, 표면 위의 <b>붙임딱지</b>가 은하, 바람을 넣어 표면이 늘어나는 것이 <b>우주 팽창</b>입니다. 풍선 속 공기가 아니라 표면이 우주라는 점이 이 모형의 핵심이에요."},
-
- {id:"u9",
+ {id:"m10",
   difficulty:"상",
-  intent:"관측 위치를 바꾸어도 팽창의 모습이 같다는 것을 추론하는지 확인한다.",
-  stem:"한 직선 위에 은하 A, B, C가 차례로 놓여 있다. 은하 B에서 관측했을 때 A와 C가 모두 B로부터 멀어지고 있다면, 은하 A에서 관측할 때 B와 C의 움직임으로 옳은 것은?",
-  ch:[{t:"B는 멀어지고 C는 제자리에 있다.",ok:0},{t:"B와 C 모두 제자리에 있고 A만 움직인다.",ok:0},{t:"B는 가까워지고 C는 멀어진다.",ok:0},{t:"B와 C 모두 멀어진다.",ok:1},{t:"B와 C 모두 가까워진다.",ok:0}],
-  why:"고무줄에 점 세 개를 찍고 늘여 보세요. 어느 점을 잡고 보아도 나머지 점은 <b>모두 멀어집니다</b>. 팽창하는 우주에는 특별한 중심이 없으므로 A에서 보아도 B와 C는 모두 멀어지고, 더 멀리 있는 C가 더 빠르게 멀어져요."},
+  intent:"거리가 변할 때 겉보기 등급은 변하고 절대 등급은 변하지 않음을 계산과 함께 아는지 확인한다.",
+  stem:"겉보기 등급이 −1등급, 절대 등급이 3등급인 별이 있다. 이 별까지의 거리가 현재보다 10배 멀어진다면 겉보기 등급과 절대 등급은 각각 몇 등급이 되는가?",
+  ch:[{t:"겉보기 −1등급, 절대 3등급",ok:0},{t:"겉보기 −4등급, 절대 3등급",ok:0},{t:"겉보기 −1등급, 절대 8등급",ok:0},{t:"겉보기 4등급, 절대 3등급",ok:1},{t:"겉보기 4등급, 절대 8등급",ok:0}],
+  why:"거리 10배 → 밝기 1/100 → 겉보기 등급 <b>5등급 커져</b> −1 + 5 = <b>4등급</b>. 절대 등급은 10 pc에 두었을 때의 등급이므로 별을 어디로 옮기든 <b>3등급 그대로</b>입니다."},
 
- {id:"u10",
+ {id:"m11",
+  difficulty:"상",
+  intent:"연주 시차(거리)와 절대 등급을 함께 읽어 겉보기 등급과 보이는 밝기를 추론하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 245\" width=\"560\" height=\"245\" role=\"img\" aria-label=\"가로축 연주 시차(0.001, 0.01, 0.1, 1초), 세로축 절대 등급(−8~2). A(0.001″, −4), B(0.01″, −2), C(0.1″, 2), D(1″, −2).\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"110\" y=\"50\" width=\"380\" height=\"150\" fill=\"#fffdf7\" stroke=\"#c1ac82\"/><line x1=\"157.5\" y1=\"200\" x2=\"157.5\" y2=\"50\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"157.5\" y=\"218\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">0.001</text><line x1=\"252.5\" y1=\"200\" x2=\"252.5\" y2=\"50\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"252.5\" y=\"218\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">0.01</text><line x1=\"347.5\" y1=\"200\" x2=\"347.5\" y2=\"50\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"347.5\" y=\"218\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">0.1</text><line x1=\"442.5\" y1=\"200\" x2=\"442.5\" y2=\"50\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"442.5\" y=\"218\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">1</text><line x1=\"110\" y1=\"200.0\" x2=\"490\" y2=\"200.0\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"102\" y=\"204.0\" text-anchor=\"end\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">−8</text><line x1=\"110\" y1=\"170.0\" x2=\"490\" y2=\"170.0\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"102\" y=\"174.0\" text-anchor=\"end\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">−6</text><line x1=\"110\" y1=\"140.0\" x2=\"490\" y2=\"140.0\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"102\" y=\"144.0\" text-anchor=\"end\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">−4</text><line x1=\"110\" y1=\"110.0\" x2=\"490\" y2=\"110.0\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"102\" y=\"114.0\" text-anchor=\"end\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">−2</text><line x1=\"110\" y1=\"80.0\" x2=\"490\" y2=\"80.0\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"102\" y=\"84.0\" text-anchor=\"end\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">0</text><line x1=\"110\" y1=\"50.0\" x2=\"490\" y2=\"50.0\" stroke=\"#c1ac82\" stroke-width=\".8\" stroke-dasharray=\"3 3\"/><text x=\"102\" y=\"54.0\" text-anchor=\"end\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#5c4a33\">2</text><line x1=\"110\" y1=\"200\" x2=\"490\" y2=\"200\" stroke=\"#2e2315\" stroke-width=\"2\"/><line x1=\"110\" y1=\"200\" x2=\"110\" y2=\"50\" stroke=\"#2e2315\" stroke-width=\"2\"/><text x=\"300.0\" y=\"236\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">연주 시차(″)</text><text x=\"48\" y=\"125.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">절대 등급</text><circle cx=\"157.5\" cy=\"140.0\" r=\"5\" fill=\"#f7e27a\" stroke=\"#c9a227\" stroke-width=\"1.5\"/><text x=\"169.5\" y=\"132.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"252.5\" cy=\"110.0\" r=\"5\" fill=\"#f7e27a\" stroke=\"#c9a227\" stroke-width=\"1.5\"/><text x=\"264.5\" y=\"102.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"347.5\" cy=\"50.0\" r=\"5\" fill=\"#f7e27a\" stroke=\"#c9a227\" stroke-width=\"1.5\"/><text x=\"359.5\" y=\"42.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"442.5\" cy=\"110.0\" r=\"5\" fill=\"#f7e27a\" stroke=\"#c9a227\" stroke-width=\"1.5\"/><text x=\"454.5\" y=\"102.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">D</text></svg>",
+  stem:"그래프는 별 A~D의 연주 시차와 절대 등급을 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+  boxes:["실제로 가장 밝은 별은 A이다.", "C의 겉보기 등급은 2등급이다.", "지구에서 볼 때 B는 D보다 밝게 보인다."],
+  boxVerdicts:[true, true, false],
+  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+  why:"절대 등급이 가장 작은 A(−4등급)가 실제로 가장 밝습니다(ㄱ ○). C는 연주 시차 0.1″ → 거리 <b>10 pc</b>이므로 겉보기 등급 = 절대 등급 = 2등급(ㄴ ○). B는 시차 0.01″(100 pc)로 D(1″, 1 pc)보다 100배 멀리 있고 절대 등급은 같으므로, 지구에서는 B가 훨씬 <b>어둡게</b> 보입니다(ㄷ ✗)."},
+
+ {id:"m12",
+  difficulty:"상",
+  intent:"겉보기 등급과 거리를 이용해 절대 등급을 구하고 비교하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 130\" width=\"560\" height=\"130\" role=\"img\" aria-label=\"별 A~C의 겉보기 등급과 거리 표. A 1.1등급·10 pc, B −1.5등급·2.5 pc, C −0.7등급·100 pc.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"100\" y=\"20\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"165.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">별</text><rect x=\"230\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"270.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><rect x=\"310\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"350.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><rect x=\"390\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"430.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><rect x=\"100\" y=\"48\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"165.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">겉보기 등급</text><rect x=\"230\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"270.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">1.1</text><rect x=\"310\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"350.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−1.5</text><rect x=\"390\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"430.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−0.7</text><rect x=\"100\" y=\"76\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"165.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">거리(pc)</text><rect x=\"230\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"270.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">10</text><rect x=\"310\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"350.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.5</text><rect x=\"390\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"430.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">100</text></svg>",
+  stem:"표는 별 A~C의 겉보기 등급과 지구로부터의 거리를 나타낸 것이다. A~C의 절대 등급을 옳게 비교한 것은?",
+  ch:[{t:"B > C > A",ok:0},{t:"C > A > B",ok:0},{t:"A > B > C",ok:0},{t:"A > C > B",ok:0},{t:"B > A > C",ok:1}],
+  why:"A는 이미 10 pc이므로 절대 등급 <b>1.1</b>. B는 2.5 pc → 10 pc로 옮기면 4배 멀어져 밝기 1/16(≈2.5³), 3등급 커져 <b>1.5</b>. C는 100 pc → 10 pc로 당기면 100배 밝아져 5등급 작아진 <b>−5.7</b>. 따라서 절대 등급의 크기는 B > A > C이고, 실제 밝기는 C가 가장 밝습니다."},
+
+ {id:"m13",
   difficulty:"중",
-  intent:"우주의 탄생 이후 크기 변화와 은하 사이 거리 변화를 시간 순서로 이해하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 205\" width=\"560\" height=\"205\" role=\"img\" aria-label=\"왼쪽의 대폭발에서 시작해 시간이 흐를수록 우주(원)가 점점 커지고, 그 안의 은하(점) 사이 거리도 멀어진다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><text x=\"60\" y=\"40\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#b23a30\" font-weight=\"800\">대폭발</text><polygon points=\"60,58 66,72 80,74 68,84 72,98 60,90 48,98 52,84 40,74 54,72\" fill=\"#f6a23a\"/><circle cx=\"120\" cy=\"80\" r=\"14\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"123.0\" cy=\"87.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"114.7\" cy=\"86.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"111.7\" cy=\"78.7\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"117.0\" cy=\"72.1\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"125.3\" cy=\"73.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"128.3\" cy=\"81.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"180\" cy=\"80\" r=\"26\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"176.5\" cy=\"95.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"165.1\" cy=\"84.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"168.7\" cy=\"69.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"183.7\" cy=\"64.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"195.0\" cy=\"75.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"191.2\" cy=\"90.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265\" cy=\"80\" r=\"42\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"242.8\" cy=\"91.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"243.6\" cy=\"66.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265.9\" cy=\"54.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"287.3\" cy=\"68.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"286.3\" cy=\"93.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"263.8\" cy=\"105.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"390\" cy=\"80\" r=\"66\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"361.3\" cy=\"52.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"399.3\" cy=\"41.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"428.0\" cy=\"68.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"418.5\" cy=\"107.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"380.4\" cy=\"118.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"351.9\" cy=\"90.7\" r=\"1.8\" fill=\"#dfe6f2\"/><line x1=\"40.0\" y1=\"170.0\" x2=\"500.0\" y2=\"170.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"508.0,170.0 493.6,174.8 493.6,165.2\" fill=\"#2e2315\"/><text x=\"280\" y=\"195\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">시간 →</text><text x=\"280\" y=\"20\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">우주의 크기</text></svg>",
-  stem:"그림은 우주 팽창을 모식적으로 나타낸 것이다. 이에 대한 설명으로 옳은 것은?",
-  ch:[{t:"우주는 팽창하다가 현재는 팽창을 멈춘 상태이다.",ok:0},{t:"우주가 팽창하면 은하 자체의 크기도 함께 커진다.",ok:0},{t:"우주의 한가운데 중심점에서 은하들이 바깥으로 날아가고 있다.",ok:0},{t:"과거의 우주는 현재보다 크기가 컸다.",ok:0},{t:"약 138억 년 전 대폭발로 탄생한 우주는 지금까지 계속 팽창하고 있으며, 은하 사이의 거리는 점점 멀어진다.",ok:1}],
-  why:"대폭발 이후 우주는 지금도 <b>계속 팽창</b> 중이고, 늘어나는 것은 은하 사이의 <b>공간</b>이라 은하 자체가 커지지는 않습니다. 중심점에서 날아가는 폭발이 아니라 공간이 모든 곳에서 균일하게 늘어나는 것이며, 과거의 우주는 지금보다 작았어요."},
-
- {id:"u11",
-  difficulty:"하",
-  intent:"허블의 발견(먼 은하일수록 빠르게 멀어짐)에 해당하는 모형 관찰 결과를 찾는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 ㄱ·ㄴ·ㄷ의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄱ</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄴ</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">ㄷ</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 작게 불었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">풍선을 더 크게 불었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄴ</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄴ과 ㄷ</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">ㄱ과 ㄷ</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">작게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">5</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">크게 불었을 때 거리(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">7.5</text></svg>",
-  stem:"허블은 멀리 있는 은하일수록 더 빠르게 멀어진다는 것을 발견했다. 풍선 탐구의 결과 중 이에 해당하는 것은?",
-  ch:[{t:"처음에 멀리 떨어져 있던 두 붙임딱지 사이의 거리가 같은 시간 동안 더 많이 늘어난다.",ok:1},{t:"바람을 넣으면 붙임딱지가 풍선 꼭지 쪽으로 몰린다.",ok:0},{t:"바람을 넣으면 붙임딱지의 크기가 커진다.",ok:0},{t:"모든 붙임딱지 사이의 거리가 같은 길이(cm)만큼 늘어난다.",ok:0},{t:"처음에 가까이 있던 두 붙임딱지가 더 많이 멀어진다.",ok:0}],
-  why:"ㄱ–ㄴ는 2 → 3(1 cm 증가), ㄱ–ㄷ는 5 → 7.5(2.5 cm 증가)입니다. 같은 시간 동안 <b>멀리 있던 딱지 사이가 더 많이</b> 늘어났으니 더 빠르게 멀어진 것이고, 이것이 허블의 발견과 같은 모습이에요. 늘어나는 비율(1.5배)은 같지만 늘어난 길이는 다릅니다."},
+  intent:"절대 등급이 같은 두 별의 연주 시차로 거리와 겉보기 등급 차를 추론하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 240\" width=\"560\" height=\"240\" role=\"img\" aria-label=\"태양 주위 지구 궤도의 두 지점에서 같은 방향의 두 별을 관측. 멀리 있는 S₁의 연주 시차 0.05″, 가까운 S₂는 0.5″.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><ellipse cx=\"470\" cy=\"120\" rx=\"22\" ry=\"62\" fill=\"none\" stroke=\"#96805c\" stroke-width=\"1.5\" stroke-dasharray=\"5 4\"/><circle cx=\"470\" cy=\"120\" r=\"11\" fill=\"#f2a33a\" stroke=\"#c67a12\" stroke-width=\"2\"/><text x=\"496\" y=\"125\" text-anchor=\"start\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">태양</text><circle cx=\"470\" cy=\"58\" r=\"5\" fill=\"#3f88c5\"/><circle cx=\"470\" cy=\"182\" r=\"5\" fill=\"#3f88c5\"/><text x=\"482\" y=\"198\" text-anchor=\"start\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">지구</text><polyline points=\"470,58 60,120\" fill=\"none\" stroke=\"#96805c\" stroke-width=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><polyline points=\"470,182 60,120\" fill=\"none\" stroke=\"#96805c\" stroke-width=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"60\" cy=\"120\" r=\"7\" fill=\"#f7e27a\" stroke=\"#c9a227\" stroke-width=\"1.5\"/><text x=\"60\" y=\"146\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">S₁</text><polyline points=\"470,58 300,120\" fill=\"none\" stroke=\"#96805c\" stroke-width=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><polyline points=\"470,182 300,120\" fill=\"none\" stroke=\"#96805c\" stroke-width=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"300\" cy=\"120\" r=\"7\" fill=\"#f7e27a\" stroke=\"#c9a227\" stroke-width=\"1.5\"/><text x=\"300\" y=\"146\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">S₂</text><text x=\"100\" y=\"112\" text-anchor=\"start\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#b23a30\" font-weight=\"800\">0.05″</text><text x=\"330\" y=\"112\" text-anchor=\"start\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#b23a30\" font-weight=\"800\">0.5″</text><text x=\"280\" y=\"225\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#96805c\">※ S₁과 S₂는 절대 등급이 같고, 지구에서 볼 때 같은 방향에 있다</text></svg>",
+  stem:"그림은 절대 등급이 같고 지구에서 볼 때 같은 방향에 있는 두 별 S₁, S₂의 연주 시차를 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+  boxes:["지구로부터 S₁까지의 거리는 S₂까지의 거리의 10배이다.", "겉보기 등급은 S₁이 S₂보다 5등급 크다.", "S₂는 겉보기 등급이 절대 등급보다 크다."],
+  boxVerdicts:[true, true, false],
+  ch:[{t:"ㄱ",ok:0},{t:"ㄱ, ㄴ",ok:1},{t:"ㄱ, ㄷ",ok:0},{t:"ㄴ, ㄷ",ok:0},{t:"ㄱ, ㄴ, ㄷ",ok:0}],
+  why:"연주 시차가 1/10이면 거리는 <b>10배</b>(S₁ 20 pc, S₂ 2 pc)(ㄱ ○). 실제 밝기가 같은데 10배 멀면 100배 어두워 보이므로 겉보기 등급이 <b>5등급 큽니다</b>(ㄴ ○). S₂는 2 pc로 10 pc보다 가까워 실제보다 밝게 보이므로 겉보기 등급이 절대 등급보다 <b>작습니다</b>(ㄷ ✗)."},
 
  {id:"e1",
   difficulty:"중",
   type:"essay",
-  intent:"풍선 모형의 대응 관계를 바탕으로 우주 팽창에 따른 은하 사이 거리 변화를 설명하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 292\" width=\"560\" height=\"292\" role=\"img\" aria-label=\"풍선을 작게 불었을 때와 크게 불었을 때 붙임딱지 A·B·C의 위치와, 붙임딱지 사이 거리를 잰 표.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"120\" cy=\"90\" r=\"48\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"114\" y=\"136\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"98.4\" cy=\"78.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"98.4\" y=\"69.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"127.2\" cy=\"66.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"127.2\" y=\"57.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"139.2\" cy=\"106.8\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"139.2\" y=\"97.8\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><circle cx=\"330\" cy=\"90\" r=\"72\" fill=\"#c9a4e8\" stroke=\"#b48ad8\" stroke-width=\"2\"/><rect x=\"324\" y=\"160\" width=\"12\" height=\"9\" rx=\"3\" fill=\"#b48ad8\"/><circle cx=\"297.6\" cy=\"72.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"297.6\" y=\"63.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><circle cx=\"340.8\" cy=\"54.0\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"340.8\" y=\"45.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><circle cx=\"358.8\" cy=\"115.2\" r=\"5\" fill=\"#ffe36e\" stroke=\"#a88a1c\" stroke-width=\"1.2\"/><text x=\"358.8\" y=\"106.2\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"11.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><line x1=\"190.0\" y1=\"90.0\" x2=\"240.0\" y2=\"90.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"247.0,90.0 234.4,94.2 234.4,85.8\" fill=\"#2e2315\"/><text x=\"120\" y=\"172\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(가) 바람을 조금 넣었을 때</text><text x=\"330\" y=\"185\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#5c4a33\">(나) 바람을 더 넣었을 때</text><rect x=\"40\" y=\"200\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">구분</text><rect x=\"230\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 B 사이</text><rect x=\"325\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">B와 C 사이</text><rect x=\"420\" y=\"200\" width=\"95\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"218.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">A와 C 사이</text><rect x=\"40\" y=\"226\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(가) 바람을 조금 넣었을 때(cm)</text><rect x=\"230\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1</text><rect x=\"325\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">2</text><rect x=\"420\" y=\"226\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"244.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"40\" y=\"252\" width=\"190\" height=\"26\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"135.0\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\" font-weight=\"800\">(나) 바람을 더 넣었을 때(cm)</text><rect x=\"230\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"277.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">1.5</text><rect x=\"325\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"372.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">3</text><rect x=\"420\" y=\"252\" width=\"95\" height=\"26\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"467.5\" y=\"270.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#2e2315\">4.5</text></svg>",
-  stem:"그림은 붙임딱지를 붙인 풍선을 이용한 우주 팽창 모형이다. 풍선 <b>표면</b>과 붙임딱지가 실제 우주에서 각각 무엇에 해당하는지 쓰고, 이 모형을 바탕으로 우주가 팽창하면 <b>은하</b> 사이의 거리가 어떻게 변하는지 서술하시오.",
-  model:"풍선 표면은 우주 공간에, 붙임딱지는 은하에 해당한다. 풍선에 바람을 넣어 표면이 팽창하면 모든 붙임딱지 사이의 거리가 멀어지는 것처럼, 우주가 팽창하면 은하 사이의 거리는 모두 멀어지며, 멀리 떨어진 은하일수록 같은 시간 동안 더 많이 멀어진다.",
-  rubric:[{t:"풍선 표면 = 우주 공간, 붙임딱지 = 은하로 대응함",p:2},{t:"우주가 팽창하면 은하 사이의 거리가 멀어진다고 씀",p:2},{t:"멀리 있는 은하일수록 더 많이(빠르게) 멀어진다는 점을 언급함",p:1}],
-  reject:["풍선 속 공기를 우주 공간이라고 쓴 답", "은하 자체가 커진다고 쓴 답"],
-  keys:["표면", "은하"],
+  intent:"등급 차와 밝기 비의 관계(1등급 차 2.5배, 5등급 차 100배)를 계산에 적용해 설명하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 165\" width=\"560\" height=\"165\" role=\"img\" aria-label=\"1등급부터 6등급까지 별 여섯 개. 등급이 1씩 커질 때마다 밝기가 약 2.5배씩 어두워진다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><circle cx=\"55\" cy=\"70\" r=\"22.0\" fill=\"#f7e27a\" fill-opacity=\"1.00\" stroke=\"#c9a227\" stroke-width=\"2\"/><text x=\"55\" y=\"118\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">1등급</text><line x1=\"97.0\" y1=\"70.0\" x2=\"111.0\" y2=\"70.0\" stroke=\"#96805c\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"118.0,70.0 105.4,74.2 105.4,65.8\" fill=\"#96805c\"/><text x=\"101\" y=\"95\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"10.5\" fill=\"#96805c\">약 2.5배</text><circle cx=\"147\" cy=\"70\" r=\"19.4\" fill=\"#f7e27a\" fill-opacity=\"0.87\" stroke=\"#c9a227\" stroke-width=\"2\"/><text x=\"147\" y=\"118\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">2등급</text><line x1=\"189.0\" y1=\"70.0\" x2=\"203.0\" y2=\"70.0\" stroke=\"#96805c\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"210.0,70.0 197.4,74.2 197.4,65.8\" fill=\"#96805c\"/><text x=\"193\" y=\"95\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"10.5\" fill=\"#96805c\">약 2.5배</text><circle cx=\"239\" cy=\"70\" r=\"16.8\" fill=\"#f7e27a\" fill-opacity=\"0.74\" stroke=\"#c9a227\" stroke-width=\"2\"/><text x=\"239\" y=\"118\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">3등급</text><line x1=\"281.0\" y1=\"70.0\" x2=\"295.0\" y2=\"70.0\" stroke=\"#96805c\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"302.0,70.0 289.4,74.2 289.4,65.8\" fill=\"#96805c\"/><text x=\"285\" y=\"95\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"10.5\" fill=\"#96805c\">약 2.5배</text><circle cx=\"331\" cy=\"70\" r=\"14.2\" fill=\"#f7e27a\" fill-opacity=\"0.61\" stroke=\"#c9a227\" stroke-width=\"2\"/><text x=\"331\" y=\"118\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">4등급</text><line x1=\"373.0\" y1=\"70.0\" x2=\"387.0\" y2=\"70.0\" stroke=\"#96805c\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"394.0,70.0 381.4,74.2 381.4,65.8\" fill=\"#96805c\"/><text x=\"377\" y=\"95\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"10.5\" fill=\"#96805c\">약 2.5배</text><circle cx=\"423\" cy=\"70\" r=\"11.6\" fill=\"#f7e27a\" fill-opacity=\"0.48\" stroke=\"#c9a227\" stroke-width=\"2\"/><text x=\"423\" y=\"118\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">5등급</text><line x1=\"465.0\" y1=\"70.0\" x2=\"479.0\" y2=\"70.0\" stroke=\"#96805c\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"486.0,70.0 473.4,74.2 473.4,65.8\" fill=\"#96805c\"/><text x=\"469\" y=\"95\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"10.5\" fill=\"#96805c\">약 2.5배</text><circle cx=\"515\" cy=\"70\" r=\"9.0\" fill=\"#f7e27a\" fill-opacity=\"0.35\" stroke=\"#c9a227\" stroke-width=\"2\"/><text x=\"515\" y=\"118\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13\" fill=\"#2e2315\" font-weight=\"800\">6등급</text><text x=\"280\" y=\"150\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">← 밝다      어둡다 →</text></svg>",
+  stem:"그림은 별의 등급과 밝기 차이를 나타낸 것이다. ① 1등급인 별과 6등급인 별의 밝기를 비교하여 쓰고, ② 3등급인 별보다 100배 밝은 별은 몇 등급인지 쓰고 그 까닭을 <b>등급</b>과 <b>100배</b>라는 낱말을 넣어 서술하시오.",
+  model:"① 1등급인 별은 6등급인 별보다 약 100배 밝다(1등급 차이마다 약 2.5배씩 5번 → 100배). ② 100배 밝으면 등급은 5등급 작아지므로 3 − 5 = −2등급이다. 등급은 숫자가 작을수록 밝은 별이기 때문이다.",
+  rubric:[{t:"1등급 별이 6등급 별보다 약 100배 밝다고 씀",p:2},{t:"100배 밝음 = 5등급 작아짐이라는 관계를 씀",p:2},{t:"−2등급이라고 바르게 구함(밝을수록 숫자가 작아진다는 방향 포함)",p:2}],
+  reject:["1등급이 6등급보다 5배(또는 6배) 밝다고 쓴 답", "100배 밝은 별을 8등급(3 + 5)이라고 쓴 답"],
+  keys:["등급", "100배"],
   lines:4,
   why:""},
 
  {id:"e2",
   difficulty:"상",
   type:"essay",
-  intent:"팽창에 중심이 없음을 모형으로 설명하고, 시간을 거꾸로 돌렸을 때의 우주를 추론하는지 확인한다.",
-  svg:"<svg viewBox=\"0 0 560 205\" width=\"560\" height=\"205\" role=\"img\" aria-label=\"왼쪽의 대폭발에서 시작해 시간이 흐를수록 우주(원)가 점점 커지고, 그 안의 은하(점) 사이 거리도 멀어진다.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><text x=\"60\" y=\"40\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12\" fill=\"#b23a30\" font-weight=\"800\">대폭발</text><polygon points=\"60,58 66,72 80,74 68,84 72,98 60,90 48,98 52,84 40,74 54,72\" fill=\"#f6a23a\"/><circle cx=\"120\" cy=\"80\" r=\"14\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"123.0\" cy=\"87.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"114.7\" cy=\"86.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"111.7\" cy=\"78.7\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"117.0\" cy=\"72.1\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"125.3\" cy=\"73.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"128.3\" cy=\"81.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"180\" cy=\"80\" r=\"26\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"176.5\" cy=\"95.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"165.1\" cy=\"84.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"168.7\" cy=\"69.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"183.7\" cy=\"64.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"195.0\" cy=\"75.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"191.2\" cy=\"90.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265\" cy=\"80\" r=\"42\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"242.8\" cy=\"91.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"243.6\" cy=\"66.6\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"265.9\" cy=\"54.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"287.3\" cy=\"68.3\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"286.3\" cy=\"93.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"263.8\" cy=\"105.2\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"390\" cy=\"80\" r=\"66\" fill=\"#182648\" stroke=\"#3a4a7a\" stroke-width=\"1.5\"/><circle cx=\"361.3\" cy=\"52.8\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"399.3\" cy=\"41.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"428.0\" cy=\"68.9\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"418.5\" cy=\"107.5\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"380.4\" cy=\"118.4\" r=\"1.8\" fill=\"#dfe6f2\"/><circle cx=\"351.9\" cy=\"90.7\" r=\"1.8\" fill=\"#dfe6f2\"/><line x1=\"40.0\" y1=\"170.0\" x2=\"500.0\" y2=\"170.0\" stroke=\"#2e2315\" stroke-width=\"2\" stroke-linecap=\"round\"/><polygon points=\"508.0,170.0 493.6,174.8 493.6,165.2\" fill=\"#2e2315\"/><text x=\"280\" y=\"195\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#2e2315\" font-weight=\"800\">시간 →</text><text x=\"280\" y=\"20\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"12.5\" fill=\"#5c4a33\">우주의 크기</text></svg>",
-  stem:"그림은 대폭발 이후 시간에 따른 우주의 크기 변화를 나타낸 것이다. ① 우리은하에서 볼 때 모든 외부 은하가 멀어지는데도 우리은하가 우주 팽창의 <b>중심</b>이 아니라고 말할 수 있는 까닭을 풍선 모형을 이용해 서술하고, ② 우주의 시간을 과거로 되돌린다면 우주의 크기와 은하 사이의 거리가 어떻게 되는지 「<b>작아</b>진다」는 표현을 넣어 쓰시오.",
-  model:"① 풍선 표면의 붙임딱지는 어느 딱지에서 보아도 나머지 딱지가 모두 멀어지지만 표면 위에 팽창의 중심은 없다. 마찬가지로 우주는 모든 곳에서 균일하게 팽창하므로 어느 은하에서 관측해도 다른 은하들이 멀어지며, 우리은하가 특별한 중심인 것은 아니다. ② 시간을 과거로 되돌리면 우주의 크기는 점점 작아지고 은하 사이의 거리도 가까워져, 결국 한 점에 모여 있던 대폭발의 순간에 이른다.",
-  rubric:[{t:"풍선 표면의 어느 딱지에서 보아도 나머지가 모두 멀어진다는 모형의 성질을 씀",p:2},{t:"우주는 어디서나 균일하게 팽창하므로 특별한 중심이 없다고 결론지음",p:2},{t:"과거로 되돌리면 우주 크기가 작아지고 은하 사이 거리가 가까워진다고 씀",p:2}],
-  reject:["우리은하가 우주의 중심이라고 쓴 답", "과거의 우주가 지금보다 컸다고 쓴 답"],
-  keys:["중심", "작아"],
+  intent:"겉보기 등급과 절대 등급의 차로 거리를 판별하고, 연주 시차와 연결해 근거를 서술하는지 확인한다.",
+  svg:"<svg viewBox=\"0 0 560 130\" width=\"560\" height=\"130\" role=\"img\" aria-label=\"별 A~D의 겉보기 등급과 절대 등급 표. A 0.8/2.2, B 2.2/−6.0, C 1.3/5.7, D 1.0/−3.6.\" style=\"max-width:560px;width:100%;height:auto;display:block;margin:0 auto\"><rect x=\"60\" y=\"20\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">별</text><rect x=\"190\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">A</text><rect x=\"270\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">B</text><rect x=\"350\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">C</text><rect x=\"430\" y=\"20\" width=\"80\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"39.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">D</text><rect x=\"60\" y=\"48\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">겉보기 등급</text><rect x=\"190\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">0.8</text><rect x=\"270\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.2</text><rect x=\"350\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">1.3</text><rect x=\"430\" y=\"48\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"67.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">1.0</text><rect x=\"60\" y=\"76\" width=\"130\" height=\"28\" fill=\"#efe6d3\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"125.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\" font-weight=\"800\">절대 등급</text><rect x=\"190\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"230.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">2.2</text><rect x=\"270\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"310.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−6.0</text><rect x=\"350\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"390.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">5.7</text><rect x=\"430\" y=\"76\" width=\"80\" height=\"28\" fill=\"#fdfbf6\" stroke=\"#c1ac82\" stroke-width=\"1.4\"/><text x=\"470.0\" y=\"95.0\" text-anchor=\"middle\" font-family=\"Gowun Dodum, Pretendard, sans-serif\" font-size=\"13.5\" fill=\"#2e2315\">−3.6</text></svg>",
+  stem:"표는 별 A~D의 겉보기 등급과 절대 등급을 나타낸 것이다. ① A~D를 지구로부터의 거리가 가까운 별부터 순서대로 나열하고 그 까닭을 <b>절대 등급</b>이라는 낱말을 넣어 쓰시오. ② A~D 중 연주 시차가 가장 큰 별의 기호를 쓰고, 그렇게 판단한 까닭을 <b>가까</b>운 별이라는 표현을 넣어 서술하시오.",
+  model:"① C → A → D → B. (겉보기 등급 − 절대 등급) 값은 A −1.4, B 8.2, C −4.4, D 4.6으로, 이 값이 작을수록 10 pc 기준보다 밝게 보이는 것이므로 지구에서 가까운 별이다. ② C. 연주 시차는 가까운 별일수록 크게 나타나는데, C가 가장 가까이 있으므로 연주 시차가 가장 크다.",
+  rubric:[{t:"C → A → D → B 순서를 바르게 씀",p:2},{t:"(겉보기 등급 − 절대 등급) 값이 작을수록(겉보기 < 절대이면) 가깝다는 까닭을 씀",p:2},{t:"연주 시차가 가장 큰 별로 C를 고르고, 가까운 별일수록 시차가 크다고 씀",p:2}],
+  reject:["겉보기 등급 숫자만 보고 순서를 정한 답", "절대 등급이 작은 별이 가깝다고 쓴 답", "연주 시차가 먼 별일수록 크다고 쓴 답"],
+  keys:["절대 등급", "가까"],
   lines:5,
   why:""}
 ];
 
-/* ── 엔진 ── */
+/* 엔진 */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const TAU=Math.PI*2;
-const TABS=['engage','explore','explain','apply','check','sum','beyond'];
+const TABS=['engage','compare','explain','judge','check','sum','beyond'];
 const CS=getComputedStyle(document.documentElement);
 const CV=k=>CS.getPropertyValue('--'+k).trim();
-const C={accent:CV('accent'),accent2:CV('accent2'),c1:CV('c1'),c2:CV('c2'),c3:CV('c3'),c4:CV('c4'),c5:CV('c5'),
-  line:CV('line'),linesoft:CV('line-soft'),ink:CV('ink'),inkdim:CV('ink-dim'),inkmute:CV('ink-mute'),
-  ok:CV('ok'),danger:CV('danger'),gold:CV('gold')};
 
 function setBg(tab){
   const L=$('#bgLayer'); if(!L)return;
@@ -1437,7 +1266,7 @@ function setBg(tab){
 function fit(cv){
   const dpr=Math.min(devicePixelRatio||1,2.5);
   const w=cv.clientWidth||cv.parentElement.clientWidth||320;
-  const h=parseInt(cv.getAttribute('height'))||300;
+  const h=parseInt(cv.getAttribute('height'))||180;
   cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
   const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};
 }
@@ -1454,28 +1283,29 @@ const A={ctx:null,
   win(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.blip(f,.22,'sine',.15),i*110));}};
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>A.ensure(),{once:true}));
 
-let S=load()||{tab:'engage',visited:{},poe:null,log:[],cloze:{},mini:{},essay:'',best:0,medals:{}};
+let S=load()||{tab:'engage',visited:{},poe:null,mag:{a:1,b:6},magTried:0,judge:{},cloze:{},mini:{},essay:'',best:0,medals:{}};
 S.think=S.think||{};S.stu=S.stu||null;S.msn=S.msn||{};S.sub=S.sub||{};S.subTxt=S.subTxt||{};S.visited=S.visited||{};S.qa=S.qa||{};S.eq=S.eq||{};S.mini=S.mini||{};S.cloze=S.cloze||{};S.skip=S.skip||{};
-S.visited=S.visited||{};S.log=S.log||[];S.cloze=S.cloze||{};S.mini=S.mini||{};S.medals=S.medals||{};S.essay=S.essay||'';
+S.visited=S.visited||{};S.mag=S.mag||{a:1,b:6};S.judge=S.judge||{};S.cloze=S.cloze||{};S.mini=S.mini||{};
+S.medals=S.medals||{};S.essay=S.essay||'';S.magTried=S.magTried||0;
 let CLOZE_TOTAL=0;
 function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
 function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
 
 function progChecks(){
   return [
-    {label:'1단계 열어 보기',            ok:!!S.visited.engage},
-    {label:'2단계 · 결과 예측하기',      ok:!!S.poe},
-    {label:'2단계 · 풍선 3회 기록',      ok:(S.log||[]).length>=3},
-    {label:'2단계 · 측정 결과 퀴즈',     ok:!!S.mini.explore},
-    {label:'3단계 · 빈칸 모두 채우기',   ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
-    {label:'3단계 · 모형 읽기 퀴즈',     ok:!!S.mini.explain},
-    {label:'4단계 · 사고력 문제 답쓰기', ok:(S.essay||'').trim().length>=15},
-    {label:'5단계 · 확인 문제 완주',     ok:S.best>0}
+    {label:'1단계 · 예측하기',           ok:!!S.poe},
+    {label:'2단계 · 등급 비교기 써 보기', ok:S.magTried>=3},
+    {label:'2단계 · 등급과 밝기 퀴즈',    ok:!!S.mini.compare},
+    {label:'3단계 · 빈칸 모두 채우기',    ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
+    {label:'3단계 · 두 등급 구분 퀴즈',   ok:!!S.mini.explain},
+    {label:'4단계 · 세 별 모두 판별',     ok:Object.keys(S.judge).length>=3},
+    {label:'4단계 · 사고력 문제 답쓰기',  ok:(S.essay||'').trim().length>=15},
+    {label:'5단계 · 확인 문제 완주',      ok:S.best>0}
   ];
 }
 
 /* ── 🎯 혼자 탐구: 서술 항목은 제출해야 완료 + 생각 쓰기 칸 항목 (단계 순으로 정렬) ── */
-const SOLO_SUB={'4단계 · 사고력 문제 답쓰기':'essay'}, SOLO_THINK=[{key:'guess',stage:1,label:'은하들이 서로 멀어지는 우주, 내 생각'},{key:'summary',stage:3,label:'내 말로 정리 — 팽창하는 우주'}];
+const SOLO_SUB={'4단계 · 사고력 문제 답쓰기':'essay'}, SOLO_THINK=[{key:'guess',stage:1,label:'1등성과 6등성, 어느 쪽이 더 밝을까? 내 생각'},{key:'summary',stage:3,label:'내 말로 정리 — 겉보기 등급과 절대 등급'}];
 const thinkLen=k=>((S.think||{})[k]||'').trim().length;
 const _progChecks0=progChecks;
 progChecks=function(){const c=_progChecks0();c.forEach(x=>{const k=SOLO_SUB[x.label];if(k){x.ok=x.ok&&!!(S.sub||{})[k];x.label=x.label+' → 제출';}});SOLO_THINK.forEach(t=>c.push({label:t.stage+'단계 · '+t.label+' → 제출',ok:thinkLen(t.key)>=10&&!!(S.sub||{})[t.key]}));const st=l=>{const d=(String(l).split('단계')[0].match(/\d/g)||[]).map(Number);return d.length?Math.max(...d):0;};return c.map((x,i)=>({x,i,s:st(x.label)})).sort((a,b)=>a.s-b.s||a.i-b.i).map(o=>o.x);};
@@ -1549,7 +1379,7 @@ function showTab(id,noScroll,force){
   $('#panel-'+id).classList.add('show');
   $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
   setBg(id);S.tab=id;S.visited[id]=true;save();updateProgress();
-  if(id==='explore'&&window.__balResize)window.__balResize();
+  if(id==='compare')requestAnimationFrame(drawMag);
   if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
 }
 $('#tabNav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);});
@@ -1558,7 +1388,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b
 function refreshCover(){
   const any=progChecks().some(x=>x.ok);
   $('#coverSaved').style.display=any?'inline-flex':'none';
-  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) 🎈`:'풍선 불러 가기 🎈';
+  $('#coverGo').textContent=any?`이어서 하기 (${$('#progPct').textContent}) ⚖️`:'별 밝기 재판 시작 ⚖️';
 }
 $('#coverGo').addEventListener('click',()=>{$('#cover').classList.add('hide');
   document.body.classList.remove('cover-on');A.ensure();A.pop();{showTab(soloOn()?landTab():(S.tab||'engage'),true);if(soloOn())setTimeout(()=>gotoUndone(landTab()),450);}});
@@ -1656,11 +1486,11 @@ $('#gLocal').addEventListener('click',()=>{
  afterJoin('🔓 <b>코드 없이 혼자 탐구!</b> 미션을 다 깨면 오른쪽 위 📄 버튼으로 <b>학습 결과를 PDF</b>로 저장하세요');
 });
 
-/* ── ☁️ 서버 기록 (Supabase · 과학이조선생) — 표는 RPC 로만. 코드 없이(local)면 아무것도 보내지 않는다 ── */
+/* ── ☁️ 서버 기록 (Supabase · 선생님) — 표는 RPC 로만. 코드 없이(local)면 아무것도 보내지 않는다 ── */
 const OHM={
  url:'https://vbvtnmnodeoocbbjauap.supabase.co',
  key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZidnRubW5vZGVvb2NiYmphdWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0OTQ0OTYsImV4cCI6MjA5NTA3MDQ5Nn0.dvuRrt3qw2Tya_QwGbcXrmGPdfDgI4xmgyH8UjU73Nc',
- page:'star-expanding', sb:null, timer:null, last:'', busy:false, dirty:false,
+ page:'star-magnitude', sb:null, timer:null, last:'', busy:false, dirty:false,
  client(){if(this.sb)return this.sb;if(!window.supabase||!window.supabase.createClient)return null;this.sb=window.supabase.createClient(this.url,this.key,{auth:{persistSession:false}});return this.sb;},
  device(){try{let d=localStorage.getItem('elec_device');if(!d){d=Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem('elec_device',d);}return d;}catch(e){return 'na';}},
  async rpc(name,args){const c=this.client();if(!c)throw new Error('supabase 라이브러리를 불러오지 못했어요');const r=await c.rpc(name,args);if(r.error)throw new Error(r.error.message||String(r.error));return r.data;},
@@ -1969,7 +1799,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
   $$('[data-fig]').forEach(el=>{
     const key=el.dataset.fig,src=FIGS[key]||'',alt=el.dataset.alt||'',cap=el.dataset.cap||'';
     const slot=()=>{el.classList.add('slot');
-      el.innerHTML=`<div class="fe">🖼️</div><div class="fn">${FIGS[key]||'img/'+key+'.jpg'}</div><div class="fd">${alt}</div>`;};
+      el.innerHTML=`<div class="fe">🖼️</div><div class="fn">${FIGS[key]||'img/'+key+'.png'}</div><div class="fd">${alt}</div>`;};
     if(!src){slot();return;}
     const im=new Image();
     im.onload=()=>{el.classList.remove('slot');
@@ -1987,7 +1817,8 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
       else if(b.dataset.poe===pick)b.classList.add('wrong');else b.classList.add('dim');});
     const ok=pick===POE_ANSWER;
     exp.className='explain show '+(ok?'ok':'no');
-    exp.innerHTML=`<div class="why">${ok?'✅ 예측 성공':'🔍 다시 생각해 보기'}</div>${ok?POE_WHY.right:POE_WHY.wrong}`;}
+    exp.innerHTML=`<div class="why">${ok?'✅ 예측 성공':'🔍 다시 생각해 보기'}</div>${ok?POE_WHY.right:POE_WHY.wrong}`;
+  }
   wrap.addEventListener('click',e=>{
     const b=e.target.closest('.choice');if(!b||S.poe)return;
     S.poe=b.dataset.poe;save();updateProgress();
@@ -1995,148 +1826,95 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
   if(S.poe)lock(S.poe);
 })();
 
-/* ═══════ 🎈 풍선 우주 실험실 ═══════ */
+/* 등급 비교기 */
+const MAGS=[1,2,3,4,5,6];
+function buildSeg(id,which){
+  const el=$('#'+id);
+  el.innerHTML=MAGS.map(m=>`<button data-m="${m}">${m}</button>`).join('');
+  el.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    S.mag[which]=+b.dataset.m;S.magTried=(S.magTried||0)+1;save();
+    A.blip(560,.05,'triangle',.1);paintSeg();drawMag();updateProgress();
+    if(S.magTried===3)toast('여러 조합을 비교해 봤어요! 등급 차가 커질수록 밝기 차가 급격히 커지죠 ⚖️','good');
+  });
+}
+function paintSeg(){
+  const colA=CV('c1'),colB=CV('c2');
+  $$('#segA button').forEach(b=>{const on=+b.dataset.m===S.mag.a;
+    b.classList.toggle('on',on);b.style.background=on?colA:'';b.style.borderColor=on?colA:'';});
+  $$('#segB button').forEach(b=>{const on=+b.dataset.m===S.mag.b;
+    b.classList.toggle('on',on);b.style.background=on?colB:'';b.style.borderColor=on?colB:'';});
+  $('#vA').textContent=S.mag.a+'등급';
+  $('#vB').textContent=S.mag.b+'등급';
+}
+function ratioText(){
+  const d=Math.abs(S.mag.b-S.mag.a);
+  const r=Math.pow(2.512,d);
+  const bright=S.mag.a<S.mag.b?'㉮':(S.mag.a>S.mag.b?'㉯':null);
+  if(d===0)return '두 별의 등급이 같으니 <span class="num">밝기도 같습니다</span>.';
+  const rr = r>=100?Math.round(r/10)*10 : (r>=10?Math.round(r):Math.round(r*10)/10);
+  return `등급 차 <span class="num">${d}</span> → <b class="k">별 ${bright}</b>가 약 <span class="num">${rr}배</span> 밝습니다.`;
+}
+function drawMag(){
+  const cv=$('#magcv');if(!cv||!cv.clientWidth)return;
+  const {ctx,w,h}=fit(cv);
+  ctx.clearRect(0,0,w,h);
+  const d=S.mag.b-S.mag.a;
+  const rel=Math.pow(2.512,Math.abs(d));
+  const big=48, small=Math.max(6,big/Math.sqrt(rel));
+  const aBig=S.mag.a<=S.mag.b;
+  const rA=aBig?big:small, rB=aBig?small:big;
+  const colA=CV('c1'),colB=CV('c2');
+  const y=h/2;
+  [[w*0.3,rA,colA,'㉮'],[w*0.7,rB,colB,'㉯']].forEach(([x,r,col,nm])=>{
+    ctx.save();
+    ctx.shadowColor=col;ctx.shadowBlur=r*0.9;
+    const g=ctx.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0,'#ffffff');g.addColorStop(.45,col);g.addColorStop(1,col+'00');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+    ctx.font='700 13px Pretendard, sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=CV('ink-dim');ctx.fillText(nm,x,h-12);
+  });
+  $('#magOut').innerHTML=ratioText();
+}
+addEventListener('resize',()=>{clearTimeout(window.__rz);window.__rz=setTimeout(drawMag,180);});
+
+/* 판별 카드 */
 (function(){
-  const cv=$('#balcv'), gcv=$('#simGraph'), sl=$('#simS');
-  let ctx,w,h,gctx,gw,gh;
-  const scale=()=>+sl.value/100;
-  const nearD=s=>R_UNIT*NEAR_A*s;   // cm
-  const farD =s=>R_UNIT*FAR_A *s;
-  /* 딱지 각도 (라디안, 화면 좌표계) */
-  const ANG={a:-1.15, b:-1.15+NEAR_A, c:0.55, d:0.55+FAR_A};
-  function syncSlider(el){el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');}
-  function resize(){({ctx,w,h}=fit(cv));({ctx:gctx,w:gw,h:gh}=fit(gcv));draw();drawGraph();}
-
-  function draw(){
-    if(!ctx)return;
-    const s=scale();
-    ctx.clearRect(0,0,w,h);
-    const cx=w/2, cy=h/2+6, R=Math.min(w,h)*0.16*s;
-    /* 기준 풍선(처음 크기) */
-    ctx.setLineDash([4,6]); ctx.strokeStyle='rgba(168,182,220,.35)'; ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.arc(cx,cy,Math.min(w,h)*0.16,0,TAU); ctx.stroke(); ctx.setLineDash([]);
-    /* 풍선 표면 */
-    const g=ctx.createRadialGradient(cx,cy,R*0.75,cx,cy,R*1.05);
-    g.addColorStop(0,'rgba(103,232,224,0)'); g.addColorStop(1,'rgba(103,232,224,.16)');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.05,0,TAU); ctx.fill();
-    ctx.strokeStyle=C.c2; ctx.lineWidth=2.6; ctx.shadowColor=C.c2; ctx.shadowBlur=12;
-    ctx.beginPath(); ctx.arc(cx,cy,R,0,TAU); ctx.stroke(); ctx.shadowBlur=0;
-    /* 호(거리) 표시 */
-    function arcMark(a1,a2,col,label){
-      ctx.strokeStyle=col; ctx.lineWidth=5; ctx.globalAlpha=.9;
-      ctx.beginPath(); ctx.arc(cx,cy,R,a1,a2); ctx.stroke(); ctx.globalAlpha=1;
-      const mid=(a1+a2)/2, lx=cx+Math.cos(mid)*(R+22), ly=cy+Math.sin(mid)*(R+22);
-      ctx.font='700 12.5px Pretendard, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle='rgba(5,8,15,.75)';
-      const wd=ctx.measureText(label).width+12;
-      ctx.fillRect(lx-wd/2,ly-10,wd,20);
-      ctx.fillStyle=col; ctx.fillText(label,lx,ly);
-    }
-    arcMark(ANG.a,ANG.b,C.c1,nearD(s).toFixed(1)+' cm');
-    arcMark(ANG.c,ANG.d,C.c5,farD(s).toFixed(1)+' cm');
-    /* 딱지 */
-    const dots=[['a',C.c1,'㉮'],['b',C.c1,'㉯'],['c',C.c5,'㉰'],['d',C.c5,'㉱']];
-    dots.forEach(([k,col,nm])=>{
-      const x=cx+Math.cos(ANG[k])*R, y=cy+Math.sin(ANG[k])*R;
-      ctx.beginPath(); ctx.arc(x,y,7,0,TAU);
-      ctx.fillStyle=col; ctx.shadowColor=col; ctx.shadowBlur=10; ctx.fill(); ctx.shadowBlur=0;
-      ctx.font='700 12px Pretendard, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle='#06121f'; ctx.fillText(nm,x,y+.5);
+  const wrap=$('#judgeWrap');
+  wrap.innerHTML=STARS.map(s=>`
+    <div class="jcard ${S.judge[s.id]?'solved':''}" data-star="${s.id}">
+      <div class="jn">⭐ ${s.nm}</div>
+      <div class="jmag">
+        <span class="app"><small>겉보기 등급</small><b>${s.app}</b></span>
+        <span class="abs"><small>절대 등급</small><b>${s.abs}</b></span>
+      </div>
+      <div class="jopts">${JOPTS.map(o=>`<button class="jopt" data-k="${o.k}">${o.t}</button>`).join('')}</div>
+      <div class="jfb"></div>
+    </div>`).join('');
+  $$('.jcard',wrap).forEach(card=>{
+    const s=STARS.find(x=>x.id===card.dataset.star);
+    const fb=$('.jfb',card);
+    let solved=!!S.judge[s.id], answered=false;
+    const finish=()=>{
+      $$('.jopt',card).forEach(b=>{b.classList.add('locked');if(b.dataset.k===s.ans)b.classList.add('correct');});
+      card.classList.add('solved');
+      fb.className='jfb show';fb.innerHTML=s.why;
+    };
+    card.addEventListener('click',e=>{
+      const b=e.target.closest('.jopt');if(!b||solved||answered)return;
+      if(b.dataset.k===s.ans){
+        solved=true;A.correct();S.judge[s.id]=1;save();updateProgress();finish();
+        if(Object.keys(S.judge).length>=3)toast('세 별 모두 판별 완료! ⚖️','good');
+      }else{
+        answered=true;b.classList.add('wrong');A.wrong();
+        fb.className='jfb show';fb.innerHTML='다시 생각해 볼까요 — <b>겉보기와 절대 중 어느 쪽이 더 작은지</b> 먼저 비교해 보세요.';
+        setTimeout(()=>{answered=false;b.classList.remove('wrong');},1500);
+      }
     });
-    /* 안내 */
-    ctx.font='600 12px Pretendard, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
-    ctx.fillStyle=C.inkmute;
-    ctx.fillText('풍선을 옆에서 자른 단면 — 딱지는 모두 표면 위에 있습니다',w/2,h-10);
-    ctx.fillStyle='rgba(168,182,220,.5)';
-    ctx.fillText('점선 = 처음 크기',w/2,18);
-  }
-
-  function updateOut(){
-    const s=scale();
-    $('#vS').textContent=s.toFixed(2)+'배';
-    $('#rNear').innerHTML=nearD(s).toFixed(1)+'<small> cm</small>';
-    $('#rFar').innerHTML=farD(s).toFixed(1)+'<small> cm</small>';
-    const dn=nearD(s)-nearD(1), df=farD(s)-farD(1);
-    $('#dNear').innerHTML='+'+dn.toFixed(1)+'<small> cm</small>';
-    $('#dFar').innerHTML='+'+df.toFixed(1)+'<small> cm</small>';
-    $('#simMsg').innerHTML = s<=1.01 ? '풍선을 불면서 두 거리 변화를 비교해 보세요.'
-      : `먼 쪽이 가까운 쪽보다 <b class="t3">약 ${(df/dn).toFixed(1)}배</b> 더 많이 멀어졌어요.`;
-  }
-
-  /* 기록 */
-  function rows(){return S.log||[];}
-  function renderLog(fresh){
-    const tb=$('#simTable'), rs=rows();
-    if(!rs.length){
-      tb.innerHTML='<tr><td class="empty" colspan="6">아직 기록이 없어요. 풍선을 불고 <b>📋 기록하기</b>를 눌러 보세요.</td></tr>';
-      drawGraph(); return;
-    }
-    tb.innerHTML='<tr><th>#</th><th>풍선 크기</th><th>㉮–㉯</th><th>㉰–㉱</th><th>㉮–㉯ 변화</th><th>㉰–㉱ 변화</th><th></th></tr>'+
-      rs.map((r,i)=>`<tr class="${i===fresh?'fresh':''}"><td>${i+1}</td><td>${r.s.toFixed(2)}배</td>
-        <td>${nearD(r.s).toFixed(1)}</td><td>${farD(r.s).toFixed(1)}</td>
-        <td style="color:${C.c1}">+${(nearD(r.s)-nearD(1)).toFixed(1)}</td>
-        <td style="color:${C.c5}">+${(farD(r.s)-farD(1)).toFixed(1)}</td>
-        <td class="del" data-del="${r.id}" title="이 기록 지우기">✕</td></tr>`).join('');
-    tb.onclick=e=>{const d=e.target.closest('[data-del]');if(!d)return;
-      S.log=S.log.filter(r=>r.id!==+d.dataset.del);save();renderLog();updateProgress();A.pop();};
-    drawGraph();
-  }
-  function drawGraph(){
-    if(!gctx)return;
-    gctx.clearRect(0,0,gw,gh);
-    const pad={l:52,r:16,t:16,b:34}, rs=rows();
-    const xmax=14, ymax=Math.max(2, ...rs.map(r=>farD(r.s)-farD(1)))*1.15;
-    const px=v=>pad.l+v/xmax*(gw-pad.l-pad.r);
-    const py=v=>gh-pad.b-v/ymax*(gh-pad.t-pad.b);
-    gctx.strokeStyle=C.line;gctx.lineWidth=1;
-    gctx.beginPath();gctx.moveTo(pad.l,pad.t);gctx.lineTo(pad.l,gh-pad.b);gctx.lineTo(gw-pad.r,gh-pad.b);gctx.stroke();
-    gctx.font='600 10.5px "JetBrains Mono", monospace';gctx.fillStyle=C.inkmute;gctx.textAlign='center';
-    [4,8,12].forEach(v=>gctx.fillText(v,px(v),gh-pad.b+15));
-    gctx.font='600 11px Pretendard, sans-serif';
-    gctx.fillText('처음 거리 (cm)',(pad.l+gw-pad.r)/2,gh-6);
-    gctx.textAlign='right';gctx.font='600 10.5px "JetBrains Mono", monospace';
-    [0,ymax/2,ymax].forEach(v=>{gctx.fillText(v.toFixed(1),pad.l-6,py(v)+4);
-      gctx.setLineDash([3,5]);gctx.strokeStyle=C.linesoft||C.line;
-      gctx.beginPath();gctx.moveTo(pad.l,py(v));gctx.lineTo(gw-pad.r,py(v));gctx.stroke();gctx.setLineDash([]);});
-    gctx.save();gctx.translate(14,(pad.t+gh-pad.b)/2);gctx.rotate(-Math.PI/2);
-    gctx.textAlign='center';gctx.font='600 11px Pretendard, sans-serif';gctx.fillStyle=C.inkmute;
-    gctx.fillText('거리 변화 (cm)',0,0);gctx.restore();
-    if(!rs.length){
-      gctx.fillStyle=C.inkmute;gctx.font='600 12.5px Pretendard, sans-serif';gctx.textAlign='center';
-      gctx.fillText('기록이 쌓이면 점이 찍힙니다',gw/2,gh/2);return;
-    }
-    rs.forEach(r=>{
-      const dn=nearD(r.s)-nearD(1), df=farD(r.s)-farD(1);
-      [[nearD(1),dn,C.c1],[farD(1),df,C.c5]].forEach(([x,y,col])=>{
-        gctx.beginPath();gctx.arc(px(x),py(y),5,0,TAU);
-        gctx.fillStyle=col;gctx.shadowColor=col;gctx.shadowBlur=9;gctx.fill();gctx.shadowBlur=0;});
-      /* 같은 회차의 두 점을 잇는 옅은 선 */
-      gctx.strokeStyle='rgba(168,182,220,.28)';gctx.lineWidth=1.2;
-      gctx.beginPath();gctx.moveTo(px(nearD(1)),py(dn));gctx.lineTo(px(farD(1)),py(df));gctx.stroke();
-    });
-  }
-
-  sl.addEventListener('input',()=>{syncSlider(sl);updateOut();draw();});
-  $('#simMark').addEventListener('click',()=>{
-    const s=scale();
-    if(s<=1.01)return toast('풍선을 먼저 불어 주세요 🎈','bad');
-    S.log=S.log||[];
-    if(S.log.some(r=>Math.abs(r.s-s)<0.02))return toast('이미 비슷한 크기를 기록했어요. 더 크게 불어 보세요','bad');
-    S.log.push({id:S.log.length?Math.max(...S.log.map(r=>r.id))+1:1, s});
-    save();renderLog(S.log.length-1);updateProgress();A.pop();
-    const n=S.log.length;
-    toast(n>=3?'기록 3회 완료! 그래프에서 두 색 점의 높이를 비교해 보세요 📈':`기록 ${n}회 — 더 크게 불어 한 번 더!`, n>=3?'good':'');
+    if(solved)finish();
   });
-  $('#simClear').addEventListener('click',()=>{S.log=[];save();renderLog();updateProgress();A.pop();});
-  $('#simCopy').addEventListener('click',async()=>{
-    const rs=rows(); if(!rs.length)return toast('기록이 없어요','bad');
-    const text=['#\t풍선크기\t㉮–㉯(cm)\t㉰–㉱(cm)\t㉮–㉯변화\t㉰–㉱변화']
-      .concat(rs.map((r,i)=>`${i+1}\t${r.s.toFixed(2)}\t${nearD(r.s).toFixed(1)}\t${farD(r.s).toFixed(1)}\t${(nearD(r.s)-nearD(1)).toFixed(1)}\t${(farD(r.s)-farD(1)).toFixed(1)}`)).join('\n');
-    try{await navigator.clipboard.writeText(text);toast('표를 복사했어요 📋','good');}catch(e){toast('복사에 실패했어요','bad');}
-  });
-  let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(resize,180);});
-  window.__balResize=resize;
-  syncSlider(sl);updateOut();renderLog();resize();
 })();
 
 /* 빈칸 */
@@ -2332,12 +2110,12 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
     ctx.setTransform(dpr,0,0,dpr,0,0);
     const n=Math.round(Math.min(130,w*h/10500));
     stars=Array.from({length:n},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.3,
-      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#cfe0ff','#d6c2ff','#a9f2ec'][i%4]}));}
+      p:Math.random()*Math.PI*2,s:.6+Math.random()*1.1,c:['#ffffff','#cfe0ff','#ffe6c2','#c9d8ff'][i%4]}));}
   function draw(){
     ctx.clearRect(0,0,w,h);
-    stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.6:(.35+.4*Math.sin(t*st.s+st.p));
+    stars.forEach(st=>{ctx.globalAlpha=reduceMotion?.65:(.38+.4*Math.sin(t*st.s+st.p));
       ctx.fillStyle=st.c;ctx.shadowColor=st.c;ctx.shadowBlur=st.r*3.3;
-      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,TAU);ctx.fill();});
+      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fill();});
     ctx.globalAlpha=1;ctx.shadowBlur=0;
     if(!reduceMotion){const _n=performance.now();t+=Math.min(.05,(_n-(draw._pt||_n-16.7))/1000)*.78;draw._pt=_n;requestAnimationFrame(draw);}}
   let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{build();if(reduceMotion)draw();},200);});
@@ -2345,12 +2123,14 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
 })();
 
 (function init(){
+  buildSeg('segA','a');buildSeg('segB','b');paintSeg();
   updateProgress();
   const start=TABS.includes(S.tab)?S.tab:'engage';
   $$('.panel').forEach(p=>p.classList.remove('show'));
   $('#panel-'+start).classList.add('show');
   $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===start));
   S.tab=start;document.body.classList.add('cover-on');refreshCover();setBg('cover');
+  requestAnimationFrame(drawMag);
 })();
 </script>
 
@@ -2402,7 +2182,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
 <script id="sim-quiz">
 /* 시뮬 개념확인 카드 — 시뮬 조작 후 바로 답해 보는 1~2문항, 정답 시 해설 공개 */
 (function(){
-  var CFG = [{"at": {"cv": "balcv"}, "qs": [{"q": "풍선 모형에서 '우주'에 해당하는 것은?", "c": ["풍선의 표면", "풍선 속의 공기", "풍선을 부는 사람"], "ok": 0, "w": "우주 = 풍선의 <b>표면</b>(내부가 아님!) — 그래서 표면 위 어느 딱지에서 보아도 서로 멀어질 뿐, 중심이 없습니다."}, {"q": "풍선을 불면 더 멀리 있는 붙임딱지일수록?", "c": ["더 빨리 멀어진다", "더 천천히 멀어진다", "똑같은 빠르기로 멀어진다"], "ok": 0, "w": "거리가 멀수록 사이의 고무(공간)가 많아 늘어나는 양도 많다 — <b>멀수록 빨리</b>, 우주 팽창의 핵심 규칙."}]}];
+  var CFG = [{"at": {"cv": "magcv"}, "qs": [{"q": "1등급 별은 6등급 별보다 약 몇 배 밝은가?", "c": ["100배", "5배", "6배"], "ok": 0, "w": "5등급 차이 = 약 <b>100배</b>, 1등급 차이 = 약 2.5배. 등급 차를 그대로 배수로 읽지 않기!"}, {"q": "−1등급 별과 2등급 별 중 더 밝은 것은?", "c": ["−1등급", "2등급", "같다"], "ok": 0, "w": "등급은 <b>작을수록(음수일수록) 밝은</b> 별 — 순위표처럼 1등이 최고인 방식입니다."}]}];
   var st = document.createElement('style');
   st.textContent = '.sq-card{margin:16px 0 4px;border-radius:14px;padding:14px 17px;'+
     'border:1.5px solid rgba(128,128,128,.35);background:rgba(127,127,127,.09)}'+
@@ -2518,16 +2298,18 @@ document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto'
 <script id="sum-js">
 (function(){
   var SUM=[
- {t:'외부 은하', lines:[
-  ['', {a:'우리은하', alt:['우리은하']}, ' 밖에 있는 은하 — 허블이 처음 발견'],
-  ['우주에 약 1,000억 개 · 모양을 기준으로 분류할 수 있다']]},
- {t:'우주 팽창', lines:[
-  ['은하 사이의 ', {a:'공간', alt:['공간']}, ' 자체가 늘어나 은하들이 서로 멀어진다'],
-  ['', {a:'멀수록', alt:['멀수록','멀리있을수록']}, ' 더 빨리 멀어진다 — 풍선 위 붙임딱지처럼'],
-  ['팽창의 중심은 ', {a:'없다', alt:['없다','없음']}, ' — 어디서 보아도 서로 멀어져 보인다']]},
- {t:'대폭발 우주론 (빅뱅)', lines:[
-  ['약 ', {a:'138억', alt:['138억','백삼십팔억']}, ' 년 전, 뜨겁고 밀도가 큰 한 점의 대폭발로 우주가 시작'],
-  ['이후 식으면서 별과 은하가 만들어졌고, 지금도 ', {a:'팽창', alt:['팽창']}, ' 중']]}
+ {t:'겉보기 등급', lines:[
+  ['우리 ', {a:'눈에 보이는', alt:['눈에보이는','보이는']}, ' 밝기를 등급으로 나타낸 것'],
+  ['등급이 ', {a:'작을수록', alt:['작을수록','작은','낮을수록']}, ' 밝은 별 — 0등급, −1등급도 있다']]},
+ {t:'등급 차와 밝기 차', lines:[
+  ['1등급 차이 = 약 ', {a:'2.5', alt:['2.5','이점오']}, '배'],
+  ['5등급 차이 = 약 ', {a:'100', alt:['100','백']}, '배 (1등급 별은 6등급 별보다 약 100배 밝다)']]},
+ {t:'절대 등급', lines:[
+  ['별을 ', {a:'10 pc', alt:['10pc','십파섹','10파섹']}, ' 거리에 두었다고 가정했을 때의 등급'],
+  ['거리를 통일했으니 별의 ', {a:'실제', alt:['실제','진짜']}, ' 밝기를 비교할 수 있다']]},
+ {t:'거리 판단 — 겉보기 − 절대', lines:[
+  ['(겉보기 − 절대) < 0 → 10 pc보다 ', {a:'가깝다', alt:['가깝','가까이']}, ''],
+  ['(겉보기 − 절대) > 0 → 10 pc보다 ', {a:'멀다', alt:['멀다','멀리']}, ' — 값이 클수록 더 멀다']]}
 ];
 
   var wrap=document.getElementById('sumWrap'); if(!wrap) return;
