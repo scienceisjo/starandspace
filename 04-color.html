@@ -612,6 +612,24 @@ body.teacher #dashLink{display:inline-flex}
 body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;border-color:#b7cff5}
 #modeBtn.mode-sw{width:auto;min-width:0;padding:0 13px;font-size:13px;font-weight:800;white-space:nowrap;letter-spacing:-.2px;border-radius:100px}
 .msn-goto{margin-left:auto}
+.msn-help{margin-left:8px}
+/* ── ❓ 지금 뭘 해야 하나요 — 단계 안내 팝업 ── */
+#guide .gbox{width:min(580px,100%);max-height:86vh;overflow:auto;text-align:left}
+.gd-goal{background:rgba(125,125,125,.09);border:1px solid var(--line-soft,#dee3e9);border-radius:14px;padding:14px 15px;margin:2px 0 14px}
+.gd-goal .gg-t{font-family:var(--jua,inherit);font-size:16.5px;margin-bottom:7px;color:var(--ink,#1c1e21)}
+.gd-goal ol{margin:0;padding-left:20px;font-size:14.5px;line-height:1.8;color:var(--ink-dim,#333)}
+.gd-goal .gg-n{margin-top:9px;font-size:13.5px;line-height:1.65;color:var(--ink-mute,#777)}
+.gd-now{border:2px solid var(--accent,#0064e0);border-radius:14px;padding:14px 15px;margin-bottom:12px;background:var(--surface,#fff)}
+.gd-now .gn-h{font-size:12px;font-weight:800;color:var(--accent,#0064e0);letter-spacing:.6px;margin-bottom:3px}
+.gd-now .gn-t{font-family:var(--jua,inherit);font-size:17.5px;margin-bottom:7px;color:var(--ink,#1c1e21)}
+.gd-now .gn-b{font-size:14.5px;line-height:1.8;color:var(--ink-dim,#333)}
+.gd-now .gn-b b{color:var(--ink,#1c1e21)}
+.gd-list{list-style:none;margin:0;padding:0;font-size:14px}
+.gd-list li{display:flex;gap:8px;align-items:flex-start;padding:5px 2px;line-height:1.5;color:var(--ink-mute,#777)}
+.gd-list li.on{color:var(--ok,#2c7a44)}
+.gd-list li.cur{color:var(--ink,#1c1e21);font-weight:800}
+.gd-cap{font-size:12.5px;font-weight:800;color:var(--ink-mute,#777);margin:4px 0 6px}
+.gd-done{text-align:center;padding:12px 0 6px;font-size:15.5px;font-weight:800;color:var(--ok,#2c7a44)}
 .goto-flash{animation:gotoflash 1.8s ease}
 @keyframes gotoflash{0%{box-shadow:0 0 0 4px rgba(0,100,224,.6)}100%{box-shadow:0 0 0 16px rgba(0,100,224,0)}}
 #skipGate .gbox{border:2px solid var(--m-warn,#f7b928)}
@@ -1266,6 +1284,14 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
  <div class="gnote">넘어간 기록(어느 단계를 다 하지 않았는지)은 학습 결과 PDF와 선생님 화면에 함께 표시돼요.</div>
  </div>
 </div>
+<div class="gate" id="guide" role="dialog" aria-modal="true" aria-labelledby="guideT">
+ <div class="gbox">
+ <h3 id="guideT">❓ 지금 무엇을 하면 되나요?</h3>
+ <div id="guideBody"></div>
+ <div class="gbtns"><button class="btn primary" id="guideGo">🧭 그 자리로 데려다줘</button><button class="btn ghost" id="guideClose">닫기</button></div>
+ <div class="gnote">막힐 때마다 단계 위쪽의 <b>❓ 뭘 해야 하죠?</b> 단추를 누르면 다시 볼 수 있어요.</div>
+ </div>
+</div>
 <div class="ztip" id="zoomTip" role="status" aria-live="polite">
  <div class="zt-t">🔍 그래프나 실험대가 한눈에 보이지 않나요?</div>
  <div class="zt-b">브라우저 <b>화면 비율이 100%가 아닐 때</b> 그런 일이 생겨요.
@@ -1568,7 +1594,8 @@ function paintMissions(){
  if(!bn){const sl=$('#panel-'+m.tab+' .stepline');if(!sl)return;bn=document.createElement('div');bn.className='msn-banner';bn.id='msnb-'+m.tab;sl.insertAdjacentElement('afterend',bn);}
  const items=msnItems(m,c), ok=items.every(x=>x.ok);
  bn.classList.toggle('alldone',ok);
- bn.innerHTML='<span class="mt">🎯 '+m.name+(ok?' — 완수! 🎉':'')+'</span>'+items.map(x=>'<span class="mi'+(x.ok?' on':'')+'">'+(x.ok?'✅':'⬜')+' '+x.label.replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'').replace(/ \([\d·~]+단계\)$/,'')+'</span>').join('')+(ok?'':'<button type="button" class="btn ghost sm msn-goto" data-goto="'+m.tab+'">🧭 아직 안 한 곳으로</button>');
+ bn.innerHTML='<span class="mt">🎯 '+m.name+(ok?' — 완수! 🎉':'')+'</span>'+items.map(x=>'<span class="mi'+(x.ok?' on':'')+'">'+(x.ok?'✅':'⬜')+' '+x.label.replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'').replace(/ \([\d·~]+단계\)$/,'')+'</span>').join('')+'<button type="button" class="btn ghost sm msn-help" data-help="'+m.tab+'">❓ 뭘 해야 하죠?</button>'
+  +(ok?'':'<button type="button" class="btn ghost sm msn-goto" data-goto="'+m.tab+'">🧭 아직 안 한 곳으로</button>');
  });
  if(!$('#sumGuard')){const sl=$('#panel-'+SUM_TAB+' .stepline');if(sl){const g=document.createElement('div');g.className='sum-guard';g.id='sumGuard';g.innerHTML='🧑‍🏫 <b>여기는 선생님과 함께 여는 마지막 방!</b> 미션을 모두 깬 사람만 들어올 수 있어요. 빈칸은 수업에서 선생님과 <b>하나씩 같이</b> 채웁니다.';sl.insertAdjacentElement('afterend',g);}}
 }
@@ -1952,6 +1979,121 @@ function gotoUndone(tab){
  toast('🧭 아직 안 한 곳 — <b>'+t.label.replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'')+'</b>');
 }
 document.addEventListener('click',e=>{const b=e.target.closest('button.msn-goto');if(b)gotoUndone(b.dataset.goto);});
+
+/* ══ ❓ 지금 뭘 해야 하나요 — 단계 안내 ════════════════════════════════
+   학생들이 가장 많이 하는 질문이 「이 페이지에서 뭐 해야 해요?」다.
+   단계에 처음 들어오면 한 번 뜨고, 미션 배너의 ❓ 단추로 언제든 다시 연다.
+   목표는 그 단계의 제목·머리말에서, 할 일은 미션 항목과 화면을 읽어 만든다.
+   문구를 손보고 싶으면 window.GUIDE_GOAL 을 채우면 그쪽이 이긴다.
+     window.GUIDE_GOAL={explore:{t:'제목',li:['첫째','둘째'],note:'덧붙임'}}      */
+window.GUIDE_GOAL=window.GUIDE_GOAL||{};
+const _gT=el=>((el&&el.textContent)||'').replace(/\s+/g,' ').trim();
+
+function guideGoal(tab){
+ const o=window.GUIDE_GOAL[tab];if(o)return o;
+ const p=document.getElementById('panel-'+tab);if(!p)return null;
+ const h=p.querySelector('h2.sec,h1.big'),lead=p.querySelector('p.lead'),sw=p.querySelector('.stepline .swhat');
+ const t=_gT(h)||_gT(sw);if(!t&&!lead)return null;
+ return {t:t,html:lead?lead.innerHTML:''};
+}
+
+/* 미션 항목이 화면 어디를 가리키는지 — gotoUndone 과 같은 방식으로 찾는다 */
+function guideEl(tab,label){
+ const panel=document.getElementById('panel-'+tab);if(!panel)return null;
+ const base=String(label).replace(/^[\d·~]+단계\s*·?\s*/,'').replace(/ → 제출$/,'');
+ let el=null;
+ if(/빈칸|칸 채우/.test(label)){const cz=panel.querySelector('.cloze:not(.revealed)');el=cz?(cz.closest('.cloze-set')||cz):null;}
+ if(!el&&/퀴즈/.test(label)){const q=[...panel.querySelectorAll('.miniquiz .mq-q')].find(x=>!x.querySelector('.correct'));el=q||panel.querySelector('.miniquiz');}
+ if(!el&&/확인 문제/.test(label))el=panel.querySelector('#gameBox,#gameBody,.card');
+ if(!el){const toks=base.split(/[^가-힣A-Za-z0-9]+/).filter(t=>t.length>=2);let best=null,bs=0;
+  panel.querySelectorAll('h3,.card-t,.u-t,.eyebrow,p.lead,p.help,.th,.dl-head h4,.badge').forEach(h=>{
+   const t=h.textContent||'';let sc=0;toks.forEach(k=>{if(t.indexOf(k)>=0)sc++;});if(sc>bs){bs=sc;best=h;}});
+  if(bs>0&&best)el=best.closest('.card,.lab,.think')||best;}
+ return el;
+}
+
+/* 무엇을·어디서·어떻게 — 미션 이름과 화면에서 만들어 낸다 */
+function guideHow(tab,label){
+ const panel=document.getElementById('panel-'+tab), el=guideEl(tab,label);
+ let where='';
+ if(el){const h=(el.matches&&el.matches('h3,.card-t,.th,h4'))?el:(el.querySelector?el.querySelector('h3,.card-t,.th,h4'):null);
+  const t=_gT(h).replace(/\s*\d+자 이상\s*$/,'').trim();
+  if(t&&t.length<=40)where='「<b>'+t+'</b>」에서 ';}
+ let need=10;
+ if(el&&el.querySelector){const r=el.querySelector('.req'),m=r&&/(\d+)/.exec(r.textContent);if(m)need=parseInt(m[1],10);}
+ if(/빈칸|칸 채우/.test(label)){
+  const n=panel?panel.querySelectorAll('.cloze:not(.revealed)').length:0;
+  return where+'밑줄 친 <b>빈칸을 하나씩 눌러 모두</b> 채우세요.'+(n?' 아직 <b>'+n+'칸</b> 남았어요.':'')+' 머릿속으로 먼저 답한 뒤 누르는 것이 좋아요.';}
+ if(/퀴즈/.test(label))
+  return where+'퀴즈 문항을 <b>끝까지 풀어 모두 정답</b>으로 만드세요. 틀리면 다시 고를 수 있습니다.';
+ if(/확인 문제/.test(label))
+  return '<b>📗 필수 문제</b>를 눌러 확인 문제를 <b>끝까지</b> 푸세요. 중간에 그만두면 완주로 치지 않습니다.';
+ if(/예상|예측/.test(label))
+  return where+'<b>예상 단추 중 하나</b>를 누르세요. <b>틀려도 괜찮습니다</b> — 고르지 않으면 다음으로 갈 수 없어요.';
+ if(/기록/.test(label))
+  return where+'값을 정한 다음 <b>📌 기록</b>을 눌러 표에 남기세요. 조건을 바꿔 가며 <b>필요한 만큼 모두</b> 기록해야 완료됩니다.';
+ if(/나누|가려|분류|옮기/.test(label))
+  return where+'보기를 <b>하나도 남기지 말고 모두</b> 알맞은 자리로 옮기세요. 하나라도 남아 있으면 완성이 아닙니다.';
+ if(/연결|잇/.test(label))
+  return where+'짝이 되는 것끼리 <b>모두 이어 주세요.</b> 남는 것이 없어야 완성입니다.';
+ if(/고르|선택|표시/.test(label)){
+  const box=el||panel;
+  if(box&&box.querySelector('input[type=checkbox]'))
+   return where+'해당하는 것을 <b>눌러 표시</b>하세요. <b>하나만 골라도 됩니다.</b>';
+  return where+'보기 가운데 <b>하나를 골라 누르세요.</b> 고르지 않으면 다음으로 갈 수 없어요.';}
+ if(/쓰|적|정리|설명|답|생각/.test(label))
+  return where+'<b>'+need+'자 이상</b> 쓰고, 반드시 <b>📮 제출하기</b>까지 누르세요. <b>쓰기만 하고 제출을 안 누르면 아직 안 한 것으로 남습니다.</b>';
+ return where+'<b>직접 눌러 보고 움직여 보세요.</b> 화면의 값이 바뀌는 것을 확인해야 완료로 표시됩니다.';
+}
+
+let _guideTab=null,_guideNeed=false;
+function openGuide(tab){
+ tab=tab||S.tab||(MSN[0]&&MSN[0].tab);
+ const c=progChecks(),m=MSN.find(x=>x.tab===tab),g=guideGoal(tab);
+ const strip=t=>String(t).replace(/^[\d·~]+단계\s*·?\s*/,'');
+ let h='';
+ if(g){h+='<div class="gd-goal"><div class="gg-t">🎯 '+(g.t||'이 단계에서 할 일')+'</div>';
+  if(g.li)h+='<ol><li>'+g.li.join('</li><li>')+'</li></ol>';
+  else if(g.html)h+='<div style="font-size:14.5px;line-height:1.8;color:var(--ink-dim,#333)">'+g.html+'</div>';
+  if(g.note)h+='<div class="gg-n">'+g.note+'</div>';
+  h+='</div>';}
+ _guideTab=tab;_guideNeed=false;
+ if(m){
+  /* 미션 항목 얻는 방식이 페이지마다 둘이다 — msnItems() 가 있으면 그쪽, 없으면 items 인덱스 */
+  const items=(typeof msnItems==='function')?msnItems(m,c):(m.items||[]).map(i=>c[i]);
+  const cur=items.find(x=>x&&!x.ok)||null;
+  if(!cur)h+='<div class="gd-done">✅ 이 단계는 다 했어요! 다음 단계로 넘어가도 좋아요.</div>';
+  else{_guideNeed=true;
+   h+='<div class="gd-now"><div class="gn-h">지금 할 일</div><div class="gn-t">'+strip(cur.label)+'</div>'
+     +'<div class="gn-b">'+guideHow(tab,cur.label)+'</div></div>';}
+  h+='<div class="gd-cap">이 단계에서 해야 할 것 전부</div><ul class="gd-list">'
+   +items.map(x=>'<li class="'+(x.ok?'on':(x===cur?'cur':''))+'"><span>'
+    +(x.ok?'✅':(x===cur?'👉':'⬜'))+'</span><span>'+strip(x.label)+'</span></li>').join('')+'</ul>';
+ }
+ document.getElementById('guideBody').innerHTML=h;
+ document.getElementById('guideGo').style.display=_guideNeed?'':'none';
+ document.getElementById('guide').classList.add('show');
+}
+function closeGuide(){document.getElementById('guide').classList.remove('show');}
+document.getElementById('guideClose').addEventListener('click',closeGuide);
+document.getElementById('guide').addEventListener('click',e=>{if(e.target===document.getElementById('guide'))closeGuide();});
+document.getElementById('guideGo').addEventListener('click',()=>{const t=_guideTab;closeGuide();
+ const move=t&&t!==S.tab;if(move)showTab(t,false,true);
+ setTimeout(()=>{try{gotoUndone(t);}catch(e){}},move?380:60);});
+document.addEventListener('click',e=>{const b=e.target.closest('button.msn-help');
+ if(b){try{A.ensure&&A.ensure();}catch(err){}openGuide(b.dataset.help);}});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('guide').classList.contains('show'))closeGuide();});
+
+/* 단계에 처음 들어오면 한 번 띄운다 — showTab 을 감싼다(페이지마다 본문이 조금씩 달라서) */
+(function(){ if(typeof showTab!=='function')return; const _st=showTab;
+ showTab=function(id){ const r=_st.apply(this,arguments);
+  try{ const p=document.getElementById('panel-'+id);
+   if(p&&p.classList.contains('show')&&MSN.some(m=>m.tab===id)){
+    S.guide=S.guide||{};
+    if(!S.guide[id]){S.guide[id]=1;save();setTimeout(function(){try{openGuide(id);}catch(e){}},480);}}
+  }catch(e){}
+  return r; };
+})();
 
 /* ── 📄 학습 결과 PDF — 인쇄 화면(PDF로 저장) ── */
 (function(){
