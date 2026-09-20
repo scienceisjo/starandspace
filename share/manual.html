@@ -39,6 +39,8 @@ kbd{display:inline-block;font-family:inherit;font-weight:800;font-size:14.5px;ba
 .step .n{flex:none;width:31px;height:31px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;
  display:grid;place-items:center;font-size:15px;margin-top:2px}
 table{width:100%;border-collapse:collapse;font-size:15.5px;margin:16px 0}
+.muted{color:var(--ink-soft,#6e6e73);font-weight:400}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em;background:#f1f4f7;padding:2px 6px;border-radius:6px}
 th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
 th{background:var(--soft);font-weight:800;font-size:14.5px}
 .tip{color:var(--mute);font-size:15px}
@@ -65,6 +67,7 @@ a{color:var(--blue-d)}
   <li><a href="#class">수업에서 이렇게 씁니다</a></li>
   <li><a href="#solo">혼자 탐구 자세히 — 미션·제출·결과 PDF</a></li>
   <li><a href="#sheet">개념 정리는 활동지로 (내려받기)</a></li>
+  <li><a href="#model">AI로 내 모형 만들기 — 바이브코딩</a></li>
   <li><a href="#record">학생 기록 — 데이터베이스는 선택입니다</a></li>
   <li><a href="#tip">자주 묻는 것</a></li>
  </ol>
@@ -199,7 +202,73 @@ a{color:var(--blue-d)}
 1~2단계는 페이지로 함께 하고, 3단계 개념은 활동지를 나눠 주고 채우게 한 뒤,
 페이지의 개념 정리하기 탭으로 답을 맞춰 보는 식입니다.</p>
 
-<h2 id="record">6. 학생 기록 — 데이터베이스는 선택입니다</h2>
+<h2 id="model">6. AI로 내 모형 만들기 — 바이브코딩</h2>
+<p class="lead">기체 단원의 <b>기체의 압력과 부피</b>·<b>기체의 온도와 부피</b> 두 차시에는
+<b>＋ 🧩 내 모형 만들기</b> 탭이 붙어 있습니다.
+학생이 배운 것을 <b>자기 말로 규칙 문장</b>으로 적으면, 그것을 AI에게 부탁하는 글이 저절로 완성되고,
+받은 코드를 그 자리에서 실행해 <b>자기만의 시뮬레이터</b>를 만드는 활동입니다.</p>
+
+<div class="card blue">
+ <h4>🧭 준비 차시가 따로 있습니다</h4>
+ <p style="margin-bottom:0">모형이 왜 필요한지, 부탁하는 글은 어떻게 쓰는지 먼저 익히는
+ <b>「말로는 다 설명했는데」</b> 페이지를 따로 만들어 두었습니다.
+ 학년이나 단원에 속하지 않는 <b>독립 차시</b>라 어느 학년에서 쓰셔도 됩니다. 45분 분량이에요.
+ 기체 차시의 만들기 탭 맨 위에 링크가 있습니다.</p>
+</div>
+
+<h3>학생이 하는 일은 네 칸을 채우는 것뿐입니다</h3>
+<figure>
+ <img src="img/manual/vibe-prompt.png" alt="부탁하는 글이 자동으로 완성된 화면">
+ <figcaption>네 칸(무엇을·규칙·화면·조작)을 채우면 <b>부탁하는 글이 저절로 만들어집니다.</b>
+ 「HTML 파일 하나로」, 「인터넷 없이」, 「한국어로」, 「내 규칙대로만」 같은 <b>조건 여덟 가지가 자동으로 붙어서</b>
+ 학생이 몰라도 쓸 만한 결과가 나옵니다. 복사 버튼 아래에 코파일럿·제미나이 바로가기가 있습니다.</figcaption>
+</figure>
+
+<div class="card warn">
+ <h4>학교 계정으로 쓰게 해 주세요</h4>
+ <p style="margin-bottom:0">학생이 쓸 수 있는 것은 <b>학교 계정 코파일럿 또는 제미나이</b>입니다.
+ 개인 계정은 학교가 정한 안전 설정이 걸리지 않습니다.
+ 페이지 안에도 <b>이름·학번·사진을 넣지 말라</b>는 안내가 붙어 있지만, 수업 시작 때 한 번 더 말씀해 주세요.
+ <b>수업 전에 로그인이 되는지 확인</b>해 두시면 10분을 아낍니다.</p>
+</div>
+
+<h3>받은 코드는 그 자리에서 돌아갑니다</h3>
+<figure>
+ <img src="img/manual/vibe-run.png" alt="붙여 넣은 코드가 페이지 안에서 실행된 화면">
+ <figcaption>AI가 준 코드를 붙여 넣고 <b>실행</b>을 누르면 페이지 안에서 바로 돌아갑니다.
+ 다른 프로그램을 깔거나 파일을 저장할 필요가 없습니다.
+ 코드가 멈추면 <b>오류를 학생 말로 바꿔서</b> 보여 주고, 그 문장을 그대로 AI에게 보내 고치라고 안내합니다.</figcaption>
+</figure>
+
+<div class="card">
+ <h4>💡 이 활동에서 보실 것은 코드가 아닙니다</h4>
+ <p>한 번에 잘 나오는 학생은 거의 없습니다. <b>그게 실패가 아니라 이 수업의 본론</b>입니다 —
+ 「내가 적은 규칙과 다른 곳 찾기」가 곧 모형을 평가하는 일이니까요.</p>
+ <p style="margin-bottom:0">순회하실 때 코드 대신 <b>②번 규칙 칸</b>만 보세요.
+ 막힌 학생은 대부분 규칙 문장이 아직 없는 것이고, 개념 단계로 돌려보내면 풀립니다.
+ 마지막의 <b>「이 모형으로 설명되지 않는 것」</b> 칸이 평가의 핵심입니다.</p>
+</div>
+
+<h3>학생이 만든 것을 받는 법</h3>
+<p>데이터베이스를 연결하지 않으셔도 <b>그대로 쓰실 수 있습니다.</b> 세 가지 길이 다 열려 있어요.</p>
+<table>
+ <thead><tr><th>방법</th><th>학생이 하는 일</th><th>선생님 준비물</th></tr></thead>
+ <tbody>
+  <tr><td><b>파일로 저장</b> <span class="muted">(권장)</span></td>
+      <td><b>내 시뮬레이터 파일로 저장</b>을 누르면 <code>홍길동_모형.html</code> 파일 하나가 받아집니다</td>
+      <td>없음 — 구글 클래스룸·패들렛 등 쓰시던 곳에 올리게 하세요</td></tr>
+  <tr><td><b>코드 복사</b></td>
+      <td><b>코드 복사</b>를 눌러 채팅이나 문서에 붙여 넣습니다</td>
+      <td>없음</td></tr>
+  <tr><td><b>학습 결과 PDF</b></td>
+      <td>혼자 탐구를 마치고 결과 PDF를 받으면 <b>규칙 문장과 코드가 함께</b> 실립니다</td>
+      <td>없음</td></tr>
+ </tbody>
+</table>
+<p>데이터베이스를 연결해 두신 경우에는 <b>선생님께 제출</b> 버튼이 살아나, 학생이 쓴 규칙·화면 설명·코드·한계가
+교사 화면으로 바로 들어옵니다. 자세한 것은 아래 <a href="#record"><b>7. 학생 기록</b></a>을 보세요.</p>
+
+<h2 id="record">7. 학생 기록 — 데이터베이스는 선택입니다</h2>
 
 <div class="card blue">
  <h4>🔓 이렇게만 쓰셔도 됩니다</h4>
@@ -214,7 +283,7 @@ a{color:var(--blue-d)}
 
 <figure>
  <img src="img/manual/teacher.png" alt="교사용 기록 화면">
- <figcaption>데이터베이스를 연결하면 이런 화면이 열립니다. 단원·차시·반별로 골라 보고, 학생별 답변과 <b>문항별 정오표</b>를 확인하고, CSV로 내려받을 수 있습니다.</figcaption>
+ <figcaption>데이터베이스를 연결하면 이런 화면이 열립니다. 단원·차시·반별로 골라 보고, <b>표·카드·보드·반별</b> 네 가지 보기로 바꿔 가며(보드는 시작 전→진행 중→마무리→완료 열, 반별은 반×차시 표와 번호순 명단) 학생별 답변과 <b>문항별 정오표</b>를 확인하고, CSV로 내려받을 수 있습니다.</figcaption>
 </figure>
 
 <div class="card warn">
@@ -223,7 +292,7 @@ a{color:var(--blue-d)}
  다만 이건 <b>선택</b>입니다. 처음 쓰실 때는 PDF 방식으로 시작하시고, 필요해지면 그때 붙이셔도 늦지 않습니다.</p>
 </div>
 
-<h2 id="tip">7. 자주 묻는 것</h2>
+<h2 id="tip">8. 자주 묻는 것</h2>
 
 <table>
  <tr><th style="width:34%">이런 때</th><th>이렇게 하세요</th></tr>
@@ -234,6 +303,7 @@ a{color:var(--blue-d)}
  <tr><td>모든 단계를 한 번에 보고 싶어요</td><td><b>🧑‍🏫 강의식으로 전환</b>을 누르면 잠금이 풀립니다. 쓴 글은 그대로 남습니다.</td></tr>
  <tr><td>수업 시간이 부족해요</td><td>1·2단계(예상과 탐구)만 하고 3단계 개념은 다음 시간에 이어도 됩니다. 진행 상황이 저장되어 이어서 열립니다.</td></tr>
  <tr><td>인터넷이 느려요</td><td>시뮬레이션은 모두 페이지 안에서 돌아갑니다. 처음 한 번만 열리면 그 뒤로는 끊겨도 진행됩니다.</td></tr>
+ <tr><td>AI를 학생이 써도 되나요</td><td>학교 계정 코파일럿·제미나이만 쓰게 하고, 개인정보를 넣지 않도록 안내하세요. 자세한 것은 <a href="#model"><b>6. AI로 내 모형 만들기</b></a>에 있습니다. 이 활동을 빼고 나머지만 쓰셔도 전혀 지장 없습니다.</td></tr>
  <tr><td>학습지가 필요해요</td><td>위 <a href="#sheet"><b>5. 개념 정리는 활동지로</b></a>에서 활동지 폴더를 여세요. 진도에 맞춰 계속 올라옵니다.</td></tr>
 </table>
 
