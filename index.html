@@ -202,6 +202,12 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
   .tnote{display:flex!important}
 }
 </style>
+<style id="astro-six-hub-style">
+#astro-six-entry{padding:26px 0 35px;color:var(--ink,#162438)}.astro-kicker{font-weight:800;color:#0064e0;font-size:15px;margin:0 0 7px}#astro-six-title{font:800 clamp(27px,4vw,40px)/1.3 Pretendard,sans-serif;margin:0 0 12px}.astro-six-lead{font-size:18px;line-height:1.7}.astro-scope{background:#edf4ff;color:#193959;border-left:4px solid #0064e0;padding:14px 16px;font-size:15px;line-height:1.7;margin:15px 0 24px}.astro-six-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.astro-six-card{background:#fff;color:#1b2b43;border:1px solid #c7d5e7;border-radius:17px;padding:20px;min-width:0}.astro-no{color:#0064e0;font-weight:800;font-size:16px}.astro-six-card h3{font:800 21px/1.5 Pretendard,sans-serif;margin:6px 0 9px}.astro-six-card p{font-size:15px;line-height:1.65;color:#486078;margin:0 0 15px}.astro-actions{display:flex;gap:8px;flex-wrap:wrap}.astro-actions a{color:#0056c9;border:1px solid #a8c3e8;border-radius:24px;padding:9px 14px;text-decoration:none;font-weight:700;font-size:15px}.astro-actions a.primary{background:#0064e0;color:white;border-color:#0064e0}.astro-extras{display:flex;flex-wrap:wrap;gap:6px 10px;border-top:1px solid #dce4ef;margin-top:16px;padding-top:12px;font-size:14px;line-height:1.8}.astro-extras b{color:#455971}.astro-extras a,.astro-six-foot a{color:#0056c9;text-decoration:underline;text-underline-offset:3px}.astro-six-foot{margin-top:18px;line-height:1.8}.astro-six-card a:focus-visible{outline:3px solid #0064e0;outline-offset:3px}@media(max-width:650px){.astro-six-grid{grid-template-columns:1fr}.astro-six-card{padding:18px}.astro-six-card h3{font-size:20px}}
+</style>
+<style id="astro-intro-image-style">.astro-intro-art{margin:18px 0 25px;border:1px solid #aec1dc;border-radius:16px;overflow:hidden;background:#101c38}.astro-intro-art img{display:block;width:100%;height:230px;object-fit:cover}.astro-intro-art figcaption{padding:10px 14px;color:#dce9ff;background:#101c38;font-size:14px;line-height:1.6}@media(max-width:600px){.astro-intro-art img{height:170px}}
+#guide .gbox{background:#fff;color:#20304b}#guideT,#guide .gd-goal,#guide .gg-t,#guide .gg-d,#guide .gd-cap,#guide .gd-list,#guide .gnote,#guideClose{color:#20304b!important}#guide .gd-now{color:#fff;background:#17274c}#guide .gd-now b,#guide .gn-h,#guide .gn-t,#guide .gn-b{color:inherit!important}#guideGo{color:#fff!important;background:#0064e0!important}#guideClose{background:#fff!important;border:1px solid #9bb4d5!important}
+</style>
 </head>
 <body>
 <div id="bgLayer"></div>
@@ -218,7 +224,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
     </div>
     <div class="head-right">
       <button class="tmode" id="tmodeBtn" title="교사 모드 (지도 메모 표시)">🧑‍🏫</button>
-      <div class="progress-mini" title="내가 지나온 차시">
+      <div class="progress-mini" title="기존 혼자 탐구 자료의 방문 진행도">
         <div class="bar"><i id="progBar"></i></div>
         <div class="pct" id="progPct">0%</div>
       </div>
@@ -227,16 +233,18 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
 </header>
 
 <main>
+  <section id="astro-six-entry" aria-labelledby="astro-six-title"><p class="astro-kicker">별과 우주 · 중2 과학</p><h1 id="astro-six-title">6차시 수업 자료</h1><p class="astro-six-lead">수업에서 개념을 정리하고, 시뮬레이터와 관측 활동으로 다시 확인합니다.</p><p class="astro-scope">거리 계산은 <b>성취기준 밖의 확장 학습</b>으로 구분합니다. 우주 탐사는 이번 범위에서 보류합니다.</p><figure class="astro-intro-art"><img src="assets/astronomy/night-sky.webp" alt="산 능선 위로 별과 은하수가 보이는 밤하늘 삽화" width="1536" height="1024" loading="lazy"><figcaption>AI 생성 삽화 · 실제 관측 사진이 아닙니다. 색과 크기는 개념을 판단하는 자료로 사용하지 않습니다.</figcaption></figure><div class="astro-six-grid"><article class="astro-six-card"><span class="astro-no">01</span><h3>연주시차와 별까지의 거리</h3><p>시차의 원인 · 6개월 간격 · 연주시차와 거리의 관계</p><div class="astro-actions"><a class="primary" href="lesson-01-parallax.html">수업 페이지</a><a href="lecture-01-parallax.html">방향키 강의</a></div><div class="astro-extras"><b>혼자 탐구</b><a href="01-parallax.html">연주시차</a></div></article><article class="astro-six-card"><span class="astro-no">02</span><h3>별의 밝기와 등급</h3><p>거리와 밝기 · 빛이 퍼지는 면적 · 등급의 숫자 방향</p><div class="astro-actions"><a class="primary" href="lesson-02-brightness.html">수업 페이지</a><a href="lecture-02-brightness.html">방향키 강의</a></div><div class="astro-extras"><b>혼자 탐구</b><a href="02-brightness.html">밝기와거리</a><a href="03-magnitude.html">등급 비교기</a></div></article><article class="astro-six-card"><span class="astro-no">03</span><h3>겉보기·절대 등급과 별의 색</h3><p>10 pc · 겉보기/절대 등급 비교 · 색으로 표면 온도 비교</p><div class="astro-actions"><a class="primary" href="lesson-03-magnitude-color.html">수업 페이지</a><a href="lecture-03-magnitude-color.html">방향키 강의</a></div><div class="astro-extras"><b>혼자 탐구</b><a href="03-magnitude.html">등급</a><a href="04-color.html">색과 온도</a></div></article><article class="astro-six-card"><span class="astro-no">04</span><h3>우리은하의 구조와 은하수</h3><p>위/옆에서 본 우리은하 · 태양계 위치 · 안에서 본 은하수</p><div class="astro-actions"><a class="primary" href="lesson-04-milkyway.html">수업 페이지</a><a href="lecture-04-milkyway.html">방향키 강의</a></div><div class="astro-extras"><b>혼자 탐구</b><a href="05-milkyway.html">우리은하</a></div></article><article class="astro-six-card"><span class="astro-no">05</span><h3>성운과 성단</h3><p>관측 자료 비교 · 방출/반사/암흑 성운 · 산개/구상 성단</p><div class="astro-actions"><a class="primary" href="lesson-05-nebula-clusters.html">수업 페이지</a><a href="lecture-05-nebula-clusters.html">방향키 강의</a></div><div class="astro-extras"><b>혼자 탐구</b><a href="06-objects.html">천체관측</a><a href="07-nebula.html">성운과 성단</a></div></article><article class="astro-six-card"><span class="astro-no">06</span><h3>우주 팽창</h3><p>풍선 표면과 붙임딱지 · 은하 사이 거리 변화 · 과거의 우주</p><div class="astro-actions"><a class="primary" href="lesson-06-expansion.html">수업 페이지</a><a href="lecture-06-expansion.html">방향키 강의</a></div><div class="astro-extras"><b>혼자 탐구</b><a href="08-expanding.html">팽창하는우주</a></div></article></div><p class="astro-six-foot"><a href="lessons.html">6차시 자료 모아 보기</a> · <a href="#astro-independent">혼자 탐구 자료 8개</a></p></section>
 
-  <section class="hero">
+
+  <section class="hero" id="astro-independent">
     <div class="em">🔭 ⭐ 🌌</div>
-    <h1>밤하늘을 <span>재는</span> 법</h1>
-    <p>손이 닿지 않는 별까지의 거리를, 사람은 어떻게 알아냈을까?
-       이 단원에서는 <b>각도</b>와 <b>밝기</b>와 <b>색</b>이라는 세 개의 단서로 별을 읽는 법을 배웁니다.</p>
+    <h2 style="font-size:30px;margin:0 0 14px">혼자 탐구 자료</h2>
+    <p>기존 8개 자료의 예측·탐구·관측 기록·확인 문제를 이어서 사용할 수 있습니다. 아래 번호는 탐구 자료 번호입니다.
+       위 6차시와 연결해 필요한 주제를 골라 보세요.</p>
     <div class="meta">
       <span class="badge">📘 교과서 269~277쪽</span>
-      <span class="badge">🗓️ 첫 번째 블록 · 4차시</span>
-      <span class="badge ok" id="doneBadge" style="display:none">✔ <span id="doneN">0</span>차시 완료</span>
+      <span class="badge">🧭 별 탐구 자료 4개</span>
+      <span class="badge ok" id="doneBadge" style="display:none">✔ <span id="doneN">0</span>개 자료 방문</span>
     </div>
   </section>
 
@@ -244,7 +252,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
   <section class="block-q">
     <div class="lab">■ 첫 번째 블록</div>
     <h2>별까지의 거리와 별의 표면 온도는<br>어떻게 알 수 있을까?</h2>
-    <p class="desc">아래 네 차시의 단서를 모으면 이 질문에 답할 수 있습니다.
+    <p class="desc">아래 네 자료에서 시뮬레이터를 조작하고 결과를 비교합니다.
        ① 각도로 재기(연주 시차) → ② 밝기와 거리의 관계 → ③ 등급으로 재기 → ④ 색으로 온도 읽기</p>
     <div class="tnote"><span class="ic">💬</span><div><b>중단원 지도 유의점</b> — 별의 연주 시차와 거리 관계를 <b>수식으로 다루지 않습니다</b>. 등급으로 거리를 구하는 공식도 도입하지 않습니다. 별의 색과 온도는 정량적으로 다루지 않고 관련짓는 정도로만 지도합니다.</div></div>
   </section>
@@ -256,7 +264,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
       <span class="seen">✅</span>
       <div class="top"><div class="no">1</div><span class="badge ok">수업 준비 완료</span><span class="pg">270~271쪽</span></div>
       <h3>연주 시차로 구하는<br>별까지의 거리</h3>
-      <p class="why">6개월만 기다리면 됩니다. 눈앞의 연필로 시작해, 지구 공전 궤도라는 우주에서 가장 큰 자로 별까지의 거리를 잽니다.</p>
+      <p class="why">6개월만 기다리면 됩니다. 눈앞의 연필로 시작해, 지구 공전 궤도라는 관측 기준선으로 별까지의 거리를 잽니다.</p>
       <div class="tags"><span class="tag">시차</span><span class="tag">연주 시차</span><span class="tag">pc(파섹)</span></div>
       <div class="go">수업 열기 →</div>
       <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — 학생들은 별의 시차 현상을 <b>별이 실제로 움직인 것</b>으로 생각하기 쉽습니다. 지구 공전으로 관측자 위치가 달라져 정지한 별이 다르게 보이는 것임을 지도하세요.</div></div>
@@ -289,7 +297,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
       <span class="seen">✅</span>
       <div class="top"><div class="no">4</div><span class="badge ok">수업 준비 완료</span><span class="pg">276~277쪽</span></div>
       <h3>색으로 비교하는<br>별의 표면 온도</h3>
-      <p class="why">용광로 쇳물의 색이 식으며 달라지듯, 별의 색도 온도를 알려 줍니다. 청색이 뜨겁고 적색이 차갑습니다.</p>
+      <p class="why">용광로 쇳물의 색이 식으며 달라지듯, 별의 색도 온도를 알려 줍니다. 청색 별이 적색 별보다 표면 온도가 높습니다.</p>
       <div class="tags"><span class="tag">표면 온도</span><span class="tag">별의 색</span><span class="tag">청색↔적색</span></div>
       <div class="go">수업 열기 →</div>
       <div class="tnote"><span class="ic">⚠️</span><div><b>오개념</b> — 일상에서 적색=따뜻, 청색=차가움이라 <b>거꾸로</b> 생각하기 쉽습니다. 온도가 높을수록 청색임을 반복해 강조하세요.</div></div>
@@ -303,7 +311,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
     <div class="lab">■ 두 번째 블록 · 2. 우리은하와 우주 탐사</div>
     <h2>우리은하를 구성하는 천체는<br>어떻게 탐사할 수 있을까?</h2>
     <p class="desc">별 하나에서 눈을 들어 별의 무리, 은하, 그리고 우주 전체로 시야를 넓힙니다.
-       아래 여섯 차시의 단서를 모으고, 마지막 10차시에서 이 질문에 최종 답을 씁니다.</p>
+       아래 네 탐구 자료를 활용합니다. 우주 탐사 자료 두 개는 이번 범위에서 보류합니다.</p>
     <div class="tnote"><span class="ic">💬</span><div><b>중단원 지도 유의점</b> — 우리은하의 모양은 지구에서 관측되는 <b>은하수와 관련지어</b> 이해하도록 지도합니다. 우주 팽창과 관련해 <b>적색 편이·허블 법칙·가속 팽창 같은 심화 내용은 다루지 않습니다.</b></div></div>
   </section>
 
@@ -349,13 +357,13 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
       <p class="why">풍선에 붙임딱지를 붙이고 불어 봅니다. 멀리 있는 것일수록 더 많이 멀어지는 이유를 손으로 확인합니다.</p>
       <div class="tags"><span class="tag">외부 은하</span><span class="tag">우주 팽창</span><span class="tag">138억 년</span></div>
       <div class="go">수업 열기 →</div>
-      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념 둘</b> — ① 우주를 풍선의 <b>내부</b>로 생각합니다(우주는 <b>표면</b>). ② 우리은하가 우주의 <b>중심</b>이라 여깁니다(모든 은하가 서로 멀어지므로 중심은 없음).</div></div>
+      <div class="tnote"><span class="ic">⚠️</span><div><b>오개념 둘</b> — ① 우주를 풍선의 <b>내부</b>로 생각합니다(우주는 <b>표면</b>). ② 우리은하가 우주의 <b>중심</b>이라 여깁니다(큰 규모의 팽창에 특별한 중심은 없음).</div></div>
     </a>
 
     <div class="lesson soon" style="--k:var(--c5)" data-id="l9">
       
       <div class="thumb" data-thumb="l9"></div>
-      <div class="top"><div class="no">9</div><span class="badge wait">준비 중</span><span class="pg">288~291쪽</span></div>
+      <div class="top"><div class="no">9</div><span class="badge wait">이번 범위 보류</span><span class="pg">288~291쪽</span></div>
       <h3>운동화 속의 우주<br>— 인류에게 영향을 미치는 우주 탐사</h3>
       <p class="why">정수기·에어쿠션 운동화·GPS·형상기억합금 안경테. 우주로 나간 기술이 어떻게 내 책상까지 왔을까요?</p>
       <div class="tags"><span class="tag">인공위성</span><span class="tag">우주 망원경</span><span class="tag">탐사선·탐사 차</span></div>
@@ -366,7 +374,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
     <div class="lesson soon" style="--k:var(--c5)" data-id="l10">
       
       <div class="thumb" data-thumb="l10"></div>
-      <div class="top"><div class="no">10</div><span class="badge wait">준비 중</span><span class="pg">292~293쪽</span></div>
+      <div class="top"><div class="no">10</div><span class="badge wait">이번 범위 보류</span><span class="pg">292~293쪽</span></div>
       <h3>다음 탐사는 어디로 갈까<br>— 우주 탐사 계획 세우기</h3>
       <p class="why">다누리가 남긴 성과를 분석해 탐사 대상·방법·활동을 담은 나의 탐사 계획서를 만듭니다. 블록 질문에 최종 답을 쓰는 마무리 차시.</p>
       <div class="tags"><span class="tag">다누리</span><span class="tag">탐사 계획서</span><span class="tag">문제 해결</span></div>
@@ -386,7 +394,7 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
    <a href="3d-milkyway.html" style="display:flex;gap:13px;align-items:center;text-decoration:none;color:inherit;background:rgba(16,28,56,.55);border:1.5px solid #33406e;border-radius:14px;padding:15px 18px">
     <span style="font-size:32px">🌌</span>
     <span><b style="font-family:Jua,sans-serif;font-size:16.5px;display:block;color:#e8eeff">은하수 관측소 3D</b>
-    <span style="font-size:13px;color:#9aa8cf;line-height:1.5">은하 밖↔태양계 자리에서 본 은하수 — "중심이라면?" 실험 (5차시와 함께)</span></span>
+    <span style="font-size:13px;color:#9aa8cf;line-height:1.5">은하 밖↔태양계 자리에서 본 은하수 — "중심이라면?" 실험 (새 4차시와 함께)</span></span>
    </a>
   </div>
 
@@ -442,8 +450,8 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
       태양까지 넘기는 데 몇 번, 거기서 우리은하까지 다시 몇 번이 걸리는지 세어 보게 하면
       「태양계가 우주의 거의 전부」라는 감각이 스스로 무너집니다.
       태양을 지나면 백색왜성 · 적색거성 · 초거성(베텔게우스)이 차례로 나와서
-      <b style="color:var(--ink-dim)">3~4차시 별의 등급 · 색과 온도로 그대로 이어집니다.</b><br>
-      ⚠️ 성단은 나오지 않습니다 — 7차시 「성운과 성단」에서 성단은 따로 보여 주세요.<br>
+      <b style="color:var(--ink-dim)">새 2~3차시 별의 등급 · 색과 온도로 그대로 이어집니다.</b><br>
+      ⚠️ 성단은 나오지 않습니다 — 새 5차시 「성운과 성단」에서 성단은 따로 보여 주세요.<br>
       <span style="opacity:.85">영어 사이트지만 천체 이름 위주라 읽을 것이 거의 없습니다 · 인터넷 연결 필요</span>
     </p>
   </a>
@@ -452,14 +460,14 @@ h2.sechead{font-family:var(--jua);font-size:20px;margin:38px 0 4px;display:flex;
     <a class="tool" href="https://stellarium-web.org/" target="_blank" rel="noopener">
       <span class="e">🔭</span><div><b>스텔라리움 웹</b><span>브라우저에서 바로 보는 밤하늘 · 별 이름과 색 확인</span></div></a>
     <a class="tool" href="https://astro.kasi.re.kr/" target="_blank" rel="noopener">
-      <span class="e">🇰🇷</span><div><b>한국천문연구원 천문우주지식정보</b><span>별자리 구성 · 별의 색 조사(4차시 「해 보기」 활동)</span></div></a>
+      <span class="e">🇰🇷</span><div><b>한국천문연구원 천문우주지식정보</b><span>별자리 구성 · 별의 색 조사(새 3차시와 연결)</span></div></a>
   </div>
 
 </main>
 
 <div id="toast"></div>
 
-<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-08-19</span></footer>
+<footer id="app-credit" style="width:100%;box-sizing:border-box;margin:2.5rem 0 0;padding:14px 12px;text-align:center;font-size:12.5px;line-height:1.6;color:#8a8f98;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;border-top:1px solid rgba(128,128,128,.25);">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved<br><span style="font-size:11px;opacity:.85;">최종 업데이트: 2026-10-11</span></footer>
 
 <script>
 "use strict";

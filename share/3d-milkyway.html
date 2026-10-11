@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>은하수는 우리은하의 단면이다 · 은하수 관측소 3D</title>
+<title>우리은하의 구조와 은하수 · 3D 관측 모형</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
@@ -62,11 +62,23 @@ header p{color:var(--ink-mute); margin-top:6px; font-size:clamp(13px,2.4vw,15.5p
 .note b{color:var(--ink)} .note .k{color:var(--accent); font-family:var(--jua); font-size:13.5px}
 #app-credit{margin:34px auto 18px; text-align:center; font-size:12.5px; color:var(--ink-mute); font-family:var(--gowun)}
 @media (max-width:760px){ .inset{display:none} }
+
+/* 2026-10-11: embedded lessons, readable overlays, explicit model limitations. */
+.stage>canvas{width:100%;height:100%;touch-action:none}
+.stage:fullscreen{width:100vw;height:100vh}
+.tag,.note{font-size:15px;color:#dce7ff}.hint{color:#bfcee9!important}
+.simfs-btn{top:auto!important;bottom:10px!important;left:10px!important;right:auto!important}
+.scope{border:1px solid #c18be8;color:#efd4ff;padding:8px 12px;border-radius:9px}
+html.embed header{display:none}html.embed .wrap{padding:8px}html.embed .stage{height:390px}
+html.embed #app-credit{margin:12px;font-size:11px}
+@media(max-width:600px){.stage{height:450px}.hud{top:8px;left:8px;max-width:calc(100% - 16px)}.tag{max-width:100%;font-size:13px}.readout,.dirbar{top:auto;bottom:12px;right:8px;min-width:125px;padding:7px}.inset{display:none}.panel{gap:12px;padding:12px}.ctl{flex-wrap:wrap}.stage-head{padding:12px}.view-btns{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
 <header>
- <h1>🌌 은하수는 <span class="em">우리은하의 단면</span>이다</h1>
+ <h1>우리은하의 구조와 <span class="em">은하수</span></h1>
  <p>은하 밖에서 보고, 태양계 자리에서 보고 — 은하수 관측소 3D</p>
 </header>
 
@@ -86,7 +98,7 @@ header p{color:var(--ink-mute); margin-top:6px; font-size:clamp(13px,2.4vw,15.5p
     <div class="dl">지금 바라보는 방향</div>
     <div class="dv" id="dir-name">은하 중심 쪽 (여름 밤하늘)</div>
     <div class="meter"><i id="dir-meter"></i></div>
-    <div class="dd">은하수의 폭 · 밝기</div>
+    <div class="dd">중심 방향과 가까운 정도 · 밝기 측정값 아님</div>
    </div>
    <div class="inset" id="inset-map">
     <div class="ilabel">🗺️ 위에서 본 우리은하 — 시선 방향</div>
@@ -95,7 +107,8 @@ header p{color:var(--ink-mute); margin-top:6px; font-size:clamp(13px,2.4vw,15.5p
   </div>
   <div class="panel">
    <button class="btn" id="center-btn">🎯 만약 태양계가 은하 중심에 있다면?</button>
-   <button class="btn" id="spin-btn">🧭 천천히 한 바퀴 둘러보기</button>
+   <button class="btn" id="spin-btn">천천히 한 바퀴 둘러보기</button>
+   <button class="btn" id="top-btn">위에서 보기</button><button class="btn" id="side-btn">옆에서 보기</button>
    <span style="font-family:var(--gowun);font-size:13.5px;color:var(--ink-mute)" id="tip">
     태양계 시점에서 좌우로 드래그하면 보는 방향이 바뀝니다.</span>
   </div>
@@ -106,20 +119,19 @@ header p{color:var(--ink-mute); margin-top:6px; font-size:clamp(13px,2.4vw,15.5p
    우리는 은하 원반의 <b>안</b>에 있습니다. 원반이 얇으니, 원반 <b>면을 따라 보면</b> 별이 겹겹이 쌓여
    하늘을 가로지르는 <b>띠</b>로 보입니다 — 그게 은하수.</div>
   <div class="note"><span class="k">② 여름과 겨울의 은하수</span><br>
-   태양계는 중심에서 약 8500 pc 벗어나 있어요. <b>중심 쪽(궁수자리)</b>을 보면 별이 가장 많이 겹쳐
-   넓고 밝고, <b>반대쪽(겨울 밤하늘)</b>은 좁고 희미합니다.</div>
-  <div class="note"><span class="k">③ 결정적 실험</span><br>
-   「태양계가 은하 중심에 있다면?」 버튼을 눌러 보세요. 어느 방향이든 <b>비슷해집니다</b> —
-   방향에 따라 다르다는 사실 자체가, 우리가 <b>치우친 자리</b>에 있다는 증거입니다.</div>
+   태양계는 중심에서 약 8500 pc 떨어져 있습니다. 우리나라에서는 <b>여름 밤에 중심 쪽(궁수자리)</b>을, 겨울 밤에는 그 반대쪽을 보기 좋습니다. 실제 은하수의 밝기에는 별의 분포뿐 아니라 먼지의 가림도 영향을 줍니다.</div>
+  <div class="note"><span class="k">③ 모형의 범위</span><br>별의 수·크기·밝기와 원반 두께는 과장했습니다. 나선팔·중심 막대·구상 성단의 위치는 구조를 보여 주는 모식도입니다. <b>중심에서 보더라도 모든 방향이 같지는 않습니다.</b> 원반의 안쪽과 위아래 방향은 다르고, 막대·나선팔·먼지 때문에 방향별 차이가 남습니다.</div>
  </div>
 </div>
 
-<footer id="app-credit">제작 : 과학을 사랑하는 선생님 · 은하수 관측소 3D · 최종 업데이트 2026-08-16</footer>
+<footer id="app-credit">© 2026 선생님(선생님) · 우리 학교 · 은하수 관측소 3D · 최종 업데이트 2026-10-11</footer>
 
 <script src="lib/three.min.js"></script>
 <script src="lib/OrbitControls.js"></script>
 <script>
 'use strict';
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('embed');
 const stage = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
@@ -142,7 +154,7 @@ function gauss(){ let s=0; for(let i=0;i<4;i++) s+=Math.random(); return (s-2)/1
     const armPhase = (r/DISK_R)*4.4;
     const k = Math.floor(Math.random()*2);
     const armTh = k*Math.PI + armPhase;
-    th = armTh + gauss()*(.45 + .3*(r/DISK_R));
+    th = i%3===0 ? th : armTh + gauss()*(.45 + .3*(r/DISK_R));
     const y = gauss() * (1.5 - .012*r) * (r<8 ? 2.4 : 1);
     pos[i*3]   = Math.cos(th)*r + gauss()*1.2;
     pos[i*3+1] = y;
@@ -205,11 +217,18 @@ ring.rotation.x = Math.PI/2; sunMark.add(ring);
 sunMark.position.set(SUN_R, 0, 0);
 scene.add(sunMark);
 
+/* 별은 망원경 시점에서 분해되지 않는 빛점으로 표시한다. 가까운 입자가 거대한 사각형으로 확대되지 않게 한다. */
+const pointCanvas=document.createElement('canvas');pointCanvas.width=pointCanvas.height=64;
+const pointContext=pointCanvas.getContext('2d'),pointGradient=pointContext.createRadialGradient(32,32,0,32,32,32);
+pointGradient.addColorStop(0,'rgba(255,255,255,1)');pointGradient.addColorStop(.25,'rgba(255,255,255,.9)');pointGradient.addColorStop(1,'rgba(255,255,255,0)');
+pointContext.fillStyle=pointGradient;pointContext.fillRect(0,0,64,64);
+const pointTexture=new THREE.CanvasTexture(pointCanvas);
+scene.traverse(obj=>{if(obj.isPoints){obj.material.map=pointTexture;obj.material.alphaTest=.02;obj.material.userData.baseSize=obj.material.size;obj.material.needsUpdate=true;}});
 /* ══ 카메라 ══ */
 const outCam = new THREE.PerspectiveCamera(50, 2, .1, 800);
-outCam.position.set(30, 68, 88);
+outCam.position.set(35, 100, 155);
 const ctl = new THREE.OrbitControls(outCam, renderer.domElement);
-ctl.enableDamping = true; ctl.maxDistance = 320;
+ctl.enableDamping = !reducedMotion; ctl.maxDistance = 320;
 const inCam = new THREE.PerspectiveCamera(72, 2, .1, 800);
 let yaw = -Math.PI/2, pitch = 0;           // look=(sin·yaw,0,cos·yaw) → yaw −π/2 = −x(은하 중심 쪽)
 let view = 'out', atCenter = false, spinning = false;
@@ -229,6 +248,7 @@ let obsPos = new THREE.Vector3(SUN_R, 0, 0);
     px = e.clientX; py = e.clientY;
   });
   addEventListener('pointerup', ()=>{ drag = false; });
+  addEventListener('pointercancel', ()=>{drag=false;});
 })();
 
 /* ══ UI ══ */
@@ -237,8 +257,9 @@ document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click', ()=>{
   document.querySelectorAll('.vbtn').forEach(x=>x.classList.toggle('on', x===b));
   view = b.dataset.view;
   const inV = view==='in';
-  document.getElementById('dirbar').style.display = inV ? '' : 'none';
+  document.getElementById('dirbar').style.display = inV ? 'block' : 'none';
   ctl.enabled = !inV;
+  scene.traverse(obj=>{if(obj.isPoints){obj.material.sizeAttenuation=!inV;obj.material.size=inV?3:obj.material.userData.baseSize;obj.material.needsUpdate=true;}});
   sunMark.visible = !inV;
   document.getElementById('view-hint').textContent = inV
     ? '좌우 드래그 = 보는 방향 바꾸기 · 하늘을 한 바퀴 둘러보세요'
@@ -251,22 +272,24 @@ document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click', ()=>{
 document.getElementById('center-btn').addEventListener('click', function(){
   atCenter = !atCenter; this.classList.toggle('on', atCenter);
   this.textContent = atCenter ? '↩️ 태양계를 원래 자리로' : '🎯 만약 태양계가 은하 중심에 있다면?';
-  msg.innerHTML = atCenter
-    ? '지금은 <b>은하 중심</b>에서 보는 중 — 어느 방향을 봐도 은하수가 <b>비슷</b>하죠? 방향 차이가 사라졌습니다!'
-    : '다시 <b>원래 자리(8500 pc 바깥)</b> — 중심 쪽과 바깥쪽의 차이가 돌아왔습니다.';
   if (view!=='in'){ document.querySelector('[data-view=in]').click(); }
+  msg.innerHTML = atCenter
+    ? '가정: <b>관측자를 중심으로</b> 옮겼습니다. 원반을 따른 방향과 위아래 방향을 비교하세요. 막대·나선팔 때문에 방향 차이가 남습니다.'
+    : '태양계를 <b>중심에서 약 8500 pc 떨어진 자리</b>로 되돌렸습니다.';
 });
 document.getElementById('spin-btn').addEventListener('click', function(){
   spinning = !spinning; this.classList.toggle('on', spinning);
   if (spinning && view!=='in') document.querySelector('[data-view=in]').click();
 });
 
+document.getElementById('top-btn').addEventListener('click',()=>{document.querySelector('[data-view=out]').click();ctl.target.set(0,0,0);outCam.position.set(0,160,.01);ctl.update();});
+document.getElementById('side-btn').addEventListener('click',()=>{document.querySelector('[data-view=out]').click();ctl.target.set(0,0,0);outCam.position.set(0,6,160);ctl.update();});
 /* ══ 방향 지표 ══ */
 function dirInfo(){
   /* 시선의 수평 방향과 '중심 방향(-x쪽 = 관측자→원점)'이 이루는 각 */
   const look = new THREE.Vector3(Math.sin(yaw)*Math.cos(pitch), 0, Math.cos(yaw)*Math.cos(pitch)).normalize();
   const toCenter = obsPos.clone().negate().setY(0);
-  if (toCenter.lengthSq() < .01) return {deg:0, frac:1};  // 중심에 있으면 모든 방향 동일
+  if (toCenter.lengthSq() < .01) return {deg:0, frac:0}; // 중심에서는 중심 방향 자체가 정해지지 않음
   toCenter.normalize();
   const cos = look.dot(toCenter);
   const deg = Math.acos(Math.max(-1,Math.min(1,cos)))*180/Math.PI;
@@ -306,13 +329,14 @@ function resize(){
   draw();
 }
 addEventListener('resize', resize);
+new ResizeObserver(resize).observe(stage);
 
 let last = performance.now();
 function draw(){
   const now = performance.now(); const dt = Math.min(.05,(now-last)/1000)||.016; last = now;
   /* 관측 위치 보간 */
   const target = atCenter ? new THREE.Vector3(0,0,0) : new THREE.Vector3(SUN_R,0,0);
-  obsPos.lerp(target, Math.min(1, dt*2.2));
+  obsPos.lerp(target, reducedMotion?1:Math.min(1, dt*2.2));
   sunMark.position.copy(obsPos);
   if (spinning) yaw += dt*.35;
   if (view==='in'){
@@ -321,21 +345,23 @@ function draw(){
       Math.sin(yaw)*Math.cos(pitch), Math.sin(pitch), Math.cos(yaw)*Math.cos(pitch));
     inCam.lookAt(inCam.position.clone().add(look));
     const {deg, frac} = dirInfo();
-    const name = atCenter ? '중심에서는 어디나 똑같아요!'
+    const name = atCenter ? '관측자가 중심에 있는 가정'
+      : Math.abs(pitch)>.55 ? '은하 원반에서 위아래로 벗어난 방향'
       : deg < 45 ? '은하 중심 쪽 (여름 밤하늘 · 궁수자리)'
       : deg > 135 ? '중심 반대쪽 (겨울 밤하늘)'
-      : '은하 원반의 옆면 쪽';
+      : '중심에서 비껴 보는 방향';
     document.getElementById('dir-name').textContent = name;
     document.getElementById('dir-meter').style.width =
-      (atCenter ? 72 : 25 + frac*70) + '%';
+      (atCenter ? 0 : frac*Math.cos(pitch)*100) + '%';
     renderer.render(scene, inCam);
   } else {
     ctl.update(); renderer.render(scene, outCam);
   }
   drawMap();
-  requestAnimationFrame(draw);
 }
-resize(); requestAnimationFrame(draw);
+resize();
+function animate(){draw();requestAnimationFrame(animate)}
+requestAnimationFrame(animate);
 </script>
 
 <script id="sim-fullscreen">
@@ -386,7 +412,7 @@ resize(); requestAnimationFrame(draw);
 <script id="sim-quiz">
 /* 시뮬 개념확인 카드 — 시뮬 조작 후 바로 답해 보는 1~2문항, 정답 시 해설 공개 */
 (function(){
-  var CFG = [{"at": {"id": "stage"}, "qs": [{"q": "만약 태양계가 은하 중심에 있다면 은하수는 어떻게 보일까?", "c": ["어느 방향이나 비슷하게 보인다", "지금처럼 방향마다 다르다", "아예 보이지 않는다"], "ok": 0, "w": "방향별 차이는 우리가 <b>치우친 자리</b>에 있어서 생기는 것 — 중심이라면 사방이 대칭이라 차이가 사라집니다."}]}];
+  var CFG = [{"at": {"id": "stage"}, "qs": [{"q": "태양계에서 은하수가 띠 모양으로 보이는 주된 까닭은?", "c": ["원반 안에서 원반 면을 따라 많은 별을 보기 때문", "은하 바깥에서 원반을 옆으로 보기 때문", "태양계가 우리은하의 중심에 있기 때문"], "ok": 0, "w": "우리는 은하 원반 <b>안</b>에 있습니다. 원반 면을 따라 보면 많은 별이 같은 방향에 겹쳐 보입니다."}]}];
   var st = document.createElement('style');
   st.textContent = '.sq-card{margin:16px 0 4px;border-radius:14px;padding:14px 17px;'+
     'border:1.5px solid rgba(128,128,128,.35);background:rgba(127,127,127,.09)}'+

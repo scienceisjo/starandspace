@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>별은 그대로였다, 움직인 건 지구다 · 연주 시차 3D 우주</title>
+<title>연주시차 · 3D 관측 모형</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
@@ -64,11 +64,23 @@ input[type=range]{accent-color:var(--accent); width:170px}
 #inset-sky{left:14px; bottom:12px}
 @media (max-width:760px){ #inset-sky{display:none} #inset-orbit canvas{width:130px;height:130px} }
 @media (max-width:640px){ input[type=range]{width:120px} .readout{min-width:120px} }
+
+/* 2026-10-11: embedded lessons, readable overlays, explicit model limitations. */
+.stage>canvas{width:100%;height:100%;touch-action:none}
+.stage:fullscreen{width:100vw;height:100vh}
+.tag,.note{font-size:15px;color:#dce7ff}.hint{color:#bfcee9!important}
+.simfs-btn{top:auto!important;bottom:10px!important;left:10px!important;right:auto!important}
+.scope{border:1px solid #c18be8;color:#efd4ff;padding:8px 12px;border-radius:9px}
+html.embed header{display:none}html.embed .wrap{padding:8px}html.embed .stage{height:390px}
+html.embed #app-credit{margin:12px;font-size:11px}
+@media(max-width:600px){.stage{height:450px}.hud{top:8px;left:8px;max-width:calc(100% - 16px)}.tag{max-width:100%;font-size:13px}.readout,.dirbar{top:auto;bottom:12px;right:8px;min-width:125px;padding:7px}.inset{display:none}.panel{gap:12px;padding:12px}.ctl{flex-wrap:wrap}.stage-head{padding:12px}.view-btns{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
 <header>
- <h1>🌌 별은 그대로였다, <span class="em">움직인 건 지구다</span></h1>
+ <h1>연주시차 · <span class="em">3D 관측 모형</span></h1>
  <p>우주에서 보고, 지구에서 보고 — 연주 시차 3D</p>
 </header>
 
@@ -100,34 +112,36 @@ input[type=range]{accent-color:var(--accent); width:170px}
    </div>
   </div>
   <div class="panel">
-   <div class="ctl"><label>별까지의 거리</label><input type="range" id="dist" min="10" max="50" value="20">
+   <div class="ctl"><label for="dist">별까지의 거리</label><input type="range" id="dist" min="10" max="50" value="20">
     <span id="dist-val" style="font-family:var(--jua);color:var(--star)">2.0 pc</span></div>
-   <div class="ctl"><label>지구의 공전</label>
-    <button class="btn on" id="orbit-play">▶ 공전 중</button>
+   <div class="ctl"><label for="month">지구의 공전</label>
+    <button class="btn" id="orbit-play">▶ 공전 시작</button>
     <input type="range" id="month" min="0" max="120" value="0" style="width:130px"></div>
-   <button class="btn" id="trail-btn">✨ 별이 그리는 길 보기</button>
+   <button class="btn" id="trail-btn">별이 그리는 길 보기</button>
+   <button class="btn" id="fit-space">궤도와 별 한눈에 보기</button>
   </div>
  </section>
 
  <div class="note-row">
   <div class="note"><span class="k">① 시차가 생기는 까닭</span><br>
    지구가 공전 궤도의 <b>반대편</b>으로 이동하면, 가까운 별을 보는 <b>방향</b>이 달라집니다.
-   그래서 먼 배경 별들 사이에서 별의 위치가 <b>왔다 갔다</b> 하는 것처럼 보여요. 별이 움직인 게 아니라 <b>우리가 움직인</b> 것!</div>
+   그래서 먼 배경 별들 사이에서 별의 위치가 <b>왔다 갔다</b> 하는 것처럼 보여요. 이 장면에서는 별 자체의 운동을 제외하고 <b>관측 위치 변화</b>만 살펴봅니다.</div>
   <div class="note"><span class="k">② 거리를 재는 자</span><br>
-   6개월 간격으로 잰 각도의 <b>절반</b>이 연주 시차. 거리가 멀수록 흔들림이 작아지니
-   <b>거리(pc) = 1 ÷ 연주 시차(&#8243;)</b>. 슬라이더로 별을 밀어 보세요 — 흔들림이 줄어듭니다.</div>
+   이 모형의 E₁·E₂는 시선에 수직인 공전 궤도의 양 끝입니다. 두 위치에서 생기는 <b>최대 위치 차이의 절반</b>이 연주시차입니다. 별이 멀수록 연주시차는 작아집니다.
+   <details class="scope"><summary>성취기준 밖의 확장 학습 · 거리 계산</summary><b>거리(pc) = 1 ÷ 연주시차(&#8243;)</b><p>숫자 표시에는 이 관계를 사용합니다. 화면 속 각도와 천체 크기는 관찰하기 쉽게 과장했습니다.</p></details></div>
   <div class="note"><span class="k">③ 배경 별은 왜 안 움직일까?</span><br>
-   배경 별들도 사실 흔들리지만, <b>너무 멀어서</b> 그 각도가 측정할 수 없을 만큼 작습니다.
-   약 100 pc를 넘어가면 연주 시차로 거리를 재기 어려운 까닭이 바로 이것.</div>
+   먼 배경 별도 연주시차가 있지만 가까운 별보다 <b>훨씬 작습니다</b>. 이 모형에서는 배경 별의 시차를 무시합니다. 측정 가능한 거리는 관측 장비의 정밀도에 따라 달라집니다. <b>100 pc가 절대적인 한계는 아닙니다.</b></div>
  </div>
 </div>
 
-<footer id="app-credit">© 2026 승재쌤의 과학실 · 연주 시차 3D · 최종 업데이트 2026-08-16</footer>
+<footer id="app-credit">© 2026 조승재(과학이조선생) · 해누리중학교 · 연주 시차 3D · 최종 업데이트 2026-10-11</footer>
 
 <script src="lib/three.min.js"></script>
 <script src="lib/OrbitControls.js"></script>
 <script>
 'use strict';
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('embed');
 const stage = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
@@ -159,7 +173,7 @@ const ORBIT_R = 8;
   for(let i=0;i<=96;i++){ const a=i/96*Math.PI*2; pts.push(new THREE.Vector3(Math.cos(a)*ORBIT_R, 0, Math.sin(a)*ORBIT_R)); }
   const orbit = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),
     new THREE.LineBasicMaterial({color:0x33406e}));
-  scene.add(orbit);
+  orbit.name='orbit-guide'; scene.add(orbit);
 })();
 const earth = new THREE.Mesh(new THREE.SphereGeometry(.8, 22, 16),
   new THREE.MeshStandardMaterial({color:0x4f8fdd, roughness:.6, emissive:0x0a2b55, emissiveIntensity:.4}));
@@ -188,7 +202,7 @@ const nearLabel = markerSprite('별 S', '#ffd166'); scene.add(nearLabel);
   const N = 1600, pos = new Float32Array(N*3);
   for(let i=0;i<N;i++){
     const u = Math.random()*2-1, th = Math.random()*Math.PI*2, s = Math.sqrt(1-u*u);
-    pos[i*3] = s*Math.cos(th)*900; pos[i*3+1] = u*900; pos[i*3+2] = s*Math.sin(th)*900;
+    pos[i*3] = s*Math.cos(th)*9000; pos[i*3+1] = u*9000; pos[i*3+2] = s*Math.sin(th)*9000;
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(pos,3));
@@ -197,9 +211,9 @@ const nearLabel = markerSprite('별 S', '#ffd166'); scene.add(nearLabel);
 /* 별 S 바로 뒤편의 '기준 배경 별' 몇 개 — 지구 시점에서 시차 비교용 */
 const refStars = new THREE.Group();
 [[0,14],[10,-9],[-13,-4],[7,18],[-8,12]].forEach(([dy,dz])=>{
-  const m = new THREE.Mesh(new THREE.SphereGeometry(.55,10,8),
+  const m = new THREE.Mesh(new THREE.SphereGeometry(5.5,10,8),
     new THREE.MeshBasicMaterial({color:0x8fd0ff}));
-  m.position.set(880, dy*3.2, dz*3.2); refStars.add(m);
+  m.position.set(8800, dy*32, dz*32); refStars.add(m);
 });
 scene.add(refStars);
 
@@ -217,38 +231,46 @@ document.getElementById('trail-btn').addEventListener('click', function(){
 });
 
 /* ── 카메라 ── */
-const spaceCam = new THREE.PerspectiveCamera(50, 2, .1, 2200);
-spaceCam.position.set(-16, 15, 26);
+const spaceCam = new THREE.PerspectiveCamera(50, 2, .1, 22000);
+spaceCam.position.set(40, 94, 110);
 const ctl = new THREE.OrbitControls(spaceCam, renderer.domElement);
-ctl.target.set(12,0,0); ctl.enableDamping = true; ctl.maxDistance = 300;
-const earthCam = new THREE.PerspectiveCamera(26, 2, .1, 2200);   // 지구 시점(망원)
+ctl.target.set(40,0,0); ctl.enableDamping = !reducedMotion; ctl.maxDistance = 800;
+function fitSpace(){const span=starDist+22;ctl.target.set(starDist/2,0,0);spaceCam.position.set(starDist/2,span*.92,span*1.12);ctl.update();}
+document.getElementById("fit-space").addEventListener("click",()=>{document.querySelector("[data-view=space]").click();fitSpace();});
+const earthCam = new THREE.PerspectiveCamera(32, 2, .1, 22000);   // 지구 시점(망원)
 let view = 'space';
 document.querySelectorAll('.vbtn').forEach(b=>b.addEventListener('click', ()=>{
   document.querySelectorAll('.vbtn').forEach(x=>x.classList.toggle('on', x===b));
   view = b.dataset.view;
+  ctl.enabled = view==='space';
+  earth.visible = view==='space';
+  scene.getObjectByName('orbit-guide').visible=view==='space';
+  e1m.visible=e2m.visible=view==='space';
+  sight1.visible=view==='space';
   document.getElementById('view-hint').textContent = view==='space'
     ? '드래그로 시점을 돌리고, 휠로 확대해 보세요'
     : '지구 망원경 시점 — 노란 별이 파란 배경 별들 사이에서 움직입니다';
   document.getElementById('msg').innerHTML = view==='space'
     ? '지구가 공전하면, 가까운 <b>노란 별</b>이 먼 배경 별에 대해 어떻게 보일까요?'
-    : '배경 별(파랑)은 그대로인데 <b>별 S(노랑)</b>만 좌우로 — 이것이 <b>연주 시차</b>! 별이 아니라 지구가 움직인 결과입니다.';
+    : '관측 방향을 고정했습니다. 먼 배경 별에 대한 <b>별 S의 위치 차이</b>를 비교하세요. 모형에서는 별 자체의 운동을 제외했습니다.';
   resize();
 }));
 
 /* ── 컨트롤 ── */
-let playing = true, tMonth = 0;   // 0~12 개월
+let playing = false, tMonth = 0;   // 0~12 개월
 const monthEl = document.getElementById('month');
 const distEl = document.getElementById('dist');
 document.getElementById('orbit-play').addEventListener('click', function(){
   playing = !playing; this.classList.toggle('on', playing);
-  this.textContent = playing ? '▶ 공전 중' : '⏸ 정지';
+  this.textContent = playing ? '⏸ 공전 멈춤' : '▶ 공전 시작';
 });
 monthEl.addEventListener('input', ()=>{ playing = false; tMonth = monthEl.value/10;
   document.getElementById('orbit-play').classList.remove('on');
   document.getElementById('orbit-play').textContent = '⏸ 정지'; });
 distEl.addEventListener('input', ()=>{
   const pc = distEl.value/10;                       // 1.0 ~ 5.0 pc
-  starDist = pc * 40;                               // 시각 배율
+  starDist = pc * 40;
+  if(view==='space')fitSpace();                               // 시각 배율
   document.getElementById('dist-val').textContent = pc.toFixed(1)+' pc';
   document.getElementById('ro-p').innerHTML = (1/pc).toFixed(2)+'&#8243;';
   document.getElementById('ro-d').textContent = '거리 '+pc.toFixed(1)+' pc';
@@ -263,6 +285,7 @@ function resize(){
   draw();
 }
 addEventListener('resize', resize);
+new ResizeObserver(resize).observe(stage);
 
 let last = performance.now();
 function draw(){
@@ -276,12 +299,12 @@ function draw(){
   nearLabel.position.set(starDist, 3, 0);
   /* 시선 */
   sight1.geometry.setFromPoints([earth.position.clone(), nearStar.position.clone()]);
-  sight2.geometry.setFromPoints([new THREE.Vector3(0,1.6,-ORBIT_R), nearStar.position.clone()]);
+  sight2.geometry.setFromPoints([new THREE.Vector3(0,0,-ORBIT_R), nearStar.position.clone()]);
   sight2.visible = view==='space';
 
   /* 지구 시점 카메라: 지구에서 '별 S의 평균 방향(+x)'을 고정으로 바라봄 */
-  earthCam.position.copy(earth.position).add(new THREE.Vector3(0,.9,0));
-  earthCam.lookAt(new THREE.Vector3(900, 0, 0));
+  earthCam.position.copy(earth.position);
+  earthCam.lookAt(earthCam.position.clone().add(new THREE.Vector3(1,0,0)));
 
   /* 잔상: 지구 시점에서 별 S의 겉보기 위치를 하늘(반지름 880 구면)에 찍는다 */
   if (trailOn && playing){
@@ -297,7 +320,6 @@ function draw(){
   drawInsets(ang);
   if (view==='space'){ ctl.update(); renderer.render(scene, spaceCam); }
   else renderer.render(scene, earthCam);
-  requestAnimationFrame(draw);
 }
 
 /* ── 2D 모식도 인셋: 공전도 + 밤하늘 띠 ── */
@@ -335,7 +357,7 @@ function drawInsets(ang){
   sCx.fillStyle = '#8fd0ff';
   SKY_BG.forEach(([x,y])=>{ sCx.beginPath(); sCx.arc(x,y,2.4,0,Math.PI*2); sCx.fill(); });
   /* 별 S의 겉보기 위치: 지구의 z성분(시선에 수직)에 비례, 거리에 반비례 */
-  const amp = 96 * (80/starDist);                       // 2 pc일 때 ±96px
+  const amp = 54 * (80/starDist);                       // 2 pc일 때 ±96px
   const off = -Math.sin(ang+Math.PI/2) * amp;           // earthZ = R·sin(…)
   /* 흔들리는 범위 표시 */
   sCx.strokeStyle = 'rgba(255,159,190,.4)'; sCx.setLineDash([3,3]);
@@ -352,9 +374,11 @@ function drawInsets(ang){
     sCx.lineTo(sxx+Math.cos(a2)*9, syy+Math.sin(a2)*9); sCx.stroke(); }
   sCx.fillStyle = '#ffd166'; sCx.fillText('별 S', sxx, syy+20);
   sCx.fillStyle = '#7c88ad'; sCx.textAlign = 'left';
-  sCx.fillText('파란 별 = 배경 별(움직이지 않음)', 8, h2-8);
+  sCx.fillText('배경 별의 시차는 매우 작아 생략', 8, h2-8);
 }
-resize(); requestAnimationFrame(draw);
+resize();
+function animate(){draw();requestAnimationFrame(animate)}
+requestAnimationFrame(animate);
 </script>
 
 <script id="sim-fullscreen">

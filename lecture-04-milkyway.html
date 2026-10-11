@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<title>우리은하의 구조와 은하수 · 강의</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   core.css — 소비 전력 강의 덱 공통 (Apple DESIGN.md 언어)
+   무대 1920×1080 · 면 색이 구획 · 액션 블루 하나 · UI 그림자 없음
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  /* 면 */
+  --c-white:#ffffff; --c-parchment:#f5f5f7; --c-black:#000000; --c-dark:#1d1d1f; --c-graphite:#272729;
+  /* 글자 */
+  --ink:#1d1d1f; --ink-2:#6e6e73; --ink-3:#86868b; --on-dark:#f5f5f7; --on-dark-2:#a1a1a6; --on-dark-3:#6e6e73;
+  --hair:#e0e0e0; --hair-dark:#3a3a3c;
+  /* 행동 */
+  --action:#0066cc; --action-dark:#2997ff;
+  /* 에너지 — 어두운 면 기본값(밝은 면에서 아래 .slide[data-tile] 규칙이 덮어씀) */
+  --elec:#64D2FF; --light:#FFD60A; --heat:#FF6A3D; --sound:#BF5AF2; --kin:#30D158;
+  /* 에너지 — 면과 무관하게 고정된 두 벌(그림 속에서 직접 고를 때) */
+  --elec-hi:#64D2FF; --light-hi:#FFD60A; --heat-hi:#FF6A3D; --sound-hi:#BF5AF2; --kin-hi:#30D158;
+  --elec-lo:#0077B6; --light-lo:#9A7400; --heat-lo:#C4391B; --sound-lo:#8A3FC0; --kin-lo:#1E8B3E;
+  /* 글꼴 */
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"SF Pro Display","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  /* 움직임 */
+  --ease-out:cubic-bezier(.2,.8,.2,1); --ease-inout:cubic-bezier(.65,0,.35,1); --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#000}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  word-break:keep-all;overflow-wrap:break-word;-webkit-user-select:none;user-select:none;font-feature-settings:"ss03"}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ── 무대 ── */
+#viewport{position:fixed;inset:0;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#000;contain:layout paint}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;isolation:isolate}
+.slide.is-on{display:block}
+.slide.is-out{display:block;z-index:1}
+.slide.is-on{z-index:2}
+
+/* ── 면(타일) ── 다크: 에너지가 빛나는 무대 / 라이트: 정의와 타이포 */
+.slide[data-tile="black"]{background:var(--c-black);color:var(--on-dark)}
+.slide[data-tile="dark"]{background:var(--c-dark);color:var(--on-dark)}
+.slide[data-tile="graphite"]{background:var(--c-graphite);color:var(--on-dark)}
+.slide[data-tile="light"]{background:var(--c-white);color:var(--ink)}
+.slide[data-tile="parchment"]{background:var(--c-parchment);color:var(--ink)}
+.slide[data-tile="light"],.slide[data-tile="parchment"]{
+  --elec:var(--elec-lo); --light:var(--light-lo); --heat:var(--heat-lo); --sound:var(--sound-lo); --kin:var(--kin-lo);
+  --t2:var(--ink-2); --t3:var(--ink-3); --hl:var(--hair); --act:var(--action);
+}
+.slide[data-tile="black"],.slide[data-tile="dark"],.slide[data-tile="graphite"]{
+  --t2:var(--on-dark-2); --t3:var(--on-dark-3); --hl:var(--hair-dark); --act:var(--action-dark);
+}
+
+/* ── 글자 체계 (무대 px) — 최소 24px ── */
+.t-hero{font-size:168px;font-weight:600;line-height:1.02;letter-spacing:-.035em}
+.t-display{font-size:120px;font-weight:600;line-height:1.05;letter-spacing:-.03em}
+.t-title{font-size:84px;font-weight:600;line-height:1.1;letter-spacing:-.025em}
+.t-head{font-size:60px;font-weight:600;line-height:1.14;letter-spacing:-.022em}
+.t-lead{font-size:44px;font-weight:400;line-height:1.3;letter-spacing:-.012em}
+.t-airy{font-size:40px;font-weight:300;line-height:1.4;letter-spacing:-.005em}
+.t-label{font-size:34px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.t-body{font-size:32px;font-weight:400;line-height:1.47;letter-spacing:-.01em}
+.t-cap{font-size:26px;font-weight:400;line-height:1.35;letter-spacing:-.005em}
+.t-eyebrow{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:.01em;color:var(--t2)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum","ss03";letter-spacing:-.02em}
+.mute{color:var(--t2)} .mute2{color:var(--t3)}
+.c-elec{color:var(--elec)} .c-light{color:var(--light)} .c-heat{color:var(--heat)} .c-sound{color:var(--sound)} .c-kin{color:var(--kin)}
+.unit{font-weight:400;letter-spacing:0;margin-left:.12em}
+.center{text-align:center}
+
+/* 배치 도우미 — 슬라이드 조각이 자유롭게 쓴다 */
+.abs{position:absolute}
+.fill{position:absolute;inset:0}
+.full-svg{position:absolute;inset:0;width:1920px;height:1080px;overflow:visible}
+.row{display:flex;align-items:center}
+.col{display:flex;flex-direction:column}
+.pill{display:inline-flex;align-items:center;gap:12px;border-radius:9999px;padding:12px 26px;font-size:28px;font-weight:600}
+.pill.ghost{border:2px solid currentColor}
+.chip-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:9999px;padding:16px 34px;font-size:30px;font-weight:600;
+  background:var(--act);color:#fff;transition:transform .15s var(--ease-out)}
+.chip-btn:active{transform:scale(.95)}
+.card{border-radius:18px;border:1px solid var(--hl);padding:32px}
+svg text{font-family:var(--font)}
+
+/* ── 선언형 등장: data-in(들어올 때) / data-step="k"(k번째 클릭) / data-out="k" ── */
+[data-in],[data-step]{opacity:0}
+[data-fx="draw"],[data-fx="draw"] :is(path,line,polyline,polygon,circle,ellipse,rect){stroke-dasharray:1 1;stroke-dashoffset:1}
+[data-fx="draw"]{opacity:1}
+svg [data-in],svg [data-step],svg .tb{transform-box:fill-box;transform-origin:center}
+.tb{transform-box:fill-box;transform-origin:center}
+.tb-bl{transform-box:fill-box;transform-origin:left bottom}
+.tb-b{transform-box:fill-box;transform-origin:center bottom}
+
+/* ── HUD (Apple 원형 칩) ── */
+#hud{position:fixed;right:22px;bottom:18px;display:flex;align-items:center;gap:8px;z-index:50;opacity:0;transform:translateY(8px);
+  transition:opacity .35s var(--ease-out),transform .35s var(--ease-out);pointer-events:none}
+#hud.show{opacity:1;transform:none;pointer-events:auto}
+#hud button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(210,210,215,.64);color:#1d1d1f;
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);transition:transform .15s var(--ease-out)}
+#hud button:active{transform:scale(.92)}
+#hud button svg{width:20px;height:20px}
+#hud .count{min-width:84px;height:44px;border-radius:9999px;display:grid;place-items:center;padding:0 16px;background:rgba(210,210,215,.64);color:#1d1d1f;
+  font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+#progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:40;background:transparent}
+#progress i{display:block;height:100%;width:0;background:rgba(255,255,255,.38);transition:width .5s var(--ease-out),background .4s}
+body.on-light #progress i{background:rgba(0,0,0,.22)}
+#stepdots{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:9px;z-index:40;opacity:0;transition:opacity .35s}
+#stepdots.show{opacity:1}
+#stepdots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.28);transition:background .3s,transform .3s}
+#stepdots i.on{background:rgba(255,255,255,.9);transform:scale(1.15)}
+body.on-light #stepdots i{background:rgba(0,0,0,.16)} body.on-light #stepdots i.on{background:rgba(0,0,0,.62)}
+
+/* ── 덮개(노트·전체보기·도움말) ── */
+.overlay{position:fixed;inset:0;z-index:60;display:none}
+.overlay.show{display:block}
+#notes{position:fixed;left:0;right:0;bottom:0;height:36vh;z-index:55;transform:translateY(102%);transition:transform .45s var(--ease-out);
+  background:rgba(22,22,23,.86);color:#f5f5f7;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  padding:22px 40px 26px;overflow:auto;border-top:1px solid rgba(255,255,255,.08)}
+#notes.show{transform:none}
+#notes .nh{display:flex;align-items:baseline;gap:14px;margin-bottom:10px;font-size:15px;color:#a1a1a6;font-weight:600;letter-spacing:.01em}
+#notes .nh b{color:#f5f5f7;font-size:18px}
+#notes .nh .nx{margin-left:auto;font-weight:400}
+#notes p{font-size:clamp(17px,1.55vw,24px);line-height:1.6;margin:0 0 .7em;color:#e8e8ed;max-width:1500px}
+#notes p .pn{display:inline-block;font-size:.66em;font-weight:700;color:#2997ff;margin-right:.6em;vertical-align:.12em}
+#notes p b{color:#fff;font-weight:700}
+#notes p .cue{display:inline-block;margin-top:.3em;padding:2px 12px;border-radius:9999px;background:rgba(41,151,255,.18);color:#8cc8ff;font-size:.85em}
+
+#overview{background:rgba(0,0,0,.72);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);overflow:auto;padding:56px 5vw}
+#overview h2{color:#f5f5f7;font-size:28px;font-weight:600;letter-spacing:-.01em;margin-bottom:22px}
+#overview .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+#overview .ov{position:relative;aspect-ratio:16/9;border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;
+  border:1px solid rgba(255,255,255,.1);transition:transform .2s var(--ease-out)}
+#overview .ov:active{transform:scale(.97)}
+#overview .ov.cur{outline:3px solid #2997ff;outline-offset:3px}
+#overview .ov .n{font-size:14px;font-weight:700;opacity:.6;font-variant-numeric:tabular-nums}
+#overview .ov .tt{font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+#overview .ov[data-tile="black"],#overview .ov[data-tile="dark"],#overview .ov[data-tile="graphite"]{background:#1d1d1f;color:#f5f5f7}
+#overview .ov[data-tile="light"]{background:#fff;color:#1d1d1f}
+#overview .ov[data-tile="parchment"]{background:#f5f5f7;color:#1d1d1f}
+
+#help{background:rgba(0,0,0,.6);display:none;place-items:center}
+#help.show{display:grid}
+#help .box{background:#fff;color:#1d1d1f;border-radius:18px;padding:34px 40px;min-width:520px}
+#help h3{font-size:24px;font-weight:600;margin-bottom:16px;letter-spacing:-.01em}
+#help table{border-collapse:collapse;font-size:17px}
+#help td{padding:7px 18px 7px 0;border-bottom:1px solid #f0f0f0}
+#help kbd{display:inline-block;min-width:30px;padding:3px 9px;border-radius:8px;background:#f5f5f7;border:1px solid #e0e0e0;font:600 15px var(--font);text-align:center}
+#blank{position:fixed;inset:0;z-index:70;display:none}
+#blank.black{display:block;background:#000} #blank.white{display:block;background:#fff}
+
+/* 정지 화면(검증 스크린샷) — 크롬 UI 숨김 */
+html.still #hud,html.still #progress,html.still #stepdots{display:none!important}
+html.still *{cursor:none!important}
+/* 격자 보기(?grid=1) */
+#gridov{position:absolute;inset:0;z-index:30;pointer-events:none;display:none;
+  background-image:linear-gradient(rgba(255,0,80,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,80,.25) 1px,transparent 1px);
+  background-size:120px 120px}
+html.grid #gridov{display:block}
+html.grid #gridov::after{content:"";position:absolute;inset:80px 120px;border:2px dashed rgba(255,0,80,.6)}
+
+@media (prefers-reduced-motion: reduce){ .slide *{scroll-behavior:auto} }
+
+/* ── 소리 단추·알림 ── */
+#hud button.off{opacity:.55}
+#sfxToast{position:fixed;left:50%;bottom:78px;transform:translate(-50%,8px);z-index:80;padding:10px 22px;border-radius:9999px;background:rgba(29,29,31,.86);color:#f5f5f7;
+  font-size:16px;font-weight:600;letter-spacing:-.01em;opacity:0;pointer-events:none;transition:opacity .25s var(--ease-out),transform .25s var(--ease-out);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+#sfxToast.show{opacity:1;transform:translate(-50%,0)}
+html.still #sfxToast{display:none}
+
+/* ── 학생 모드(?s=1): 대본 숨김 ── */
+html.student #notes{display:none!important}
+
+/* ── 장면 머리(제목) ── */
+.hd{position:absolute;left:120px;top:78px;right:120px;z-index:3}
+.hd .eb{font-size:28px;font-weight:600;letter-spacing:.01em;color:var(--t2);margin-bottom:10px}
+.hd .eb b{color:var(--act);font-weight:700;margin-right:.35em}
+.hd h2{font-size:66px;font-weight:600;line-height:1.1;letter-spacing:-.028em}
+.hd h2 .soft{color:var(--t2);font-weight:400}
+
+/* ── 개념정리 학습지 카드 · 빈칸(번호 = 학습지 빈칸 번호 ①~㉖) ── */
+.ws-card{position:absolute;border-radius:18px;padding:30px 44px 26px;background:#f5f5f7;z-index:3}
+.slide[data-tile="parchment"] .ws-card{background:#fff}
+.slide[data-tile="black"] .ws-card,.slide[data-tile="dark"] .ws-card,.slide[data-tile="graphite"] .ws-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.ws-card .ws-h{display:flex;align-items:baseline;gap:18px;margin-bottom:6px}
+.ws-card .ws-h b{font-size:40px;font-weight:700;letter-spacing:-.02em}
+.ws-card .ws-h span{font-size:28px;color:var(--t2)}
+.ws-row{display:grid;grid-template-columns:110px 1fr;gap:22px;align-items:baseline;font-size:38px;line-height:1.55;padding:12px 0;border-top:1px solid var(--hl)}
+.ws-row:first-of-type{border-top:0}
+.ws-row .tm{font-size:26px;font-weight:600;color:var(--t2);letter-spacing:.01em}
+.ws-line{font-size:38px;line-height:1.6}
+.bk{position:relative;display:inline-block;min-width:3.4em;margin:0 .2em;padding:0 .3em;text-align:center;line-height:1.3;white-space:nowrap;
+  border-bottom:4px solid #c7c7cc}
+.slide[data-tile="black"] .bk,.slide[data-tile="dark"] .bk,.slide[data-tile="graphite"] .bk{border-bottom-color:#48484a}
+.bk .a{display:inline-block;font-weight:700;color:var(--act)}
+.bk .n{position:absolute;left:-.62em;top:-.55em;min-width:1.25em;height:1.25em;padding:0 .2em;border-radius:9999px;background:var(--act);color:#fff;
+  font-size:.6em;font-weight:700;line-height:1.25em;text-align:center;font-variant-numeric:tabular-nums}
+.bk.wide{min-width:5.6em}
+.qbox{position:absolute;border-radius:18px;border:1px solid var(--hl);padding:26px 34px;font-size:32px;line-height:1.5}
+.qbox .qh{font-size:26px;font-weight:600;color:var(--t2);margin-bottom:6px}
+.say-line{position:absolute;left:120px;right:120px;text-align:center;font-size:44px;font-weight:600;letter-spacing:-.02em;z-index:3}
+.fine{position:absolute;left:120px;bottom:40px;font-size:24px;color:var(--t3);z-index:3}
+/* ── 키워드 진행 표시(무대 오른쪽 위) — core.js buildKw/syncKw ── */
+#kwbar{position:absolute;top:34px;right:44px;z-index:30;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(-8px);pointer-events:none;
+  transition:opacity .45s var(--ease-out),transform .45s var(--ease-out)}
+#kwbar.show{opacity:1;transform:none;pointer-events:auto}
+#kwbar .kw{display:flex;align-items:center;height:46px;min-width:46px;border-radius:9999px;background:rgba(0,0,0,.055);color:#86868b;
+  font-size:24px;font-weight:600;letter-spacing:-.01em;line-height:1;transition:background .45s,color .45s;cursor:pointer}
+#kwbar .kw b{width:46px;height:46px;flex:none;display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums}
+#kwbar .kw span{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .6s var(--ease-out),padding .6s var(--ease-out)}
+#kwbar .kw.done{background:rgba(0,0,0,.13);color:#3a3a3c}
+#kwbar .kw.cur{background:var(--action);color:#fff}
+#kwbar .kw.cur span{max-width:460px;padding-right:22px}
+#kwbar .kw:active{transform:scale(.95)}
+body:not(.on-light) #kwbar .kw{background:rgba(255,255,255,.1);color:#8e8e93}
+body:not(.on-light) #kwbar .kw.done{background:rgba(255,255,255,.24);color:#f5f5f7}
+body:not(.on-light) #kwbar .kw.cur{background:var(--action-dark);color:#fff}
+html.still #kwbar,html.still #kwbar *{transition:none!important}
+
+.astro .astro-head{position:absolute;left:120px;top:82px;width:1680px}
+.astro .astro-eyebrow{font-size:30px;line-height:1.4;font-weight:600;color:#3975ab;margin-bottom:20px}
+.astro[data-tile="dark"]{background:#081426;color:#f5f8ff}
+.astro[data-tile="dark"] .astro-eyebrow{color:#99d8ff}
+.astro .astro-head h2{font-size:68px;line-height:1.15;letter-spacing:-.03em;font-weight:600}
+.astro .astro-layout{position:absolute;left:120px;right:120px;top:295px;bottom:145px;display:grid;grid-template-columns:740px 880px;gap:60px;align-items:center}
+.astro .astro-points{display:flex;flex-direction:column;gap:28px}
+.astro .astro-point{font-size:39px;line-height:1.45;padding:17px 0 17px 26px;border-left:5px solid #2473b4;letter-spacing:-.015em;color:#132f50}
+.astro[data-tile="dark"] .astro-point{color:#f1f6ff;border-color:#8bd9ff}
+.astro .astro-point strong{font-weight:600}
+.astro .astro-worksheet-note{font-size:32px;line-height:1.5;padding:16px 20px;border:2px solid #4389b4;border-radius:12px;color:#153e65;background:#e8f4ff}
+.astro .astro-worksheet-note mark{color:inherit;background:transparent;border-bottom:3px solid #ddad37;padding:0 2px}
+.astro .astro-figure{width:880px;min-height:590px;margin:0;outline:3px solid transparent;outline-offset:9px;border-radius:18px}
+.astro .astro-figure figcaption{font-size:30px;line-height:1.4;color:#234665;margin-top:20px;text-align:center}
+.astro[data-tile="dark"] .astro-figure figcaption{color:#b8d9ed}
+.astro .astro-scope{position:absolute;bottom:67px;left:120px;font-size:28px;color:#93430e;font-weight:600}
+.astro[data-tile="dark"] .astro-scope{color:#ffd199}
+.astro #app-credit{position:absolute;left:120px;bottom:24px;font-size:24px;color:#9eafc8}
+.astro .astro-return{position:absolute;right:120px;bottom:68px;font-size:26px;color:inherit;text-decoration:none}
+@media(prefers-reduced-motion:reduce){.astro{transform:none!important}.astro *{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.astro-sim-modal[open]{display:flex;flex-direction:column}.astro-sim-modal header{flex:0 0 auto;background:#0a1528;color:white;border:0}.astro-sim-modal header button{float:none;position:static;margin:0;flex:0 0 auto}.astro-sim-modal iframe{flex:1;min-height:0;}.astro-page:has(dialog[open]){zoom:1!important}.sim-card,.legacy-resources{padding:22px;margin:24px 0;border:2px solid #276daa;border-radius:16px;background:#edf6ff;color:#163958}.legacy-resources a{display:inline-block;margin:8px 16px 8px 0;color:#154f88;font-weight:700}.sim-card button{font:inherit;background:#164f86;color:white;border:0;border-radius:10px;padding:12px 20px;cursor:pointer}.space-art{margin:24px 0}.space-art img{width:100%;max-height:380px;object-fit:cover;border-radius:14px}.space-art figcaption{color:#36546d;font-size:14px;margin-top:8px}.astro-sim-modal{padding:0;width:94vw;max-width:1800px;height:92vh;max-height:1000px;border:2px solid #5c9fd2;border-radius:14px;background:#0a1528;color:white}.astro-sim-modal::backdrop{background:#000b}.astro-sim-modal header{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:12px 18px;font:600 20px/1.3 sans-serif;position:static}.astro-sim-modal button{padding:10px 18px;border:0;border-radius:8px;background:#cdeaff;color:#0b2944;font:inherit;cursor:pointer}.astro-sim-modal iframe{display:block;width:100%;height:calc(100% - 76px);border:0;background:white}.sim-launch-row{position:absolute;top:230px;right:120px;display:flex;gap:16px}.sim-launch{font:600 26px/1.3 sans-serif;padding:9px 16px;background:#174a7e;color:white;border:2px solid #87cfff;border-radius:12px;cursor:pointer}.astro .astro-figure .intro-art{width:880px;height:560px;object-fit:cover;border-radius:20px}.astro .astro-figure .intro-caption{font-size:27px;color:#bbd9ed;text-align:center;margin-top:20px}.worksheet-summary .candidate{font-weight:700;color:#0c5d98}.astro-point mark{color:inherit;background:transparent;border-bottom:3px solid #ddad37;padding:0 2px}@media(max-width:600px){.astro-sim-modal header{font-size:16px}.astro-sim-modal{height:94vh;width:98vw}.space-art img{max-height:240px}}</style>
+</head>
+<body>
+<!-- 덱 전체가 함께 쓰는 SVG 정의(필터·그라데이션). 장면 SVG 에서 url(#이름) 으로 참조 -->
+<svg id="gdefs" width="0" height="0" style="position:absolute;width:0;height:0" aria-hidden="true" focusable="false">
+<defs>
+  <!-- 빛 번짐: 원래 모양 + 흐린 사본 -->
+  <filter id="glow-s" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="glow-m" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="glow-l" x="-100%" y="-100%" width="300%" height="300%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="glow-xl" x="-150%" y="-150%" width="400%" height="400%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="36" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <!-- 번짐만(후광 층) -->
+  <filter id="bloom-m" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="14"/></filter>
+  <filter id="bloom-l" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="40"/></filter>
+  <!-- 애플의 단 하나의 그림자: 면 위에 놓인 제품(오브젝트)에만 -->
+  <filter id="product-shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="3" dy="5" stdDeviation="15" flood-color="#000" flood-opacity=".22"/></filter>
+  <!-- 열 아지랑이 일렁임(작은 영역에만) — JS 가 baseFrequency/seed 를 바꿔 움직임 -->
+  <filter id="heat-haze" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence id="heat-haze-turb" type="fractalNoise" baseFrequency="0.012 0.06" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <!-- 에너지 조각 광원(원형 방사) — 색마다 -->
+  <radialGradient id="rg-elec"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="#64D2FF"/><stop offset="1" stop-color="#64D2FF" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rg-light"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="#FFD60A"/><stop offset="1" stop-color="#FFD60A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rg-heat"><stop offset="0" stop-color="#fff1e8"/><stop offset=".28" stop-color="#FF6A3D"/><stop offset="1" stop-color="#FF6A3D" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rg-sound"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="#BF5AF2"/><stop offset="1" stop-color="#BF5AF2" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rg-kin"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="#30D158"/><stop offset="1" stop-color="#30D158" stop-opacity="0"/></radialGradient>
+  <!-- 제품 재질 -->
+  <linearGradient id="lg-white-plastic" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#eeeef0"/><stop offset="1" stop-color="#d4d4d9"/></linearGradient>
+  <linearGradient id="lg-graphite" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5a5a5f"/><stop offset=".5" stop-color="#3a3a3d"/><stop offset="1" stop-color="#1f1f21"/></linearGradient>
+  <linearGradient id="lg-silver" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f4f6"/><stop offset=".45" stop-color="#c9c9ce"/><stop offset=".55" stop-color="#b3b3b8"/><stop offset="1" stop-color="#e2e2e6"/></linearGradient>
+  <linearGradient id="lg-glass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity=".30"/><stop offset=".35" stop-color="#ffffff" stop-opacity=".06"/><stop offset=".8" stop-color="#ffffff" stop-opacity=".02"/><stop offset="1" stop-color="#ffffff" stop-opacity=".18"/></linearGradient>
+</defs>
+</svg>
+
+<div id="viewport"><div id="stage">
+<section class="slide astro" id="a4_01" data-tile="dark" data-title="은하수는 흐린 구름일까?" data-notes="P1"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 도입</div><h2>은하수는 흐린 구름일까?</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">맨눈으로 보면 하늘에 흐릿한 띠가 보인다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">망원경으로 보면 수많은 별이 드러난다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">우리는 우리은하의 안에서 이 띠를 본다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_02" data-tile="light" data-title="태양계와 은하" data-notes="P2"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>태양계와 은하</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">태양은 스스로 빛을 내는 <mark title="학습지 빈칸 10">별</mark>이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">태양계는 <mark title="학습지 빈칸 4">태양</mark>과 그 주위를 도는 천체들이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650"><mark title="학습지 빈칸 11">은하</mark>는 수많은 별과 성간 물질 등이 모인 거대한 집단이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_03" data-tile="light" data-title="우리은하" data-notes="P3"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>우리은하</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">태양계가 속한 은하를 우리은하라고 한다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">별과 성운·성단, <mark title="학습지 빈칸 12">기체와 먼지</mark> 등이 있다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">태양계는 우리은하의 작은 일부분이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_04" data-tile="dark" data-title="위에서 본 우리은하" data-notes="P4"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>위에서 본 우리은하</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">중심 부분에 <mark title="학습지 빈칸 13">막대 모양</mark> 구조가 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">주변에 <mark title="학습지 빈칸 14">나선 모양</mark>의 팔이 뻗어 있다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">전체적으로 막대 나선 모양이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_05" data-tile="light" data-title="옆에서 본 우리은하" data-notes="P5"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>옆에서 본 우리은하</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">중심부가 <mark title="학습지 빈칸 15">볼록하다</mark>.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">주변부는 <mark title="학습지 빈칸 5">납작한 원반</mark> 모양이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">같은 우리은하를 다른 방향에서 본 모습이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_06" data-tile="light" data-title="우리은하의 크기" data-notes="P6"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>우리은하의 크기</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">지름: 약 <mark title="학습지 빈칸 6">30,000 pc</mark></div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">별의 수: 약 <mark title="학습지 빈칸 16">2,000억 개</mark></div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">교과서에서 사용하는 어림값이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_07" data-tile="dark" data-title="태양계의 위치" data-notes="P7"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>태양계의 위치</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">태양계는 <mark title="학습지 빈칸 17">나선팔</mark> 부근에 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">은하 중심에서 약 <mark title="학습지 빈칸 7">8,500 pc</mark> 떨어져 있다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">은하의 중심이나 가장자리에 있지 않다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_08" data-tile="light" data-title="우리은하 안에서 보는 하늘" data-notes="P8"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 탐구</div><h2>우리은하 안에서 보는 하늘</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">우리는 우리은하의 <mark title="학습지 빈칸 8">원반 안</mark>에 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">원반을 따라 보면 <mark title="학습지 빈칸 18">많은 별이 겹쳐</mark> 보인다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">그 빛이 하늘에서 띠처럼 이어진다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_09" data-tile="light" data-title="은하수" data-notes="P9"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>은하수</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">우리은하의 많은 별이 모여 띠처럼 보이는 모습이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">관찰 위치는 우리은하의 내부이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">외부에서 본 우리은하 전체 그림과 구분한다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_10" data-tile="dark" data-title="은하 중심 방향과 반대 방향" data-notes="P10"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 탐구</div><h2>은하 중심 방향과 반대 방향</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">중심 방향에는 많은 별이 모여 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">중심 방향의 은하수는 대체로 <mark title="학습지 빈칸 19">더 넓고 밝다</mark>.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650"><mark title="학습지 빈칸 20">먼지</mark> 때문에 어둡게 가려지는 부분도 있다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_11" data-tile="light" data-title="우리은하와 외부 은하" data-notes="P11"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 개념</div><h2>우리은하와 외부 은하</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">우리은하 밖의 다른 은하를 <mark title="학습지 빈칸 9">외부 은하</mark>라고 한다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">외부 은하도 수많은 별 등의 집단이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">안드로메다는 우리은하와 <mark title="학습지 빈칸 21">가까운 큰 은하</mark>이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_12" data-tile="light" data-title="그림의 관찰 시점 해석" data-notes="P12"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 자료 해석</div><h2>그림의 관찰 시점 해석</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">막대와 나선팔 → 위에서 본 구조</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">중심이 볼록한 원반 → 옆에서 본 구조</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">하늘의 빛 띠 → 내부에서 본 은하수</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a></section>
+<section class="slide astro" id="a4_13" data-tile="dark" data-title="우리은하 핵심 정리" data-notes="P13"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 04차시 / 정리</div><h2>우리은하 핵심 정리</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">우리은하: 태양계가 속한 막대 나선 은하</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">태양계: 중심에서 약 8,500 pc</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">은하수: 우리은하 내부에서 본 띠 모양의 모습</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="sim-launch-row"><button class="sim-launch" type="button" data-sim-src="3d-milkyway.html?embed=1" data-sim-title="우리은하와 은하수 3D 관측소">우리은하와 은하수 3D 관측소</button></div><a class="astro-return" href="lesson-04-milkyway.html">수업 페이지</a><div id="app-credit">© 2026 조승재(과학이조선생) · 해누리중학교 · All rights reserved · 최종 업데이트: 2026-10-11</div></section>
+<div id="gridov"></div>
+</div></div>
+
+<script>window.NOTES = {"P1": "갈릴레이는 망원경 관측으로 은하수가 수많은 별로 이루어져 있음을 확인했습니다. 사진 같은 삽화는 분위기를 위한 것이며 실제 관측 기록이 아닙니다. 1학년의 태양계는 우리은하에 속한다는 규모 관계를 연결한 뒤, 은하를 위·옆·안에서 바라보는 모형을 비교합니다.", "P2": "행성·위성·왜행성의 세부 분류로 범위를 넓히지 않습니다. 태양과 태양계, 은하라는 규모 차이에 집중합니다.", "P3": "수업 모형의 별 점은 실제 별의 개수를 그대로 센 것이 아닙니다. 대표 위치와 분포를 그린 것입니다.", "P4": "태양계가 은하 중심에 있지 않음을 그림에서 확인합니다. 중심 블랙홀이 모든 별의 공전을 혼자 지배한다고 설명하지 않습니다.", "P5": "둥근 원반을 옆에서 보면 가늘어 보입니다. 원반 바깥에도 별과 구상 성단이 분포하므로 은하의 모든 구성원이 얇은 선 위에만 있는 것은 아닙니다.", "P6": "값은 측정·정의에 따라 달라질 수 있습니다. 여기서는 교과서의 단원 비교를 위해 제시된 어림값을 일관되게 사용합니다.", "P7": "우리은하 반지름 약 15,000 pc와 중심에서 태양계까지 약 8,500 pc를 구분합니다. 그림에 두 길이를 따로 표시합니다.", "P8": "태양계의 위치에서 원반을 가로지르는 경로와 원반 밖을 향하는 경로를 비교합니다. 천체가 늘어나는 것이 아니라 보는 방향이 달라지는 것입니다.", "P9": "띠가 지구를 둘러싼 별도의 고리가 아니라 멀리 있는 별들이 같은 방향에 많이 겹쳐 보인 결과임을 설명합니다.", "P10": "은하수가 모든 곳에서 균일한 밝기인 것은 아닙니다. 암흑 성운 내용은 다음 차시에서 별빛을 가리는 물질로 연결합니다.", "P11": "안드로메다를 무조건 가장 가까운 은하라고 하지 않습니다. 더 가까운 작은 은하들이 있으므로 가까운 큰 은하라고 표현합니다.", "P12": "세 그림이 같은 종류의 사진인지 먼저 구분하게 합니다. 우리은하 전체를 바깥에서 직접 찍은 사진처럼 모형을 소개하지 않습니다.", "P13": "크기·태양계 위치·관찰 시점의 세 기준으로 정리합니다. 성운과 성단을 다음 차시에서 구성원으로 자세히 봅니다."};</script>
+<script>window.KW = null;</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   core.js — 강의 덱 엔진
+   · 1920×1080 무대를 화면에 맞춰 배율(레터박스)
+   · 장면(scene) = 도입(enter, 저절로) + 빌드 단계(go(k), 클릭마다)
+   · 되돌아가기·건너뛰기는 "처음 상태로 복원 → 순간 재생"이라 언제나 같은 모습
+   · 애니메이션 도구는 ctx 가 쥐고 있어 장면을 떠나면 저절로 정리됨
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const SW = 1920, SH = 1080;
+  const Q = new URLSearchParams(location.search);
+  const STILL = Q.get('still') === '1';
+  /* 학생 모드(?s=1): 대본(노트) 숨김 — 허브 「칠판 다시보기」용. sc_teacher=1 이 저장된 기기는 그대로 교사 화면 */
+  let TEACHER_DEV = false; try { TEACHER_DEV = localStorage.getItem('sc_teacher') === '1'; } catch (e) {}
+  const STUDENT = Q.get('s') === '1' && !TEACHER_DEV;
+  if (STUDENT) document.documentElement.classList.add('student');
+  const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (STILL || Q.get('clean') === '1') document.documentElement.classList.add('still');
+  if (Q.get('grid') === '1') document.documentElement.classList.add('grid');
+  if (Q.get('log') === '1') {   // 검증용: 콘솔 수준을 앞머리로 남김(console.py 가 읽음)
+    const oe = console.error.bind(console), ow = console.warn.bind(console);
+    const txt = a => a.map(x => (x && x.stack) ? String(x.stack).split(String.fromCharCode(10)).slice(0, 2).join(' | ') : (typeof x === 'object' ? (() => { try { return JSON.stringify(x); } catch (e) { return String(x); } })() : String(x))).join(' ');
+    console.error = (...a) => oe('[ERR] ' + txt(a));
+    console.warn = (...a) => ow('[WARN] ' + txt(a));
+    window.addEventListener('error', e => oe('[ERR] uncaught ' + (e.message || '') + ' @' + (e.lineno || '')));
+    window.addEventListener('unhandledrejection', e => oe('[ERR] rejection ' + ((e.reason && e.reason.stack) || e.reason)));
+  }
+
+  /* ── 곡선 ── */
+  const EASE = {
+    out: 'cubic-bezier(.2,.8,.2,1)', outQuint: 'cubic-bezier(.22,1,.36,1)', inOut: 'cubic-bezier(.65,0,.35,1)',
+    in: 'cubic-bezier(.55,0,.75,.1)', spring: 'cubic-bezier(.34,1.56,.64,1)', soft: 'cubic-bezier(.25,.1,.25,1)', linear: 'linear',
+  };
+  const JE = {
+    linear: t => t,
+    out: t => 1 - Math.pow(1 - t, 3),
+    outQuint: t => 1 - Math.pow(1 - t, 5),
+    inOut: t => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+    in: t => t * t * t,
+    soft: t => t * t * (3 - 2 * t),
+    spring: t => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); },
+    elastic: t => (t === 0 || t === 1) ? t : Math.pow(2, -10 * t) * Math.sin((t * 10 - .75) * (2 * Math.PI) / 3) + 1,
+  };
+
+  /* ── 등장 모양(선언형·ctx.reveal 공용) ── svg 요소에는 blur(필터) 빼고 */
+  const REVEAL = {
+    rise:  { k: [{ opacity: 0, transform: 'translateY(28px)', filter: 'blur(12px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }], dur: 900 },
+    fade:  { k: [{ opacity: 0 }, { opacity: 1 }], dur: 700 },
+    blur:  { k: [{ opacity: 0, transform: 'scale(1.06)', filter: 'blur(24px)' }, { opacity: 1, transform: 'scale(1)', filter: 'blur(0px)' }], dur: 1100 },
+    scale: { k: [{ opacity: 0, transform: 'scale(.92)' }, { opacity: 1, transform: 'scale(1)' }], dur: 900 },
+    pop:   { k: [{ opacity: 0, transform: 'scale(.5)' }, { opacity: 1, transform: 'scale(1)' }], dur: 750, ease: 'spring' },
+    left:  { k: [{ opacity: 0, transform: 'translateX(-64px)' }, { opacity: 1, transform: 'translateX(0px)' }], dur: 900 },
+    right: { k: [{ opacity: 0, transform: 'translateX(64px)' }, { opacity: 1, transform: 'translateX(0px)' }], dur: 900 },
+    down:  { k: [{ opacity: 0, transform: 'translateY(-28px)' }, { opacity: 1, transform: 'translateY(0px)' }], dur: 900 },
+    up:    { k: [{ opacity: 0, transform: 'translateY(72px)' }, { opacity: 1, transform: 'translateY(0px)' }], dur: 1000 },
+    draw:  { k: [{ opacity: 1, strokeDashoffset: 1 }, { opacity: 1, strokeDashoffset: 0 }], dur: 1200, ease: 'inOut' },
+    wipe:  { k: [{ opacity: 1, clipPath: 'inset(0 100% 0 0)' }, { opacity: 1, clipPath: 'inset(0 0% 0 0)' }], dur: 1000, ease: 'inOut' },
+    none:  { k: [{ opacity: 1 }, { opacity: 1 }], dur: 1 },
+  };
+  const isSVG = el => el instanceof SVGElement && !(el instanceof SVGSVGElement);
+  const GEOM = 'path,line,polyline,polygon,circle,ellipse,rect';
+  const noFilter = k => k.map(f => { const g = Object.assign({}, f); delete g.filter; return g; });
+
+  const STUB = { finished: Promise.resolve(), cancel() {}, finish() {}, pause() {}, play() {}, playbackRate: 1, effect: null };
+
+  /* ═════════ 장면 도구 상자 ═════════ */
+  class Ctx {
+    constructor(root, idx) {
+      this.root = root; this.idx = idx; this.instant = false; this.alive = true;
+      this.reduced = REDUCED; this.still = STILL; this.E = EASE; this.JE = JE; this.data = {};
+      this._anims = []; this._loops = []; this._timers = []; this._waits = []; this._tweens = []; this._sfxT = []; this._disp = [];
+    }
+    /** 효과음: SFX.play(name, a, b) 를 delay ms 뒤에. 순간 모드(되돌리기·복원)·건너뛰기·장면 나감이면 조용히 */
+    sfx(name, delay = 0, a, b) {
+      if (STILL || this.instant || !this.alive || !window.SFX) return;
+      if (delay > 0) { const id = setTimeout(() => { if (this.alive && !this.instant) SFX.play(name, a, b); }, delay); this._sfxT.push(id); }
+      else SFX.play(name, a, b);
+    }
+    /** 이어지는 소리('fan'|'hum'|'boil') — 장면을 떠나면 저절로 멎는다. 반환: {level(v), whine(v), stop()} */
+    sfxLoop(kind, o) { const h = window.SFX ? SFX.loop(kind, o) : null; if (h) this._disp.push(() => h.stop()); return h; }
+    onDispose(fn) { this._disp.push(fn); }
+    $(s) { return this.root.querySelector(s); }
+    $$(s) { return Array.from(this.root.querySelectorAll(s)); }
+    _el(el) { return typeof el === 'string' ? this.$(el) : el; }
+    _els(els) { if (typeof els === 'string') return this.$$(els); if (!els) return []; return (els.length !== undefined && !(els instanceof Element)) ? Array.from(els) : [els]; }
+
+    /** Web Animations 한 방. o: {dur, delay, ease, fill, iter, dir, composite}. 순간 모드면 바로 끝 상태 */
+    a(el, kf, o = {}) {
+      el = this._el(el);
+      if (!el || !this.alive) return STUB;
+      const infinite = o.iter === Infinity;
+      const inst = this.instant && !infinite;
+      const an = el.animate(kf, {
+        duration: inst ? 0 : (o.dur ?? 700), delay: inst ? 0 : (o.delay ?? 0),
+        easing: EASE[o.ease] || o.ease || EASE.out, fill: o.fill || 'both',
+        iterations: o.iter ?? 1, direction: o.dir || 'normal', composite: o.composite || 'replace',
+      });
+      if (inst) { try { an.finish(); } catch (e) {} }
+      this._anims.push(an);
+      return an;
+    }
+    /** 여러 요소에 시차(stagger ms)를 두고 같은 애니 */
+    all(els, kf, o = {}) {
+      return this._els(els).map((e, i) => this.a(e, typeof kf === 'function' ? kf(e, i) : kf, Object.assign({}, o, { delay: (o.delay || 0) + i * (o.stagger || 0) })));
+    }
+    /** 등장: fx = rise|fade|blur|scale|pop|left|right|down|up|draw|wipe */
+    reveal(el, fx = 'rise', o = {}) {
+      const els = this._els(el); const out = [];
+      els.forEach((e, i) => {
+        const P = REVEAL[fx] || REVEAL.rise;
+        const d = Object.assign({ dur: P.dur, ease: P.ease || 'out' }, o);
+        if (o.stagger) d.delay = (o.delay || 0) + i * o.stagger;
+        // 효과음: 학습지 빈칸 답이 채워지면 「띠링」, pop·up 등장이면 「톡」
+        if (!this.instant) {
+          const sk = (e.classList && e.classList.contains('a') && e.parentElement && e.parentElement.classList.contains('bk')) ? 'blank' : ((fx === 'pop' || fx === 'up') ? 'pop' : null);
+          if (sk) this.sfx(sk, d.delay || 0);
+        }
+        if (fx === 'draw') {
+          const geo = (e.matches && e.matches(GEOM)) ? [e] : Array.from(e.querySelectorAll(GEOM));
+          this.a(e, [{ opacity: 1 }, { opacity: 1 }], { dur: 1, delay: d.delay });
+          geo.forEach(g => { if (!g.hasAttribute('pathLength')) g.setAttribute('pathLength', '1'); out.push(this.a(g, P.k, d)); });
+        } else {
+          out.push(this.a(e, isSVG(e) ? noFilter(P.k) : P.k, d));
+        }
+      });
+      return out.length === 1 ? out[0] : { finished: Promise.all(out.map(x => x.finished)), list: out };
+    }
+    /** 사라짐(기본: 흐려지며 살짝 위로) */
+    hide(el, o = {}) {
+      return this.all(el, isSVG(this._els(el)[0] || document.body) ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(8px)' }],
+        Object.assign({ dur: 500, ease: 'out' }, o));
+    }
+    /** 기다리기(순간 모드면 곧장) */
+    wait(ms) {
+      if (this.instant || !this.alive) return Promise.resolve();
+      return new Promise(res => { const w = { res }; w.t = setTimeout(() => { const i = this._waits.indexOf(w); if (i >= 0) this._waits.splice(i, 1); res(); }, ms); this._waits.push(w); });
+    }
+    /** JS 트윈 — WAAPI 로 못 움직이는 것(속성·viewBox·path d·숫자). fn(p, rawT) */
+    tween(dur, fn, o = {}) {
+      const ease = typeof o.ease === 'function' ? o.ease : (JE[o.ease] || JE.out);
+      if (this.instant || !this.alive) { if (this.alive) fn(1, 1); return Promise.resolve(); }
+      const delay = o.delay || 0;
+      return new Promise(res => {
+        let start = null, done = false, id = 0;
+        const tw = {
+          finish: () => { if (done) return; done = true; cancelAnimationFrame(id); try { fn(1, 1); } catch (e) { console.error(e); } res(); },
+          kill: () => { if (done) return; done = true; cancelAnimationFrame(id); res(); },
+        };
+        this._tweens.push(tw);
+        if (!o.noInit) { try { fn(0, 0); } catch (e) { console.error(e); } }
+        const tick = now => {
+          if (done) return;
+          if (start === null) start = now + delay;
+          const t = (now - start) / dur;
+          if (t < 0) { id = requestAnimationFrame(tick); return; }
+          if (t >= 1) { tw.finish(); return; }
+          try { fn(ease(t), t); } catch (e) { console.error(e); tw.kill(); return; }
+          id = requestAnimationFrame(tick);
+        };
+        id = requestAnimationFrame(tick);
+      });
+    }
+    /** 숫자 굴리기. o.fmt(v) 로 모양 */
+    count(el, from, to, o = {}) {
+      el = this._el(el); if (!el) return Promise.resolve();
+      const fmt = o.fmt || (v => Math.round(v).toLocaleString('ko-KR'));
+      if (to !== from) this.sfx('counter', o.delay || 0, o.dur ?? 1200);
+      return this.tween(o.dur ?? 1200, p => { el.textContent = fmt(from + (to - from) * p); }, Object.assign({ ease: 'outQuint' }, o));
+    }
+    /** 선 그리기(pathLength=1 을 붙여 stroke-dashoffset 1→0) */
+    draw(el, o = {}) { return this.reveal(el, 'draw', o); }
+    /** SVG 카메라 — viewBox 를 [x,y,w,h] 로 옮김 */
+    camera(svg, to, o = {}) {
+      svg = this._el(svg); if (!svg) return Promise.resolve();
+      const from = (svg.getAttribute('viewBox') || `0 0 ${SW} ${SH}`).split(/[\s,]+/).map(Number);
+      this.sfx('whoosh', o.delay || 0, o.dur ?? 1400, .55);
+      return this.tween(o.dur ?? 1400, p => { svg.setAttribute('viewBox', from.map((v, i) => (v + (to[i] - v) * p).toFixed(2)).join(' ')); }, Object.assign({ ease: 'inOut' }, o));
+    }
+    /** 장면이 살아 있는 동안 도는 고리. fn(t초, dt초). 반환값.stop() */
+    loop(fn) {
+      const L = { on: true, t: 0, last: null, id: 0 };
+      const tick = now => {
+        if (!L.on || !this.alive) return;
+        const dt = L.last === null ? 0 : Math.min(0.05, (now - L.last) / 1000);
+        L.last = now; L.t += dt;
+        try { fn(L.t, dt); } catch (e) { console.error('[loop]', e); L.on = false; return; }
+        L.id = requestAnimationFrame(tick);
+      };
+      L.stop = () => { L.on = false; cancelAnimationFrame(L.id); };
+      L.id = requestAnimationFrame(tick);
+      this._loops.push(L);
+      return L;
+    }
+    timer(fn, ms) { const id = setTimeout(() => { if (this.alive) fn(); }, this.instant ? 0 : ms); this._timers.push(id); return id; }
+    every(fn, ms) { const id = setInterval(() => { if (this.alive) fn(); }, ms); this._timers.push(id); return id; }
+    /** 지금 도는 것을 끝 상태로(클릭이 애니 도중에 오면) */
+    hurry() {
+      this.instant = true;
+      this._sfxT.splice(0).forEach(id => clearTimeout(id));      // 아직 울리기 전인 효과음은 접는다
+      this._anims.forEach(a => { try { const t = a.effect && a.effect.getComputedTiming(); if (t && t.iterations !== Infinity && a.playState !== 'finished') a.finish(); } catch (e) {} });
+      this._tweens.slice().forEach(tw => tw.finish());
+      this._waits.splice(0).forEach(w => { clearTimeout(w.t); w.res(); });
+    }
+    dispose() {
+      this.alive = false;
+      this._sfxT.splice(0).forEach(id => clearTimeout(id));
+      this._disp.splice(0).forEach(fn => { try { fn(); } catch (e) {} });
+      this._loops.forEach(l => l.stop());
+      this._timers.forEach(id => clearTimeout(id));
+      this._tweens.slice().forEach(tw => tw.kill());
+      this._waits.splice(0).forEach(w => { clearTimeout(w.t); w.res(); });
+    }
+  }
+
+  /* ═════════ SVG 도우미 ═════════ */
+  const NS = 'http://www.w3.org/2000/svg';
+  const U = {
+    NS,
+    el(tag, attrs = {}, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; },
+    lerp: (a, b, t) => a + (b - a) * t,
+    clamp: (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)),
+    rand: (a = 0, b = 1) => a + Math.random() * (b - a),
+    /** 결정적 난수(검증 화면이 매번 같게): U.rng(seed)() */
+    rng(seed = 1) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; },
+    uid: (() => { let n = 0; return (p = 'u') => `${p}${(++n).toString(36)}`; })(),
+    E: EASE, JE,
+  };
+
+  /* ═════════ 덱 ═════════ */
+  const scenes = {};
+  const Deck = {
+    scene(id, def) { scenes[id] = def; },
+    list: [], i: -1, k: 0, ctx: null, busy: null, U, EASE, JE, Ctx, STILL, REDUCED, STUDENT,
+  };
+  window.Deck = Deck; window.U = U;
+
+  let stage, viewport, hud, prog, dots, notesEl, ovEl, helpEl, blankEl;
+  const fit = () => {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const s = Math.min(vw / SW, vh / SH);
+    stage.style.transform = `translate(${(vw - SW * s) / 2 - vw / 2}px, ${(vh - SH * s) / 2 - vh / 2}px) scale(${s})`;
+    Deck.scale = s;
+  };
+  const defOf = sec => scenes[sec.id] || {};
+  const stepsOf = sec => {
+    if (sec.__steps != null) return sec.__steps;
+    let m = +(defOf(sec).steps || 0);
+    const tmp = document.createElement('div'); tmp.innerHTML = sec.__pristine;
+    tmp.querySelectorAll('[data-step]').forEach(e => { m = Math.max(m, +e.getAttribute('data-step') || 0); });
+    tmp.querySelectorAll('[data-out]').forEach(e => { m = Math.max(m, +e.getAttribute('data-out') || 0); });
+    return (sec.__steps = m);
+  };
+  const safe = async (fn, c) => { try { await fn(); } catch (e) { if (c && c.alive) console.error(`[scene ${c.root.id}]`, e); } };
+
+  function runDecl(c, k) {
+    if (k === 0) {
+      c.$$('[data-in]').forEach(el => {
+        const v = el.getAttribute('data-in'); const delay = +(el.dataset.delay || (v && !isNaN(+v) ? v : 0));
+        c.reveal(el, el.dataset.fx || 'rise', { delay, dur: el.dataset.dur ? +el.dataset.dur : undefined, ease: el.dataset.ease || undefined });
+      });
+    } else {
+      c.$$(`[data-step="${k}"]`).forEach(el => {
+        c.reveal(el, el.dataset.fx || 'rise', { delay: +(el.dataset.delay || 0), dur: el.dataset.dur ? +el.dataset.dur : undefined, ease: el.dataset.ease || undefined });
+      });
+      c.$$(`[data-out="${k}"]`).forEach(el => c.hide(el, { delay: +(el.dataset.outDelay || 0) }));
+    }
+  }
+
+  async function show(i, k = 0, opt = {}) {
+    const n = Deck.list.length; if (!n) return;
+    i = Math.max(0, Math.min(n - 1, i));
+    const to = Deck.list[i]; const from = Deck.i >= 0 ? Deck.list[Deck.i] : null;
+    k = Math.max(0, Math.min(stepsOf(to), k));
+    const instant = !!opt.instant || STILL;
+    if (Deck.ctx) { Deck.ctx.hurry(); Deck.ctx.dispose(); }
+    Deck.busy = null;
+
+    if (from && from !== to) {
+      from.classList.remove('is-on');
+      if (instant || opt.cut) { from.classList.remove('is-out'); from.innerHTML = ''; }
+      else {
+        from.classList.add('is-out');
+        const done = () => { if (!from.classList.contains('is-on')) { from.classList.remove('is-out'); from.innerHTML = ''; } };
+        setTimeout(done, 700);
+      }
+    }
+    to.getAnimations && to.getAnimations().forEach(a => a.cancel());
+    to.innerHTML = to.__pristine;
+    to.classList.remove('is-out'); to.classList.add('is-on');
+    Deck.i = i; Deck.k = k;
+    const tile = to.getAttribute('data-tile') || 'dark';
+    document.body.classList.toggle('on-light', tile === 'light' || tile === 'parchment');
+    if (from && from !== to && !instant && !opt.cut) {
+      to.animate([{ opacity: 0, transform: 'scale(1.015)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 620, easing: EASE.out });
+      if (window.SFX) SFX.play('slide');
+    }
+    const c = new Ctx(to, i); Deck.ctx = c;
+    const def = defOf(to);
+    const run = (async () => {
+      c.instant = instant;
+      runDecl(c, 0);
+      if (def.enter) await safe(() => def.enter(c), c);
+      for (let s = 1; s <= k; s++) {
+        if (!c.alive) return;
+        c.instant = true; runDecl(c, s);
+        if (def.go) await safe(() => def.go(c, s), c);
+      }
+      c.instant = STILL;
+    })();
+    Deck.busy = run; ui();
+    await run;
+    if (Deck.busy === run) Deck.busy = null;
+    if (STILL) markReady();
+    try { history.replaceState(null, '', `#${i + 1}${k ? '.' + k : ''}`); } catch (e) {}
+  }
+  async function stepTo(k) {
+    const c = Deck.ctx, sec = Deck.list[Deck.i]; if (!c) return;
+    Deck.k = k; ui();
+    if (window.SFX && !STILL) SFX.play('step');
+    c.instant = STILL; runDecl(c, k);
+    const def = defOf(sec);
+    const run = def.go ? safe(() => def.go(c, k), c) : Promise.resolve();
+    Deck.busy = run;
+    await run;
+    if (Deck.busy === run) { Deck.busy = null; c.instant = STILL; }
+    try { history.replaceState(null, '', `#${Deck.i + 1}${k ? '.' + k : ''}`); } catch (e) {}
+  }
+  Deck.next = () => {
+    if (Deck.busy && Deck.ctx) { Deck.ctx.hurry(); return; }
+    const sec = Deck.list[Deck.i];
+    if (Deck.k < stepsOf(sec)) stepTo(Deck.k + 1);
+    else if (Deck.i < Deck.list.length - 1) show(Deck.i + 1, 0);
+  };
+  Deck.prev = () => {
+    if (Deck.k > 0) show(Deck.i, Deck.k - 1, { instant: true });
+    else if (Deck.i > 0) show(Deck.i - 1, stepsOf(Deck.list[Deck.i - 1]), { instant: true });
+  };
+  Deck.go = (i, k = 0, opt) => show(i, k, opt);
+  Deck.goId = (id, k = 0) => { const i = Deck.list.findIndex(s => s.id === id); if (i >= 0) show(i, k); };
+  /** 지금 단계 다시 보기(R) */
+  Deck.replay = async () => {
+    const k = Deck.k;
+    if (k === 0) { const i = Deck.i; Deck.i = -1; await show(i, 0, { cut: true }); }
+    else { await show(Deck.i, k - 1, { instant: true }); stepTo(k); }
+  };
+  Deck.steps = sec => stepsOf(sec || Deck.list[Deck.i]);
+
+  function markReady() {
+    const fin = () => { document.documentElement.dataset.ready = '1'; };
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(fin, 60));
+  }
+
+  /* ── 화면 바깥 UI ── */
+  const ICON = {
+    prev: '<svg viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    next: '<svg viewBox="0 0 20 20"><path d="M7.5 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    grid: '<svg viewBox="0 0 20 20"><g fill="currentColor"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></g></svg>',
+    notes: '<svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    full: '<svg viewBox="0 0 20 20"><path d="M3.5 8V3.5H8M12 3.5h4.5V8M16.5 12v4.5H12M8 16.5H3.5V12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    replay: '<svg viewBox="0 0 20 20"><path d="M4.5 10a5.5 5.5 0 1 0 1.8-4.1M4.5 3.8v3.4h3.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    sound: '<svg viewBox="0 0 20 20"><path d="M3.5 8h3l4-3.5v11L6.5 12h-3z" fill="currentColor"/><path d="M13.5 7.2a4 4 0 0 1 0 5.6M15.6 5a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    mute: '<svg viewBox="0 0 20 20"><path d="M3.5 8h3l4-3.5v11L6.5 12h-3z" fill="currentColor"/><path d="M13.5 7.5l4.5 5M18 7.5l-4.5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  };
+  function syncSound() {
+    const b = hud && hud.querySelector('[data-a="sound"]'); if (!b) return;
+    const on = !window.SFX || SFX.isOn();
+    b.innerHTML = on ? ICON.sound : ICON.mute; b.classList.toggle('off', !on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  /* ── 키워드 진행 표시(무대 오른쪽 위 · 녹화 화면에도 보임) ──
+     window.KW = {items:[{kw}], at:[장마다 키워드 번호]} — build.py 가 slides/…/_keywords.json 으로 넣는다.
+     at: -1 = 숨김(표지·도입·키워드 장), 0..n-1 = 그 키워드, n = 모두 끝(정리·문제). 칩을 누르면 그 키워드의 첫 장으로 */
+  let kwEl = null;
+  function buildKw() {
+    const K = window.KW; if (!K || !K.items || !K.items.length || !K.at) return;
+    kwEl = document.createElement('div'); kwEl.id = 'kwbar'; kwEl.setAttribute('data-interactive', '');
+    kwEl.innerHTML = K.items.map((it, j) => `<button type="button" class="kw" data-j="${j}" aria-label="키워드 ${j + 1}: ${it.kw}"><b>${j + 1}</b><span>${it.kw}</span></button>`).join('');
+    stage.appendChild(kwEl);
+    kwEl.addEventListener('click', e => {
+      const b = e.target.closest('.kw'); if (!b) return; e.stopPropagation();
+      const i = K.at.indexOf(+b.dataset.j); if (i >= 0 && i !== Deck.i) show(i, 0);
+    });
+  }
+  function syncKw() {
+    if (!kwEl) return;
+    const K = window.KW, a = K.at[Deck.i], sec = Deck.list[Deck.i];
+    const hide = a == null || a < 0 || (sec && sec.hasAttribute('data-kw-hide'));
+    kwEl.classList.toggle('show', !hide);
+    kwEl.classList.toggle('end', a >= K.items.length);
+    kwEl.querySelectorAll('.kw').forEach((b, j) => { b.classList.toggle('done', j < a); b.classList.toggle('cur', j === a); });
+  }
+  function buildChrome() {
+    buildKw();
+    hud = document.createElement('div'); hud.id = 'hud';
+    hud.innerHTML = `<button data-a="replay" aria-label="이 단계 다시 보기(R)">${ICON.replay}</button>${STUDENT ? '' : `<button data-a="notes" aria-label="대본 보기(T)">${ICON.notes}</button>`}<button data-a="grid" aria-label="전체 보기(O)">${ICON.grid}</button><button data-a="prev" aria-label="이전">${ICON.prev}</button><span class="count" id="count">1 / 1</span><button data-a="next" aria-label="다음">${ICON.next}</button><button data-a="sound" aria-label="소리 켜기/끄기(M)">${ICON.sound}</button><button data-a="full" aria-label="전체 화면(F)">${ICON.full}</button>`;
+    document.body.appendChild(hud); syncSound();
+    hud.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; e.stopPropagation(); act(b.dataset.a); });
+    prog = document.createElement('div'); prog.id = 'progress'; prog.innerHTML = '<i></i>'; document.body.appendChild(prog);
+    dots = document.createElement('div'); dots.id = 'stepdots'; document.body.appendChild(dots);
+    notesEl = document.createElement('div'); notesEl.id = 'notes'; document.body.appendChild(notesEl);
+    ovEl = document.createElement('div'); ovEl.id = 'overview'; ovEl.className = 'overlay'; document.body.appendChild(ovEl);
+    helpEl = document.createElement('div'); helpEl.id = 'help'; helpEl.className = 'overlay';
+    helpEl.innerHTML = `<div class="box"><h3>강의 조작</h3><table>
+      <tr><td><kbd>→</kbd> <kbd>Space</kbd> 화면 클릭</td><td>다음(빌드 단계 → 다음 장)</td></tr>
+      <tr><td><kbd>←</kbd> 오른쪽 클릭</td><td>이전</td></tr>
+      <tr><td><kbd>R</kbd></td><td>이 단계 애니메이션 다시 보기</td></tr>
+      <tr><td><kbd>N</kbd></td><td>발표자 노트(대본)</td></tr>
+      <tr><td><kbd>O</kbd></td><td>전체 보기</td></tr>
+      <tr><td><kbd>F</kbd></td><td>전체 화면</td></tr>
+      <tr><td><kbd>M</kbd></td><td>소리 켜기/끄기</td></tr>
+      <tr><td><kbd>B</kbd> / <kbd>W</kbd></td><td>검은 화면 / 흰 화면</td></tr>
+      <tr><td>숫자 + <kbd>Enter</kbd></td><td>그 장으로 이동</td></tr>
+      <tr><td>좌우로 밀기</td><td>전자칠판에서 넘기기</td></tr></table></div>`;
+    document.body.appendChild(helpEl);
+    helpEl.addEventListener('click', () => helpEl.classList.remove('show'));
+    blankEl = document.createElement('div'); blankEl.id = 'blank'; document.body.appendChild(blankEl);
+    blankEl.addEventListener('click', () => { blankEl.className = ''; });
+  }
+  function act(a) {
+    if (a === 'next') Deck.next(); else if (a === 'prev') Deck.prev();
+    else if (a === 'notes') toggleNotes(); else if (a === 'grid') toggleOverview();
+    else if (a === 'full') toggleFull(); else if (a === 'replay') Deck.replay();
+    else if (a === 'sound') { if (window.SFX) SFX.toggle(); syncSound(); }
+  }
+  function ui() {
+    const n = Deck.list.length, sec = Deck.list[Deck.i]; if (!sec || !hud) return;
+    const st = stepsOf(sec);
+    hud.querySelector('#count').textContent = `${Deck.i + 1} / ${n}`;
+    prog.firstChild.style.width = `${((Deck.i + (st ? Deck.k / (st + 1) : 0)) / Math.max(1, n - 1)) * 100}%`;
+    dots.innerHTML = st ? Array.from({ length: st + 1 }, (_, j) => `<i class="${j <= Deck.k ? 'on' : ''}"></i>`).join('') : '';
+    syncKw();
+    if (notesEl.classList.contains('show')) renderNotes();
+    if (ovEl.classList.contains('show')) renderOverview();
+  }
+  function md(s) { return s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>'); }
+  function renderNotes() {
+    const sec = Deck.list[Deck.i]; const N = window.NOTES || {};
+    const keys = (sec.dataset.notes || '').split(/[\s,]+/).filter(Boolean);
+    const nx = Deck.list[Deck.i + 1];
+    const st = stepsOf(sec);
+    const extra = sec.dataset.say ? `<p>${md(sec.dataset.say)}</p>` : '';
+    notesEl.innerHTML = `<div class="nh"><b>${Deck.i + 1}. ${sec.dataset.title || sec.id}</b><span>${st ? `단계 ${Deck.k} / ${st}` : ''}</span><span class="nx">${nx ? '다음 → ' + (nx.dataset.title || '') : '마지막 장'}</span></div>` +
+      keys.map(key => N[key] ? `<p><span class="pn">${key}</span>${md(N[key])}</p>` : '').join('') + extra;
+  }
+  function toggleNotes() { notesEl.classList.toggle('show'); if (notesEl.classList.contains('show')) renderNotes(); }
+  function renderOverview() {
+    ovEl.innerHTML = `<h2>전체 보기 · ${Deck.list.length}장</h2><div class="grid">` + Deck.list.map((s, i) =>
+      `<button class="ov ${i === Deck.i ? 'cur' : ''}" data-i="${i}" data-tile="${s.getAttribute('data-tile') || 'dark'}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="tt">${s.dataset.title || s.id}</span></button>`).join('') + '</div>';
+  }
+  function toggleOverview() {
+    const on = !ovEl.classList.contains('show');
+    ovEl.classList.toggle('show', on); if (on) renderOverview();
+  }
+  function toggleFull() {
+    const d = document;
+    if (!d.fullscreenElement) (d.documentElement.requestFullscreen || d.documentElement.webkitRequestFullscreen || (() => {})).call(d.documentElement);
+    else (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+  }
+
+  let hudTimer = 0;
+  function pokeHud() { if (STILL) return; hud.classList.add('show'); dots.classList.add('show'); clearTimeout(hudTimer); hudTimer = setTimeout(() => { hud.classList.remove('show'); dots.classList.remove('show'); }, 2600); }
+
+  function bind() {
+    let jump = '';
+    document.addEventListener('keydown', e => {
+      if (e.target.closest && e.target.closest('input,textarea,select,[contenteditable]')) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const key = e.key;
+      if (helpEl.classList.contains('show')) { helpEl.classList.remove('show'); e.preventDefault(); return; }
+      if (blankEl.className && key !== 'b' && key !== 'B' && key !== 'w' && key !== 'W') { blankEl.className = ''; e.preventDefault(); return; }
+      if (/^[0-9]$/.test(key)) { jump += key; return; }
+      if (key === 'Enter' && jump) { show(+jump - 1, 0); jump = ''; e.preventDefault(); return; }
+      jump = '';
+      if (ovEl.classList.contains('show') && (key === 'Escape' || key === 'o' || key === 'O')) { toggleOverview(); e.preventDefault(); return; }
+      switch (key) {
+        case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': case 'Enter': Deck.next(); break;
+        case 'ArrowLeft': case 'ArrowUp': case 'PageUp': case 'Backspace': Deck.prev(); break;
+        case 'Home': show(0, 0); break;
+        case 'End': show(Deck.list.length - 1, 0); break;
+        case 'n': case 'N': case 't': case 'T': if (!STUDENT) toggleNotes(); break;
+        case 'o': case 'O': toggleOverview(); break;
+        case 'f': case 'F': toggleFull(); break;
+        case 'm': case 'M': act('sound'); break;
+        case 'r': case 'R': Deck.replay(); break;
+        case 'b': case 'B': blankEl.className = blankEl.className === 'black' ? '' : 'black'; break;
+        case 'w': case 'W': blankEl.className = blankEl.className === 'white' ? '' : 'white'; break;
+        case 'h': case 'H': case '?': helpEl.classList.add('show'); break;
+        case 'Escape': notesEl.classList.remove('show'); break;
+        default: return;
+      }
+      e.preventDefault();
+    });
+    ovEl.addEventListener('click', e => { const b = e.target.closest('.ov'); if (b) { ovEl.classList.remove('show'); show(+b.dataset.i, 0); } else ovEl.classList.remove('show'); });
+    // 무대 클릭·밀기
+    let down = null;
+    viewport.addEventListener('pointerdown', e => { down = { x: e.clientX, y: e.clientY, t: performance.now(), inter: !!e.target.closest('button,a,input,select,textarea,label,[data-interactive]') }; pokeHud(); });
+    viewport.addEventListener('pointerup', e => {
+      if (!down) return; const dx = e.clientX - down.x, dy = e.clientY - down.y; const d0 = down; down = null;
+      if (d0.inter) return;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.3) { dx < 0 ? Deck.next() : Deck.prev(); return; }
+      if (Math.abs(dx) < 12 && Math.abs(dy) < 12 && e.button === 0) {
+        const r = stage.getBoundingClientRect();
+        (e.clientX - r.left < r.width * 0.12) ? Deck.prev() : Deck.next();
+      }
+    });
+    viewport.addEventListener('contextmenu', e => { if (e.target.closest('[data-interactive]')) return; e.preventDefault(); Deck.prev(); });
+    document.addEventListener('mousemove', pokeHud, { passive: true });
+    window.addEventListener('resize', fit);
+  }
+
+  function boot() {
+    viewport = document.getElementById('viewport'); stage = document.getElementById('stage');
+    Deck.list = Array.from(stage.querySelectorAll(':scope > section.slide'));
+    // 한 번만: 장면별 build(root) → 처음 상태 저장
+    Deck.list.forEach(sec => {
+      const def = defOf(sec);
+      if (def.build) { try { def.build(sec, U); } catch (e) { console.error(`[build ${sec.id}]`, e); } }
+      sec.querySelectorAll('[data-fx="draw"]').forEach(g => {
+        const geo = g.matches(GEOM) ? [g] : Array.from(g.querySelectorAll(GEOM));
+        geo.forEach(x => { if (!x.hasAttribute('pathLength')) x.setAttribute('pathLength', '1'); });
+      });
+      sec.__pristine = sec.innerHTML;
+      sec.innerHTML = '';
+    });
+    buildChrome(); fit(); bind();
+    const h = (location.hash || '').replace('#', '').split('.');
+    let si = Q.has('p') ? (+Q.get('p') - 1) : (h[0] ? +h[0] - 1 : 0);
+    let sk = Q.has('k') ? +Q.get('k') : (h[1] ? +h[1] : 0);
+    if (Q.has('id')) { const j = Deck.list.findIndex(s => s.id === Q.get('id')); if (j >= 0) si = j; }
+    if (!(si >= 0)) si = 0;
+    if (sk === -1 || Q.get('k') === 'last') sk = 99;
+    if (Q.get('play') === '1' && sk > 0 && !STILL) { show(si, sk - 1, { instant: true }).then(() => stepTo(Math.min(sk, stepsOf(Deck.list[si])))); }
+    else show(si, sk, { instant: sk > 0 });
+    if (!STILL) setTimeout(pokeHud, 400);
+  }
+  Deck.boot = boot;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(boot, 0));
+  else setTimeout(boot, 0);
+})();
+
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   objects/00_registry.js — 오브젝트(OBJ)·공용 효과(FX) 등록소
+   규약(모든 objects/*.js 가 따름):
+   · OBJ.def(name, {box:[w,h], svg(o), drive?(ctx, el, o), doc})
+       svg(o)  → 문자열. 최상위는 <g class="o-name" id="o.id"> 하나. 좌표는 (0,0)~box 안.
+                 그라데이션·필터 id 는 반드시 `${o.id}-무엇` 으로(같은 오브젝트가 여러 장에 나와도 안 겹치게).
+                 움직이는 부품에는 class="p-부품" 을 붙인다(ctx.$('#id .p-blades')).
+                 색은 에너지 변수(var(--heat) 등)를 style 로 — 면(밝음/어두움)에 따라 저절로 바뀜.
+       drive() → 움직임 조종기. ctx.loop/ctx.a/ctx.tween 만 써서(장면을 떠나면 저절로 멈춤) 부품을 움직이고
+                 {speed(v,ms), glow(v,ms), …} 같은 메서드를 가진 객체를 돌려준다.
+   · OBJ.place(name, {x,y,s,rot, ...o}) → <g transform="translate scale">{svg}</g>
+       바깥 g 에 자리(transform 속성), 안쪽 g 는 비워 두어 CSS 애니메이션(등장·확대)이 자리를 덮어쓰지 않게.
+   · FX.이름(ctx, 부모g, opts) → 공용 모션 효과. 반환값은 조종기(set…/stop).
+   ═══════════════════════════════════════════════════════════════ */
+window.OBJ = (function () {
+  const R = {};
+  const api = {
+    R,
+    def(name, spec) { R[name] = spec; api[name] = spec; return spec; },
+    svg(name, o = {}) { if (!R[name]) { console.error('OBJ 없음:', name); return ''; } o.id = o.id || U.uid(name); return R[name].svg(o); },
+    place(name, o = {}) {
+      const x = o.x || 0, y = o.y || 0, s = o.s == null ? 1 : o.s, rot = o.rot || 0;
+      const tf = `translate(${x} ${y})${s !== 1 ? ` scale(${s})` : ''}${rot ? ` rotate(${rot})` : ''}`;
+      return `<g transform="${tf}"${o.wrapId ? ` id="${o.wrapId}"` : ''}${o.wrapClass ? ` class="${o.wrapClass}"` : ''}>${api.svg(name, o)}</g>`;
+    },
+    drive(name, ctx, el, o = {}) {
+      if (!R[name] || !R[name].drive) return null;
+      el = typeof el === 'string' ? ctx.$(el) : el;
+      if (!el) { console.error('OBJ.drive 대상 없음:', name); return null; }
+      return R[name].drive(ctx, el, o);
+    },
+  };
+  return api;
+})();
+window.FX = window.FX || {};
+
+/* ═══════════════════════════════════════════════════════════════
+   03_sfx.js — 효과음(WebAudio 합성). 소리 파일 0개 · 오프라인 OK
+   · 장면에서는 c.sfx('blank', 지연ms) · c.sfxLoop('fan') 로 부른다(core.js 가 순간 모드·건너뛰기·장면 나감을 알아서 처리)
+   · 브라우저 정책상 첫 클릭·키 입력 뒤부터 소리가 난다. M 키·HUD 단추로 켜고 끔(기기에 기억). 학생 모드(?s=1)는 기본 꺼짐
+   · 점검: ?sfx=demo → 모든 소리를 눌러 들어 보는 패널 / SFX.analyze('blank') → 오프라인 렌더로 세기·길이 점검
+   · 주소 도우미: ?sound=1|0 강제 켜기·끄기 · ?nosfx=1 완전 끔 · ?sfxtest=1 클릭 없이 잠금 해제(자동 점검용)
+   ═══════════════════════════════════════════════════════════════ */
+window.SFX = (function () {
+  'use strict';
+  const Q = new URLSearchParams(location.search);
+  const D = window.Deck || {};
+  const OFF = !!D.STILL || Q.get('nosfx') === '1';
+  const KEY = 'sc_sfx';
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  let on = !D.STUDENT;
+  try { const s = localStorage.getItem(KEY); if (s === '1' || s === '0') on = s === '1'; } catch (e) {}
+  if (Q.get('sound') === '1') on = true; else if (Q.get('sound') === '0') on = false;
+  let ac = null, out = null, X = null, unlocked = Q.get('sfxtest') === '1', broken = false;
+  const pending = new Set();
+
+  /* ── 잡음(결정적) ── */
+  function noiseBuf(actx) {
+    const n = Math.floor(actx.sampleRate * 2), b = actx.createBuffer(1, n, actx.sampleRate), d = b.getChannelData(0);
+    let s = 12345;
+    for (let i = 0; i < n; i++) { s = (s * 1664525 + 1013904223) >>> 0; d[i] = s / 2147483648 - 1; }
+    return b;
+  }
+  function ensure() {
+    if (OFF || broken || !unlocked) return null;
+    if (!ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { broken = true; return null; }
+      try { ac = new AC(); } catch (e) { broken = true; return null; }
+      const comp = ac.createDynamicsCompressor();
+      comp.threshold.value = -14; comp.knee.value = 18; comp.ratio.value = 4; comp.attack.value = .004; comp.release.value = .18;
+      out = ac.createGain(); out.gain.value = on ? .9 : 0;
+      out.connect(comp); comp.connect(ac.destination);
+      X = { ac, dest: out, nz: noiseBuf(ac) };
+    }
+    if (ac.state === 'suspended' && on && !document.hidden) ac.resume().catch(() => {});
+    return X;
+  }
+
+  /* ── 소리 부품 ── */
+  function env(g, t, a, d, peak) {
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(Math.max(0.0002, peak), t + a);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+  }
+  function route(x, node, pan) {
+    if (pan && x.ac.createStereoPanner) { const p = x.ac.createStereoPanner(); p.pan.value = clamp(pan, -1, 1); node.connect(p); p.connect(x.dest); return; }
+    node.connect(x.dest);
+  }
+  /** 톤: f(→f2) Hz, a 올림 s, d 사라짐 s, g 세기, type, vib[Hz, 깊이Hz], lp 저역통과, pan */
+  function tone(x, t, o) {
+    const ac = x.ac, osc = ac.createOscillator(), g = ac.createGain();
+    const a = o.a ?? .004, d = o.d ?? .3;
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f, t);
+    if (o.f2) osc.frequency.exponentialRampToValueAtTime(o.f2, t + a + d);
+    if (o.vib) {
+      const l = ac.createOscillator(), lg = ac.createGain();
+      l.frequency.value = o.vib[0]; lg.gain.value = o.vib[1]; l.connect(lg); lg.connect(osc.frequency); l.start(t); l.stop(t + a + d + .06);
+    }
+    env(g, t, a, d, o.g ?? .2);
+    osc.connect(g);
+    let last = g;
+    if (o.lp) { const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; g.connect(f); last = f; }
+    route(x, last, o.pan);
+    osc.start(t); osc.stop(t + a + d + .07);
+  }
+  /** 잡음: type(bandpass|highpass|lowpass), f(→f2) Hz, q */
+  function noise(x, t, o) {
+    const ac = x.ac, s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+    const a = o.a ?? .003, d = o.d ?? .1;
+    s.buffer = x.nz; s.loop = true;
+    f.type = o.type || 'bandpass'; f.frequency.setValueAtTime(o.f || 2000, t);
+    if (o.f2) f.frequency.exponentialRampToValueAtTime(o.f2, t + a + d);
+    f.Q.value = o.q ?? 1;
+    env(g, t, a, d, o.g ?? .15);
+    s.connect(f); f.connect(g); route(x, g, o.pan);
+    s.start(t, (t * 7.13) % 1.5); s.stop(t + a + d + .07);
+  }
+  const PART = [[1, 1, 1], [2.76, .3, .55], [5.4, .1, .3], [8.93, .04, .18]];
+  function bell(x, t, f, g = .3, d = 1.1) { PART.forEach(([r, w, k]) => tone(x, t, { f: f * r, a: .002, d: d * k, g: g * w })); }
+  function tickAt(x, t, f, g) {
+    tone(x, t, { f, a: .001, d: .014, g });
+    noise(x, t, { a: .001, d: .006, g: g * .9, type: 'bandpass', f: f * 1.6, q: 1.5 });
+  }
+
+  /* ═════════ 소리 목록: (x, t, a, b) ═════════ */
+  const SCALE = [0, 2, 4, 7, 9, 12, 9, 7, 4, 2];       // 빈칸이 채워질 때마다 음계가 오르내린다
+  const S = {
+    /** 빈칸이 채워짐 — 마림바 같은 「띠링」. i = 몇 번째 빈칸(음 높이 순서) */
+    blank(x, t, i) {
+      const f = 659.25 * Math.pow(2, SCALE[(i | 0) % 10] / 12);
+      tone(x, t, { f, a: .003, d: .34, g: .24 });
+      tone(x, t, { f: f * 2, a: .002, d: .16, g: .07 });
+      tone(x, t, { f: f * 4.02, a: .001, d: .05, g: .025 });
+      noise(x, t, { a: .001, d: .012, g: .05, type: 'highpass', f: 3500 });
+    },
+    /** 무언가 톡 나타남 */
+    pop(x, t) {
+      tone(x, t, { f: 420, f2: 840, a: .002, d: .1, g: .2 });
+      noise(x, t, { a: .001, d: .02, g: .05, type: 'highpass', f: 3000 });
+    },
+    /** 클릭으로 다음 단계 — 아주 작은 톡 */
+    step(x, t) { tone(x, t, { f: 1500, f2: 900, type: 'triangle', a: .001, d: .045, g: .075 }); noise(x, t, { a: .001, d: .01, g: .03, f: 3000, q: 1.5 }); },
+    /** 다음 장으로 — 부드러운 슥 */
+    slide(x, t) {
+      noise(x, t, { a: .12, d: .5, g: .2, f: 400, f2: 2600, q: .8 });
+      tone(x, t, { f: 220, f2: 110, a: .005, d: .25, g: .09 });
+    },
+    /** 휙 — dur ms, gain */
+    whoosh(x, t, dur = 700, g = 1) {
+      const d = (dur || 700) / 1000;
+      noise(x, t, { a: d * .4, d: d * .6, g: .2 * (g ?? 1), f: 350, f2: 2400, q: .7 });
+    },
+    /** 숫자 굴러감 — 오르는 째깍째깍 */
+    counter(x, t, dur = 1200) {
+      const n = clamp(Math.round((dur || 1200) / 70), 4, 22), sp = (dur || 1200) / 1000 / n;
+      for (let i = 0; i < n; i++) tickAt(x, t + i * sp, 1500 + i * (900 / n), .07);
+    },
+    /** 세는 선을 조각이 지나감(가이거처럼) — p 음높이, g 세기 */
+    tick(x, t, p = 1, g = 1) { tickAt(x, t, 2100 * (p || 1), .1 * (g ?? 1)); },
+    /** 1초가 지남 — 나무 시계 */
+    clock(x, t) {
+      tone(x, t, { f: 1050, f2: 620, type: 'triangle', a: .001, d: .06, g: .17 });
+      noise(x, t, { a: .001, d: .012, g: .08, f: 2600, q: 2 });
+    },
+    /** 쾅(도장) */
+    thunk(x, t) {
+      tone(x, t, { f: 150, f2: 44, a: .002, d: .24, g: .5 });
+      noise(x, t, { a: .002, d: .1, g: .28, type: 'lowpass', f: 700, f2: 200 });
+    },
+    /** 땡 */
+    ding(x, t, k = 1) { bell(x, t, 1318.5 * (k || 1), .32, 1.1); },
+    /** 딩동딩동 ↑ (정답·완성) */
+    chime(x, t) { [1046.5, 1318.5, 1568, 2093].forEach((f, i) => bell(x, t + i * .085, f, .3, .9)); },
+    /** 명판 뒤집기 */
+    flip(x, t) {
+      noise(x, t, { a: .002, d: .03, g: .18, f: 3200, q: 1.5 });
+      noise(x, t + .12, { a: .002, d: .03, g: .18, f: 2600, q: 1.5 });
+      noise(x, t + .02, { a: .03, d: .16, g: .09, f: 900, f2: 2600 });
+    },
+    /** 토스터 레버 내림 — 철컥 */
+    lever(x, t) {
+      tone(x, t, { f: 260, f2: 75, type: 'triangle', a: .002, d: .14, g: .4 });
+      noise(x, t, { a: .002, d: .06, g: .22, type: 'lowpass', f: 1200, f2: 400 });
+      tone(x, t + .01, { f: 1900, f2: 1200, a: .001, d: .05, g: .04 });
+    },
+    /** 토스터 빵 튀어 오름 — 텅~ 팅! */
+    toasterPop(x, t) {
+      tone(x, t, { f: 150, f2: 55, a: .002, d: .12, g: .32 });
+      tone(x, t + .02, { f: 210, f2: 640, type: 'triangle', a: .005, d: .32, g: .11, vib: [22, 26] });
+      noise(x, t + .02, { a: .01, d: .2, g: .05, f: 2400, q: 1.2 });
+      bell(x, t + .16, 2637, .22, .9);
+    },
+    /** 열선이 달아오르며 탁탁 — dur ms */
+    sizzle(x, t, dur = 2000) {
+      const d = (dur || 2000) / 1000, n = Math.round(d * 34);
+      for (let i = 0; i < n; i++) noise(x, t + Math.random() * d, { a: .001, d: .009, g: .11 * (1 - i / n * .3), f: 2500 + Math.random() * 3500, q: 1.4, pan: (Math.random() - .5) * .6 });
+    },
+    /** 스피커 박 — strong 이면 큰 북, 아니면 작은 북 + 심벌 */
+    kick(x, t, strong, lv) {
+      const k = lv == null ? 1 : lv, g = (strong ? .5 : .3) * k;
+      tone(x, t, { f: strong ? 150 : 130, f2: 44, a: .002, d: strong ? .2 : .14, g });
+      noise(x, t, { a: .001, d: .05, g: g * .5, type: 'lowpass', f: 900, f2: 300 });
+      if (!strong) noise(x, t + .02, { a: .001, d: .04, g: .045, type: 'highpass', f: 7000 });
+    },
+    /** 백열전구 켜짐 — 딸깍 · 웅 · 팅 */
+    bulbOn(x, t) {
+      noise(x, t, { a: .001, d: .006, g: .12, f: 3000, q: 1.5 });
+      tone(x, t + .02, { f: 98, type: 'triangle', a: .05, d: .55, g: .08, lp: 500 });
+      noise(x, t + .03, { a: .08, d: .5, g: .05, type: 'lowpass', f: 300, f2: 3000 });
+      bell(x, t + .05, 1760, .12, .8);
+    },
+    /** LED 켜짐 — 딸깍 · 띠링 */
+    ledOn(x, t) {
+      noise(x, t, { a: .001, d: .006, g: .1, f: 3400, q: 1.5 });
+      tone(x, t + .01, { f: 1568, f2: 2093, a: .003, d: .2, g: .1 });
+      bell(x, t + .03, 2349, .1, .7);
+    },
+    /** 집 창문 켜짐 — 딸깍 · 띵띵띵 */
+    lightsOn(x, t) {
+      noise(x, t, { a: .001, d: .01, g: .08, f: 2600, q: 1.5 });
+      [1568, 1760, 1976].forEach((f, i) => bell(x, t + .04 + i * .09, f, .15, .7));
+    },
+    /** 송전선을 타고 전달 — 웅~ + 쉬익 + 지직, 소리가 왼쪽에서 오른쪽으로 움직임 */
+    zap(x, t, dur = 2400) {
+      const ac = x.ac, d = (dur || 2400) / 1000;
+      const o = ac.createOscillator(), lp = ac.createBiquadFilter(), g = ac.createGain();
+      o.type = 'sawtooth'; o.frequency.setValueAtTime(55, t); o.frequency.exponentialRampToValueAtTime(230, t + d * .8);
+      lp.type = 'lowpass'; lp.frequency.setValueAtTime(260, t); lp.frequency.exponentialRampToValueAtTime(1400, t + d);
+      g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(.15, t + d * .15); g.gain.setValueAtTime(.15, t + d * .7); g.gain.exponentialRampToValueAtTime(.0001, t + d + .5);
+      o.connect(lp); lp.connect(g);
+      if (ac.createStereoPanner) { const p = ac.createStereoPanner(); p.pan.setValueAtTime(-.85, t); p.pan.linearRampToValueAtTime(.85, t + d); g.connect(p); p.connect(x.dest); } else g.connect(x.dest);
+      o.start(t); o.stop(t + d + .6);
+      noise(x, t, { a: d * .3, d: d * .7, g: .07, f: 600, f2: 4200, q: .6 });
+      for (let i = 0, n = Math.round(d * 22); i < n; i++) noise(x, t + Math.random() * d, { a: .001, d: .008, g: .045, type: 'highpass', f: 5000, pan: -1 + 2 * Math.random() });
+    },
+    /** 열 보기 훑기 — 스캐너 */
+    scan(x, t, dur = 900) {
+      const d = (dur || 900) / 1000;
+      tone(x, t, { f: 280, f2: 1250, a: .04, d, g: .09, vib: [9, 14] });
+      tone(x, t, { f: 283, f2: 1262, type: 'triangle', a: .04, d, g: .04, pan: .4 });
+    },
+    /** 온도계가 오름 — 조용한 상승음 */
+    rise(x, t, dur = 2400) { tone(x, t, { f: 260, f2: 640, a: .15, d: (dur || 2400) / 1000, g: .07, vib: [5, 6] }); },
+    /** 바늘이 내려옴 — 슬라이드 휘슬 + 톡 */
+    sweepDown(x, t, dur = 1300) {
+      const d = (dur || 1300) / 1000;
+      tone(x, t, { f: 1100, f2: 380, a: .02, d, g: .09 });
+      tickAt(x, t + d, 1800, .08);
+    },
+    /** 푸슉(연기) */
+    puff(x, t) { noise(x, t, { a: .05, d: .5, g: .22, type: 'lowpass', f: 1000, f2: 300, q: .4 }); },
+    /** 싹둑 싹둑 */
+    snip(x, t) {
+      [0, .07, .14].forEach(o => { noise(x, t + o, { a: .001, d: .012, g: .18, f: 5000, q: 2 }); tone(x, t + o, { f: 3000, a: .001, d: .02, g: .03 }); });
+    },
+    /** 슥(선 그리기) */
+    zip(x, t, dur = 500) { noise(x, t, { a: .02, d: Math.min(.3, (dur || 500) / 1000 * .5), g: .12, f: 1500, f2: 4200, q: 1 }); },
+    /** 반짝 */
+    spark(x, t) { for (let i = 0; i < 4; i++) tone(x, t + i * .04 + Math.random() * .02, { f: 2200 + Math.random() * 2000, a: .001, d: .08, g: .04 }); },
+  };
+
+  /* ═════════ 이어지는 소리(선풍기·발전소·끓는 물) — level(0..1) 로 세기 조종 ═════════ */
+  function buildFan(x) {
+    const ac = x.ac, out = ac.createGain(); out.gain.value = 0; out.connect(x.dest);
+    const ns = ac.createBufferSource(); ns.buffer = x.nz; ns.loop = true;
+    const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 500; bp.Q.value = .7;
+    const gw = ac.createGain(); gw.gain.value = 0;
+    const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = 3; lg.gain.value = 0; lfo.connect(lg); lg.connect(gw.gain);   // 날개가 바람을 자르는 울렁임
+    ns.connect(bp); bp.connect(gw); gw.connect(out);
+    const m1 = ac.createOscillator(), m2 = ac.createOscillator(), gm = ac.createGain(), lp = ac.createBiquadFilter();   // 모터 웅~
+    m1.type = 'triangle'; m1.frequency.value = 50; m2.type = 'sine'; m2.frequency.value = 100; gm.gain.value = 0;
+    lp.type = 'lowpass'; lp.frequency.value = 700; m1.connect(gm); m2.connect(gm); gm.connect(lp); lp.connect(out);
+    ns.start(0, .3); lfo.start(); m1.start(); m2.start();
+    let lv = 0, wh = 0;
+    const apply = () => {
+      const T = ac.currentTime, v = clamp(lv, 0, 1.1), tc = .07;
+      gw.gain.setTargetAtTime(v * v * .095, T, tc); lg.gain.setTargetAtTime(v * v * .035, T, tc);
+      lfo.frequency.setTargetAtTime(2 + 7 * v, T, tc);
+      bp.frequency.setTargetAtTime(380 + 900 * v, T, tc);
+      m1.frequency.setTargetAtTime(46 + 70 * v, T, tc); m2.frequency.setTargetAtTime(92 + 140 * v, T, tc);
+      gm.gain.setTargetAtTime(v > .02 ? .01 + .034 * v + wh * .04 : 0, T, tc);
+      out.gain.setTargetAtTime(v > .01 ? 1 : 0, T, .05);
+    };
+    return {
+      level(v) { lv = v; apply(); }, whine(v) { wh = v; apply(); },
+      stop() {
+        const T = ac.currentTime; out.gain.cancelScheduledValues(T); out.gain.setTargetAtTime(0, T, .08);
+        setTimeout(() => { try { ns.stop(); lfo.stop(); m1.stop(); m2.stop(); out.disconnect(); } catch (e) {} }, 500);
+      },
+    };
+  }
+  function buildHum(x) {   // 발전소 웅~
+    const ac = x.ac, out = ac.createGain(); out.gain.value = 0; out.connect(x.dest);
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 220; lp.connect(out);
+    const o1 = ac.createOscillator(), o2 = ac.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = 50; o2.type = 'sine'; o2.frequency.value = 100;
+    const g2 = ac.createGain(); g2.gain.value = .5; o1.connect(lp); o2.connect(g2); g2.connect(lp);
+    const ns = ac.createBufferSource(); ns.buffer = x.nz; ns.loop = true; const nl = ac.createBiquadFilter(); nl.type = 'lowpass'; nl.frequency.value = 380; const ng = ac.createGain(); ng.gain.value = .5;
+    ns.connect(nl); nl.connect(ng); ng.connect(lp);
+    o1.start(); o2.start(); ns.start(0, .7);
+    return {
+      level(v) { const T = ac.currentTime; out.gain.setTargetAtTime(clamp(v, 0, 1.1) * .06, T, .15); o1.frequency.setTargetAtTime(44 + 8 * v, T, .3); },
+      stop() { const T = ac.currentTime; out.gain.setTargetAtTime(0, T, .1); setTimeout(() => { try { o1.stop(); o2.stop(); ns.stop(); out.disconnect(); } catch (e) {} }, 500); },
+    };
+  }
+  function buildBoil(x) {   // 주전자 끓는 소리: 쉬이~ + 보글보글
+    const ac = x.ac, out = ac.createGain(); out.gain.value = 0; out.connect(x.dest);
+    const ns = ac.createBufferSource(); ns.buffer = x.nz; ns.loop = true; const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 3200;
+    const gh = ac.createGain(); gh.gain.value = 0; ns.connect(hp); hp.connect(gh); gh.connect(out); ns.start(0, .2);
+    let lv = 0; const rnd = U_rng(7);
+    const id = setInterval(() => {
+      if (lv < .05 || !on) return;
+      if (rnd() < .15 + lv * .5) { const T = ac.currentTime + .005, f0 = 260 + rnd() * 260; tone({ ac, dest: out, nz: x.nz }, T, { f: f0, f2: f0 * 1.9, a: .003, d: .07, g: .1 * lv, pan: (rnd() - .5) * .8 }); }
+    }, 70);
+    return {
+      level(v) { lv = clamp(v, 0, 1); const T = ac.currentTime; gh.gain.setTargetAtTime(lv * .05, T, .4); out.gain.setTargetAtTime(lv > .01 ? 1 : 0, T, .1); },
+      stop() { clearInterval(id); const T = ac.currentTime; out.gain.setTargetAtTime(0, T, .1); setTimeout(() => { try { ns.stop(); out.disconnect(); } catch (e) {} }, 500); },
+    };
+  }
+  function U_rng(seed) { let s = seed >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+  const LOOPS = { fan: buildFan, hum: buildHum, boil: buildBoil };
+  const NULL_LOOP = { level() {}, whine() {}, stop() {} };
+
+  /* ═════════ 바깥 API ═════════ */
+  let blankN = 0;
+  const tickLog = [];
+  function play(name, a, b) {
+    if (OFF || !on) return;
+    const x = ensure(); if (!x) return;
+    const f = S[name]; if (!f) { console.warn('[SFX] 없는 소리:', name); return; }
+    if (name === 'blank') a = blankN++;
+    if (name === 'tick') {   // 빽빽할수록(100 W 레인) 톡톡이 작고 높은 지지직으로 — 촘촘한 정도에 따라 세기·음높이 자동 조절
+      const now = performance.now(); tickLog.push(now); while (tickLog.length && now - tickLog[0] > 250) tickLog.shift();
+      const n = tickLog.length;
+      b = (b ?? 1) / (1 + n * .22); a = (a ?? 1) * (1 + Math.min(n, 30) * .012);
+    }
+    try { f(x, x.ac.currentTime + .008, a, b); } catch (e) { console.error('[SFX]', name, e); }
+  }
+  function loop(kind, o) {
+    const build = LOOPS[kind];
+    if (OFF || !build) return NULL_LOOP;
+    const h = {
+      built: null, lvl: 0, wh: 0, dead: false,
+      level(v) { h.lvl = v; if (h.built) h.built.level(v); },
+      whine(v) { h.wh = v; if (h.built && h.built.whine) h.built.whine(v); },
+      stop() { h.dead = true; pending.delete(h); if (h.built) { h.built.stop(); h.built = null; } },
+      tryBuild() {
+        if (h.built || h.dead) return;
+        const x = ensure(); if (!x) return;
+        try { h.built = build(x, o || {}); h.built.level(h.lvl); if (h.wh && h.built.whine) h.built.whine(h.wh); }
+        catch (e) { console.error('[SFX loop]', kind, e); h.dead = true; }
+      },
+    };
+    pending.add(h); h.tryBuild();
+    return h;
+  }
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+    if (!OFF) { ensure(); pending.forEach(h => h.tryBuild()); }
+  }
+  ['pointerdown', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, unlock, { capture: true, once: false, passive: true }));
+  document.addEventListener('visibilitychange', () => {
+    if (!ac) return;
+    if (document.hidden) ac.suspend().catch(() => {}); else if (on) ac.resume().catch(() => {});
+  });
+
+  let toastEl = null, toastT = 0;
+  function toast(v) {
+    if (!document.body) return;
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.id = 'sfxToast'; document.body.appendChild(toastEl); }
+    toastEl.textContent = v ? '소리 켜짐' : '소리 꺼짐';
+    toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), 1400);
+  }
+  function toggle(v) {
+    on = v == null ? !on : !!v;
+    try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
+    unlock();
+    const x = ensure();
+    if (x && out) out.gain.setTargetAtTime(on ? .9 : 0, ac.currentTime, .03);
+    toast(on);
+    if (on) play('pop');
+    return on;
+  }
+
+  /* ═════════ 점검 도구 ═════════ */
+  function measure(buf) {
+    let peak = 0, sum = 0, n = 0, last = 0, first = -1, zc = 0, prev = 0;
+    const ch = buf.getChannelData(0), ch2 = buf.numberOfChannels > 1 ? buf.getChannelData(1) : ch, sr = buf.sampleRate;
+    for (let i = 0; i < ch.length; i++) {
+      const v = Math.max(Math.abs(ch[i]), Math.abs(ch2[i]));
+      if (v > peak) peak = v;
+      sum += ch[i] * ch[i]; n++;
+      if (v > .003) { last = i; if (first < 0) first = i; }
+      if ((ch[i] >= 0) !== (prev >= 0)) zc++; prev = ch[i];
+    }
+    const active = Math.max(1, last - Math.max(0, first)) / sr;
+    return { peak: +peak.toFixed(3), rms: +Math.sqrt(sum / n).toFixed(4), attack: first < 0 ? null : +(first / sr).toFixed(3), length: +(last / sr).toFixed(2), approxHz: Math.round(zc / 2 / active), clipped: peak >= .98, silent: peak < .01 };
+  }
+  async function analyze(name, a, b, secs = 3) {
+    const OA = window.OfflineAudioContext || window.webkitOfflineAudioContext, sr = 44100;
+    const oc = new OA(2, Math.floor(sr * secs), sr), g = oc.createGain(); g.gain.value = .9; g.connect(oc.destination);
+    const x = { ac: oc, dest: g, nz: noiseBuf(oc) };
+    S[name](x, .02, a, b);
+    return measure(await oc.startRendering());
+  }
+  async function analyzeLoop(kind, level = 1, secs = 1.5) {
+    const OA = window.OfflineAudioContext || window.webkitOfflineAudioContext, sr = 44100;
+    const oc = new OA(2, Math.floor(sr * secs), sr), g = oc.createGain(); g.gain.value = .9; g.connect(oc.destination);
+    const h = LOOPS[kind]({ ac: oc, dest: g, nz: noiseBuf(oc) }); h.level(level);
+    const r = measure(await oc.startRendering()); try { h.stop(); } catch (e) {} return r;
+  }
+
+  /** ?sfx=demo — 모든 소리를 눌러 들어 보는 패널 */
+  function demoPanel() {
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;left:12px;top:12px;z-index:200;max-width:340px;max-height:92vh;overflow:auto;background:rgba(29,29,31,.94);color:#f5f5f7;border-radius:14px;padding:14px;font:600 13px/1.3 system-ui,sans-serif';
+    const btn = (t, fn) => { const b = document.createElement('button'); b.textContent = t; b.style.cssText = 'margin:3px;padding:6px 10px;border-radius:9999px;border:0;background:#0066cc;color:#fff;font:600 13px system-ui'; b.onclick = () => { unlock(); fn(); }; return b; };
+    box.appendChild(Object.assign(document.createElement('div'), { textContent: '효과음 듣기 (F2 로 닫기)', style: 'margin-bottom:8px;font-size:14px' }));
+    Object.keys(S).forEach(k => box.appendChild(btn(k, () => { if (!on) toggle(true); play(k, k === 'kick' ? true : undefined, 1); })));
+    let fan = null;
+    box.appendChild(btn('fan 0→1→0', () => { if (!on) toggle(true); if (fan) fan.stop(); fan = loop('fan'); let v = 0, dir = 1; const id = setInterval(() => { v += dir * .05; if (v >= 1) dir = -1; fan.level(clamp(v)); if (v <= 0 && dir < 0) { clearInterval(id); fan.stop(); fan = null; } }, 60); }));
+    box.appendChild(btn('boil', () => { if (!on) toggle(true); const h = loop('boil'); h.level(1); setTimeout(() => h.stop(), 4000); }));
+    box.appendChild(btn('hum', () => { if (!on) toggle(true); const h = loop('hum'); h.level(1); setTimeout(() => h.stop(), 3000); }));
+    document.body.appendChild(box);
+    document.addEventListener('keydown', e => { if (e.key === 'F2') box.remove(); });
+  }
+  if (Q.get('sfx') === 'demo') { const go = () => demoPanel(); if (document.body) go(); else document.addEventListener('DOMContentLoaded', go); }
+
+  return { play, loop, toggle, unlock, analyze, analyzeLoop, names: () => Object.keys(S), isOn: () => on, isOff: () => OFF, S, debug: () => ({ pendingLoops: pending.size, unlocked, state: ac ? ac.state : 'none' }) };
+})();
+
+/* Lecture laser pointer v1 — canonical: 전기강의_빌드/objects/90_laser.js
+ * 소비전력강의_빌드/objects/90_laser.js is the identical build copy.
+ * Page-level UI: its RAF exists only while trails fade, independently of scene Ctx.
+ */
+(function () {
+  'use strict';
+  function mount() {
+    if (window.LectureLaser || !window.Deck || !document.getElementById('hud')) return;
+    var hud = document.getElementById('hud');
+    var canvas = document.createElement('canvas');
+    canvas.id = 'lecture-laser';
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.hidden = true;
+    var style = document.createElement('style');
+    style.textContent = '#lecture-laser{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:49;touch-action:none;cursor:none;user-select:none;-webkit-user-select:none;}#lecture-laser[hidden]{display:none!important}#hud #lecture-laser-toggle[aria-pressed="true"]{background:#c82044;color:#fff;outline:2px solid #fff;outline-offset:2px}@media print{#lecture-laser,#lecture-laser-toggle{display:none!important}}';
+    document.head.appendChild(style);
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    if (!ctx) { canvas.remove(); style.remove(); return; }
+    var button = document.createElement('button');
+    button.id = 'lecture-laser-toggle';
+    button.type = 'button';
+    button.setAttribute('aria-label', '레이저 포인터 켜기/끄기 (L)');
+    button.setAttribute('aria-keyshortcuts', 'L');
+    button.setAttribute('aria-pressed', 'false');
+    button.title = '레이저 포인터 (L) · 드래그로 궤적 · Esc로 끄기';
+    button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 19 7-7 3 3-7 7zM14 10l2-2M17 12h4M12 7V3M17 7l3-3"/><circle cx="13" cy="11" r="1.5" fill="currentColor"/></svg>';
+    hud.insertBefore(button, hud.querySelector('[data-a="full"]'));
+    var table = document.querySelector('#help table');
+    if (table) {
+      var row = table.insertRow();
+      row.innerHTML = '<td><kbd>L</kbd> / <kbd>Esc</kbd></td><td>레이저 켜기·끄기 / 끄기 · 드래그하면 궤적 · 방향키로 진행</td>';
+    }
+
+    var enabled = false, pointer = null, activeId = null;
+    var points = [], strokeId = 0, raf = 0, dpr = 1;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var lifetime = 1100, maxPoints = 800;
+    function stopFrame() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+    function render(now) {
+      raf = 0;
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+      if (!enabled) return;
+      points = points.filter(function (p) { return now - p.t < lifetime; });
+      ctx.lineCap = ctx.lineJoin = 'round';
+      for (var i = 1; i < points.length; i++) {
+        var a = points[i - 1], b = points[i];
+        if (a.s !== b.s) continue;
+        var opacity = reduced.matches ? 1 : Math.max(0, 1 - (now - a.t) / lifetime);
+        ctx.globalAlpha = opacity;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+        ctx.lineWidth = 9; ctx.strokeStyle = 'rgba(180,0,38,.20)'; ctx.stroke();
+        ctx.lineWidth = 4.5; ctx.strokeStyle = '#f52651'; ctx.stroke();
+        ctx.lineWidth = 1.2; ctx.strokeStyle = '#fff1f4'; ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      if (pointer) {
+        var glow = ctx.createRadialGradient(pointer.x,pointer.y,2,pointer.x,pointer.y,18);
+        glow.addColorStop(0,'rgba(255,35,77,.7)'); glow.addColorStop(1,'rgba(255,35,77,0)');
+        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(pointer.x,pointer.y,18,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#eb1243'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.arc(pointer.x,pointer.y,6,0,Math.PI*2); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(pointer.x,pointer.y,1.8,0,Math.PI*2); ctx.fill();
+      }
+      if (points.length) raf = requestAnimationFrame(render);
+    }
+    function paint() { if (!raf) raf = requestAnimationFrame(render); }
+    function release() {
+      if (activeId !== null && canvas.hasPointerCapture(activeId)) canvas.releasePointerCapture(activeId);
+      activeId = null;
+    }
+    function clear() {
+      release(); pointer = null; points = []; stopFrame();
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    }
+    function resize() {
+      clear();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px';
+      canvas.width = Math.round(window.innerWidth * dpr); canvas.height = Math.round(window.innerHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function toggle(value) {
+      enabled = typeof value === 'boolean' ? value : !enabled;
+      clear(); canvas.hidden = !enabled; button.setAttribute('aria-pressed', String(enabled));
+      if (enabled) resize();
+    }
+    function position(e) { return { x:e.clientX, y:e.clientY }; }
+    function sample(e) {
+      pointer = position(e);
+      if (activeId !== null) {
+        var last = points[points.length - 1];
+        if (!last || last.s !== strokeId || Math.hypot(last.x-pointer.x,last.y-pointer.y) >= 2) {
+          points.push({x:pointer.x,y:pointer.y,t:performance.now(),s:strokeId});
+          if (points.length > maxPoints) points.splice(0,points.length-maxPoints);
+        }
+      }
+      paint();
+    }
+    button.addEventListener('click', function (e) { e.stopPropagation(); toggle(); button.blur(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing || (e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'))) return;
+      if (e.key.toLowerCase() === 'l') {
+        if (!e.repeat) toggle();
+        e.preventDefault(); e.stopImmediatePropagation();
+      } else if (e.key === 'Escape' && enabled) {
+        toggle(false); e.preventDefault(); e.stopImmediatePropagation();
+      } else if (enabled) {
+        // Arrows, replay, overview, blanking and jumps clear old marks but retain laser mode.
+        clear();
+      }
+    }, true);
+    canvas.addEventListener('pointerdown', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      if (!enabled || activeId !== null || e.button !== 0 || !e.isPrimary) return;
+      activeId = e.pointerId; strokeId++;
+      canvas.setPointerCapture(e.pointerId); sample(e);
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      if (!enabled || !e.isPrimary || (activeId !== null && e.pointerId !== activeId)) return;
+      sample(e);
+    });
+    function end(e) {
+      e.preventDefault(); e.stopPropagation();
+      if (e.pointerId !== activeId) return;
+      release();
+      if (e.pointerType !== 'mouse') pointer = null;
+      if (reduced.matches) points = [];
+      paint();
+    }
+    canvas.addEventListener('pointerup', end);
+    canvas.addEventListener('pointercancel', function (e) { if (e.pointerId === activeId) clear(); });
+    canvas.addEventListener('lostpointercapture', function () { activeId = null; if (reduced.matches) points = []; paint(); });
+    canvas.addEventListener('pointerleave', function () { if (activeId === null) { pointer = null; paint(); } });
+    canvas.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); });
+    canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); e.stopPropagation(); });
+    // Avoid a constantly visible toolbar in recordings; the lower edge still reveals it.
+    canvas.addEventListener('mousemove', function (e) { if (e.clientY < window.innerHeight - 90) e.stopPropagation(); });
+    hud.addEventListener('click', clear, true);
+    new MutationObserver(function () { if (enabled) clear(); }).observe(document.getElementById('count'), {childList:true,subtree:true,characterData:true});
+    new MutationObserver(function () { if (enabled) clear(); }).observe(document.getElementById('stepdots'), {childList:true});
+    window.addEventListener('resize', resize);
+    document.addEventListener('fullscreenchange', resize);
+    window.addEventListener('blur', clear);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) clear(); });
+    window.addEventListener('pagehide', clear);
+    reduced.addEventListener('change', clear);
+    resize();
+    window.LectureLaser = Object.freeze({
+      setEnabled: toggle, clear: clear,
+      get enabled() { return enabled; },
+      get drawing() { return activeId !== null; },
+      get trailPoints() { return points.length; }
+    });
+  }
+  // The engine boots in its DOMContentLoaded timer, so queue ours immediately after it.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(mount,0); });
+  else setTimeout(mount,0);
+})();
+/* 공통 과학 그림. 실제 사진이 아닌 원리 모형. 단위·가정은 화면과 대본에 명시. */
+(function(){
+'use strict';
+const C={bg:'#101c38',line:'#8fa9d8',star:'#ffd166',blue:'#73cfff',pink:'#ff8eae',white:'#f6f8ff',green:'#8ce5bd'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const T=(x,y,t,color=C.white,size=29,anchor='middle')=>`<text x="${x}" y="${y}" fill="${color}" font-size="${size}" text-anchor="${anchor}" font-weight="600">${esc(t)}</text>`;
+const L=(x1,y1,x2,y2,color=C.line,w=3,dash='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" ${dash?'stroke-dasharray="'+dash+'"':''}/>`;
+const O=(x,y,r,color=C.star,opacity=1)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${color}" opacity="${opacity}"/>`;
+const box=(x,y,w,h,color='#1c3156')=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="15" fill="${color}"/>`;
+const arrow=(x1,y1,x2,y2,color=C.star)=>{let a=Math.atan2(y2-y1,x2-x1),l=14;return L(x1,y1,x2,y2,color,4)+`<path d="M${x2-l*Math.cos(a-.45)} ${y2-l*Math.sin(a-.45)} L${x2} ${y2} L${x2-l*Math.cos(a+.45)} ${y2-l*Math.sin(a+.45)}" fill="none" stroke="${color}" stroke-width="4"/>`;};
+function rng(seed){let x=seed;return()=>{x=(x*1664525+1013904223)>>>0;return x/4294967296;};}
+function stars(cx,cy,rx,ry,n,seed=5,dense=false){let r=rng(seed),s='';for(let i=0;i<n;i++){let a=r()*Math.PI*2,d=dense?Math.pow(r(),1.8):Math.sqrt(r());s+=O(cx+Math.cos(a)*rx*d,cy+Math.sin(a)*ry*d,1.8+r()*3,i%3===0?C.blue:C.star);}return s;}
+function cloud(cx,cy,color){let s='';for(let i=0;i<8;i++)s+=`<ellipse cx="${cx+Math.cos(i*2)*48}" cy="${cy+Math.sin(i*2)*52}" rx="64" ry="46" fill="${color}" opacity=".24"/>`;return s;}
+function galaxy(){let s='';for(let arm=0;arm<2;arm++){let pts=[];for(let j=0;j<120;j++){let a=j/119*4.3+arm*Math.PI,r=48+j*1.75;pts.push(`${400+Math.cos(a)*r},${255+Math.sin(a)*r*.78}`);}s+=`<polyline points="${pts.join(' ')}" fill="none" stroke="#5aaade" stroke-opacity=".32" stroke-width="28"/>`;}s+=stars(400,255,220,171,75,34);s+=`<ellipse cx="400" cy="255" rx="70" ry="26" fill="#ffd166" opacity=".75" transform="rotate(-16 400 255)"/>`;return s;}
+function table(rows){let n=rows.length,h=Math.min(95,340/n),y=(520-h*n)/2,w=700,x=50,col=w/rows[0].length,s='';rows.forEach((row,i)=>{s+=box(x,y+i*h,w,h-4,i===0?'#28426c':'#192e50');row.forEach((t,j)=>s+=T(x+col*(j+.5),y+i*h+h*.64,t,i===0?C.blue:C.white,rows[0].length>3?29:32));});return s;}
+function render(type,k=3,value=null,data=null){
+if(type==='parallaxView'){type='parallax';value=3;}
+let s='',v=value,cap='개념 모형 · 크기와 거리 비율은 실제와 다름';
+if(['parallax','baseline','orbit','annual','compareP','parsec','calcP'].includes(type)){
+ if(type==='compareP'||type==='calcP'||type==='parsec'){
+  const rows=type==='compareP'?[['연주시차','큰 별','작은 별'],['거리','가까움','멂']]:type==='calcP'?[['연주시차 p','거리 1 ÷ p'],['0.5″','2 pc'],['0.25″','4 pc'],['0.1″','10 pc']]:[['연주시차','거리'],['1″','1 pc'],['','약 3.26광년']];s=table(rows);cap=type==='calcP'?'성취기준 밖의 확장 학습':'같은 관찰 조건에서 비교';
+ }else if(type==='parallax'||type==='baseline'){
+  let y=type==='baseline'?245:(v!==null?340-(v-1)*35:340-Math.min(k,3)*35),b=type==='baseline'?70+Math.min(k,3)*25:120;
+  s=T(400,48,'먼 배경')+L(80,90,720,90,C.line,2,'8 8');
+  for(let sign of [-1,1]){let x=400+sign*b,ex=400+(400-x)*(y-90)/(450-y);s+=L(x,450,ex,90,sign<0?C.blue:C.pink,3)+O(ex,90,9,sign<0?C.blue:C.pink)+O(x,450,15,sign<0?C.blue:C.pink);}
+  s+=O(400,y,17)+T(445,y+8,'대상',C.star,28,'start')+T(270,492,'관찰점 A',C.blue)+T(540,492,'관찰점 B',C.pink);
+  cap='관찰점 사이 거리와 대상까지의 거리를 구분';
+ }else{
+  let a=130,y=140,base=415;
+  s+=`<ellipse cx="400" cy="415" rx="${a}" ry="43" fill="none" stroke="${C.line}" stroke-width="3"/>`+O(400,415,22)+T(400,475,'태양',C.star);
+  s+=O(270,415,17,C.blue)+O(530,415,17,C.pink)+T(240,365,'1월',C.blue)+T(570,365,'7월',C.pink)+O(400,y,17)+T(400,91,'가까운 별',C.star);
+  s+=L(270,415,400,y,C.blue)+L(530,415,400,y,C.pink)+L(400,y,400,222,C.line,2,'8 8')+L(400,308,400,385,C.line,2,'8 8');
+  let an=Math.atan2(a,base-y),r=100,x1=400-r*Math.sin(an),x2=400+r*Math.sin(an),yy=y+r*Math.cos(an);
+  s+=`<path d="M${x1} ${yy} A${r} ${r} 0 0 0 ${x2} ${yy}" stroke="${C.star}" fill="none" stroke-width="5"/>`;
+  s+=`<path d="M400 205 A65 65 0 0 0 ${400+65*Math.sin(an)} ${y+65*Math.cos(an)}" stroke="${C.white}" fill="none" stroke-width="3"/>`+L(416,202,520,175,C.white,2)+T(548,177,'p',C.white,30)+T(400,292,'2p',C.star,36)+T(160,215,'6개월 간격',C.blue,28);
+  cap='p: 연주시차 · 2p: 최대 시차 · 각도를 크게 그린 모형';
+ }
+}else if(['brightness','spread','twoStars'].includes(type)){
+ if(type==='spread'){
+  s=O(85,260,23)+T(85,320,'광원',C.star);s+=L(110,242,690,70,C.star,3)+L(110,278,690,450,C.star,3);
+  for(let j=1;j<=3;j++){let x=150+j*165,h=j*95;s+=`<rect x="${x}" y="${260-h/2}" width="${j*34}" height="${h}" fill="${C.blue}" fill-opacity="${.28/j}" stroke="${C.blue}" stroke-width="2"/>`;for(let i=1;i<j;i++)s+=L(x,260-h/2+i*95,x+j*34,260-h/2+i*95,C.blue,2);s+=T(x+j*17,480,`${j}배 거리`,C.white,28);}
+  cap='같은 빛이 퍼지는 면적은 거리의 제곱에 비례';
+ }else if(type==='twoStars'){
+  s=T(400,55,'별 자체의 밝기와 거리를 함께 고려')+O(180,190,37,C.star)+O(520,190,37,C.star,.4)+T(180,280,'별 A')+T(520,280,'별 B')+L(180,330,710,330,C.blue,4)+L(520,390,710,390,C.pink,4)+T(280,365,'거리도 다를 수 있음',C.blue,28)+O(710,360,15,C.green)+T(690,450,'관찰자',C.green,28);
+ }else{
+  let d=v??Math.max(1,Math.min(3,k)),x=90+d*150,b=1/d**2;s=O(90,245,30)+T(90,310,'같은 별',C.star,28)+L(120,245,x,245,C.star,3)+`<rect x="${x}" y="155" width="42" height="180" rx="5" fill="${C.blue}" fill-opacity="${Math.min(1,.15+.2*b)}" stroke="${C.blue}" stroke-width="3"/>`;
+  s+=T(400,62,`거리 ${Number(d).toFixed(d%1?1:0)}배`,C.white,36)+T(400,407,`밝기 ${b===1?'1':Number.isInteger(d)?'1/'+(d*d):Number.isInteger(b)?String(b):'약 '+b.toFixed(3)}배`,C.star,42)+T(400,466,'같은 면적에 도달하는 빛 비교',C.blue,28);
+  cap='별의 실제 밝기 일정 · 빛의 흡수 생략';
+ }
+}else if(['magnitude','magRatio'].includes(type)){
+ if(type==='magnitude'){
+  let grades=[-2,0,2,4,6];grades.forEach((g,i)=>{let x=110+i*145;s+=O(x,215,35,C.star,1-i*.19)+T(x,302,`${g}등급`,C.white,29);});s+=arrow(670,395,110,395,C.blue)+T(390,456,'등급 숫자가 작을수록 밝음',C.blue,32);
+ }else{s=table([['등급 차','1','5'],['밝기 비','약 2.5배','100배']])+T(400,455,'등급 숫자가 작은 쪽이 더 밝다',C.star,30);}
+ cap='1등급 차의 2.5는 반올림한 값';
+}else if(['tenpc','distanceCases'].includes(type)){
+ if(type==='distanceCases'){s=table([['겉보기와 절대','거리'],['겉보기 < 절대','10 pc보다 가까움'],['겉보기 = 절대','10 pc'],['겉보기 > 절대','10 pc보다 멂']]);}
+ else{s=O(90,250,18,C.green)+T(90,305,'지구',C.green,28)+L(115,250,710,250,C.line,3)+L(420,150,420,345,C.blue,3,'9 7')+T(420,390,'10 pc',C.blue,34)+O(235,250,24)+O(650,250,24,C.pink)+T(235,185,'가까운 별',C.star,28)+T(650,185,'먼 별',C.pink,28)+arrow(262,305,385,305,C.star)+arrow(623,305,455,305,C.pink)+T(400,465,'모두 10 pc에 놓고 밝기 비교',C.white,31);}
+ cap='별을 실제로 옮기지 않고 같은 거리로 가정';
+}else if(['colors','colorStars'].includes(type)){
+ if(type==='colorStars'){let items=[['리겔','청백색','#b5dcff'],['시리우스','백색','#fff'],['베텔게우스','적색','#ff8467']];items.forEach((a,i)=>{let x=150+i*250;s+=O(x,210,42,a[2])+T(x,309,a[0])+T(x,359,a[1],a[2],28);});s+=arrow(650,426,150,426,C.blue)+T(400,483,'표면 온도 높음 ← 낮음',C.white,30);}
+ else{let colors=['#77acff','#b6d7ff','#fff','#fff3d1','#ffe181','#ffb061','#ff765a'],labels=['청색','청백색','백색','황백색','황색','주황색','적색'];colors.forEach((c,i)=>{let x=85+i*105;s+=O(x,214,34,c)+T(x,292,labels[i],C.white,29);});s+=arrow(695,374,80,374,C.blue)+T(80,441,'높음',C.blue,34)+T(695,441,'낮음',C.pink,34)+T(400,441,'표면 온도',C.white,32);}
+ cap='온도는 색으로 비교 · 원의 크기는 별 크기 비교가 아님';
+}else if(type==='views'){
+ s=box(35,60,220,380)+box(290,60,220,380)+box(545,60,220,380);
+ s+=`<g transform="translate(25 115) scale(.3)">${galaxy()}</g>`+T(145,120,'위에서',C.blue,31)+T(145,399,'막대 나선',C.white,28);
+ s+=`<ellipse cx="400" cy="250" rx="93" ry="13" fill="#48668f"/><ellipse cx="400" cy="250" rx="28" ry="31" fill="#d6b86d"/>`+T(400,120,'옆에서',C.blue,31)+T(400,399,'납작한 원반',C.white,28);
+ s+=stars(655,250,82,24,80,63)+T(655,120,'내부에서',C.blue,31)+T(655,399,'은하수',C.white,28);cap='같은 우리은하를 서로 다른 시점에서 나타낸 모형';
+}else if(['galaxy','galaxySize'].includes(type)){
+ s=galaxy()+T(400,50,'위에서 본 우리은하',C.white,32);
+ s+=O(555,315,10,C.pink)+L(555,315,660,361,C.pink,3)+T(665,409,'태양계',C.pink,29);
+ if(type==='galaxySize'){s+=L(155,465,645,465,C.blue,3)+L(155,452,155,478,C.blue)+L(645,452,645,478,C.blue)+T(400,507,'지름 약 30,000 pc',C.blue,30)+L(410,265,548,309,C.pink,3)+T(550,218,'약 8,500 pc',C.pink,28);}
+ else{s+=L(389,245,233,170,C.star)+T(170,145,'중심 막대',C.star,29)+T(400,493,'막대 나선 모양',C.blue,31);}
+ cap='외부에서 본 구조를 재구성한 모형';
+}else if(['sideGalaxy','milkyway'].includes(type)){
+ s+=T(400,55,'옆에서 본 우리은하',C.white,32)+`<ellipse cx="400" cy="267" rx="305" ry="30" fill="#37567f"/><ellipse cx="400" cy="267" rx="90" ry="58" fill="#d7b975" opacity=".85"/>`+stars(400,267,298,26,95,13)+O(550,267,9,C.pink)+T(610,360,'태양계',C.pink,29)+L(552,279,604,322,C.pink);
+ if(type==='milkyway'){s+=arrow(538,267,145,267,C.blue)+arrow(550,254,550,100,C.green)+T(160,207,'원반을 따라 봄',C.blue,28)+T(653,126,'원반 밖 방향',C.green,28)+T(400,463,'보는 방향에 따라 겹쳐 보이는 별의 수가 다름',C.white,29);}
+ else s+=T(400,434,'중심은 볼록 · 주변은 납작한 원반',C.blue,30);
+}else if(type==='sky'){
+ s+=T(400,56,'지구에서 본 은하수의 개념 모형',C.white,30);let r=rng(12);for(let i=0;i<150;i++){let x=40+r()*720,y=140+x*.28+(r()-.5)*90;s+=O(x,y,1.4+r()*2.6,i%4?C.star:C.blue);}s+=T(400,455,'많은 별의 빛이 띠처럼 이어져 보임',C.blue,30);
+}else if(type==='scale'){
+ s=O(140,235,30)+T(140,340,'태양',C.star,31)+O(400,235,17);
+ for(let r of [39,66,92])s+=`<ellipse cx="400" cy="235" rx="${r}" ry="${r*.65}" fill="none" stroke="${C.line}" stroke-width="2"/>`;
+ s+=O(439,235,6,C.blue)+O(368,197,7,C.pink)+O(400,295,7,C.green)+T(400,340,'태양계',C.white,31);
+ s+=`<ellipse cx="660" cy="235" rx="87" ry="49" fill="#294d78"/>`+stars(660,235,80,44,50,22)+T(660,340,'우리은하',C.white,31)+T(400,453,'태양계는 우리은하의 작은 일부분',C.blue,30);cap='포함 관계를 나타낸 그림 · 실제 크기 비율 아님';
+}else if(type==='external'){
+ ['우리은하','외부 은하 A','외부 은하 B'].forEach((t,i)=>{let x=145+i*250;s+=`<ellipse cx="${x}" cy="245" rx="${45+i*15}" ry="${20+i*8}" fill="#426f9c"/>`+stars(x,245,45+i*15,20+i*8,20,10+i)+T(x,340,t,C.white,29);});s+=T(400,450,'은하는 수많은 별 등을 포함하는 집단',C.blue,30);cap='실제 은하 사이 거리 비율을 나타낸 그림은 아님';
+}else if(['emission','reflection','darkNebula'].includes(type)){
+ const dark=type==='darkNebula',reflect=type==='reflection';let color=dark?'#020817':reflect?C.blue:C.pink;
+ s=O(100,250,27,C.star)+T(100,333,'별',C.star,29)+cloud(390,250,color)+T(390,419,'기체와 먼지',C.white,29)+O(705,250,15,C.green)+T(680,382,'관찰자',C.green,28);
+ s+=arrow(138,250,290,250,C.star);
+ if(dark){s+=L(500,250,672,250,C.line,2,'7 11')+T(520,120,'배경 별빛을 가림',C.white,30);}
+ else{for(let y of [165,250,335])s+=arrow(475,250,650,y,color);s+=T(440,92,reflect?'별빛이 먼지에서 산란':'기체가 빛을 방출',color,31);}
+ cap=dark?'물질이 없는 곳이 아니라 별빛이 가려진 곳':'화살표: 빛이 이동하는 방향';
+}else if(type==='nebulaTypes'){
+ ['방출 성운','반사 성운','암흑 성운'].forEach((t,i)=>{let x=145+i*250;s+=cloud(x,220,[C.pink,C.blue,'#010611'][i])+T(x,375,t,C.white,29);});s+=T(400,462,'방출 · 산란 · 가림',C.blue,32);
+}else if(['clusters','openCluster','globular','nebulaCluster','objectCards'].includes(type)){
+ if(type==='openCluster'){s=stars(400,255,240,150,45,41)+T(400,65,'산개 성단',C.blue,34)+T(400,477,'듬성듬성 · 불규칙한 모양',C.white,31);}
+ else if(type==='globular'){s=stars(400,255,205,190,150,82,true)+T(400,55,'구상 성단',C.star,34)+T(400,488,'빽빽함 · 공 모양',C.white,32);}
+ else if(type==='objectCards'){s=table([['관측 대상','분류'],['오리온 대성운','방출 성운'],['말머리성운','암흑 성운'],['플레이아데스','산개 성단']]);}
+ else{if(type==='nebulaCluster')s=cloud(205,235,C.pink)+T(205,385,'성운',C.pink,33)+T(205,437,'기체와 먼지',C.white,28);else s=stars(205,235,145,135,36,22)+T(205,410,'산개 성단',C.blue,32);s+=stars(590,235,138,136,105,82,true)+T(590,410,type==='nebulaCluster'?'성단':'구상 성단',C.star,32);if(type==='nebulaCluster')s+=T(590,458,'별의 집단',C.white,28);}
+ cap='별 점과 구름은 분포·구성 물질을 나타낸 모형';
+}else if(type==='constellation'){
+ s=O(90,260,18,C.green)+T(90,320,'지구',C.green,29);[[270,170],[450,350],[680,220]].forEach(([x,y],i)=>{s+=L(110,260,x,y,C.line,2,'8 8')+O(x,y,14)+T(x,y-35,String.fromCharCode(65+i),C.star,29);});s+=T(400,460,'비슷한 방향에 보여도 거리는 다를 수 있음',C.white,29);
+}else if(['expansion','expansionB','balloon','history'].includes(type)){
+ let a=v??(1+Math.min(3,k)*.16);
+ if(type==='balloon'){
+  let r=118*a;s+=`<circle cx="400" cy="255" r="${r}" fill="#23476d" stroke="${C.blue}" stroke-width="3"/>`;
+  for(let i=0;i<6;i++){let ang=i*1.05,x=400+Math.cos(ang)*r*.7,y=255+Math.sin(ang)*r*.7;s+=O(x,y,9,C.star);}
+  s+=T(400,54,'표면: 공간 / 점: 은하',C.white,31)+T(400,475,'점의 크기는 일정 · 점 사이 거리는 증가',C.blue,28);
+ }else if(type==='history'){
+  s=arrow(80,260,720,260,C.blue);[['과거',140],['팽창',400],['현재',660]].forEach(([t,x],i)=>{s+=`<ellipse cx="${x}" cy="200" rx="${38+i*25}" ry="${38+i*25}" fill="#325480"/>`+stars(x,200,30+i*22,30+i*22,20,8)+T(x,330,t,C.white,32);});s+=T(400,430,'약 138억 년의 변화',C.star,34);cap='크기·시간을 축척으로 나타낸 그림이 아님';
+ }else{
+  let base=type==='expansionB'?1:0,coords=[[0,0],[115,-70],[180,60],[-125,80],[-90,-105]],origin=coords[base];s+=T(400,52,`기준 은하: ${base?'B':'A'} / 팽창 배율 ${a.toFixed(2)}`,C.white,29);
+  coords.forEach(([x,y],i)=>{let xx=400+(x-origin[0])*a,yy=(base?220:270)+(y-origin[1])*a;if(i!==base)s+=L(400,base?220:270,xx,yy,C.line,2,'5 8');s+=O(xx,yy,11,i===base?C.green:C.star)+T(xx+21,yy-19,String.fromCharCode(65+i),i===base?C.green:C.white,29);});s+=T(400,492,'은하의 크기는 일정 · 간격만 확대',C.blue,28);
+ }
+}else if(type==='table'){s=table(data||[['자료','값'],['A','1']]);cap='수업용 예시 자료';}
+else if(type==='flow'){s=box(75,100,650,90)+T(400,158,'1  주어진 정보와 조건 확인',C.blue,33)+arrow(400,203,400,246)+box(75,260,650,90)+T(400,318,'2  비교 기준 선택',C.white,33)+arrow(400,360,400,402)+T(400,467,'3  근거와 함께 설명',C.star,33);cap='조건 → 관계 → 결론';}
+else throw new Error('알 수 없는 그림 유형: '+type);
+return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" width="800" height="540" role="img" aria-label="${esc(type)}" style="width:100%;height:auto;aspect-ratio:800/540;background:${C.bg};border-radius:18px;font-family:inherit"><g>${s}</g></svg><figcaption>${esc(cap)}</figcaption>`;
+}
+window.Astro={render,esc};
+})();
+
+</script>
+<script>
+if(Deck.REDUCED){document.querySelectorAll('.astro [data-fx]').forEach(el=>{el.dataset.fx='none';el.dataset.dur='1';});}
+Deck.scene('a4_01',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML="<img class=\"intro-art\" src=\"assets/astronomy/night-sky.webp\" alt=\"우주 도입용 삽화\"><div class=\"intro-caption\">AI 생성 삽화 · 실제 관측 사진 아님<\/div>";},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_02',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("scale",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","태양계와 은하 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_03',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("galaxy",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","우리은하 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_04',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("galaxy",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","위에서 본 우리은하 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_05',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("sideGalaxy",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","옆에서 본 우리은하 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_06',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("galaxySize",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","우리은하의 크기 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_07',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("galaxySize",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","태양계의 위치 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_08',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("milkyway",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","우리은하 안에서 보는 하늘 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_09',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("sky",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","은하수 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_10',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("milkyway",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","은하 중심 방향과 반대 방향 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_11',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("external",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","우리은하와 외부 은하 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_12',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("views",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","그림의 관찰 시점 해석 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a4_13',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("galaxy",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","우리은하 핵심 정리 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+</script>
+<dialog id="astro-simulator" class="astro-sim-modal"><header><strong>탐구 시뮬레이터</strong><button type="button">강의·수업으로 돌아가기</button></header><iframe title="탐구 시뮬레이터" src="about:blank" allow="fullscreen"></iframe></dialog><script>(()=>{const d=document.querySelector('#astro-simulator');if(!d)return;const f=d.querySelector('iframe'),close=d.querySelector('button');let opener=null;function end(){f.src='about:blank';d.close();if(opener)opener.focus();}document.addEventListener('click',e=>{const b=e.target.closest('[data-sim-src]');if(!b)return;e.stopPropagation();opener=b;f.src=b.dataset.simSrc;f.title=b.dataset.simTitle;d.querySelector('strong').textContent=b.dataset.simTitle;d.showModal();});close.addEventListener('click',end);d.addEventListener('cancel',e=>{e.preventDefault();end();});document.addEventListener('keydown',e=>{if(!d.open)return;if(e.key==='Escape'){e.preventDefault();end();}e.stopImmediatePropagation();},true);f.addEventListener('load',()=>{try{f.contentDocument.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();end();}});}catch(e){}});})();</script></body>
+</html>

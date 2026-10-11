@@ -25,3 +25,23 @@
 
 ---
 © 2026 조승재(과학이조선생) · 해누리중학교
+
+
+## 2026-10-11 · 6차시 수업과 강의
+
+허브 상단에서 새 6차시의 수업 페이지와 방향키 강의를 열고, 관련 기존 탐구 자료를 이어서 이용할 수 있습니다. 기존 8개 탐구 자료의 56패널·22캔버스·105문항과 문항 ID, 로그인·학생 기록·피드백 기능을 유지했습니다.
+
+| 차시 | 수업 페이지 | 강의 화면 |
+|---|---|---|
+| 1 연주시차 | `lesson-01-parallax.html` | `lecture-01-parallax.html` |
+| 2 별의 밝기·등급 | `lesson-02-brightness.html` | `lecture-02-brightness.html` |
+| 3 겉보기·절대 등급과 색 | `lesson-03-magnitude-color.html` | `lecture-03-magnitude-color.html` |
+| 4 우리은하 | `lesson-04-milkyway.html` | `lecture-04-milkyway.html` |
+| 5 성운·성단 | `lesson-05-nebula-clusters.html` | `lecture-05-nebula-clusters.html` |
+| 6 우주 팽창 | `lesson-06-expansion.html` | `lecture-06-expansion.html` |
+
+수업·강의는 동일 내용으로 구성하고, 시뮬레이터를 화면 안에서 직접 엽니다. 강의는 방향키 단계 진행, L 레이저(알림 없음), R 재생을 지원합니다. 계산 풀이는 성취기준 밖 확장 학습으로 표시하고 우주 탐사 활동은 보류했습니다.
+
+이번 배포에는 학습지 PDF·JSON·ZIP과 다운로드 링크를 포함하지 않았습니다. 검토 중인 학습지는 로컬에서 관리합니다. `share/`에도 동일한 자료 구조를 제공합니다.
+
+배포 원본은 `수업HTML`이며, 이번 6차시 배포 도구는 별도로 기록했습니다. 기존 `별과우주_배포.py`는 신규 파일 매핑이 없으므로 그대로 재실행하면 새 자료가 누락됩니다. 이후 수정 때 최신 인계 기록과 6차시 배포 도구를 먼저 확인하세요.
