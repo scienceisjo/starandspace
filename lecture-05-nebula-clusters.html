@@ -323,6 +323,28 @@ html.still #kwbar,html.still #kwbar *{transition:none!important}
 #kwbar .kw.cur span{max-width:600px}
 @media(prefers-reduced-motion:reduce){.astro-opening *{animation:none!important;transition:none!important}}
 
+/* 2026-10-13 강의 전용 다듬기 (Claude) — polish.js 와 짝. 그림자 대신 면 색·테두리로 강조한다. */
+/* 지금 설명하는 카드 강조 · 지난 카드는 살짝 물러남 */
+.astro .astro-point{transition:background-color .45s ease,border-color .45s ease,color .45s ease;border-radius:0 12px 12px 0}
+.astro .astro-point.ap-now{background:rgba(255,214,118,.13);border-left-color:#ffd676!important}
+.astro[data-tile="dark"] .astro-point.ap-past{color:#b4c6da;border-left-color:#4f7894!important}
+.astro[data-tile="light"] .astro-point.ap-past{color:#5d7690}
+.astro[data-tile="light"] .astro-point.ap-now{background:rgba(36,115,180,.10);border-left-color:#d79a16!important}
+/* 학습지 대응 낱말: 카드가 나타난 뒤 밑줄이 왼쪽부터 그어짐 */
+.astro .astro-point mark{border-bottom:0;background:linear-gradient(#ffd16d,#ffd16d) no-repeat 0 100%/0% 4px;transition:background-size .7s cubic-bezier(.22,1,.36,1) .35s;padding-bottom:3px}
+.astro .astro-point.ap-ink mark{background-size:100% 4px}
+html.still .astro .astro-point mark{transition:none}
+/* 어두운 면의 은은한 별빛(설명과 겹치지 않게 아주 옅게, 천천히) */
+.slide.astro[data-tile="dark"]::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+ background-image:radial-gradient(1.6px 1.6px at 12% 18%,#cfe6ff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 27% 82%,#cfe6ff 50%,transparent 51%),radial-gradient(1.4px 1.4px at 46% 9%,#fff2cc 50%,transparent 51%),radial-gradient(1.1px 1.1px at 63% 91%,#cfe6ff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 79% 14%,#cfe6ff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 91% 63%,#fff2cc 50%,transparent 51%),radial-gradient(1px 1px at 6% 58%,#cfe6ff 50%,transparent 51%),radial-gradient(1.3px 1.3px at 54% 96%,#cfe6ff 50%,transparent 51%);
+ animation:apTwinkle 7s ease-in-out infinite alternate}
+@keyframes apTwinkle{from{opacity:.35}to{opacity:.7}}
+html.still .slide.astro[data-tile="dark"]::before{animation:none}
+/* 살아 움직이는 원리 모형 */
+.astro.ap-live .astro-figure .ap-svg{display:block;width:100%;height:auto;max-height:620px;font-family:'Pretendard','Noto Sans KR',system-ui,sans-serif}
+.astro.ap-live .ap-svg text{paint-order:stroke;stroke:#0c1b30;stroke-width:1.2px;stroke-linejoin:round;letter-spacing:-.02em}
+@media(prefers-reduced-motion:reduce){.astro .astro-point,.astro .astro-point mark{transition:none!important}.slide.astro[data-tile="dark"]::before{animation:none}}
+
 </style>
 </head>
 <body>
@@ -358,8 +380,8 @@ html.still #kwbar,html.still #kwbar *{transition:none!important}
 <div id="viewport"><div id="stage">
 <section class="slide astro-opening opening-cover opening-lesson-5" id="a5_cover" data-notes="P1" data-tile="dark" data-title="성운과 성단" data-kw-hide>
       <div class="opening-unit">별과 우주 <span>05 / 06</span></div>
-      <div class="opening-cover-copy"><p class="opening-overline">오늘의 수업</p><h1>성운과 성단</h1><div class="opening-accent"></div><p class="opening-subtitle">흐릿한 천체를 확대하면<br>기체·먼지와 별들을 구분할 수 있다</p></div>
-      <figure class="opening-model" aria-label="성운과 성단 도입 모형"><svg viewBox="0 0 840 640" role="img" aria-label="흐릿한 천체를 확대하면 · 기체·먼지와 별들을 구분할 수 있다"></svg><figcaption class="opening-model-note"></figcaption></figure>
+      <div class="opening-cover-copy"><p class="opening-overline">오늘의 수업</p><h1>성운과 성단</h1><div class="opening-accent"></div><p class="opening-subtitle">별과 우주 · 05차시<br>성운 · 성단 · 관측 자료 비교</p></div>
+      <figure class="opening-model" aria-label="성운과 성단 도입 모형"><svg viewBox="0 0 840 640" role="img" aria-label="별과 우주 · 05차시 · 성운 · 성단 · 관측 자료 비교"></svg><figcaption class="opening-model-note"></figcaption></figure>
       <div class="opening-brand">승재쌤 과학</div>
     </section>
 <section class="slide astro-opening opening-agenda" id="a5_keywords" data-notes="P2" data-tile="light" data-title="오늘의 키워드" data-kw-hide>
@@ -367,18 +389,18 @@ html.still #kwbar,html.still #kwbar *{transition:none!important}
       <h2>오늘의 키워드</h2><div class="opening-keywords opening-count-3"><div class="opening-keyword-slot" data-step="1" data-fx="left" data-dur="600"><div class="opening-keyword"><div class="opening-keyword-no">01</div><h3>성운</h3><p>기체와 먼지</p></div></div><div class="opening-keyword-slot" data-step="2" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">02</div><h3>성단</h3><p>별들의 모임</p></div></div><div class="opening-keyword-slot" data-step="3" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">03</div><h3>관측 자료 비교</h3><p>구성 물질과 보이는 모습</p></div></div></div>
       <p class="opening-agenda-caption">성운과 성단</p>
     </section>
-<section class="slide astro story-concept story-lesson-5" id="a5_01" data-notes="P3" data-kw-hide data-tile="dark" data-title="흐릿한 천체를 더 자세히 보면"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 도입</div><h2>흐릿한 천체를 더 자세히 보면</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">멀리서 보면 성운과 성단이 모두 흐릿해 보일 수 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">별이 모인 곳과 기체·먼지가 모인 곳을 구분한다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">무엇으로 이루어졌는지가 분류의 기준이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
-<section class="slide story-slide story-lesson-5" id="a5_story_messier" data-notes="P4" data-kw-hide data-tile="dark" data-title="혜성을 찾다가 만든 목록"><div class="story-host"></div><a class="story-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
-<section class="slide story-slide story-lesson-5" id="a5_story_resolve" data-notes="P5" data-kw-hide data-tile="dark" data-title="흐릿한 두 대상, 같은 천체일까?"><div class="story-host"></div><a class="story-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
+<section class="slide astro story-concept story-lesson-5" id="a5_01" data-notes="P3" data-kw-hide data-tile="dark" data-title="흐릿한 천체 자세히 보기"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 도입</div><h2>흐릿한 천체 자세히 보기</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">멀리서 보면 성운과 성단이 모두 흐릿해 보일 수 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">별이 모인 곳과 기체·먼지가 모인 곳을 구분한다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">무엇으로 이루어졌는지가 분류의 기준이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
+<section class="slide story-slide story-lesson-5" id="a5_story_messier" data-notes="P4" data-kw-hide data-tile="dark" data-title="메시에 목록"><div class="story-host"></div><a class="story-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
+<section class="slide story-slide story-lesson-5" id="a5_story_resolve" data-notes="P5" data-kw-hide data-tile="dark" data-title="흐릿한 두 대상의 구성 비교"><div class="story-host"></div><a class="story-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_02" data-notes="P6" data-tile="dark" data-title="천체 관측의 기준"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 탐구</div><h2>천체 관측의 기준</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">구름처럼 퍼진 물질인지 살펴본다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">별들이 점점이 모인 모습인지 살펴본다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">관찰 모습과 구성 물질을 연결한다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_03" data-notes="P7" data-tile="dark" data-title="성간 물질과 성운"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>성간 물질과 성운</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">별 사이에는 <mark title="학습지 빈칸 10">기체와 먼지</mark>가 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">이를 <mark title="학습지 빈칸 4">성간 물질</mark>이라고 한다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">성간 물질이 구름처럼 모인 천체가 성운이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
-<section class="slide lab-slide" id="a5_lab_nebula" data-notes="P8" data-tile="dark" data-title="빛이 오는 경로로 성운을 구분한다"><div class="lab-head"><div class="lab-eyebrow">별과 우주 · 05차시 / 관측 모형</div><h2>빛이 오는 경로로 성운을 구분한다</h2></div><div class="lab-frame" data-interactive><iframe title="빛이 오는 경로로 성운을 구분한다" src="about:blank"></iframe><div class="lab-loading">관측 모형을 불러오는 중</div></div><div class="lab-caption"></div><div class="lab-limit">구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름</div><a class="lab-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
+<section class="slide lab-slide" id="a5_lab_nebula" data-notes="P8" data-tile="dark" data-title="성운 모형"><div class="lab-head"><div class="lab-eyebrow">별과 우주 · 05차시 / 관측 모형</div><h2>성운 모형</h2></div><div class="lab-frame" data-interactive><iframe title="성운 모형" src="about:blank"></iframe><div class="lab-loading">관측 모형을 불러오는 중</div></div><div class="lab-caption"></div><div class="lab-limit">구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름</div><a class="lab-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_04" data-notes="P9" data-tile="dark" data-title="방출 성운"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>방출 성운</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">주변의 <mark title="학습지 빈칸 11">뜨거운 별</mark>에서 에너지를 받는다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">그 에너지로 기체가 빛을 <mark title="학습지 빈칸 5">방출</mark>한다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">가시광 사진에서 <mark title="학습지 빈칸 12">붉게</mark> 보이는 경우가 많다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_05" data-notes="P10" data-tile="dark" data-title="반사 성운"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>반사 성운</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">주변 별빛이 먼지에 의해 <mark title="학습지 빈칸 6">산란</mark>된다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">이 빛의 일부가 우리 눈에 도달한다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650"><mark title="학습지 빈칸 13">푸르게</mark> 보이는 경우가 많다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_06" data-notes="P11" data-tile="dark" data-title="암흑 성운"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>암흑 성운</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650"><mark title="학습지 빈칸 14">먼지</mark>가 뒤쪽에서 오는 별빛을 가린다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">배경보다 어둡게 보인다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">물질이 없는 빈 공간이라는 뜻은 <mark title="학습지 빈칸 15">아니다</mark>.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_07" data-notes="P12" data-tile="dark" data-title="성운의 관측 모습 비교"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 자료 해석</div><h2>성운의 관측 모습 비교</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">방출 성운: 기체가 빛을 방출</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">반사 성운: 별빛을 산란하여 보임</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">암흑 성운: 배경의 별빛을 가림</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_08" data-notes="P13" data-tile="dark" data-title="성단"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>성단</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650"><mark title="학습지 빈칸 7">별들</mark>이 한 무리를 이룬 천체이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">별들이 모여 있는 모양으로 구분한다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">산개 성단과 구상 성단이 있다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
-<section class="slide lab-slide" id="a5_lab_cluster" data-notes="P14" data-tile="dark" data-title="별이 어떻게 모여 있을까?"><div class="lab-head"><div class="lab-eyebrow">별과 우주 · 05차시 / 관측 모형</div><h2>별이 어떻게 모여 있을까?</h2></div><div class="lab-frame" data-interactive><iframe title="별이 어떻게 모여 있을까?" src="about:blank"></iframe><div class="lab-loading">관측 모형을 불러오는 중</div></div><div class="lab-caption"></div><div class="lab-limit">성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님</div><a class="lab-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
+<section class="slide lab-slide" id="a5_lab_cluster" data-notes="P14" data-tile="dark" data-title="성단 모형"><div class="lab-head"><div class="lab-eyebrow">별과 우주 · 05차시 / 관측 모형</div><h2>성단 모형</h2></div><div class="lab-frame" data-interactive><iframe title="성단 모형" src="about:blank"></iframe><div class="lab-loading">관측 모형을 불러오는 중</div></div><div class="lab-caption"></div><div class="lab-limit">성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님</div><a class="lab-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_09" data-notes="P15" data-tile="dark" data-title="산개 성단"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>산개 성단</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">별들이 비교적 <mark title="학습지 빈칸 16">듬성듬성</mark> 모여 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">전체 모양이 <mark title="학습지 빈칸 8">불규칙</mark>하다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">주로 <mark title="학습지 빈칸 17">은하 원반과 나선팔</mark> 부근에서 볼 수 있다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_10" data-notes="P16" data-tile="dark" data-title="구상 성단"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 개념</div><h2>구상 성단</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">수많은 별이 공 모양으로 빽빽하게 모여 있다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">중심으로 갈수록 <mark title="학습지 빈칸 18">조밀하게</mark> 보인다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">은하 중심 주변과 <mark title="학습지 빈칸 19">은하를 둘러싼 영역</mark>에도 분포한다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
 <section class="slide astro story-concept story-lesson-5" id="a5_11" data-notes="P17" data-tile="dark" data-title="성단 비교"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 05차시 / 자료 해석</div><h2>성단 비교</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">산개 성단: 듬성듬성, 불규칙한 모양</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">구상 성단: 빽빽함, 공 모양</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">색보다 별들의 분포를 먼저 비교한다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-05-nebula-clusters.html">수업 페이지</a></section>
@@ -1752,7 +1774,7 @@ function messier(t){const scan=f(t,1),move=f(t,2),fixed=f(t,3),catalog=f(t,4);le
  s+=tx(165,817,move>.5?'며칠 뒤 · 같은 배경 별과 비교':'밤하늘의 흐릿한 대상들',32,C.muted,'start')+group(tx(909,783,'위치 변화가 잘 드러나지 않음',30,C.pink),fixed);
  s+=tx(1300,308,'18세기 · 샤를 메시에',35,C.gold,'start')+group(tx(1300,394,'혜성을 찾던 천문학자',33,C.ink,'start'),scan)+group(tx(1300,465,'배경 별에 대한',32,C.blue,'start')+tx(1300,510,'위치를 비교했다.',35,C.ink,'start'),move);
  s+=group(box(1290,559,502,287,'#f1e5cf')+tx(1324,611,'혜성과 혼동하지 않도록',31,'#493d34','start')+line(1324,635,1754,635,'#ad9677',1,2)+tx(1324,683,'흐릿한 천체들을 기록',35,'#2b3645','start')+tx(1324,749,'성운 · 성단 · 은하',34,'#475c79','start')+tx(1324,808,'메시에 목록',39,'#375978','start'),catalog);
- return {svg:storyFrame('혜성을 찾다가 만든 목록','05 · 성운과 성단',s,'관찰 원리 모형 · 특정 관측 기록의 재현이 아님 · 배경 별을 기준으로 비교'),data:{comet:[cx,cy],diffuseObject:[907,661],catalogVisible:catalog,backgroundFixed:true}};
+ return {svg:storyFrame('메시에 목록','05 · 성운과 성단',s,'관찰 원리 모형 · 특정 관측 기록의 재현이 아님 · 배경 별을 기준으로 비교'),data:{comet:[cx,cy],diffuseObject:[907,661],catalogVisible:catalog,backgroundFixed:true}};
 }
 function resolve(t){const zoom=1+f(t,1)*1.45,left=f(t,2),right=f(t,3),answer=f(t,4);let s='';[520,1400].forEach((x,i)=>{s+=`<circle cx="${x}" cy="526" r="267" fill="#151b36" stroke="${i?C.pink:C.blue}" stroke-width="4"/>`;s+=dots(x-177,359,354,337,29,7+i);});
  s+=group(glow(520,526,55*zoom,48*zoom,C.blue,.95),1-left*.93)+group(cluster(520,526,86,false,zoom),left);
@@ -1760,7 +1782,7 @@ function resolve(t){const zoom=1+f(t,1)*1.45,left=f(t,2),right=f(t,3),answer=f(t
  s+=tx(520,849,'대상 A',36,C.blue)+tx(1400,849,'대상 B',36,C.pink)+group(tx(960,293,'관찰 범위를 확대',33,C.gold)+arrow(905,492,1015,492,C.gold,f(t,1)),f(t,1));
  s+=group(tx(520,897,'별들이 모여 있다',36,C.ink),left)+group(tx(1400,897,'기체·먼지가 퍼져 있다',36,C.ink),right);
  s+=group(chip(360,247,320,'성단',C.blue)+chip(1240,247,320,'성운',C.pink),answer);
- return {svg:storyFrame('흐릿한 두 대상, 같은 천체일까?','겉모습보다 구성 물질',s,'구성 비교 모형 · 확대가 물질을 바꾸는 것은 아님 · 특정 실제 천체 사진이 아님'),data:{magnification:zoom,starsResolved:left,gasResolved:right,classificationsVisible:answer}};
+ return {svg:storyFrame('흐릿한 두 대상의 구성 비교','05 · 성운과 성단',s,'구성 비교 모형 · 확대가 물질을 바꾸는 것은 아님 · 특정 실제 천체 사진이 아님'),data:{magnification:zoom,starsResolved:left,gasResolved:right,classificationsVisible:answer}};
 }
 function lightScene(d,t,interstellar=false){const v1=f(t,1),v2=f(t,2),v3=f(t,3);let s='',data={kind:d};const cap=txt=>tx(440,535,txt,27,C.muted);
  if(interstellar){const zoom=1+.9*v3;s+=dots(45,80,790,350,40,6)+star(124,141,24,C.blue)+star(764,346,28,C.gold);s+=group(cloud(440,260,88*zoom,C.pink,.45)+grains(440,260,85*zoom,43,C.gold),.15+.85*v1);s+=group(tx(440,89,'별 사이의 기체와 먼지',31,C.pink),v1)+group(chip(299,393,282,'성간 물질',C.gold),v2)+group(tx(440,493,'구름처럼 모인 곳 → 성운',31,C.pink),v3)+cap('물질의 분포를 단순화한 모형');data={magnification:zoom,interstellarMatterVisible:v1};return {s,data};}
@@ -1785,11 +1807,11 @@ function conceptFrame(spec,t){const d=spec.diagram,id=spec.sceneId||'',v1=f(t,1)
   if(single){s+=cluster(440,257,radius,dense,zoom);s+=group(dense?`<ellipse cx="440" cy="257" rx="${radius*zoom+16}" ry="${radius*zoom+16}" fill="none" stroke="${C.gold}" stroke-width="3" stroke-dasharray="9 11"/>`:openOutline(440,257,radius,zoom),v2)+group(tx(440,62,dense?'중심으로 갈수록 조밀':'듬성듬성 · 불규칙한 모양',32,dense?C.gold:C.blue),v2);if(dense){s+=group(chip(93,459,694,'중심 주변과 은하를 둘러싼 영역에 분포',C.pink),v3);}else{s+=group(chip(144,459,592,'주로 원반·나선팔 부근에 분포',C.blue),v3);}data={dense,magnification:zoom,shapeVisible:v2};}
   else{s+=cluster(233,262,166,false,1+.13*v1)+cluster(649,262,157,true,1+.13*v2);s+=group(tx(233,77,'산개 성단',32,C.blue)+tx(233,469,'듬성듬성 · 불규칙',29,C.blue),v1)+group(tx(649,77,'구상 성단',32,C.gold)+tx(649,469,'빽빽함 · 공 모양',29,C.gold),v2)+group(line(441,128,441,420,C.line,1,2,'5 12')+tx(440,522,'둘 다 별들의 집단 · 색만으로 구분하지 않음',28,C.muted),v3);data={openMagnification:1+.13*v1,globularMagnification:1+.13*v2};}
  }else if(d==='constellation'){
-  const turn=v2,pts=[[190,140,0],[306,208,130],[260,307,-105],[382,355,90],[455,210,-70],[557,281,140]];let positions=pts.map(([x,y,z])=>[mix(x,x*.58+z+178,turn),mix(y,y*.8+40,turn)]);s+=tx(440,58,t<1.5?'지구에서 본 방향을 묶으면':t<2.5?'시점을 옆으로 돌리면':'성단은 공간에서 실제로 모인 집단',30,C.gold);s+=group(`<path d="${positions.map((p,i)=>(i?'L':'M')+n(p[0])+' '+n(p[1])).join(' ')}" fill="none" stroke="${C.blue}" stroke-width="3" stroke-dasharray="6 9"/>`,v1*(1-v2*.9));positions.forEach((p,i)=>s+=star(...p,9,i%2?C.gold:C.blue));s+=group(line(125,439,704,439,C.line)+tx(433,488,'같은 방향에 보여도 거리는 서로 다름',30,C.blue),v2*(1-v3));s+=group(box(568,300,270,201,C.panel,C.pink)+cluster(702,374,69,true)+tx(703,475,'실제로 모인 성단',28,C.pink),v3)+cap('별자리 윤곽은 가상 · 시점 비교를 위한 입체 배치 모형');data={cameraTurn:turn,projectedPositions:positions};
+  const turn=v2,pts=[[190,140,0],[306,208,130],[260,307,-105],[382,355,90],[455,210,-70],[557,281,140]];let positions=pts.map(([x,y,z])=>[mix(x,x*.58+z+178,turn),mix(y,y*.8+40,turn)]);s+=tx(440,58,t<1.5?'지구에서 본 방향':t<2.5?'옆에서 본 모습':'성단은 공간에서 실제로 모인 집단',30,C.gold);s+=group(`<path d="${positions.map((p,i)=>(i?'L':'M')+n(p[0])+' '+n(p[1])).join(' ')}" fill="none" stroke="${C.blue}" stroke-width="3" stroke-dasharray="6 9"/>`,v1*(1-v2*.9));positions.forEach((p,i)=>s+=star(...p,9,i%2?C.gold:C.blue));s+=group(line(125,439,704,439,C.line)+tx(433,488,'같은 방향에 보여도 거리는 서로 다름',30,C.blue),v2*(1-v3));s+=group(box(568,300,270,201,C.panel,C.pink)+cluster(702,374,69,true)+tx(703,475,'실제로 모인 성단',28,C.pink),v3)+cap('별자리 윤곽은 가상 · 시점 비교를 위한 입체 배치 모형');data={cameraTurn:turn,projectedPositions:positions};
  }else if(d==='objectCards'){
   const names=['오리온 대성운','말머리성운','플레이아데스'],types=['방출 성운','암흑 성운','산개 성단'];[0,1,2].forEach(i=>{let x=41+i*274;s+=box(x,114,250,365,'#1d1c37')+tx(x+125,88,names[i],28,C.ink);if(i===0)s+=cloud(x+125,264,100,C.pink,.8)+star(x+120,260,13,C.blue);if(i===1)s+=cloud(x+125,259,110,C.pink,.7)+`<path d="M${x+86} 353q47-33 24-74q-50-39-16-74l31-16 53 35-12 26-33-2q33 52 19 105z" fill="#080d1c"/>`;if(i===2)s+=cluster(x+125,268,94,false,1);s+=group(box(x+8,395,234,63,C.panel,[C.pink,C.gold,C.blue][i])+tx(x+125,438,types[i],30,[C.pink,C.gold,C.blue][i]),f(t,i+1));});s+=cap('특징을 강조한 삽화 · 실제 관측 사진은 아님');data={classifiedCount:Math.floor(t)};
  }else{
-  const zoom1=1+.18*v1,zoom2=1+.18*v2;s+=cloud(233,269,154*zoom1,C.pink,.65)+group(grains(233,269,115,37),v1*.45)+cluster(651,271,153,false,zoom2)+tx(233,65,'구름처럼 퍼진 부분',30,C.pink)+tx(651,65,'점점이 모인 부분',30,C.blue);s+=group(chip(46,429,374,'기체·먼지 → 성운',C.pink),v1)+group(chip(458,429,374,'별의 집단 → 성단',C.blue),v2)+group(tx(440,525,'무엇으로 이루어졌는가?',31,C.gold),v3);data={nebulaMagnification:zoom1,clusterMagnification:zoom2,comparison:v3};
+  const zoom1=1+.18*v1,zoom2=1+.18*v2;s+=cloud(233,269,154*zoom1,C.pink,.65)+group(grains(233,269,115,37),v1*.45)+cluster(651,271,153,false,zoom2)+tx(233,65,'구름처럼 퍼진 부분',30,C.pink)+tx(651,65,'점점이 모인 부분',30,C.blue);s+=group(chip(46,429,374,'기체·먼지 → 성운',C.pink),v1)+group(chip(458,429,374,'별의 집단 → 성단',C.blue),v2)+group(tx(440,525,'구성 물질로 구분',31,C.gold),v3);data={nebulaMagnification:zoom1,clusterMagnification:zoom2,comparison:v3};
  }
  return {svg:`<svg viewBox="0 0 880 560" width="880" height="560" role="img" aria-label="${esc(spec.title)}"><rect width="880" height="560" rx="24" fill="${C.bg}"/>${s}</svg>`,data};
 }
@@ -1864,8 +1886,8 @@ window.AstroEmbedded=(()=>{
 })();
 
 window.NOTES={"P1": "18세기 프랑스 천문학자 샤를 메시에는 혜성을 찾으며 혜성과 혼동하기 쉬운 흐릿한 천체를 목록으로 정리했습니다. 메시에 목록에는 성운·성단뿐 아니라 은하도 들어 있습니다. 화면의 날짜와 별 배치는 실제 메시에의 특정 관측을 재현하지 않은 관찰 원리 모형입니다. 날마다 같은 배경 별을 기준으로 위치를 비교하면 혜성의 이동을 구분하는 데 도움이 됩니다. 성운과 성단이 우주 공간에서 절대로 움직이지 않는다는 뜻이 아니라, 여기 제시한 짧은 관측 기간에 배경 별에 대한 위치 변화가 눈에 띄지 않는다는 뜻입니다. 대사를 꾸며내지 않고 목록을 만든 목적만 이야기합니다.", "P2": "처음에는 두 대상 모두 작은 흐린 얼룩으로 제시합니다. 관찰 범위를 확대하면 한쪽은 별들이 점점이 모여 있고 다른 쪽은 기체·먼지가 구름처럼 퍼져 있습니다. 흐림이나 색이 아니라 구성 물질이 기본 분류 기준임을 이끕니다. 구름이 확대 때문에 별로 변하는 것이 아니라 원래 있던 구성원이 더 자세히 드러나는 모형입니다. 관측 장비만 바꾸면 모든 성단이 언제나 개별 별로 분해되는 것은 아니며 거리·분해능에 좌우됩니다. 특정 실제 천체 사진을 재현한 것이 아니므로 이 삽화만으로 천체 이름을 맞히는 평가에는 쓰지 않습니다.", "P3": "흐릿하게 보인다는 겉모습만으로 성운이라고 판정하지 않습니다. 망원경과 관측 조건에 따라 보이는 모습이 달라질 수 있습니다. 생성 우주 삽화는 도입용이고 특정 천체를 분류하는 평가 자료가 아닙니다. 실제 분류에서는 구성 물질과 빛이 오는 경로를 확인합니다.", "P4": "앞 차시의 은하 전체와 은하 안의 성운·성단을 혼동하지 않게 합니다. 그림은 구조를 보여 주는 개념 모형이며 실제 사진이 아닙니다.", "P5": "성운의 기체가 빛을 방출할 수 있습니다. 성운은 모두 스스로 빛을 내지 못한다는 식으로 단정하지 않습니다.", "P6": "방출 성운: 별에서 에너지를 받아 기체가 빛을 낸다. → 반사 성운: 먼지가 주변 별빛을 산란시킨다. → 암흑 성운: 뒤쪽 별빛을 가려 어둡게 보인다. → 성운 물질을 제거하면, 뒤쪽 별빛이 직접 들어온다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름", "P7": "별빛을 단순히 반사하는 과정과 구분합니다. 대표적인 예는 오리온 대성운입니다. 모든 방출 성운이 한 가지 색만 내는 것은 아닙니다.", "P8": "교과서의 반사한다는 표현을 사용하되 거울처럼 한 방향으로만 튕긴다고 그리지 않습니다. 여러 방향으로 산란된 빛 중 일부가 관찰자에게 옵니다.", "P9": "관찰자와 배경 별 사이에 놓인 물질을 표시합니다. 별빛을 모두 완벽히 흡수한다는 과도한 단정은 피합니다.", "P10": "색만 보고 분류하기보다 빛의 경로를 먼저 설명하게 합니다. 실제 천체에서는 여러 과정이 함께 나타날 수 있습니다.", "P11": "성단은 기체 덩어리가 아니라 별의 집단입니다. 전체가 빛나는 구름처럼 작게 보이더라도 구성원은 별입니다.", "P12": "산개 성단: 별들이 비교적 듬성듬성 모여 있다. → 구상 성단: 많은 별이 공 모양으로 빽빽하게 모여 있다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님", "P13": "플레이아데스 성단을 대표 예로 소개합니다. 별들의 색과 나이는 경향일 뿐 산개 성단의 정의를 모두 푸른 별로 한정하지 않습니다.", "P14": "구상 성단이 은하 중심에만 있는 것은 아닙니다. 모든 구성원이 붉은 별이라는 표현도 사용하지 않습니다.", "P15": "붉은 별은 모두 늙고 푸른 별은 모두 젊다는 일대일 대응을 만들지 않습니다. 심화 질문은 별의 질량과 진화 단계가 함께 관련된다고 짧게 안내합니다.", "P16": "지구에서 같은 방향에 보인다는 사실과 공간에서 실제로 모여 있다는 사실을 구분합니다.", "P17": "관측 활동에서는 방향·모양·구성원의 세 가지를 함께 기록합니다. 인터넷 사진의 색 보정이나 여러 파장 합성에 따라 색이 달라질 수 있으므로 색만 외우지 않습니다.", "P18": "학생이 분류 이름만 맞히지 않고 근거 한 문장을 붙이도록 합니다. 다음 시간에는 여러 은하 사이의 거리 변화를 다룹니다."};
-AstroEmbedded.register({"id": "a5_lab_nebula", "anchor": "a5_03", "title": "빛이 오는 경로로 성운을 구분한다", "kind": "nebula", "url": "inquiry-lab.html?mode=nebula&embed=1", "limit": "구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름", "states": [{"caption": "방출 성운: 별에서 에너지를 받아 기체가 빛을 낸다.", "values": {"#kind": "emission", "#matter": true, "#rays": true}, "click": [], "motion": null}, {"caption": "반사 성운: 먼지가 주변 별빛을 산란시킨다.", "values": {"#kind": "reflection", "#matter": true, "#rays": true}, "click": [], "motion": null}, {"caption": "암흑 성운: 뒤쪽 별빛을 가려 어둡게 보인다.", "values": {"#kind": "dark", "#matter": true, "#rays": true}, "click": [], "motion": null}, {"caption": "성운 물질을 제거하면, 뒤쪽 별빛이 직접 들어온다.", "values": {"#kind": "dark", "#matter": false, "#rays": true}, "click": [], "motion": null}]});
-AstroEmbedded.register({"id": "a5_lab_cluster", "anchor": "a5_08", "title": "별이 어떻게 모여 있을까?", "kind": "nebula", "url": "inquiry-lab.html?mode=nebula&embed=1", "limit": "성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님", "states": [{"caption": "산개 성단: 별들이 비교적 듬성듬성 모여 있다.", "values": {"#kind": "open"}, "click": [], "motion": null}, {"caption": "구상 성단: 많은 별이 공 모양으로 빽빽하게 모여 있다.", "values": {"#kind": "globular"}, "click": [], "motion": null}]});
+AstroEmbedded.register({"id": "a5_lab_nebula", "anchor": "a5_03", "title": "성운 모형", "kind": "nebula", "url": "inquiry-lab.html?mode=nebula&embed=1", "limit": "구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름", "states": [{"caption": "방출 성운: 별에서 에너지를 받아 기체가 빛을 낸다.", "values": {"#kind": "emission", "#matter": true, "#rays": true}, "click": [], "motion": null}, {"caption": "반사 성운: 먼지가 주변 별빛을 산란시킨다.", "values": {"#kind": "reflection", "#matter": true, "#rays": true}, "click": [], "motion": null}, {"caption": "암흑 성운: 뒤쪽 별빛을 가려 어둡게 보인다.", "values": {"#kind": "dark", "#matter": true, "#rays": true}, "click": [], "motion": null}, {"caption": "성운 물질을 제거하면, 뒤쪽 별빛이 직접 들어온다.", "values": {"#kind": "dark", "#matter": false, "#rays": true}, "click": [], "motion": null}]});
+AstroEmbedded.register({"id": "a5_lab_cluster", "anchor": "a5_08", "title": "성단 모형", "kind": "nebula", "url": "inquiry-lab.html?mode=nebula&embed=1", "limit": "성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님", "states": [{"caption": "산개 성단: 별들이 비교적 듬성듬성 모여 있다.", "values": {"#kind": "open"}, "click": [], "motion": null}, {"caption": "구상 성단: 많은 별이 공 모양으로 빽빽하게 모여 있다.", "values": {"#kind": "globular"}, "click": [], "motion": null}]});
 </script><script>
 /* 표지의 물리 관계 모형. 천체 크기/거리의 실제 비율은 의도적으로 생략한다.
    모든 움직임은 Ctx 관리 tween으로 한 번 재생하며 복원 시 같은 끝 상태다. */
@@ -1998,10 +2020,204 @@ AstroEmbedded.register({"id": "a5_lab_cluster", "anchor": "a5_08", "title": "별
   };
 })();
 
-window.NOTES={"P1": "오늘의 주제는 성운과 성단입니다. 제목은 첫 화면부터 보입니다. 흐릿한 천체를 확대하면, 기체·먼지와 별들을 구분할 수 있다. 이 모형은 주제의 관계를 보여 주며 실제 천체의 크기·거리 비율을 재현한 것은 아닙니다. 다음 화면에서 오늘 배울 개념의 순서를 먼저 짚습니다.", "P2": "성운: 기체와 먼지 → 성단: 별들의 모임 → 관측 자료 비교: 구성 물질과 보이는 모습. 개념 설명으로 들어가면 오른쪽 위에서 현재 배우는 키워드를 확인할 수 있습니다.", "P3": "흐릿하게 보인다는 겉모습만으로 성운이라고 판정하지 않습니다. 망원경과 관측 조건에 따라 보이는 모습이 달라질 수 있습니다. 생성 우주 삽화는 도입용이고 특정 천체를 분류하는 평가 자료가 아닙니다. 실제 분류에서는 구성 물질과 빛이 오는 경로를 확인합니다.", "P4": "18세기 프랑스 천문학자 샤를 메시에는 혜성을 찾으며 혜성과 혼동하기 쉬운 흐릿한 천체를 목록으로 정리했습니다. 메시에 목록에는 성운·성단뿐 아니라 은하도 들어 있습니다. 화면의 날짜와 별 배치는 실제 메시에의 특정 관측을 재현하지 않은 관찰 원리 모형입니다. 날마다 같은 배경 별을 기준으로 위치를 비교하면 혜성의 이동을 구분하는 데 도움이 됩니다. 성운과 성단이 우주 공간에서 절대로 움직이지 않는다는 뜻이 아니라, 여기 제시한 짧은 관측 기간에 배경 별에 대한 위치 변화가 눈에 띄지 않는다는 뜻입니다. 대사를 꾸며내지 않고 목록을 만든 목적만 이야기합니다.", "P5": "처음에는 두 대상 모두 작은 흐린 얼룩으로 제시합니다. 관찰 범위를 확대하면 한쪽은 별들이 점점이 모여 있고 다른 쪽은 기체·먼지가 구름처럼 퍼져 있습니다. 흐림이나 색이 아니라 구성 물질이 기본 분류 기준임을 이끕니다. 구름이 확대 때문에 별로 변하는 것이 아니라 원래 있던 구성원이 더 자세히 드러나는 모형입니다. 관측 장비만 바꾸면 모든 성단이 언제나 개별 별로 분해되는 것은 아니며 거리·분해능에 좌우됩니다. 특정 실제 천체 사진을 재현한 것이 아니므로 이 삽화만으로 천체 이름을 맞히는 평가에는 쓰지 않습니다.", "P6": "앞 차시의 은하 전체와 은하 안의 성운·성단을 혼동하지 않게 합니다. 그림은 구조를 보여 주는 개념 모형이며 실제 사진이 아닙니다.", "P7": "성운의 기체가 빛을 방출할 수 있습니다. 성운은 모두 스스로 빛을 내지 못한다는 식으로 단정하지 않습니다.", "P8": "방출 성운: 별에서 에너지를 받아 기체가 빛을 낸다. → 반사 성운: 먼지가 주변 별빛을 산란시킨다. → 암흑 성운: 뒤쪽 별빛을 가려 어둡게 보인다. → 성운 물질을 제거하면, 뒤쪽 별빛이 직접 들어온다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름", "P9": "별빛을 단순히 반사하는 과정과 구분합니다. 대표적인 예는 오리온 대성운입니다. 모든 방출 성운이 한 가지 색만 내는 것은 아닙니다.", "P10": "교과서의 반사한다는 표현을 사용하되 거울처럼 한 방향으로만 튕긴다고 그리지 않습니다. 여러 방향으로 산란된 빛 중 일부가 관찰자에게 옵니다.", "P11": "관찰자와 배경 별 사이에 놓인 물질을 표시합니다. 별빛을 모두 완벽히 흡수한다는 과도한 단정은 피합니다.", "P12": "색만 보고 분류하기보다 빛의 경로를 먼저 설명하게 합니다. 실제 천체에서는 여러 과정이 함께 나타날 수 있습니다.", "P13": "성단은 기체 덩어리가 아니라 별의 집단입니다. 전체가 빛나는 구름처럼 작게 보이더라도 구성원은 별입니다.", "P14": "산개 성단: 별들이 비교적 듬성듬성 모여 있다. → 구상 성단: 많은 별이 공 모양으로 빽빽하게 모여 있다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님", "P15": "플레이아데스 성단을 대표 예로 소개합니다. 별들의 색과 나이는 경향일 뿐 산개 성단의 정의를 모두 푸른 별로 한정하지 않습니다.", "P16": "구상 성단이 은하 중심에만 있는 것은 아닙니다. 모든 구성원이 붉은 별이라는 표현도 사용하지 않습니다.", "P17": "붉은 별은 모두 늙고 푸른 별은 모두 젊다는 일대일 대응을 만들지 않습니다. 심화 질문은 별의 질량과 진화 단계가 함께 관련된다고 짧게 안내합니다.", "P18": "지구에서 같은 방향에 보인다는 사실과 공간에서 실제로 모여 있다는 사실을 구분합니다.", "P19": "관측 활동에서는 방향·모양·구성원의 세 가지를 함께 기록합니다. 인터넷 사진의 색 보정이나 여러 파장 합성에 따라 색이 달라질 수 있으므로 색만 외우지 않습니다.", "P20": "학생이 분류 이름만 맞히지 않고 근거 한 문장을 붙이도록 합니다. 다음 시간에는 여러 은하 사이의 거리 변화를 다룹니다."};
+window.NOTES={"P1": "오늘의 주제는 성운과 성단입니다. 제목은 첫 화면부터 보입니다. 별과 우주 · 05차시, 성운 · 성단 · 관측 자료 비교. 이 모형은 주제의 관계를 보여 주며 실제 천체의 크기·거리 비율을 재현한 것은 아닙니다. 다음 화면에서 오늘 배울 개념의 순서를 먼저 짚습니다.", "P2": "성운: 기체와 먼지 → 성단: 별들의 모임 → 관측 자료 비교: 구성 물질과 보이는 모습. 개념 설명으로 들어가면 오른쪽 위에서 현재 배우는 키워드를 확인할 수 있습니다.", "P3": "흐릿하게 보인다는 겉모습만으로 성운이라고 판정하지 않습니다. 망원경과 관측 조건에 따라 보이는 모습이 달라질 수 있습니다. 생성 우주 삽화는 도입용이고 특정 천체를 분류하는 평가 자료가 아닙니다. 실제 분류에서는 구성 물질과 빛이 오는 경로를 확인합니다.", "P4": "18세기 프랑스 천문학자 샤를 메시에는 혜성을 찾으며 혜성과 혼동하기 쉬운 흐릿한 천체를 목록으로 정리했습니다. 메시에 목록에는 성운·성단뿐 아니라 은하도 들어 있습니다. 화면의 날짜와 별 배치는 실제 메시에의 특정 관측을 재현하지 않은 관찰 원리 모형입니다. 날마다 같은 배경 별을 기준으로 위치를 비교하면 혜성의 이동을 구분하는 데 도움이 됩니다. 성운과 성단이 우주 공간에서 절대로 움직이지 않는다는 뜻이 아니라, 여기 제시한 짧은 관측 기간에 배경 별에 대한 위치 변화가 눈에 띄지 않는다는 뜻입니다. 대사를 꾸며내지 않고 목록을 만든 목적만 이야기합니다.", "P5": "처음에는 두 대상 모두 작은 흐린 얼룩으로 제시합니다. 관찰 범위를 확대하면 한쪽은 별들이 점점이 모여 있고 다른 쪽은 기체·먼지가 구름처럼 퍼져 있습니다. 흐림이나 색이 아니라 구성 물질이 기본 분류 기준임을 이끕니다. 구름이 확대 때문에 별로 변하는 것이 아니라 원래 있던 구성원이 더 자세히 드러나는 모형입니다. 관측 장비만 바꾸면 모든 성단이 언제나 개별 별로 분해되는 것은 아니며 거리·분해능에 좌우됩니다. 특정 실제 천체 사진을 재현한 것이 아니므로 이 삽화만으로 천체 이름을 맞히는 평가에는 쓰지 않습니다.", "P6": "앞 차시의 은하 전체와 은하 안의 성운·성단을 혼동하지 않게 합니다. 그림은 구조를 보여 주는 개념 모형이며 실제 사진이 아닙니다.", "P7": "성운의 기체가 빛을 방출할 수 있습니다. 성운은 모두 스스로 빛을 내지 못한다는 식으로 단정하지 않습니다.", "P8": "방출 성운: 별에서 에너지를 받아 기체가 빛을 낸다. → 반사 성운: 먼지가 주변 별빛을 산란시킨다. → 암흑 성운: 뒤쪽 별빛을 가려 어둡게 보인다. → 성운 물질을 제거하면, 뒤쪽 별빛이 직접 들어온다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 구성 물질과 빛의 경로를 비교하는 모식도 · 실제 천체의 크기·거리 비율과 다름", "P9": "별빛을 단순히 반사하는 과정과 구분합니다. 대표적인 예는 오리온 대성운입니다. 모든 방출 성운이 한 가지 색만 내는 것은 아닙니다.", "P10": "교과서의 반사한다는 표현을 사용하되 거울처럼 한 방향으로만 튕긴다고 그리지 않습니다. 여러 방향으로 산란된 빛 중 일부가 관찰자에게 옵니다.", "P11": "관찰자와 배경 별 사이에 놓인 물질을 표시합니다. 별빛을 모두 완벽히 흡수한다는 과도한 단정은 피합니다.", "P12": "색만 보고 분류하기보다 빛의 경로를 먼저 설명하게 합니다. 실제 천체에서는 여러 과정이 함께 나타날 수 있습니다.", "P13": "성단은 기체 덩어리가 아니라 별의 집단입니다. 전체가 빛나는 구름처럼 작게 보이더라도 구성원은 별입니다.", "P14": "산개 성단: 별들이 비교적 듬성듬성 모여 있다. → 구상 성단: 많은 별이 공 모양으로 빽빽하게 모여 있다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 성단은 별의 집단 · 분포를 단순화한 모형이며 별의 수·색은 실제 관측값이 아님", "P15": "플레이아데스 성단을 대표 예로 소개합니다. 별들의 색과 나이는 경향일 뿐 산개 성단의 정의를 모두 푸른 별로 한정하지 않습니다.", "P16": "구상 성단이 은하 중심에만 있는 것은 아닙니다. 모든 구성원이 붉은 별이라는 표현도 사용하지 않습니다.", "P17": "붉은 별은 모두 늙고 푸른 별은 모두 젊다는 일대일 대응을 만들지 않습니다. 심화 질문은 별의 질량과 진화 단계가 함께 관련된다고 짧게 안내합니다.", "P18": "지구에서 같은 방향에 보인다는 사실과 공간에서 실제로 모여 있다는 사실을 구분합니다.", "P19": "관측 활동에서는 방향·모양·구성원의 세 가지를 함께 기록합니다. 인터넷 사진의 색 보정이나 여러 파장 합성에 따라 색이 달라질 수 있으므로 색만 외우지 않습니다.", "P20": "학생이 분류 이름만 맞히지 않고 근거 한 문장을 붙이도록 합니다. 다음 시간에는 여러 은하 사이의 거리 변화를 다룹니다."};
 window.KW={"items": [{"kw": "성운"}, {"kw": "성단"}, {"kw": "관측 자료 비교"}], "at": [-1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 3]};
 Deck.scene('a5_cover',{steps:0,build(root){AstroOpening.build(root,5);},enter(c){return AstroOpening.enter(c,5);}});
 Deck.scene('a5_keywords',{steps:3,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);c.sfx(k==3?'chime':'step');}});
+
+</script><script>
+/* 2026-10-13 강의 전용 다듬기 (Claude) — 내용·빈칸·학습지·수업 페이지는 그대로.
+   1) 단계 시선 유도: 지금 단계 카드 강조 · 지난 카드 살짝 흐리게 · 학습지 밑줄이 그어지며 나타남
+   2) 살아 움직이는 원리 모형 5개(장면 그림만 바꿈, 문장·단계 수는 그대로)
+      a1_07 연주시차로 거리 비교 · a2_08 등급 차와 밝기 비 · a2_11 거리 변화와 등급 변화(확장)
+      a6_02 외부 은하 사이의 거리 · a6_09 우주의 과거와 현재
+   모든 움직임은 c.tween / c.loop(장면을 떠나면 저절로 멈춤)만 쓴다. 정지 캡처(still)·동작 줄이기에서는 멈춘 끝 상태. */
+(() => {
+'use strict';
+const STILL = document.documentElement.classList.contains('still');
+const C = {bg:'#0c1b30', panel:'#142c44', line:'#6d92ab', ink:'#f2f7ff', sub:'#bed6e8', gold:'#ffd67c', blue:'#72d9ee', pink:'#ffabbb', green:'#9de4c1', red:'#ff8a6b'};
+const clamp = x => Math.max(0, Math.min(1, x)), f = (t, k) => clamp(t - k + 1), n = x => Number((+x).toFixed(2));
+const lerp = (a, b, p) => a + (b - a) * p, ease = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tx = (x, y, s, size = 30, col = C.ink, anchor = 'middle', w = 650) => `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${size}" fill="${col}" font-weight="${w}">${esc(s)}</text>`;
+const rr = (x, y, w, h, col = C.panel, stroke = 'none', r = 16, sw = 2) => `<rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${n(h)}" rx="${r}" fill="${col}" stroke="${stroke}" stroke-width="${sw}"/>`;
+const ci = (x, y, r, col, op = 1) => `<circle cx="${n(x)}" cy="${n(y)}" r="${n(Math.max(0, r))}" fill="${col}" opacity="${n(clamp(op))}"/>`;
+const ln = (x, y, x2, y2, col = C.line, w = 3, op = 1, dash = '') => `<path d="M${n(x)} ${n(y)}L${n(x2)} ${n(y2)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" fill="none" opacity="${n(clamp(op))}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+const g = (s, o = 1) => o <= 0.001 ? '' : `<g opacity="${n(clamp(o))}">${s}</g>`;
+const glow = (x, y, r, col = C.gold, p = 1) => ci(x, y, r * 2.6, col, .06 * p) + ci(x, y, r * 1.7, col, .14 * p) + ci(x, y, r, col, .92 * p) + ci(x, y, r * .45, '#fffbea', p);
+function arrowHead(x, y, a, col, s = 14) { return `<path d="M${n(x - s * Math.cos(a - .5))} ${n(y - s * Math.sin(a - .5))}L${n(x)} ${n(y)}L${n(x - s * Math.cos(a + .5))} ${n(y - s * Math.sin(a + .5))}" fill="none" stroke="${col}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`; }
+function arrow(x, y, x2, y2, col, w = 4, op = 1) { const a = Math.atan2(y2 - y, x2 - x); return g(ln(x, y, x2, y2, col, w) + arrowHead(x2, y2, a, col), op); }
+function galaxy(x, y, r, col, tilt = .45, rot = 0) { return `<g transform="translate(${n(x)} ${n(y)}) rotate(${n(rot)})"><ellipse rx="${n(r)}" ry="${n(r * tilt)}" fill="${col}" opacity=".22"/><ellipse rx="${n(r * .62)}" ry="${n(r * tilt * .62)}" fill="none" stroke="${col}" stroke-width="2.4"/><circle r="${n(r * .2)}" fill="#fff6dc"/></g>`; }
+function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+function wrap(body, label) { return `<svg class="ap-svg" viewBox="0 0 880 560" role="img" aria-label="${esc(label)}">${rr(0, 0, 880, 560, C.bg, 'none', 24)}${body}</svg>`; }
+
+/* ── a1_07 연주시차로 거리 비교: 같은 공전 궤도에서 별의 거리만 바꾼다 ── */
+function parallaxCompare(st, time) {
+  const sx = 440, sy = 392, b = 150;                           // 태양 · 6개월 간격 두 관측 위치의 절반 거리(과장)
+  const near = 150, far = 280;
+  let D = st < 2 ? near : st < 3 ? lerp(near, far, ease(clamp(st - 2))) : far;
+  if (st >= 3 && time > 0) D = lerp(near, far, .5 + .5 * Math.cos(time * .7));   // 끝 단계: 거리를 오가며 p 를 실시간 비교
+  const starY = sy - D, p = Math.atan2(b, D), pDeg = p * 180 / Math.PI;
+  let s = tx(440, 46, '같은 공전 궤도에서 별까지의 거리만 바꾼다', 29);
+  s += ln(70, 82, 810, 82, C.line, 2, .9, '8 8');
+  [110, 210, 680, 780].forEach(x => s += ci(x, 82, 4, C.sub, .8));
+  s += tx(800, 112, '먼 배경 별', 24, C.sub, 'end');
+  s += `<ellipse cx="${sx}" cy="${sy}" rx="${b}" ry="44" fill="none" stroke="${C.line}" stroke-width="3"/>`;
+  s += glow(sx, sy, 17, C.gold) + tx(sx, sy + 92, '태양', 26, C.gold);
+  const orbA = time * .9, ex = sx + b * Math.cos(orbA), ey = sy + 44 * Math.sin(orbA);
+  s += g(ci(ex, ey, 9, C.blue), st < 1 ? 1 : .35);               // 공전하는 지구(현재 위치)
+  const mark = f(st, 1);
+  s += g(ci(sx - b, sy, 12, C.blue) + ci(sx + b, sy, 12, C.pink) + tx(sx - b - 10, sy + 92, '관측 A', 26, C.blue) + tx(sx + b + 10, sy + 92, '6개월 뒤 B', 26, C.pink), mark);
+  const show = f(st, 2) > 0 ? 1 : 0;
+  if (show) {
+    s += ln(sx - b, sy, sx, starY, C.blue, 3.5) + ln(sx + b, sy, sx, starY, C.pink, 3.5) + ln(sx, sy, sx, starY, C.sub, 2, .8, '6 7');
+    const r = 46, a0 = Math.PI / 2, a1 = Math.PI / 2 + p;           // 별에서 태양 방향과 관측 A 방향 사이의 각 p
+    const x0 = sx + r * Math.cos(a0), y0 = starY + r * Math.sin(a0), x1 = sx - r * Math.sin(p), y1 = starY + r * Math.cos(p);
+    s += `<path d="M${n(x0)} ${n(y0)}A${r} ${r} 0 0 1 ${n(x1)} ${n(y1)}" fill="none" stroke="${C.gold}" stroke-width="5"/>`;
+    s += tx(sx - 64, starY + 70, 'p', 30, C.gold);
+    s += `<g>${'<polygon points="0,-17 5,-5 17,-5 7,3 11,16 0,8 -11,16 -7,3 -17,-5 -5,-5" fill="#ffd67c" transform="translate(' + n(sx) + ' ' + n(starY) + ')"/>'}</g>`;
+    const closeNow = D < (near + far) / 2;
+    s += rr(612, 150, 236, 150, '#132f49', closeNow ? C.gold : C.blue, 14);
+    s += tx(730, 196, `p ≈ ${n(pDeg).toFixed(0)}°`, 30, C.gold) + tx(730, 236, '(원리 모형 · 과장)', 22, C.sub);
+    s += tx(730, 280, closeNow ? '큰 p → 가까운 별' : '작은 p → 먼 별', 27, closeNow ? C.gold : C.blue);
+  }
+  s += tx(440, 540, '각도와 거리를 크게 과장한 원리 모형 · 실제 연주시차는 1″보다 작다', 22, C.sub);
+  return s;
+}
+
+/* ── a2_08 등급 차와 밝기 비: 한 등급마다 약 2.512배 → 다섯 번이면 100배 ── */
+function magLadder(st, time) {
+  const R = Math.pow(100, .2), xs = [130, 254, 378, 502, 626, 750], base = 440, H = 185;
+  let s = tx(440, 46, '1등급부터 6등급까지 · 밝기는 6등급을 1로', 29);
+  for (let i = 0; i < 6; i++) {
+    const bright = Math.pow(R, 5 - i), h = Math.max(2.5, H * bright / 100), x = xs[i];
+    s += glow(x, 100, 6 + 13 * Math.pow(bright / 100, .3), i < 2 ? C.gold : i < 4 ? '#ffe7a8' : C.blue);
+    s += rr(x - 30, base - h, 60, h, i === 0 ? C.gold : '#5f86a6', 'none', 6);
+    s += tx(x, base + 38, `${i + 1}등급`, 26, C.ink);
+    s += g(tx(x, base - h - 12, i === 0 ? '100' : i === 5 ? '1' : n(bright).toFixed(bright < 10 ? 1 : 0), 24, C.sub), f(st, 2));
+  }
+  const hop = st >= 1 ? (time > 0 ? Math.floor(time * 1.3) % 5 : 4) : -1;  // 오른쪽에서 왼쪽으로 한 칸씩 ×2.5
+  for (let j = 0; j < 5; j++) {
+    const xa = xs[5 - j], xb = xs[4 - j], on = st < 2 ? (j === hop || (st >= 1 && time <= 0 && j === 4)) : true;
+    const op = st < 1 ? 0 : st < 2 ? (on ? 1 : .25) : f(st, 2) * (on ? 1 : .6);
+    s += g(`<path d="M${xa - 8} 214Q${(xa + xb) / 2} 176 ${xb + 12} 212" fill="none" stroke="${C.green}" stroke-width="4"/>` + arrowHead(xb + 12, 212, 2.2, C.green, 12) + tx((xa + xb) / 2, 168, '×약 2.5', 23, C.green), op);
+  }
+  s += g(rr(30, 494, 410, 50, '#173d3a', C.green, 14) + tx(235, 528, '×2.512를 다섯 번 = 100배', 26, C.green), f(st, 2));
+  s += g(arrow(840, 538, 470, 538, C.gold, 4) + tx(655, 524, '숫자가 작을수록 밝다', 25, C.gold), f(st, 3));
+  return s;
+}
+
+/* ── a2_11 거리 변화와 등급 변화(확장): 같은 별이 멀어지며 밝기·등급이 함께 변한다 ── */
+function recede(st, time) {
+  let d = lerp(1, 10, ease(clamp(st)));
+  if (st >= 3 && time > 0) d = 1 + 9 * (.5 - .5 * Math.cos(time * .55));   // 끝 단계: 거리를 오가며 실시간 대응
+  const x0 = 130, x = x0 + 66 * (d - 1), bright = 1 / (d * d), mag = 1 + 5 * Math.log10(d);
+  let s = tx(440, 46, '같은 별을 멀리 옮긴다 · 별 자체의 밝기는 그대로', 29);
+  s += `<path d="M70 210Q92 196 114 210Q92 224 70 210" fill="#eef6ff" stroke="${C.blue}" stroke-width="3"/>` + ci(92, 210, 6, C.blue) + tx(92, 256, '관찰자', 22, C.sub);
+  s += ln(x0, 270, 724, 270, C.line, 2);
+  for (let k = 1; k <= 10; k++) s += ln(x0 + 66 * (k - 1), 262, x0 + 66 * (k - 1), 278, C.line, 2) + (k === 1 || k === 10 || k === 5 ? tx(x0 + 66 * (k - 1), 304, `${k}`, 22, C.sub) : '');
+  s += tx(750, 304, '배', 22, C.sub, 'start');
+  s += glow(x, 210, 6 + 18 * Math.pow(bright, .25), C.gold);
+  const frac = Math.round(d * d);
+  s += rr(70, 340, 230, 130, '#132f49', C.blue, 14) + tx(185, 385, '거리', 25, C.sub) + tx(185, 440, `${n(d).toFixed(1)}배`, 40, C.blue);
+  s += g(rr(325, 340, 230, 130, '#132f49', C.gold, 14) + tx(440, 385, '밝기', 25, C.sub) + tx(440, 440, frac <= 1 ? '1' : `1/${frac}`, 40, C.gold), f(st, 1));
+  s += g(rr(580, 340, 230, 130, '#173d3a', C.green, 14) + tx(695, 385, '겉보기 등급', 25, C.sub) + tx(695, 440, `${n(mag).toFixed(1)}등급`, 40, C.green), f(st, 2));
+  s += g(tx(440, 516, '거리 10배 → 밝기 1/100 → 등급 5 증가 (1등급 → 6등급)', 25, C.ink), f(st, 3));
+  s += tx(440, 548, '성취기준 밖의 확장 학습 · 별빛의 흡수는 생략', 21, C.sub);
+  return s;
+}
+
+/* ── 은하 분포(고정 씨앗) ── */
+const FIELD = (() => { const r = rng(20261013), out = []; for (let i = 0; i < 26; i++) { const a = r() * Math.PI * 2, d = 70 + r() * 360; out.push({x: Math.cos(a) * d * 1.25, y: Math.sin(a) * d * .78, rot: r() * 180, col: [C.gold, C.blue, C.pink, '#c9b8ff'][i % 4]}); } return out; })();
+
+/* ── a6_02 외부 은하 사이의 거리: 넓은 규모의 팽창 + 중력으로 묶인 은하 쌍 ── */
+function cosmicField(st, time) {
+  const cx = 360, cy = 290;
+  let a = lerp(1, 1.35, ease(clamp(st)));
+  let fade = 1;
+  if (st >= 1 && time > 0) { const ph = (time / 7) % 1; a = 1 + .45 * ph; fade = ph > .88 ? (1 - ph) / .12 : ph < .06 ? ph / .06 : 1; }
+  let s = tx(440, 46, '넓은 규모: 은하 사이의 간격이 함께 늘어난다', 29);
+  s += `<clipPath id="apfc"><rect x="20" y="70" width="840" height="410" rx="16"/></clipPath><g clip-path="url(#apfc)">`;
+  let body = '';
+  FIELD.forEach(q => {
+    const x = cx + q.x * a, y = cy + q.y * a;
+    body += galaxy(x, y, 15, q.col, .42, q.rot);
+    if (st >= 1) body += g(ln(cx + q.x * .82, cy + q.y * .82, x - q.x * .06, y - q.y * .06, C.line, 2, .55, '4 6'), .9);
+  });
+  // 중력으로 묶인 은하 쌍: 쌍의 중심은 팽창을 따라가지만 둘 사이 간격은 그대로(서로 돈다)
+  const px = cx + 190 * a, py = cy + 88 * a, ang = time * .8;
+  const pair = galaxy(px + 22 * Math.cos(ang), py + 9 * Math.sin(ang), 13, C.green, .42, 30) + galaxy(px - 22 * Math.cos(ang), py - 9 * Math.sin(ang), 13, C.green, .42, 120);
+  body += pair;
+  s += g(body, fade) + '</g>';
+  s += galaxy(cx, cy, 20, C.blue, .45, 20) + tx(cx, cy + 46, '기준 은하', 24, C.blue);
+  s += g(rr(px - 90, py + 24, 180, 44, '#173d3a', C.green, 12) + tx(px, py + 54, '묶인 은하 쌍', 23, C.green), f(st, 3) * fade);
+  s += g(rr(560, 84, 290, 52, '#132f49', C.gold, 12) + tx(705, 118, '관측 → 우주 팽창', 26, C.gold), f(st, 2));
+  s += tx(440, 520, '화면 가운데는 관찰 기준일 뿐 우주의 중심이 아니다 · 은하 크기는 그대로', 22, C.sub);
+  s += tx(440, 549, '가까이 묶인 은하 쌍은 중력 때문에 간격이 늘지 않는다', 22, C.sub);
+  return s;
+}
+
+/* ── a6_09 우주의 과거와 현재: 모든 곳의 간격이 함께 줄었다 늘어난다(한 점의 폭발이 아님) ── */
+const LATTICE = (() => { const r = rng(9138), out = []; for (let i = -16; i <= 16; i++) for (let j = -11; j <= 11; j++) out.push({x: i * 64 + (r() - .5) * 30, y: j * 64 + (r() - .5) * 30}); return out; })();
+function cosmicHistory(st, time) {
+  // s: 과거(작음) → 현재(1). 단계 1 = 과거로 되감기, 2 = 현재로, 3 = 나이 표시
+  let sc = st <= 1 ? lerp(1, .32, ease(clamp(st))) : lerp(.32, 1, ease(clamp(st - 1)));
+  if (st >= 3 && time > 0) { const ph = (time / 10) % 1; sc = ph < .15 ? lerp(1, .32, ease(ph / .15)) : ph < .6 ? lerp(.32, 1, ease((ph - .15) / .45)) : 1; }
+  const hot = clamp((1 - sc) / .68);                                  // 1 = 뜨겁고 촘촘
+  const cx = 440, cy = 270, bgc = `rgb(${n(lerp(18, 96, hot))},${n(lerp(32, 40, hot))},${n(lerp(58, 30, hot))})`;
+  let s = `<clipPath id="aphc"><rect x="20" y="20" width="840" height="430" rx="16"/></clipPath><rect x="20" y="20" width="840" height="430" rx="16" fill="${bgc}"/><g clip-path="url(#aphc)">`;
+  const col = hot > .5 ? '#ffe2a8' : hot > .2 ? '#ffd0d6' : '#9fdcff';
+  LATTICE.forEach(q => { const x = cx + q.x * sc, y = cy + q.y * sc; if (x > 0 && x < 880 && y > 0 && y < 470) s += ci(x, y, 4.2, col, .9); });
+  s += '</g>';
+  s += rr(190, 32, 500, 50, 'rgba(8,20,38,.82)', 'none', 12) + tx(440, 66, hot > .55 ? '과거: 더 뜨겁고 밀도가 높다' : hot > .1 ? '팽창하며 식는다' : '현재: 간격이 넓어진 우주', 30, hot > .55 ? '#fff0c9' : C.ink);
+  const yb = 488, xa = 120, xb = 760, tm = xa + (xb - xa) * clamp((sc - .32) / .68);
+  s += ln(xa, yb, xb, yb, C.line, 4) + tx(xa, yb + 36, '과거', 24, '#ffc48a') + tx(xb, yb + 36, '현재', 24, C.blue);
+  s += ci(tm, yb, 11, C.gold);
+  s += g(rr(300, yb - 64, 280, 46, '#2b3a1f', C.gold, 12) + tx(440, yb - 32, '우주의 나이 약 138억 년', 25, C.gold), f(st, 3));
+  s += tx(440, 549, '모든 곳의 간격이 함께 변하는 모형 · 한 점에서 빈 공간으로 터진 폭발이 아님', 21, C.sub);
+  return s;
+}
+
+const SIMS = {a1_07: [parallaxCompare, '연주시차로 거리 비교 — 같은 궤도, 거리만 바꾼 원리 모형'], a2_08: [magLadder, '등급 차와 밝기 비 — 1등급부터 6등급까지의 밝기 사다리'], a2_11: [recede, '거리 변화와 등급 변화 — 같은 별이 멀어지는 모형'], a6_02: [cosmicField, '외부 은하 사이의 거리 — 넓은 규모의 팽창과 묶인 은하 쌍'], a6_09: [cosmicHistory, '우주의 과거와 현재 — 모든 곳의 간격이 함께 변하는 모형']};
+
+function paint(root, id, st, time) {
+  const fig = root.querySelector('.astro-figure'); if (!fig) return;
+  const [fn, label] = SIMS[id];
+  fig.innerHTML = wrap(fn(st, time), label);
+  fig.dataset.apStage = String(n(st));
+}
+Object.keys(SIMS).forEach(id => {
+  if (!document.getElementById(id)) return;
+  const live = () => !STILL && !(window.Deck && Deck.REDUCED);
+  Deck.scene(id, {
+    steps: 3,
+    build(root) { root.classList.add('ap-live'); paint(root, id, 0, 0); },
+    enter(c) {
+      c.root.dataset.focus = '0'; c.data.ap = 0; c.data.apT = 0; paint(c.root, id, 0, 0);
+      if (live()) { let acc = 0; c.loop((t, dt) => { acc += dt; c.data.apT = t; if (acc < 1 / 30) return; acc = 0; paint(c.root, id, c.data.ap, t); }); }
+    },
+    async go(c, k) {
+      c.root.dataset.focus = String(k);
+      const from = c.data.ap || 0;
+      if (!c.instant) c.sfx(k === 1 ? 'scan' : k >= 3 ? 'ding' : 'whoosh');
+      await c.tween(c.reduced ? 1 : 1400, p => { c.data.ap = from + (k - from) * p; if (!live()) paint(c.root, id, c.data.ap, 0); }, {ease: 'linear'});
+      c.data.ap = k; if (!live()) paint(c.root, id, k, 0);
+    },
+  });
+});
+
+/* ── 단계 시선 유도: data-focus 가 바뀌면 지금 카드·지난 카드 표시, 학습지 밑줄 긋기 ── */
+function mark(sec) {
+  const k = +sec.dataset.focus || 0;
+  sec.querySelectorAll('.astro-point').forEach((el, i) => {
+    el.classList.toggle('ap-now', i + 1 === k);
+    el.classList.toggle('ap-past', i + 1 < k);
+    el.classList.toggle('ap-ink', i + 1 <= k);
+  });
+}
+const mo = new MutationObserver(list => list.forEach(m => mark(m.target)));
+document.querySelectorAll('section.slide.astro').forEach(sec => { mark(sec); mo.observe(sec, {attributes: true, attributeFilter: ['data-focus']}); });
+})();
 
 </script></body>
 </html>
