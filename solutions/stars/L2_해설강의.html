@@ -1218,11 +1218,14 @@ window.SFX = (function () {
   const D = window.Deck || {};
   const OFF = !!D.STILL || Q.get('nosfx') === '1';
   const KEY = 'sc_sfx';
+  const VOLUME_KEY = 'sc_sfx_volume';
   const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  let volume = 1;
+  try { const saved = localStorage.getItem(VOLUME_KEY); if (saved !== null && saved.trim() !== '' && Number.isFinite(Number(saved))) volume = clamp(Number(saved)); } catch (e) {}
   let on = !D.STUDENT;
   try { const s = localStorage.getItem(KEY); if (s === '1' || s === '0') on = s === '1'; } catch (e) {}
   if (Q.get('sound') === '1') on = true; else if (Q.get('sound') === '0') on = false;
-  let ac = null, out = null, X = null, unlocked = Q.get('sfxtest') === '1', broken = false;
+  let ac = null, out = null, master = null, X = null, unlocked = Q.get('sfxtest') === '1', broken = false;
   const pending = new Set();
 
   /* ── 잡음(결정적) ── */
@@ -1240,8 +1243,10 @@ window.SFX = (function () {
       try { ac = new AC(); } catch (e) { broken = true; return null; }
       const comp = ac.createDynamicsCompressor();
       comp.threshold.value = -14; comp.knee.value = 18; comp.ratio.value = 4; comp.attack.value = .004; comp.release.value = .18;
-      out = ac.createGain(); out.gain.value = on ? .9 : 0;
-      out.connect(comp); comp.connect(ac.destination);
+      out = ac.createGain(); out.gain.value = .9;
+      // Apply volume after compression, so every one-shot and loop shares the same level.
+      master = ac.createGain(); master.gain.value = on ? volume : 0;
+      out.connect(comp); comp.connect(master); master.connect(ac.destination);
       X = { ac, dest: out, nz: noiseBuf(ac) };
     }
     if (ac.state === 'suspended' && on && !document.hidden) ac.resume().catch(() => {});
@@ -1549,11 +1554,90 @@ window.SFX = (function () {
     try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
     unlock();
     const x = ensure();
-    if (x && out) out.gain.setTargetAtTime(on ? .9 : 0, ac.currentTime, .03);
+    if (x && master) master.gain.setTargetAtTime(on ? volume : 0, ac.currentTime, .03);
+    syncVolumeUI();
     toast(on);
     if (on) play('pop');
     return on;
   }
+
+  function setVolume(value, persist = true) {
+    if (typeof value !== 'number' || !Number.isFinite(value)) return volume;
+    volume = clamp(value);
+    if (persist) { try { localStorage.setItem(VOLUME_KEY, String(volume)); } catch (e) {} }
+    if (master && ac) master.gain.setTargetAtTime(on ? volume : 0, ac.currentTime, .03);
+    syncVolumeUI();
+    return volume;
+  }
+  let volumeButton = null, volumePanel = null, volumeInput = null, volumeOutput = null, volumeStatus = null, volumeTry = null;
+  function syncVolumeUI() {
+    if (!volumeButton) return;
+    const percent = Math.round(volume * 100);
+    volumeButton.textContent = percent + '%';
+    volumeButton.title = '효과음 볼륨 ' + percent + '% · 조절하기';
+    volumeInput.value = String(percent);
+    volumeInput.setAttribute('aria-valuetext', percent + '%');
+    volumeOutput.textContent = percent + '%';
+    volumeStatus.textContent = OFF ? '소리가 비활성화된 화면' : !on ? '음소거 중 · 아래 스피커 버튼으로 켜기' : percent === 0 ? '볼륨 0% · 소리 없음' : '효과음 전체에 적용';
+    volumeInput.disabled = OFF;
+    volumeTry.disabled = OFF || !on || volume === 0;
+  }
+  function mountVolumeUI() {
+    const hud = document.getElementById('hud');
+    if (!hud || document.getElementById('lecture-volume-toggle')) return;
+    const sound = hud.querySelector('[data-a="sound"]');
+    if (!sound) return;
+    const style = document.createElement('style');
+    style.textContent = `#hud #lecture-volume-toggle{width:58px;border-radius:22px;font:600 14px system-ui,sans-serif}
+      #hud.volume-open{opacity:1;transform:none;pointer-events:auto}
+      #lecture-volume-panel{position:absolute;right:0;bottom:calc(100% + 10px);width:280px;max-width:calc(100vw - 28px);box-sizing:border-box;padding:18px;background:#172238;color:#fff;border:1px solid #62718a;border-radius:14px;font:16px/1.5 system-ui,sans-serif;touch-action:auto}
+      #lecture-volume-panel[hidden]{display:none!important}
+      #lecture-volume-panel .volume-heading{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:12px}
+      #lecture-volume-range{display:block;width:100%;height:36px;margin:0;accent-color:#8bceff;touch-action:auto;cursor:pointer}
+      #lecture-volume-status{font-size:14px;color:#d5e4fa;margin:8px 0 12px}
+      #hud #lecture-volume-panel button{width:auto;min-height:40px;height:auto;padding:8px 14px;border-radius:8px;font:600 14px system-ui,sans-serif;background:#e1edff;color:#172238}
+      #lecture-volume-panel .volume-actions{display:flex;justify-content:space-between;gap:12px}
+      #lecture-volume-panel button:disabled{opacity:.45;cursor:default}
+      @media(max-width:600px){#hud{right:8px;gap:4px;max-width:calc(100vw - 16px);flex-wrap:wrap;justify-content:flex-end}#hud button{width:32px;height:38px}#hud .count{min-width:50px;height:38px;padding:0 8px}#hud #lecture-volume-toggle{width:44px;font-size:12px}}
+      @media print{#lecture-volume-panel,#lecture-volume-toggle{display:none!important}}`;
+    document.head.appendChild(style);
+    volumeButton = document.createElement('button');
+    volumeButton.id = 'lecture-volume-toggle'; volumeButton.type = 'button';
+    volumeButton.setAttribute('aria-label','효과음 볼륨 조절');
+    volumeButton.setAttribute('aria-expanded','false');
+    volumeButton.setAttribute('aria-controls','lecture-volume-panel');
+    hud.insertBefore(volumeButton,sound.nextSibling);
+    volumePanel = document.createElement('div');
+    volumePanel.id = 'lecture-volume-panel'; volumePanel.hidden = true;
+    volumePanel.setAttribute('role','group'); volumePanel.setAttribute('aria-label','효과음 볼륨');
+    volumePanel.innerHTML = '<div class="volume-heading"><label for="lecture-volume-range">효과음 볼륨</label><output id="lecture-volume-value" for="lecture-volume-range"></output></div><input id="lecture-volume-range" type="range" min="0" max="100" step="1" aria-label="효과음 볼륨"><div id="lecture-volume-status"></div><div class="volume-actions"><button type="button" id="lecture-volume-try">시험 듣기</button><button type="button" id="lecture-volume-close">닫기</button></div>';
+    hud.appendChild(volumePanel);
+    volumeInput = volumePanel.querySelector('input'); volumeOutput = volumePanel.querySelector('output');
+    volumeStatus = volumePanel.querySelector('#lecture-volume-status'); volumeTry = volumePanel.querySelector('#lecture-volume-try');
+    const setOpen = (open, restoreFocus = false) => {
+      volumePanel.hidden = !open; volumeButton.setAttribute('aria-expanded',String(open));
+      hud.classList.toggle('volume-open',open);
+      if (open) volumeInput.focus(); else if (restoreFocus) volumeButton.focus();
+    };
+    volumeButton.addEventListener('click', e => { e.stopPropagation(); setOpen(volumePanel.hidden); });
+    volumeButton.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') e.stopPropagation(); });
+    volumePanel.addEventListener('click', e => e.stopPropagation());
+    volumePanel.addEventListener('keydown', e => e.stopPropagation());
+    volumeInput.addEventListener('input', () => setVolume(Number(volumeInput.value)/100));
+    volumeTry.addEventListener('click', () => { unlock(); play('ding'); });
+    volumePanel.querySelector('#lecture-volume-close').addEventListener('click', () => setOpen(false,true));
+    document.addEventListener('keydown', e => {
+      if (!volumePanel.hidden && e.key === 'Escape') { setOpen(false,true); e.preventDefault(); e.stopImmediatePropagation(); }
+    },true);
+    document.addEventListener('pointerdown', e => { if (!volumePanel.hidden && !volumePanel.contains(e.target) && e.target !== volumeButton) setOpen(false); },true);
+    window.addEventListener('blur', () => setOpen(false));
+    window.addEventListener('storage', e => {
+      if (e.key === VOLUME_KEY && e.newValue !== null && e.newValue.trim() !== '' && Number.isFinite(Number(e.newValue))) setVolume(Number(e.newValue),false);
+    });
+    syncVolumeUI();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(mountVolumeUI,0));
+  else setTimeout(mountVolumeUI,0);
 
   /* ═════════ 점검 도구 ═════════ */
   function measure(buf) {
@@ -1599,12 +1683,13 @@ window.SFX = (function () {
   }
   if (Q.get('sfx') === 'demo') { const go = () => demoPanel(); if (document.body) go(); else document.addEventListener('DOMContentLoaded', go); }
 
-  return { play, loop, toggle, unlock, analyze, analyzeLoop, names: () => Object.keys(S), isOn: () => on, isOff: () => OFF, S, debug: () => ({ pendingLoops: pending.size, unlocked, state: ac ? ac.state : 'none' }) };
+  return { play, loop, toggle, unlock, setVolume, getVolume: () => volume, analyze, analyzeLoop, names: () => Object.keys(S), isOn: () => on, isOff: () => OFF, S, debug: () => ({ pendingLoops: pending.size, unlocked, state: ac ? ac.state : 'none', volume, effectiveVolume: on && !OFF ? volume : 0 }) };
 })();
 
-/* Lecture laser pointer v1 — canonical: 전기강의_빌드/objects/90_laser.js
+/* Lecture laser pointer v2 — canonical: 전기강의_빌드/objects/90_laser.js
  * 소비전력강의_빌드/objects/90_laser.js is the identical build copy.
- * Page-level UI: its RAF exists only while trails fade, independently of scene Ctx.
+ * Hold the full stroke until release; then fade it for 1100 ms.
+ * Page-level UI: RAF sleeps while a held stroke is stationary, independently of scene Ctx.
  */
 (function () {
   'use strict';
@@ -1627,31 +1712,38 @@ window.SFX = (function () {
     button.setAttribute('aria-label', '레이저 포인터 켜기/끄기 (L)');
     button.setAttribute('aria-keyshortcuts', 'L');
     button.setAttribute('aria-pressed', 'false');
-    button.title = '레이저 포인터 (L) · 드래그로 궤적 · Esc로 끄기';
+    button.title = '레이저 포인터 (L) · 누르는 동안 유지 · 떼면 사라짐 · Esc로 끄기';
     button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 19 7-7 3 3-7 7zM14 10l2-2M17 12h4M12 7V3M17 7l3-3"/><circle cx="13" cy="11" r="1.5" fill="currentColor"/></svg>';
     hud.insertBefore(button, hud.querySelector('[data-a="full"]'));
     var table = document.querySelector('#help table');
     if (table) {
       var row = table.insertRow();
-      row.innerHTML = '<td><kbd>L</kbd> / <kbd>Esc</kbd></td><td>레이저 켜기·끄기 / 끄기 · 드래그하면 궤적 · 방향키로 진행</td>';
+      row.innerHTML = '<td><kbd>L</kbd> / <kbd>Esc</kbd></td><td>레이저 켜기·끄기 / 끄기 · 누르는 동안 궤적 유지, 떼면 사라짐 · 방향키로 진행</td>';
     }
 
     var enabled = false, pointer = null, activeId = null;
     var points = [], strokeId = 0, raf = 0, dpr = 1;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var lifetime = 1100, maxPoints = 800;
+    var lifetime = 1100;
     function stopFrame() { if (raf) cancelAnimationFrame(raf); raf = 0; }
     function render(now) {
       raf = 0;
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
       if (!enabled) return;
-      points = points.filter(function (p) { return now - p.t < lifetime; });
+      // A null timestamp belongs to the held stroke. Its lifetime starts at pointerup.
+      points = points.filter(function (p) { return p.t === null || now - p.t < lifetime; });
       ctx.lineCap = ctx.lineJoin = 'round';
-      for (var i = 1; i < points.length; i++) {
-        var a = points[i - 1], b = points[i];
-        if (a.s !== b.s) continue;
-        var opacity = reduced.matches ? 1 : Math.max(0, 1 - (now - a.t) / lifetime);
+      for (var i = 0; i < points.length; i++) {
+        var a = points[i], b = points[i + 1];
+        var opacity = a.t === null || reduced.matches ? 1 : Math.max(0, 1 - (now - a.t) / lifetime);
         ctx.globalAlpha = opacity;
+        if (!b || a.s !== b.s) {
+          // Keep a short tap visible after release, too.
+          if (i === 0 || points[i - 1].s !== a.s) {
+            ctx.fillStyle = '#f52651'; ctx.beginPath(); ctx.arc(a.x,a.y,2.25,0,Math.PI*2); ctx.fill();
+          }
+          continue;
+        }
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
         ctx.lineWidth = 9; ctx.strokeStyle = 'rgba(180,0,38,.20)'; ctx.stroke();
         ctx.lineWidth = 4.5; ctx.strokeStyle = '#f52651'; ctx.stroke();
@@ -1666,12 +1758,13 @@ window.SFX = (function () {
         ctx.beginPath(); ctx.arc(pointer.x,pointer.y,6,0,Math.PI*2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(pointer.x,pointer.y,1.8,0,Math.PI*2); ctx.fill();
       }
-      if (points.length) raf = requestAnimationFrame(render);
+      if (points.some(function (p) { return p.t !== null; })) raf = requestAnimationFrame(render);
     }
     function paint() { if (!raf) raf = requestAnimationFrame(render); }
     function release() {
-      if (activeId !== null && canvas.hasPointerCapture(activeId)) canvas.releasePointerCapture(activeId);
+      var id = activeId;
       activeId = null;
+      if (id !== null && canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
     }
     function clear() {
       release(); pointer = null; points = []; stopFrame();
@@ -1690,13 +1783,13 @@ window.SFX = (function () {
       if (enabled) resize();
     }
     function position(e) { return { x:e.clientX, y:e.clientY }; }
-    function sample(e) {
+    function sample(e, finalPoint) {
       pointer = position(e);
       if (activeId !== null) {
         var last = points[points.length - 1];
-        if (!last || last.s !== strokeId || Math.hypot(last.x-pointer.x,last.y-pointer.y) >= 2) {
-          points.push({x:pointer.x,y:pointer.y,t:performance.now(),s:strokeId});
-          if (points.length > maxPoints) points.splice(0,points.length-maxPoints);
+        if (!last || last.s !== strokeId || Math.hypot(last.x-pointer.x,last.y-pointer.y) >= 2 || (finalPoint && (last.x !== pointer.x || last.y !== pointer.y))) {
+          // Do not truncate the beginning of a long held stroke.
+          points.push({x:pointer.x,y:pointer.y,t:null,s:strokeId});
         }
       }
       paint();
@@ -1728,6 +1821,9 @@ window.SFX = (function () {
     function end(e) {
       e.preventDefault(); e.stopPropagation();
       if (e.pointerId !== activeId) return;
+      sample(e, true);
+      var releasedAt = performance.now();
+      points.forEach(function (p) { if (p.s === strokeId && p.t === null) p.t = releasedAt; });
       release();
       if (e.pointerType !== 'mouse') pointer = null;
       if (reduced.matches) points = [];
@@ -1735,7 +1831,7 @@ window.SFX = (function () {
     }
     canvas.addEventListener('pointerup', end);
     canvas.addEventListener('pointercancel', function (e) { if (e.pointerId === activeId) clear(); });
-    canvas.addEventListener('lostpointercapture', function () { activeId = null; if (reduced.matches) points = []; paint(); });
+    canvas.addEventListener('lostpointercapture', function (e) { if (e.pointerId === activeId) clear(); });
     canvas.addEventListener('pointerleave', function () { if (activeId === null) { pointer = null; paint(); } });
     canvas.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); });
     canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); e.stopPropagation(); });
