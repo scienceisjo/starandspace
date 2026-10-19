@@ -2695,6 +2695,14 @@ AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "�
     build(root,n){render(root,n,0);root.querySelector('.opening-model-note').textContent=notes[n];},
     async enter(c,n){
       render(c.root,n,0);
+      if(n===1){
+        // 2026-10-19 선생님 요청: 1차시 표지는 지구가 한 번 움직이고 멈추지 말고 계속 공전.
+        // p 0→2 가 한 바퀴(0 처음 → 1 6개월 뒤 → 2 다시 처음), 8초에 한 바퀴. 동작 줄이기면 6개월 뒤 위치에 멈춤.
+        if(c.reduced){render(c.root,n,1);return;}
+        if(!c.instant)c.sfx('rise');
+        c.loop(t=>render(c.root,n,(t*2/8)%2));
+        return;
+      }
       if(c.reduced||c.instant){render(c.root,n,1);return;}
       // Title is deliberately visible from the first frame; only the concept model moves.
       c.sfx('rise');
