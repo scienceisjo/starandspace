@@ -274,9 +274,9 @@ html.still #kwbar,html.still #kwbar *{transition:none!important}
 .parallax-lecture .astro-head{top:74px}
 .parallax-lecture .astro-eyebrow{font-size:28px;margin-bottom:15px;letter-spacing:.025em;color:#8cdcff}
 .parallax-lecture .astro-head h2{font-size:66px;letter-spacing:-.035em}
-.parallax-lecture .astro-layout{top:278px;bottom:140px;grid-template-columns:1090px 530px;gap:60px;align-items:center}
-.parallax-lecture .astro-figure{order:-1;width:1090px;min-height:0;height:648px;display:flex;flex-direction:column;justify-content:center;overflow:visible;outline:none}
-.parallax-lecture .astro-figure>svg{display:block;width:1090px;height:auto;max-height:635px;flex:0 0 auto}
+.parallax-lecture .astro-layout{top:278px;bottom:140px;grid-template-columns:980px 620px;gap:80px;align-items:center}
+.parallax-lecture .astro-figure{order:-1;width:980px;min-height:0;height:648px;display:flex;flex-direction:column;justify-content:center;overflow:visible;outline:none}
+.parallax-lecture .astro-figure>svg{display:block;width:980px;height:auto;max-height:635px;flex:0 0 auto}
 .parallax-lecture .astro-figure figcaption{font-size:28px;color:#c9ddf2;line-height:1.35;margin:12px 0 0}
 .parallax-lecture .astro-points{gap:22px}
 .parallax-lecture .astro-point{font-size:37px;line-height:1.45;letter-spacing:-.025em;padding:19px 21px;border-left:5px solid #338baf;border-radius:0 12px 12px 0;background:#12243b;color:#f5f8ff!important;transition:background-color .35s,border-color .35s}
@@ -288,10 +288,17 @@ html.still #kwbar,html.still #kwbar *{transition:none!important}
 .cp-slide .cp-return{color:#254b57;bottom:34px}
 .parallax-lecture .astro-scope{color:#ffcf83!important}
 .parallax-lecture .astro-point mark{border-color:#ffd16d}
-#a1_01.parallax-lecture .astro-figure .intro-art{width:1090px;height:545px;object-fit:cover;border-radius:22px}
+#a1_01.parallax-lecture .astro-figure .intro-art{width:980px;height:545px;object-fit:cover;border-radius:22px}
 #a1_01.parallax-lecture .astro-head h2{font-size:70px}
 .parallax-lecture #app-credit{font-size:24px;color:#aec2d8}
 @media(prefers-reduced-motion:reduce){.parallax-lecture *{transition:none!important}}
+/* 2026-10-19 학습지 v3 빈칸 줄(ws-line): 줄 칸 620px, 학습지 그림 장면은 흰 판 그림을 가운데에 */
+.parallax-lecture .astro-point.ws-line{font-size:35px;line-height:1.48}
+.parallax-lecture .ws-line .ws-term{color:#9fdcff}
+.parallax-lecture .astro-figure.ws-fig{height:648px;justify-content:center;align-items:center}
+.parallax-lecture .astro-figure.ws-fig figcaption{max-width:960px}
+.parallax-lecture[data-focus="4"] .astro-point:nth-child(4){border-color:#ffd16d;background:#1d3852}
+.parallax-lecture .ws-fig .ws-plate{padding:16px 20px}
 
 .slide.lab-slide[data-tile="dark"]{background:#07111f;color:#f1f6ff}
 .lab-head{position:absolute;left:100px;top:78px;right:100px}.lab-eyebrow{font-size:25px;font-weight:650;color:#98d9f5;margin-bottom:16px}.lab-head h2{font-size:60px;line-height:1.16;letter-spacing:-.045em;margin:0}
@@ -361,6 +368,28 @@ html.still .slide.astro[data-tile="dark"]::before{animation:none}
 .astro.ap-live .ap-svg text{paint-order:stroke;stroke:#0c1b30;stroke-width:1.2px;stroke-linejoin:round;letter-spacing:-.02em}
 @media(prefers-reduced-motion:reduce){.astro .astro-point,.astro .astro-point mark{transition:none!important}.slide.astro[data-tile="dark"]::before{animation:none}}
 
+
+/* 2026-10-18 학습지 v3 빈칸 줄·띠·학습지 그림 (ws_blanks.py) */
+.astro .astro-point.ws-line{line-height:1.5}
+.astro .ws-ctx,.ws-strip .ws-ctx{display:block;width:max-content;max-width:100%;font-size:28px;line-height:1.35;font-weight:600;color:#7a5a12;background:#fff3cf;border-radius:10px;padding:2px 14px;margin:0 0 8px}
+.astro[data-tile="dark"] .ws-ctx,.slide[data-tile="dark"] .ws-strip .ws-ctx{color:#ffe2a0;background:rgba(255,214,118,.14)}
+.astro .ws-term,.ws-strip .ws-term{font-weight:700;color:#1d5c96;margin-right:.25em}
+.astro[data-tile="dark"] .ws-term,.slide[data-tile="dark"] .ws-strip .ws-term{color:#9fdcff}
+.astro .ws-line .bk,.ws-strip .bk{margin-top:.25em}
+.ws-strip{position:absolute;left:120px;right:120px;bottom:118px;display:flex;flex-direction:column;gap:14px;z-index:6;pointer-events:none}
+.lab-slide.ws-strips-1 .lab-frame{height:530px}.lab-slide.ws-strips-1 .ws-strip{top:781px;bottom:auto;left:100px;right:100px}
+.lab-slide.ws-strips-2 .lab-frame{height:430px}.lab-slide.ws-strips-2 .ws-strip{top:681px;bottom:auto;left:100px;right:100px}
+.lab-slide.ws-strips-3 .lab-frame{height:330px}.lab-slide.ws-strips-3 .ws-strip{top:581px;bottom:auto;left:100px;right:100px}
+.ws-strip-line{font-size:36px;line-height:1.5;padding:14px 26px 14px 26px;border-radius:16px;border-left:6px solid #ffd676;background:rgba(8,20,38,.9);color:#f1f6ff;letter-spacing:-.015em}
+.slide[data-tile="light"] .ws-strip-line,.slide[data-tile="parchment"] .ws-strip-line{background:#f4f8fd;color:#132f50;border-left-color:#d79a16}
+.astro .astro-figure.ws-fig{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}
+.astro .ws-fig .ws-plate{background:#fbfcff;border-radius:22px;padding:26px 30px;box-sizing:border-box;display:flex;justify-content:center}
+.astro .ws-fig .ws-plate.none{background:transparent;padding:0}
+.astro .ws-fig .ws-plate svg{display:block;height:auto;max-width:100%}
+.astro .ws-fig figcaption{font-size:28px;line-height:1.4;margin-top:16px;text-align:center}
+.astro.ws-wide .astro-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:28px;align-items:start;justify-items:center}
+.astro.ws-wide .astro-points{width:100%}
+
 </style>
 </head>
 <body>
@@ -396,36 +425,244 @@ html.still .slide.astro[data-tile="dark"]::before{animation:none}
 <div id="viewport"><div id="stage">
 <section class="slide astro-opening opening-cover opening-lesson-1" id="a1_cover" data-notes="P1" data-tile="dark" data-title="연주시차와 별까지의 거리" data-kw-hide>
       <div class="opening-unit">별과 우주 <span>01 / 06</span></div>
-      <div class="opening-cover-copy"><p class="opening-overline">오늘의 수업</p><h1>연주시차와<br>별까지의 거리</h1><div class="opening-accent"></div><p class="opening-subtitle">별과 우주 · 01차시<br>관찰 위치 · 시차 · 거리 비교</p></div>
-      <figure class="opening-model" aria-label="연주시차와 별까지의 거리 도입 모형"><svg viewBox="0 0 840 640" role="img" aria-label="별과 우주 · 01차시 · 관찰 위치 · 시차 · 거리 비교"></svg><figcaption class="opening-model-note"></figcaption></figure>
+      <div class="opening-cover-copy"><p class="opening-overline">오늘의 수업</p><h1>연주시차와<br>별까지의 거리</h1><div class="opening-accent"></div><p class="opening-subtitle">별과 우주 · 01차시<br>시차 · 연주시차 · 단위와 측정 한계</p></div>
+      <figure class="opening-model" aria-label="연주시차와 별까지의 거리 도입 모형"><svg viewBox="0 0 840 640" role="img" aria-label="별과 우주 · 01차시 · 시차 · 연주시차 · 단위와 측정 한계"></svg><figcaption class="opening-model-note"></figcaption></figure>
       <div class="opening-brand">선생님 과학</div>
     </section>
 <section class="slide astro-opening opening-agenda" id="a1_keywords" data-notes="P2" data-tile="light" data-title="오늘의 키워드" data-kw-hide>
       <div class="opening-unit">별과 우주 <span>01 / 06</span></div>
-      <h2>오늘의 키워드</h2><div class="opening-keywords opening-count-4"><div class="opening-keyword-slot" data-step="1" data-fx="left" data-dur="600"><div class="opening-keyword"><div class="opening-keyword-no">01</div><h3>시차</h3><p>관찰 위치에 따른 방향 차이</p></div></div><div class="opening-keyword-slot" data-step="2" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">02</div><h3>연주시차</h3><p>지구의 공전과 별의 위치</p></div></div><div class="opening-keyword-slot" data-step="3" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">03</div><h3>거리 비교</h3><p>가까운 별과 먼 별</p></div></div><div class="opening-keyword-slot" data-step="4" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">04</div><h3>거리 계산</h3><p>성취기준 밖의 확장 학습</p></div></div></div>
+      <h2>오늘의 키워드</h2><div class="opening-keywords opening-count-4"><div class="opening-keyword-slot" data-step="1" data-fx="left" data-dur="600"><div class="opening-keyword"><div class="opening-keyword-no">01</div><h3>시차</h3><p>관측 위치에 따른 위치 차이</p></div></div><div class="opening-keyword-slot" data-step="2" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">02</div><h3>연주시차</h3><p>지구의 공전과 별의 위치</p></div></div><div class="opening-keyword-slot" data-step="3" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">03</div><h3>단위와 측정 한계</h3><p>각도 단위 · pc · 광년</p></div></div><div class="opening-keyword-slot" data-step="4" data-fx="left" data-dur="600"><div class="opening-arrow" aria-hidden="true">→</div><div class="opening-keyword"><div class="opening-keyword-no">04</div><h3>거리 계산</h3><p>성취기준 밖의 확장 학습</p></div></div></div>
       <p class="opening-agenda-caption">연주시차와 별까지의 거리</p>
     </section>
-<section class="slide astro parallax-lecture" id="a1_01" data-notes="P3" data-kw-hide data-tile="dark" data-title="연주 운동 복습"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 도입</div><h2>연주 운동 복습</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">지구가 공전하면 계절마다 보이는 별자리가 달라진다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">가까운 별의 위치도 먼 별을 배경으로 조금 달라 보인다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">이 작은 위치 차이로 별까지의 거리를 잰다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide cp-slide" id="a1_classroom" data-notes="P4" data-kw-hide data-tile="dark" data-title="두 자리에서 본 선생님"><div class="cp-host"></div><a class="cp-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide cp-slide" id="a1_near" data-notes="P5" data-kw-hide data-tile="dark" data-title="가까이 있는 학생 C"><div class="cp-host"></div><a class="cp-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_02" data-notes="P6" data-tile="dark" data-title="관찰 위치와 보이는 방향"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 탐구</div><h2>관찰 위치와 보이는 방향</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">왼쪽 눈과 오른쪽 눈의 <mark title="학습지 빈칸 10">위치</mark>가 다르다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">같은 손가락도 <mark title="학습지 빈칸 11">배경</mark>에 대한 위치가 달라 보인다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">두 방향이 이루는 각을 시차라고 한다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_03" data-notes="P7" data-tile="dark" data-title="물체까지의 거리와 시차"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 탐구</div><h2>물체까지의 거리와 시차</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">관찰 위치 사이의 거리는 <mark title="학습지 빈칸 4">일정하게</mark> 둔다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">가까운 물체는 시차가 크다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">먼 물체는 시차가 <mark title="학습지 빈칸 12">작다</mark>.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_04" data-notes="P8" data-tile="dark" data-title="관찰 위치 사이의 거리"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 탐구</div><h2>관찰 위치 사이의 거리</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650"><mark title="학습지 빈칸 13">물체까지의 거리</mark>는 그대로 둔다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">두 관찰 위치가 멀어지면 시차가 <mark title="학습지 빈칸 5">커진다</mark>.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">거리 비교에는 같은 관찰 조건이 필요하다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide cp-slide" id="a1_bridge" data-notes="P9" data-kw-hide data-tile="dark" data-title="교실 관찰과 지구의 공전"><div class="cp-host"></div><a class="cp-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_05" data-notes="P10" data-tile="dark" data-title="지구의 공전과 별의 위치"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>지구의 공전과 별의 위치</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">지구는 태양 주위를 <mark title="학습지 빈칸 14">공전</mark>한다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650"><mark title="학습지 빈칸 6">6개월</mark> 간격으로 관찰 위치가 크게 달라진다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">가까운 별은 <mark title="학습지 빈칸 15">먼 배경 별</mark>에 대해 위치가 달라 보인다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide lab-slide" id="a1_lab_parallax" data-notes="P11" data-tile="dark" data-title="연주시차 3D 모형"><div class="lab-head"><div class="lab-eyebrow">별과 우주 · 01차시 / 관측 모형</div><h2>연주시차 3D 모형</h2></div><div class="lab-frame" data-interactive><iframe title="연주시차 3D 모형" src="about:blank"></iframe><div class="lab-loading">관측 모형을 불러오는 중</div></div><div class="lab-caption"></div><div class="lab-limit">각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습</div><a class="lab-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_06" data-notes="P12" data-tile="dark" data-title="연주시차의 정의"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>연주시차의 정의</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">6개월 간격으로 보이는 <mark title="학습지 빈칸 16">최대 시차</mark>를 찾는다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">그 최대 시차의 <mark title="학습지 빈칸 7">절반</mark>이 연주시차 p이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">그림의 전체 각 <mark title="학습지 빈칸 17">2p</mark>와 절반 p를 구분한다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_07" data-notes="P13" data-tile="dark" data-title="연주시차로 거리 비교"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>연주시차로 거리 비교</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">같은 지구 공전 궤도를 이용한다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차가 크면 가까운 별이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">연주시차가 작으면 먼 별이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_08" data-notes="P14" data-tile="dark" data-title="각도와 거리의 단위"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>각도와 거리의 단위</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">1° = 60′, 1′ = <mark title="학습지 빈칸 18">60″</mark></div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차 1″인 별까지의 거리 = 1 pc</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">1 pc는 약 <mark title="학습지 빈칸 8">3.26광년</mark>이다.</div><div class="astro-worksheet-note" data-step="3" data-fx="rise" data-dur="650">광년은 시간이 아니라 빛이 1년 동안 진행한 <mark title="학습지 빈칸 20">거리</mark>입니다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_09" data-notes="P15" data-tile="dark" data-title="연주시차의 측정 한계"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>연주시차의 측정 한계</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">먼 별일수록 연주시차가 작아진다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">아주 작은 각은 <mark title="학습지 빈칸 19">정확히 측정하기 어렵다</mark>.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">측정 가능한 거리는 장비의 <mark title="학습지 빈칸 9">정밀도</mark>에 따라 달라진다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_10" data-notes="P16" data-tile="dark" data-title="연주시차의 역수로 거리 계산"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 성취기준 밖의 확장 학습</div><h2>연주시차의 역수로 거리 계산</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">거리(pc) = 1 ÷ 연주시차(″)</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">p = 0.25″ → 1 ÷ 0.25 = 4 pc</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">연주시차가 절반이면 거리는 2배이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="astro-scope">성취기준 밖의 확장 학습</div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_11" data-notes="P17" data-tile="dark" data-title="전체 시차가 주어진 경우"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 성취기준 밖의 확장 학습</div><h2>전체 시차가 주어진 경우</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">6개월 간격의 최대 시차가 0.4″이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차 p = 0.4″ ÷ 2 = 0.2″</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">거리 = 1 ÷ 0.2 = 5 pc</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="astro-scope">성취기준 밖의 확장 학습</div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_12" data-notes="P18" data-tile="dark" data-title="연주시차 자료 해석"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 성취기준 밖의 확장 학습</div><h2>연주시차 자료 해석</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">가장 가까운 별은 A이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">B의 거리는 A의 2배이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">C의 거리는 10 pc이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="astro-scope">성취기준 밖의 확장 학습</div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a></section>
-<section class="slide astro parallax-lecture" id="a1_13" data-notes="P19" data-tile="dark" data-title="연주시차 핵심 정리"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 정리</div><h2>연주시차 핵심 정리</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">시차: 관찰 위치에 따라 달라 보이는 방향의 차이</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차: 최대 시차의 절반</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">큰 연주시차 → 가까운 별</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><a class="astro-return" href="lesson-01-parallax.html">수업 페이지</a><div id="app-credit">제작 : 과학을 사랑하는 선생님 · © 2026 · All rights reserved · 최종 업데이트: 2026-10-12</div></section>
+<section class="slide astro parallax-lecture" data-ws-fig id="a1_01" data-notes="P3" data-kw-hide data-tile="dark" data-title="연주 운동 복습"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 도입</div><h2>연주 운동 복습</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보인다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">계절에 따라 밤하늘에 보이는 별자리가 달라진다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">두 현상은 지구가 태양 주위를 공전하기 때문에 나타난다.</div></div><figure class="astro-figure ws-fig" data-in data-fx="scale" aria-label="연주 운동 복습 그림"><div class="ws-plate none" style="width:900px"><svg style="width:100%" class="ws-svg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560" font-family="Pretendard, 'Malgun Gothic', sans-serif">
+  <!-- 강의용(a1_01): 태양의 연주 운동과 계절별 별자리. 지구 북극 쪽에서 내려다본 모습, 크기와 거리는 과장. 1단계 태양이 보이는 별자리, 2단계 밤에 보이는 별자리, 3단계 지구의 공전 -->
+  <rect width="880" height="560" rx="24" fill="#101e35"/>
+  <text x="440" y="44" fill="#eef6ff" font-size="30" text-anchor="middle" font-weight="650">태양의 연주 운동과 계절별 별자리</text>
+  <rect x="342.0" y="83.0" width="196" height="58" rx="14" fill="#172c47" stroke="#6484a8" stroke-width="2.5"/><text x="440" y="122" fill="#eef6ff" font-size="27" text-anchor="middle" font-weight="650">쌍둥이자리</text>
+  <rect x="27.0" y="271.0" width="196" height="58" rx="14" fill="#172c47" stroke="#6484a8" stroke-width="2.5"/><text x="125" y="310" fill="#eef6ff" font-size="27" text-anchor="middle" font-weight="650">처녀자리</text>
+  <rect x="657.0" y="271.0" width="196" height="58" rx="14" fill="#172c47" stroke="#6484a8" stroke-width="2.5"/><text x="755" y="310" fill="#eef6ff" font-size="27" text-anchor="middle" font-weight="650">물고기자리</text>
+  <rect x="342.0" y="459.0" width="196" height="58" rx="14" fill="#172c47" stroke="#6484a8" stroke-width="2.5"/><text x="440" y="498" fill="#eef6ff" font-size="27" text-anchor="middle" font-weight="650">궁수자리</text>
+  <ellipse cx="440" cy="300" rx="170" ry="100" fill="none" stroke="#6484a8" stroke-width="3" stroke-dasharray="9 8"/>
+  <circle cx="440" cy="300" r="28" fill="#ffd676"/>
+  <text x="474" y="346" fill="#ffd676" font-size="26" text-anchor="start" font-weight="650">태양</text>
+  <circle cx="440" cy="400" r="16" fill="#64d5ff"/><path d="M430 391l11 2 5 9-7 11-9-6z" fill="#247c70" opacity=".85"/>
+  <text x="466" y="432" fill="#64d5ff" font-size="26" text-anchor="start" font-weight="650">지구</text>
+  <g data-step="1" data-fx="fade">
+    <path d="M440 382L440 146" stroke="#ffd676" stroke-width="3" stroke-dasharray="7 7" fill="none"/>
+    <path d="M592 300L228 300" stroke="#ffd676" stroke-width="3" stroke-dasharray="7 7" fill="none"/>
+    <circle cx="610" cy="300" r="16" fill="#ffa0bf"/><path d="M600 291l11 2 5 9-7 11-9-6z" fill="#247c70" opacity=".85"/>
+    <text x="610" y="262" fill="#ffa0bf" font-size="25" text-anchor="middle" font-weight="650">3개월 뒤 지구</text>
+    <path d="M330 122Q170 128 140 258" stroke="#ffd676" stroke-width="4" fill="none"/><polygon points="138.7,263.8 134.4,245.4 150.5,249.1" fill="#ffd676"/>
+    <text x="292" y="178" fill="#ffd676" font-size="25" text-anchor="middle" font-weight="650">태양이 옮겨 가</text>
+    <text x="292" y="207" fill="#ffd676" font-size="25" text-anchor="middle" font-weight="650">보이는 방향</text>
+  </g>
+  <g data-step="2" data-fx="fade">
+    <rect x="342" y="459" width="196" height="58" rx="14" fill="none" stroke="#64d5ff" stroke-width="4"/>
+    <text x="550" y="480" fill="#64d5ff" font-size="25" text-anchor="start" font-weight="650">지구에서</text>
+    <text x="550" y="510" fill="#64d5ff" font-size="25" text-anchor="start" font-weight="650">밤에 보임</text>
+    <rect x="657" y="271" width="196" height="58" rx="14" fill="none" stroke="#ffa0bf" stroke-width="4"/>
+    <text x="755" y="362" fill="#ffa0bf" font-size="25" text-anchor="middle" font-weight="650">3개월 뒤</text>
+    <text x="755" y="392" fill="#ffa0bf" font-size="25" text-anchor="middle" font-weight="650">밤에 보임</text>
+  </g>
+  <g data-step="3" data-fx="fade">
+    <path d="M296 353Q326 384 372 392" stroke="#96ebbd" stroke-width="5" fill="none"/><polygon points="377.9,393.0 359.7,398.2 362.6,382.0" fill="#96ebbd"/>
+    <text x="246" y="414" fill="#96ebbd" font-size="26" text-anchor="middle" font-weight="650">지구의 공전</text>
+  </g>
+</svg>
+</div><figcaption>지구의 북극 쪽에서 내려다본 모습(크기와 거리는 과장)</figcaption></figure></div></section>
+<section class="slide cp-slide" id="a1_classroom" data-notes="P4" data-kw-hide data-tile="dark" data-title="두 자리에서 본 선생님"><div class="cp-host"></div></section>
+<section class="slide astro parallax-lecture" data-ws-fig id="a1_ws_parallax" data-notes="P5" data-tile="dark" data-title="시차"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>시차</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point ws-line" data-ws="1" data-in="200" data-fx="left" data-dur="650"><b class="ws-term">정의:</b> 서로 다른 지점에서 물체를 관측할 때 <span class="bk"><span class="a" data-step="1" data-fx="pop">먼 배경</span><span class="n">1</span></span>에 대해 나타나는 물체의 위치 차이</div><div class="astro-point ws-line" data-ws="2" data-step="1" data-fx="left" data-dur="650"><b class="ws-term">측정:</b> 두 관측 지점과 물체가 이루는 <span class="bk"><span class="a" data-step="2" data-fx="pop">각도</span><span class="n">2</span></span>로 측정한다.</div><div class="astro-point ws-line" data-ws="3" data-step="2" data-fx="left" data-dur="650"><b class="ws-term">특징:</b> 물체의 <span class="bk"><span class="a" data-step="3" data-fx="pop">실제 위치</span><span class="n">3</span></span>는 변하지 않았지만, 관측 위치에 따라 배경에 대해 위치 차이가 발생하는 것처럼 보인다.</div></div><figure class="astro-figure ws-fig" data-in data-fx="scale" aria-label="시차 그림"><div class="ws-plate" style="width:720px"><svg style="width:100%" class="ws-svg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 304" width="360" height="304" font-family="Pretendard, 'Malgun Gothic', sans-serif">
+  <!-- 강의용 사본(글자 키움). 위에서 내려다본 칠판·손가락·두 눈(한 시점). 왼쪽 눈(128, 233)→손가락(180,165.40)→글자 칸 중심 y=51, x=268.0「ㅂ」, 오른쪽 눈(232, 233)→x=92.0「ㄴ」. 시선은 손가락을 지나는 직선 -->
+  <rect x="0" y="0" width="360" height="304" fill="#ffffff"/>
+  <rect x="8" y="20" width="344" height="14" fill="#e7e2d8" data-ok="1"/>
+  <text x="16" y="15" font-size="15" text-anchor="start" fill="#6b7280" data-ok="1">벽</text>
+  <rect x="18" y="34" width="324" height="34" rx="3" fill="#24493a" stroke="#8a5a2b" stroke-width="4"/>
+  <rect x="34" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="78" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="122" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="166" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="210" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="254" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="298" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <text x="342" y="91" font-size="17" text-anchor="end" fill="#6b7280" font-weight="700">칠판</text>
+  <text x="48" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄱ</text>
+  <text x="92" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄴ</text>
+  <text x="136" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄷ</text>
+  <text x="180" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄹ</text>
+  <text x="224" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㅁ</text>
+  <text x="268" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㅂ</text>
+  <text x="312" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㅅ</text>
+  <line x1="128" y1="233" x2="180" y2="165.4" stroke="#2563a8" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="232" y1="233" x2="180" y2="165.4" stroke="#c0392b" stroke-width="2.2" stroke-dasharray="7 4" stroke-linecap="round"/>
+  <path d="M191 179.7 A18 18 0 0 1 169 179.7" fill="none" stroke="#4a34d6" stroke-width="2"/>
+  <circle cx="180" cy="165.40" r="6.5" fill="#f3d9b1" stroke="#8a5a2b" stroke-width="1.6"/>
+  <text x="156" y="171" font-size="17" text-anchor="end" fill="#1f2937" font-weight="700">손가락</text>
+  <defs><clipPath id="a1_ws_parallax-headclip"><ellipse cx="180" cy="256" rx="74" ry="42"/></clipPath></defs>
+  <ellipse cx="105" cy="254" rx="7" ry="12" fill="#f6dcc0" stroke="#8a5a2b" stroke-width="1.4"/>
+  <ellipse cx="255" cy="254" rx="7" ry="12" fill="#f6dcc0" stroke="#8a5a2b" stroke-width="1.4"/>
+  <path d="M171 217 Q180 198 189 217" fill="#f6dcc0" stroke="#8a5a2b" stroke-width="1.5"/>
+  <ellipse cx="180" cy="256" rx="74" ry="42" fill="#f6dcc0"/>
+  <ellipse cx="180" cy="270" rx="74" ry="42" fill="#3b2a20" clip-path="url(#a1_ws_parallax-headclip)"/>
+  <ellipse cx="180" cy="256" rx="74" ry="42" fill="none" stroke="#8a5a2b" stroke-width="1.6"/>
+  <text x="180" y="269" font-size="15" text-anchor="middle" fill="#ffffff" data-ok="1">머리(위에서 본 모습)</text>
+  <circle cx="128" cy="233" r="4.6" fill="#2563a8" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="232" cy="233" r="4.6" fill="#c0392b" stroke="#ffffff" stroke-width="1.2"/>
+  <text x="100" y="221" font-size="17" text-anchor="end" fill="#2563a8" font-weight="700">왼쪽 눈</text>
+  <text x="260" y="221" font-size="17" text-anchor="start" fill="#c0392b" font-weight="700">오른쪽 눈</text>
+</svg>
+</div><figcaption>칠판 앞에 손가락을 세우고 위에서 내려다본 모습(크기와 각은 과장)</figcaption></figure></div></section>
+<section class="slide astro parallax-lecture" data-ws-fig id="a1_02" data-notes="P6" data-tile="dark" data-title="왼쪽 눈과 오른쪽 눈으로 본 손가락"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 탐구</div><h2>왼쪽 눈과 오른쪽 눈으로 본 손가락</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">왼쪽 눈으로 보면 손가락이 ㅂ 위에 있는 것처럼 보인다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">오른쪽 눈으로 보면 손가락이 ㄴ 위에 있는 것처럼 보인다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">답: (ㅂ, ㄴ). 손가락은 움직이지 않았다.</div></div><figure class="astro-figure ws-fig" data-in data-fx="scale" aria-label="왼쪽 눈과 오른쪽 눈으로 본 손가락 그림"><div class="ws-plate" style="width:720px"><svg style="width:100%" class="ws-svg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 304" width="360" height="304" font-family="Pretendard, 'Malgun Gothic', sans-serif">
+  <!-- 강의용 사본(문항 ①): 1단계 왼쪽 눈 → ㅂ, 2단계 오른쪽 눈 → ㄴ. 위에서 내려다본 칠판·손가락·두 눈(한 시점). 왼쪽 눈(128, 233)→손가락(180,165.40)→글자 칸 중심 y=51, x=268.0「ㅂ」, 오른쪽 눈(232, 233)→x=92.0「ㄴ」. 시선은 손가락을 지나는 직선 -->
+  <rect x="0" y="0" width="360" height="304" fill="#ffffff"/>
+  <rect x="8" y="20" width="344" height="14" fill="#e7e2d8" data-ok="1"/>
+  <text x="16" y="15" font-size="15" text-anchor="start" fill="#6b7280" data-ok="1">벽</text>
+  <rect x="18" y="34" width="324" height="34" rx="3" fill="#24493a" stroke="#8a5a2b" stroke-width="4"/>
+  <rect x="34" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="78" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="122" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="166" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="210" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="254" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <rect x="298" y="38.0" width="28" height="26" rx="4" fill="#2f5c49" stroke="#4f7d68" stroke-width="1" data-ok="1"/>
+  <text x="342" y="91" font-size="17" text-anchor="end" fill="#6b7280" font-weight="700">칠판</text>
+  <g data-step="1" data-fx="fade">
+  <line x1="128" y1="233" x2="268" y2="51" stroke="#2563a8" stroke-width="2.6" stroke-linecap="round" data-ok="1"/>
+  </g>
+  <g data-step="2" data-fx="fade">
+  <line x1="232" y1="233" x2="92" y2="51" stroke="#c0392b" stroke-width="2.6" stroke-dasharray="7 4" stroke-linecap="round" data-ok="1"/>
+  </g>
+  <text x="48" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄱ</text>
+  <text x="92" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄴ</text>
+  <text x="136" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄷ</text>
+  <text x="180" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㄹ</text>
+  <text x="224" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㅁ</text>
+  <text x="268" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㅂ</text>
+  <text x="312" y="58.5" font-size="20" font-weight="700" text-anchor="middle" fill="#f8fafc" stroke="#2f5c49" stroke-width="3" paint-order="stroke" data-ok="1">ㅅ</text>
+  <g data-step="1" data-fx="fade">
+  <circle cx="268" cy="51.0" r="18" fill="none" stroke="#2563a8" stroke-width="2.6"/>
+  </g>
+  <g data-step="2" data-fx="fade">
+  <circle cx="92" cy="51.0" r="18" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-dasharray="5 3"/>
+  </g>
+  <line x1="128" y1="233" x2="180" y2="165.4" stroke="#2563a8" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="232" y1="233" x2="180" y2="165.4" stroke="#c0392b" stroke-width="2.2" stroke-dasharray="7 4" stroke-linecap="round"/>
+  <path d="M191 179.7 A18 18 0 0 1 169 179.7" fill="none" stroke="#4a34d6" stroke-width="2"/>
+  <circle cx="180" cy="165.40" r="6.5" fill="#f3d9b1" stroke="#8a5a2b" stroke-width="1.6"/>
+  <text x="156" y="171" font-size="17" text-anchor="end" fill="#1f2937" font-weight="700">손가락</text>
+  <defs><clipPath id="a1_02-headclip"><ellipse cx="180" cy="256" rx="74" ry="42"/></clipPath></defs>
+  <ellipse cx="105" cy="254" rx="7" ry="12" fill="#f6dcc0" stroke="#8a5a2b" stroke-width="1.4"/>
+  <ellipse cx="255" cy="254" rx="7" ry="12" fill="#f6dcc0" stroke="#8a5a2b" stroke-width="1.4"/>
+  <path d="M171 217 Q180 198 189 217" fill="#f6dcc0" stroke="#8a5a2b" stroke-width="1.5"/>
+  <ellipse cx="180" cy="256" rx="74" ry="42" fill="#f6dcc0"/>
+  <ellipse cx="180" cy="270" rx="74" ry="42" fill="#3b2a20" clip-path="url(#a1_02-headclip)"/>
+  <ellipse cx="180" cy="256" rx="74" ry="42" fill="none" stroke="#8a5a2b" stroke-width="1.6"/>
+  <text x="180" y="269" font-size="15" text-anchor="middle" fill="#ffffff" data-ok="1">머리(위에서 본 모습)</text>
+  <circle cx="128" cy="233" r="4.6" fill="#2563a8" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="232" cy="233" r="4.6" fill="#c0392b" stroke="#ffffff" stroke-width="1.2"/>
+  <text x="100" y="221" font-size="17" text-anchor="end" fill="#2563a8" font-weight="700">왼쪽 눈</text>
+  <text x="260" y="221" font-size="17" text-anchor="start" fill="#c0392b" font-weight="700">오른쪽 눈</text>
+</svg>
+</div><figcaption>문항 ① 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 고르시오.</figcaption></figure></div></section>
+<section class="slide astro parallax-lecture" id="a1_04" data-notes="P7" data-tile="dark" data-title="관찰 위치에 따른 시차"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 탐구</div><h2>관찰 위치에 따른 시차</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">물체까지의 거리는 그대로 둔다.</div><div class="astro-point ws-line" data-ws="4" data-step="1" data-fx="left" data-dur="650"><b class="ws-term">관찰 위치에 따른 시차(물체까지의 거리 일정):</b> 두 관찰 위치가 서로 <span class="bk"><span class="a" data-step="2" data-fx="pop">멀어지면</span><span class="n">4</span></span> 시차가 커진다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide cp-slide" id="a1_near" data-notes="P8" data-kw-hide data-tile="dark" data-title="가까이 있는 학생 C"><div class="cp-host"></div></section>
+<section class="slide astro parallax-lecture" id="a1_03" data-notes="P9" data-tile="dark" data-title="물체까지의 거리에 따른 시차"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 탐구</div><h2>물체까지의 거리에 따른 시차</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">두 관찰 위치 사이의 거리는 그대로 둔다.</div><div class="astro-point ws-line" data-ws="5" data-step="1" data-fx="left" data-dur="650"><b class="ws-term">물체까지의 거리에 따른 시차(관찰 위치 사이 거리 일정):</b> 물체까지의 거리가 <span class="bk"><span class="a" data-step="2" data-fx="pop">가까울수록</span><span class="n">5</span></span> 시차가 커진다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide astro parallax-lecture" data-ws-fig id="a1_ws_size" data-notes="P10" data-tile="dark" data-title="시차의 크기"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>시차의 크기</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point ws-line" data-ws="6" data-in="200" data-fx="left" data-dur="650"><b class="ws-term">정리:</b> 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 <span class="bk"><span class="a" data-step="1" data-fx="pop">멀수록</span><span class="n">6</span></span> 크다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">시차가 가장 작은 것: (나)</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">(가)보다 물체가 멀고, (다)보다 관찰 위치 사이가 가깝다.</div></div><figure class="astro-figure ws-fig" data-in data-fx="scale" aria-label="시차의 크기 그림"><div class="ws-plate" style="width:820px"><svg style="width:100%" class="ws-svg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 250" width="360" height="250" font-family="Pretendard, 'Malgun Gothic', sans-serif">
+  <!-- 강의용 사본(문항 ②): 범례를 그림 안에, 2단계에 시차가 가장 작은 (나)를 테두리로 표시. 같은 관찰 간격(가·나)과 같은 물체 거리(나·다). 각은 좌표로 계산, 크기와 각은 과장 -->
+  <rect x="0" y="0" width="360" height="250" fill="#ffffff"/>
+  <line x1="192" y1="42" x2="288" y2="42" stroke="#6b7280" stroke-width="1.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+  <line x1="38" y1="176" x2="82" y2="176" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="4 3" stroke-linecap="round"/>
+  <line x1="38" y1="176" x2="60" y2="116" stroke="#4a34d6" stroke-width="2" stroke-linecap="round"/>
+  <line x1="82" y1="176" x2="60" y2="116" stroke="#4a34d6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M69 140.4 A26 26 0 0 1 51 140.4" fill="none" stroke="#c77700" stroke-width="2.2"/>
+  <circle cx="60" cy="116" r="6" fill="#1f2937"/>
+  <circle cx="38" cy="176" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <circle cx="82" cy="176" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <text x="60" y="200" font-size="13" text-anchor="middle" fill="#1f2937" font-weight="700">(가)</text>
+  <text x="60" y="218" font-size="13" text-anchor="middle" fill="#1f2937">가까운 물체</text>
+  <line x1="158" y1="176" x2="202" y2="176" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="4 3" stroke-linecap="round"/>
+  <line x1="158" y1="176" x2="180" y2="42" stroke="#4a34d6" stroke-width="2" stroke-linecap="round"/>
+  <line x1="202" y1="176" x2="180" y2="42" stroke="#4a34d6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M184.2 67.7 A26 26 0 0 1 175.8 67.7" fill="none" stroke="#c77700" stroke-width="2.2"/>
+  <circle cx="180" cy="42" r="6" fill="#1f2937"/>
+  <circle cx="158" cy="176" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <circle cx="202" cy="176" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <text x="180" y="200" font-size="13" text-anchor="middle" fill="#1f2937" font-weight="700">(나)</text>
+  <text x="180" y="218" font-size="13" text-anchor="middle" fill="#1f2937">먼 물체</text>
+  <line x1="256" y1="176" x2="344" y2="176" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="4 3" stroke-linecap="round"/>
+  <line x1="256" y1="176" x2="300" y2="42" stroke="#4a34d6" stroke-width="2" stroke-linecap="round"/>
+  <line x1="344" y1="176" x2="300" y2="42" stroke="#4a34d6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M308.1 66.7 A26 26 0 0 1 291.9 66.7" fill="none" stroke="#c77700" stroke-width="2.2"/>
+  <circle cx="300" cy="42" r="6" fill="#1f2937"/>
+  <circle cx="256" cy="176" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <circle cx="344" cy="176" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <text x="300" y="200" font-size="13" text-anchor="middle" fill="#1f2937" font-weight="700">(다)</text>
+  <text x="300" y="218" font-size="13" text-anchor="middle" fill="#1f2937">먼 물체, 관찰 위치</text>
+  <text x="300" y="236" font-size="13" text-anchor="middle" fill="#1f2937">사이를 넓힘</text>
+  <circle cx="14" cy="12" r="5" fill="#ffffff" stroke="#1f2937" stroke-width="1.8"/>
+  <text x="24" y="17" font-size="13" fill="#1f2937">관찰 위치</text>
+  <circle cx="100" cy="12" r="6" fill="#1f2937"/>
+  <text x="111" y="17" font-size="13" fill="#1f2937">물체</text>
+  <g data-step="2" data-fx="fade">
+    <rect x="132" y="24" width="96" height="204" rx="12" fill="none" stroke="#d97706" stroke-width="3" stroke-dasharray="7 4"/>
+  </g>
+</svg>
+</div><figcaption>크기와 각은 과장</figcaption></figure></div></section>
+<section class="slide cp-slide" id="a1_bridge" data-notes="P11" data-kw-hide data-tile="dark" data-title="교실 관찰과 지구의 공전"><div class="cp-host"></div></section>
+<section class="slide astro parallax-lecture" id="a1_05" data-notes="P12" data-tile="dark" data-title="관찰 위치의 변화와 별이 보이는 위치"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>관찰 위치의 변화와 별이 보이는 위치</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point ws-line" data-ws="7" data-in="200" data-fx="left" data-dur="650">지구는 태양 주위를 <span class="bk"><span class="a" data-step="1" data-fx="pop">공전</span><span class="n">7</span></span>한다.</div><div class="astro-point ws-line" data-ws="8" data-step="1" data-fx="left" data-dur="650"><span class="bk"><span class="a" data-step="2" data-fx="pop">6개월</span><span class="n">8</span></span> 간격으로 관찰 위치가 크게 달라진다.</div><div class="astro-point ws-line" data-ws="9" data-step="2" data-fx="left" data-dur="650">가까운 별은 <span class="bk wide"><span class="a" data-step="3" data-fx="pop">먼 배경 별</span><span class="n">9</span></span>에 대해 위치가 달라 보인다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide lab-slide" id="a1_lab_parallax" data-notes="P13" data-tile="dark" data-title="연주시차 3D 모형"><div class="lab-head"><div class="lab-eyebrow">별과 우주 · 01차시 / 관측 모형</div><h2>연주시차 3D 모형</h2></div><div class="lab-frame" data-interactive><iframe title="연주시차 3D 모형" src="about:blank"></iframe><div class="lab-loading">관측 모형을 불러오는 중</div></div><div class="lab-caption"></div><div class="lab-limit">각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습</div></section>
+<section class="slide astro parallax-lecture" id="a1_06" data-notes="P14" data-tile="dark" data-title="연주시차의 정의"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>연주시차의 정의</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point ws-line" data-ws="10" data-in="200" data-fx="left" data-dur="650"><b class="ws-term">정의:</b> 공전 궤도 양 끝(지구 공전 궤도에서 지구가 가장 멀리 떨어진 두 지점)에서 관측한 별의 시차의 <span class="bk"><span class="a" data-step="1" data-fx="pop">1/2</span><span class="n">10</span></span></div><div class="astro-point ws-line" data-ws="11" data-step="1" data-fx="left" data-dur="650"><b class="ws-term">두 시선이 이루는 각:</b> 연주시차를 p라고 하면, 공전 궤도 양 끝에서 본 두 시선이 별에서 이루는 각은 <span class="bk"><span class="a" data-step="2" data-fx="pop">2p</span><span class="n">11</span></span>이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">문항 ③ 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide astro parallax-lecture" id="a1_07" data-notes="P15" data-tile="dark" data-title="연주시차와 별까지의 거리"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>연주시차와 별까지의 거리</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">같은 공전 궤도에서 별까지의 거리만 바꾼다.</div><div class="astro-point ws-line" data-ws="12" data-step="1" data-fx="left" data-dur="650"><b class="ws-term">별까지의 거리:</b> 연주시차가 큰 별일수록 지구에서 <span class="bk"><span class="a" data-step="2" data-fx="pop">가깝다</span><span class="n">12</span></span>.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide astro parallax-lecture" data-ws-fig id="a1_far" data-notes="P16" data-tile="dark" data-title="같은 궤도에서 본 세 별"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>같은 궤도에서 본 세 별</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">별 A, B, C의 연주시차: 0.4″, 0.2″, 0.1″</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차가 큰 별일수록 지구에서 가깝다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">가까운 별부터: A, B, C</div></div><figure class="astro-figure ws-fig" data-in data-fx="scale" aria-label="같은 궤도에서 본 세 별 그림"><div class="ws-plate" style="width:860px"><svg style="width:100%" class="ws-svg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 236" width="360" height="236" font-family="Pretendard, 'Malgun Gothic', sans-serif">
+  <!-- 같은 공전 궤도(지구 두 위치 간격 80)에서 별까지의 거리만 다르게. p 는 별–태양 수직선과 별–지구 선 사이 각: 33.7°, 21.4°, 12.9° -->
+  <rect x="0" y="0" width="360" height="236" fill="#ffffff"/>
+  <line x1="20" y1="190" x2="100" y2="190" stroke="#c9ccd3" stroke-width="1.2" stroke-dasharray="3 3" stroke-linecap="round"/>
+  <path d="M60 130 L82.2 163.3 A40 40 0 0 1 60 170 Z" fill="#dcd6fb" stroke="#4a34d6" stroke-width="1.6" stroke-linejoin="round"/>
+  <line x1="20" y1="190" x2="60" y2="130" stroke="#c77700" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="100" y1="190" x2="60" y2="130" stroke="#c77700" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="60" y1="139" x2="60" y2="182" stroke="#6b7280" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/>
+  <text x="85.9" y="160.3" font-size="15" text-anchor="start" fill="#4a34d6" font-weight="700" font-style="italic">p</text>
+  <polygon points="60,122 62.1,127.1 67.6,127.5 63.4,131.1 64.7,136.5 60,133.6 55.3,136.5 56.6,131.1 52.4,127.5 57.9,127.1" fill="#f5b301" stroke="#c77700" stroke-width="1.3" stroke-linejoin="round"/>
+  <circle cx="60" cy="190" r="6" fill="#f2b705" stroke="#b7791f" stroke-width="1.2"/>
+  <circle cx="20" cy="190" r="5" fill="#d7eedf" stroke="#2f7d4f" stroke-width="1.6"/>
+  <circle cx="100" cy="190" r="5" fill="#d7eedf" stroke="#2f7d4f" stroke-width="1.6"/>
+  <text x="60" y="230" font-size="13" text-anchor="middle" fill="#1f2937" font-weight="700">가까운 별</text>
+  <line x1="140" y1="190" x2="220" y2="190" stroke="#c9ccd3" stroke-width="1.2" stroke-dasharray="3 3" stroke-linecap="round"/>
+  <path d="M180 88 L194.6 125.2 A40 40 0 0 1 180 128 Z" fill="#dcd6fb" stroke="#4a34d6" stroke-width="1.6" stroke-linejoin="round"/>
+  <line x1="140" y1="190" x2="180" y2="88" stroke="#c77700" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="220" y1="190" x2="180" y2="88" stroke="#c77700" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="180" y1="97" x2="180" y2="182" stroke="#6b7280" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/>
+  <text x="199.4" y="121.7" font-size="15" text-anchor="start" fill="#4a34d6" font-weight="700" font-style="italic">p</text>
+  <polygon points="180,80 182.1,85.1 187.6,85.5 183.4,89.1 184.7,94.5 180,91.6 175.3,94.5 176.6,89.1 172.4,85.5 177.9,85.1" fill="#f5b301" stroke="#c77700" stroke-width="1.3" stroke-linejoin="round"/>
+  <circle cx="180" cy="190" r="6" fill="#f2b705" stroke="#b7791f" stroke-width="1.2"/>
+  <circle cx="140" cy="190" r="5" fill="#d7eedf" stroke="#2f7d4f" stroke-width="1.6"/>
+  <circle cx="220" cy="190" r="5" fill="#d7eedf" stroke="#2f7d4f" stroke-width="1.6"/>
+  <text x="180" y="230" font-size="13" text-anchor="middle" fill="#1f2937" font-weight="700">먼 별</text>
+  <line x1="260" y1="190" x2="340" y2="190" stroke="#c9ccd3" stroke-width="1.2" stroke-dasharray="3 3" stroke-linecap="round"/>
+  <path d="M300 16 L309 55 A40 40 0 0 1 300 56 Z" fill="#dcd6fb" stroke="#4a34d6" stroke-width="1.6" stroke-linejoin="round"/>
+  <line x1="260" y1="190" x2="300" y2="16" stroke="#c77700" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="340" y1="190" x2="300" y2="16" stroke="#c77700" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="300" y1="25" x2="300" y2="182" stroke="#6b7280" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/>
+  <text x="314.6" y="51.1" font-size="15" text-anchor="start" fill="#4a34d6" font-weight="700" font-style="italic">p</text>
+  <polygon points="300,8 302.1,13.1 307.6,13.5 303.4,17.1 304.7,22.5 300,19.6 295.3,22.5 296.6,17.1 292.4,13.5 297.9,13.1" fill="#f5b301" stroke="#c77700" stroke-width="1.3" stroke-linejoin="round"/>
+  <circle cx="300" cy="190" r="6" fill="#f2b705" stroke="#b7791f" stroke-width="1.2"/>
+  <circle cx="260" cy="190" r="5" fill="#d7eedf" stroke="#2f7d4f" stroke-width="1.6"/>
+  <circle cx="340" cy="190" r="5" fill="#d7eedf" stroke="#2f7d4f" stroke-width="1.6"/>
+  <text x="300" y="230" font-size="13" text-anchor="middle" fill="#1f2937" font-weight="700">아주 먼 별</text>
+  <text x="20" y="210" font-size="13" text-anchor="middle" fill="#2f7d4f">지구</text>
+  <text x="60" y="210" font-size="13" text-anchor="middle" fill="#b7791f">태양</text>
+  <text x="100" y="210" font-size="13" text-anchor="middle" fill="#2f7d4f">지구</text>
+</svg>
+</div><figcaption>같은 궤도에서 본 세 별(표시한 각이 연주시차, 크기와 각은 과장)</figcaption></figure></div></section>
+<section class="slide astro parallax-lecture" id="a1_08" data-notes="P17" data-tile="dark" data-title="각도 단위와 pc, 광년"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>각도 단위와 pc, 광년</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point ws-line" data-ws="13" data-in="200" data-fx="left" data-dur="650">1° = 60′, 1′ = <span class="bk"><span class="a" data-step="1" data-fx="pop">60″</span><span class="n">13</span></span></div><div class="astro-point ws-line" data-ws="14" data-step="1" data-fx="left" data-dur="650">연주시차가 <span class="bk"><span class="a" data-step="2" data-fx="pop">1″</span><span class="n">14</span></span>인 별까지의 거리는 <br>1 pc이다.</div><div class="astro-point ws-line" data-ws="15" data-step="2" data-fx="left" data-dur="650">1 pc는 약 <span class="bk wide"><span class="a" data-step="3" data-fx="pop">3.26광년</span><span class="n">15</span></span>이다.</div><div class="astro-point ws-line" data-ws="16" data-step="3" data-fx="left" data-dur="650">광년은 시간이 아니라 빛이 1년 동안 진행한 <span class="bk"><span class="a" data-step="4" data-fx="pop">거리</span><span class="n">16</span></span>이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide astro parallax-lecture" id="a1_09" data-notes="P18" data-tile="dark" data-title="연주시차의 측정 한계"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 개념</div><h2>연주시차의 측정 한계</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point ws-line" data-ws="17" data-step="1" data-fx="left" data-dur="650">측정 가능한 거리는 장비의 <span class="bk"><span class="a" data-step="2" data-fx="pop">정밀도</span><span class="n">17</span></span>에 따라 달라진다.</div><div class="astro-point ws-line" data-ws="18" data-step="2" data-fx="left" data-dur="650">아주 작은 각은 <span class="bk wide"><span class="a" data-step="3" data-fx="pop">정확히 측정하기 어렵다</span><span class="n">18</span></span>.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div></section>
+<section class="slide astro parallax-lecture" id="a1_10" data-notes="P19" data-tile="dark" data-title="연주시차의 역수로 거리 계산"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 성취기준 밖의 확장 학습</div><h2>연주시차의 역수로 거리 계산</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">거리(pc) = 1 ÷ 연주시차(″)</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">p = 0.25″ → 1 ÷ 0.25 = 4 pc</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">연주시차가 1/2이 되면 거리는 2배가 된다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="astro-scope">성취기준 밖의 확장 학습</div></section>
+<section class="slide astro parallax-lecture" id="a1_11" data-notes="P20" data-tile="dark" data-title="두 시선이 이루는 각이 주어진 경우"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 성취기준 밖의 확장 학습</div><h2>두 시선이 이루는 각이 주어진 경우</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">공전 궤도 양 끝에서 본 두 시선이 이루는 각이 0.4″이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차 p = 0.4″의 1/2 = 0.2″</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">거리 = 1 ÷ 0.2 = 5 pc</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="astro-scope">성취기준 밖의 확장 학습</div></section>
+<section class="slide astro parallax-lecture" id="a1_12" data-notes="P21" data-tile="dark" data-title="연주시차 자료로 거리 계산"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 성취기준 밖의 확장 학습</div><h2>연주시차 자료로 거리 계산</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">A까지의 거리는 1 ÷ 0.4 = 2.5 pc이다.</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">B까지의 거리는 5 pc로 A의 2배이다.</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">C까지의 거리는 10 pc이다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div class="astro-scope">성취기준 밖의 확장 학습</div></section>
+<section class="slide astro parallax-lecture" id="a1_13" data-notes="P22" data-tile="dark" data-title="연주시차 핵심 정리"><div class="astro-head" data-in data-fx="left"><div class="astro-eyebrow">별과 우주 · 01차시 / 정리</div><h2>연주시차 핵심 정리</h2></div><div class="astro-layout"><div class="astro-points"><div class="astro-point" data-step="1" data-fx="left" data-dur="650">시차: 서로 다른 지점에서 볼 때 먼 배경에 대해 나타나는 물체의 위치 차이</div><div class="astro-point" data-step="2" data-fx="wipe" data-dur="650">연주시차: 공전 궤도 양 끝에서 관측한 별의 시차의 1/2</div><div class="astro-point" data-step="3" data-fx="rise" data-dur="650">연주시차가 큰 별일수록 지구에서 가깝다.</div></div><figure class="astro-figure" data-in data-fx="scale"></figure></div><div id="app-credit">제작 : 과학을 사랑하는 선생님 · © 2026 · All rights reserved · 최종 업데이트: 2026-10-18</div></section>
 <div id="gridov"></div>
 </div></div>
 
-<script>window.NOTES = {"P1": "1학년의 연주 운동을 먼저 떠올립니다. 태양의 연주 운동은 배경 별자리에 대해 동쪽으로 이동해 보이는 현상입니다. 연주시차는 같은 가까운 별의 위치가 먼 배경 별에 대해 달라 보이는 현상으로, 둘은 같은 현상이 아닙니다. 지구의 공전이라는 원인을 연결합니다. 베셀은 1838년 백조자리 61의 연주시차 측정 결과를 발표했습니다. 별까지 직접 가지 않아도 거리를 잴 수 있다는 이야기로 손가락 시차 탐구를 시작합니다.", "P2": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "P3": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "P4": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "P5": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "P6": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "P7": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "P8": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "P9": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "P10": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "P11": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "P12": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "P13": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다."};</script>
+<script>window.NOTES = {"P1": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "P2": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "P3": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "P4": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "P5": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "P6": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "P7": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "P8": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "P9": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "P10": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "P11": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "P12": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "P13": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "P14": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "P15": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "P16": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다."};</script>
 <script>window.KW = null;</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -1784,27 +2021,27 @@ window.Astro={render,esc};
 </script>
 <script>
 if(Deck.REDUCED){document.querySelectorAll('.astro [data-fx]').forEach(el=>{el.dataset.fx='none';el.dataset.dur='1';});}
-Deck.scene('a1_01',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML="<img class=\"intro-art\" src=\"assets/astronomy/night-sky.webp\" alt=\"우주 도입용 삽화\"><div class=\"intro-caption\">AI 생성 삽화 · 실제 관측 사진 아님<\/div>";},
+Deck.scene('a1_01',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("svg:l1_intro_annual.svg",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","연주 운동 복습 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_02',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("parallaxView",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","관찰 위치와 보이는 방향 개념 그림");},
+Deck.scene('a1_02',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("svg:l1_finger_q.svg",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","왼쪽 눈과 오른쪽 눈으로 본 손가락 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_03',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("parallax",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","물체까지의 거리와 시차 개념 그림");},
+Deck.scene('a1_03',{steps:2,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("parallax",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","물체까지의 거리에 따른 시차 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
-    await c.tween(c.reduced?1:850,p=>{f.innerHTML=Astro.render("parallax",(k-1)+p,values?values[k-1]+(values[k]-values[k-1])*p:null,null);f.querySelector("svg").setAttribute("aria-label","물체까지의 거리와 시차 개념 그림");});
+    await c.tween(c.reduced?1:850,p=>{f.innerHTML=Astro.render("parallax",(k-1)+p,values?values[k-1]+(values[k]-values[k-1])*p:null,null);f.querySelector("svg").setAttribute("aria-label","물체까지의 거리에 따른 시차 개념 그림");});
     c.data.last=k;
     } });
-Deck.scene('a1_04',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("baseline",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","관찰 위치 사이의 거리 개념 그림");},
+Deck.scene('a1_04',{steps:2,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("baseline",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","관찰 위치에 따른 시차 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
-    await c.tween(c.reduced?1:850,p=>{f.innerHTML=Astro.render("baseline",(k-1)+p,values?values[k-1]+(values[k]-values[k-1])*p:null,null);f.querySelector("svg").setAttribute("aria-label","관찰 위치 사이의 거리 개념 그림");});
+    await c.tween(c.reduced?1:850,p=>{f.innerHTML=Astro.render("baseline",(k-1)+p,values?values[k-1]+(values[k]-values[k-1])*p:null,null);f.querySelector("svg").setAttribute("aria-label","관찰 위치에 따른 시차 개념 그림");});
     c.data.last=k;
     } });
-Deck.scene('a1_05',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("orbit",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","지구의 공전과 별의 위치 개념 그림");},
+Deck.scene('a1_05',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("orbit",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","관찰 위치의 변화와 별이 보이는 위치 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
@@ -1814,17 +2051,17 @@ Deck.scene('a1_06',{steps:3,build(root){const f=root.querySelector('.astro-figur
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_07',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("compareP",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","연주시차로 거리 비교 개념 그림");},
+Deck.scene('a1_07',{steps:2,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("compareP",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","연주시차와 별까지의 거리 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_08',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("parsec",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","각도와 거리의 단위 개념 그림");},
+Deck.scene('a1_08',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("parsec",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","각도 단위와 pc, 광년 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_09',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("compareP",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","연주시차의 측정 한계 개념 그림");},
+Deck.scene('a1_09',{steps:2,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("compareP",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","연주시차의 측정 한계 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
@@ -1834,12 +2071,27 @@ Deck.scene('a1_10',{steps:3,build(root){const f=root.querySelector('.astro-figur
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_11',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("annual",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","전체 시차가 주어진 경우 개념 그림");},
+Deck.scene('a1_11',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("annual",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","두 시선이 이루는 각이 주어진 경우 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
     } });
-Deck.scene('a1_12',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("table",0,null?.[0]??null,[["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]]);f.querySelector("svg").setAttribute("aria-label","연주시차 자료 해석 개념 그림");},
+Deck.scene('a1_12',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("table",0,null?.[0]??null,[["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]]);f.querySelector("svg").setAttribute("aria-label","연주시차 자료로 거리 계산 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a1_ws_parallax',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("svg:l1_finger.svg",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","시차 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a1_ws_size',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("svg:l1_conditions_q.svg",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","시차의 크기 개념 그림");},
+    async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
+    if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
+    c.data.last=k;
+    } });
+Deck.scene('a1_far',{steps:3,build(root){const f=root.querySelector('.astro-figure');f.innerHTML=Astro.render("svg:l1_far.svg",0,null?.[0]??null,null);f.querySelector("svg").setAttribute("aria-label","같은 궤도에서 본 세 별 개념 그림");},
     async enter(c){c.data.last=0;},async go(c,k){const f=c.$('.astro-figure'),values=null;
     if(!c.instant&&!c.reduced)c.a(f,[{outlineColor:"transparent"},{outlineColor:"#5abbed"},{outlineColor:"transparent"}],{dur:800});
     c.data.last=k;
@@ -1972,7 +2224,7 @@ Deck.scene('a1_13',{steps:3,build(root){const f=root.querySelector('.astro-figur
     }
     let p=txt(1127,337,'칠판을 기준으로 두 시야 비교','cp-body',COL.ink)+boardFront();
     for(let e of [-2,2]){let x=frameX(projection(e,z)),color=e<0?COL.a:COL.b;p+=person('teacher',x,577,.82,null,.9)+txt(x,730,e<0?'A의 시야':'B의 시야','cp-label',color,'middle');}
-    p+=bracket(frameX(-1),frameX(1),774,COL.ink,'겉보기 위치의 차이');
+    p+=bracket(frameX(-1),frameX(1),774,COL.ink,'보이는 위치의 차이');
     return `<g opacity="${s.compare}">${p}</g>`;
   }
   function viewer(s,mode){
@@ -2020,7 +2272,7 @@ Deck.scene('a1_13',{steps:3,build(root){const f=root.querySelector('.astro-figur
       ['학생 A가 선생님을 바라본다.','A에서 선생님을 지나 칠판까지 선을 연장한다.'],
       ['A에게는 급식 메뉴판 쪽에 보인다.','오른쪽 칠판 위에서 선생님의 위치를 확인한다.'],
       ['B에게는 시간표 쪽에 보인다.','선생님은 그대로인데, 배경에 대한 위치가 달라졌다.'],
-      ['관찰 위치가 바뀌면, 대상의 방향이 달라 보인다.','선생님은 그대로. 두 관찰 방향이 이루는 각을 시차라고 한다.']
+      ['관찰 위치가 바뀌면, 배경에 대해 다른 위치에 보인다.','선생님은 그대로 서 있다. 보는 자리만 달라졌다.']
     ]},
     near:{eyebrow:'01  시차 / 대상의 거리 비교',title:'가까이 있는 학생 C',sub:'A와 B의 자리는 그대로. C는 선생님보다 가까이 서 있다.',steps:[
       ['이번에는 앞에 나와 발표하는 학생 C','선생님을 볼 때와 같은 두 자리에서 비교한다.'],
@@ -2034,7 +2286,7 @@ Deck.scene('a1_13',{steps:3,build(root){const f=root.querySelector('.astro-figur
       ['두 학생의 자리 → 한 지구의 서로 다른 위치','선생님 → 가까운 별 / 칠판 → 먼 배경의 별'],
       ['지구가 태양 주위를 공전한다.','지구가 공전하면 별을 관찰하는 위치가 달라진다.'],
       ['1월, 이 위치에서 가까운 별을 본다.','먼 배경별에 대한 가까운 별의 위치를 기록한다.'],
-      ['6개월 뒤, 반대편에서 같은 별을 본다.','가까운 별의 겉보기 위치가 달라진다.']
+      ['6개월 뒤, 공전 궤도의 반대쪽에서 같은 별을 본다.','가까운 별이 보이는 위치가 달라진다.']
     ]}
   };
   function stateFor(mode,k){let s={};for(let i=0;i<=k;i++)Object.assign(s,STATES[mode][i]);return s;}
@@ -2098,71 +2350,81 @@ function source(t){return text(440,548,'관찰 위치·대상·배경을 구분�
 function projection(ox,oy,tx,ty,by){return ox+(tx-ox)*(by-oy)/(ty-oy);}
 
 function parallax(spec,t){
- const recap=spec.sceneId==='a1_13',view=spec.sceneId==='a1_02',baseline=spec.diagram==='baseline';
+ /* 2026-10-19 학습지 v3: a1_04 = 물체 거리 고정·2단계에서 관찰 위치 사이를 넓힘, a1_03 = 관찰 위치 고정·2단계에서 먼 물체를 가까이 */
+ const recap=spec.sceneId==='a1_13',baseline=spec.diagram==='baseline';
  if(recap)return recapDiagram(spec,t);
- let dist=baseline?215:(view?245:recap?160:160+120*fade(t,3)), y=450-dist;
- let b=baseline?85+90*fade(t,2):130;
+ const dist=baseline?215:280-120*fade(t,2), y=450-dist;
+ const b=baseline?85+90*fade(t,2):130;
  const by=100,ay=450,ax=440-b,bx=440+b,pa=projection(ax,ay,440,y,by),pb=projection(bx,ay,440,y,by);
- const revealA=view?fade(t,1):1,revealB=view?fade(t,2):1;
- let s=text(440,45,recap?'관찰 위치가 바뀌면 보이는 방향이 달라진다':baseline?'대상은 그대로, 관찰 위치만 바꾼다':view?'두 눈으로 번갈아 본 손가락':'같은 두 관찰 위치에서 거리만 바꾼다',C.ink,30);
- s+=line(85,by,795,by,C.grid,3,1,'9 8')+text(782,82,'먼 배경',C.muted,27,'end');
- [150,270,610,730].forEach((x,i)=>s+=star(x,by,8,C.muted));
- s+=(view?finger(440,y):observer(440,y,C.gold))+text(490,y+8,view?'손가락':'대상',C.gold,28,'start');
- s+=(view?eye(ax,ay,C.blue):observer(ax,ay,C.blue))+(view?eye(bx,ay,C.pink):observer(bx,ay,C.pink))+text(ax,508,view?'왼쪽 눈':'관찰점 A',C.blue,28)+text(bx,508,view?'오른쪽 눈':'관찰점 B',C.pink,28);
- s+=group(ray(ax,ay,pa,by,C.blue,revealA)+circle(pa,by,9,C.blue),revealA,'data-ray="A"');
- s+=group(ray(bx,ay,pb,by,C.pink,revealB)+circle(pb,by,9,C.pink),revealB,'data-ray="B"');
- const an=Math.atan2(b,dist),angVis=view?fade(t,3):fade(t,2);
- s+=group(arc(440,y,74,-an,an,C.gold)+text(440,y+114,'시차',C.gold,29),angVis,'data-angle="parallax"');
- if(!view){s+=group(line(pb,by-9,pa,by-9,C.green,4)+text(440,80,baseline?'커진 위치 차이':t<2.5?'큰 위치 차이':'작은 위치 차이',C.green,28),fade(t,2));}
- if(baseline){s+=group(line(ax,ay+17,bx,ay+17,C.green,4)+text(440,394,'관찰 위치 사이 거리',C.green,28),fade(t,2));}
- if(recap){s+=group(tag(32,176,280,'관찰 위치가 바뀜'),fade(t,1))+group(tag(32,242,280,'배경에 대한 위치 변화',C.pink),fade(t,2))+group(tag(32,308,280,'가까울수록 큰 시차',C.gold),fade(t,3));}
+ let s=text(440,45,baseline?'물체는 그대로 두고 관찰 위치를 바꾼다':'관찰 위치는 그대로 두고 물체를 옮긴다',C.ink,30);
+ s+=line(85,by,795,by,C.grid,3,1,'9 8')+text(782,82,'배경',C.muted,27,'end');
+ [150,270,610,730].forEach(x=>s+=star(x,by,8,C.muted));
+ s+=observer(440,y,C.gold)+text(470,y+8,'물체',C.gold,28,'start');
+ s+=observer(ax,ay,C.blue)+observer(bx,ay,C.pink)+text(ax-32,ay+14,'관찰점 A',C.blue,28,'end')+text(bx+32,ay+14,'관찰점 B',C.pink,28,'start');
+ s+=group(ray(ax,ay,pa,by,C.blue)+circle(pa,by,9,C.blue),1,'data-ray="A"');
+ s+=group(ray(bx,ay,pb,by,C.pink)+circle(pb,by,9,C.pink),1,'data-ray="B"');
+ const an=Math.atan2(b,dist),v1=fade(t,1);
+ s+=group(arc(440,y,64,-an,an,C.gold)+text(440,y+100,'시차',C.gold,29),v1,'data-angle="parallax"');
+ s+=group(line(pb,by-9,pa,by-9,C.green,4)+text(440,80,t<1.5?'배경에 대한 위치 차이':'위치 차이가 커졌다',C.green,28),v1);
+ if(baseline)s+=group(line(ax,ay+17,bx,ay+17,C.green,4)+text(440,ay+62,'관찰 위치 사이 거리',C.green,27),v1);
+ else s+=group(line(820,y,820,ay,C.green,4)+line(806,y,834,y,C.green,4)+line(806,ay,834,ay,C.green,4)+text(800,(y+ay)/2-10,'물체까지의',C.green,26,'end')+text(800,(y+ay)/2+24,'거리',C.green,26,'end'),v1);
  return {body:s+source(t),data:{baseline:2*b,distance:dist,projectedA:pa,projectedB:pb,angle:2*an,answerVisible:Math.floor(t)}};
 }
-
 function recapDiagram(spec,t){
  let s=text(440,45,'관찰 위치 → 연주시차 → 거리',C.ink,30);
- const x=333,sy=134,ey=425,b=113,a=Math.atan2(b,ey-sy);
+ const x=300,sy=134,ey=425,b=113,a=Math.atan2(b,ey-sy);
  s+=star(x,sy,20)+text(x,sy-37,'같은 별',C.gold,28)+earth(x-b,ey)+earth(x+b,ey,C.pink)+circle(x,ey,20,C.gold)+text(x,ey+60,'태양',C.gold,28);
- s+=text(x-b-24,ey+59,'관측 A',C.blue,27)+text(x+b+24,ey+59,'관측 B',C.pink,27);
- s+=group(ray(x-b,ey,x,sy,C.blue,fade(t,1))+ray(x+b,ey,x,sy,C.pink,fade(t,1))+arc(x,sy,127,-a,a,C.gold)+text(132,sy+163,'전체 시차',C.gold,29),fade(t,1));
- s+=group(line(x,sy+18,x,ey-27,C.muted,2,1,'6 8')+arc(x,sy,72,0,a,C.green)+text(x+94,sy+66,'p',C.green,32)+tag(553,114,271,'연주시차 = 절반',C.green)+tag(553,177,271,'6개월 간격',C.blue),fade(t,2));
- s+=group(tag(553,303,271,'큰 p → 가까운 별',C.gold)+tag(553,367,271,'작은 p → 먼 별',C.pink),fade(t,3));
+ s+=text(x-b-14,ey+59,'지구 ①',C.blue,27)+text(x+b+14,ey+59,'지구 ②',C.pink,27);
+ s+=group(ray(x-b,ey,x,sy,C.blue,fade(t,1))+ray(x+b,ey,x,sy,C.pink,fade(t,1))+arc(x,sy,127,-a,a,C.gold)+text(x-104,sy+156,'2p',C.gold,30),fade(t,1));
+ s+=group(line(x,sy+18,x,ey-27,C.muted,2,1,'6 8')+arc(x,sy,72,0,a,C.green)+text(x+30,sy+108,'p',C.green,32),fade(t,2));
+ s+=group(tag(500,104,340,'지구 ①·② = 공전 궤도 양 끝',C.blue),fade(t,1));
+ s+=group(tag(500,170,340,'연주시차 p = 시차의 1/2',C.green),fade(t,2));
+ s+=group(tag(500,300,340,'큰 p → 가까운 별',C.gold)+tag(500,364,340,'작은 p → 먼 별',C.pink),fade(t,3));
  return {body:s+caption('같은 지구 공전 궤도로 관찰한 별의 거리 비교'),data:{fullAngle:2*a,halfAngle:a,definitionVisible:t>=2,distanceVisible:t>=3}};
 }
-
 function orbit(spec,t){
  const cx=440,cy=420,rx=145,ry=49,tx=440,ty=226,by=92;
  let phase=t<=1?Math.PI+t*Math.PI*2:Math.PI+(t-1<=1?t-1:1)*Math.PI;
  const ex=cx+rx*Math.cos(phase),ey=cy+ry*Math.sin(phase);
  const ax=cx-rx,bx=cx+rx,pa=projection(ax,cy,tx,ty,by),pb=projection(bx,cy,tx,ty,by);
  let s=text(440,42,'같은 별을, 다른 위치에서 관찰한다',C.ink,30);
- s+=line(86,by,794,by,C.grid,3,1,'8 8')+text(440,by-17,'먼 배경 별',C.muted,27);
+ s+=line(86,by,794,by,C.grid,3,1,'8 8')+group(text(440,by-17,'먼 배경 별',C.muted,27),fade(t,3));
  [118,226,653,770].forEach(x=>s+=star(x,by,10,C.muted));
  s+=star(tx,ty,20)+text(tx+57,ty+9,'가까운 별',C.gold,29,'start');
  s+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="${C.grid}" stroke-width="3"/>`+circle(cx,cy,24,C.gold)+text(cx,cy+78,'태양',C.gold,28);
- s+=group(`<circle cx="${ax}" cy="${cy}" r="18" fill="none" stroke="${C.blue}" stroke-width="3" stroke-dasharray="5 5"/>`+text(ax-29,cy+75,'관측 A 기록',C.blue,27),fade(t,2)*.65,'data-observer="A-record"');
+ s+=group(`<circle cx="${ax}" cy="${cy}" r="18" fill="none" stroke="${C.blue}" stroke-width="3" stroke-dasharray="5 5"/>`+text(ax,cy+75,'지구 ①',C.blue,27),fade(t,2)*.65,'data-observer="A-record"');
  s+=earth(ex,ey,t>=1.5?C.pink:C.blue);
- s+=group(text(bx+31,cy+75,'현재 지구 B',C.pink,27)+tag(609,349,203,'6개월 후',C.pink),fade(t,2));
- s+=group(text(ax,cy+75,'현재 지구 A',C.blue,27),(1-fade(t,2))*fade(t,1));
+ s+=group(text(bx,cy+75,'지구 ②',C.pink,27)+tag(609,349,203,'6개월 뒤',C.pink),fade(t,2));
+ s+=group(text(ax,cy+75,'지구 ①',C.blue,27),(1-fade(t,2))*fade(t,1));
  s+=group(ray(ax,cy,tx,ty,C.blue)+ray(bx,cy,tx,ty,C.pink),fade(t,2));
  const v=fade(t,3);s+=group(ray(tx,ty,pa,by,C.blue,v)+ray(tx,ty,pb,by,C.pink,v)+circle(pa,by,10,C.blue)+circle(pb,by,10,C.pink)+line(pb,by+31,pa,by+31,C.green,4,v)+rect(588,101,250,92,'#172c47',C.green)+text(713,137,'배경에 대한 위치가',C.green,27)+text(713,174,'달라 보인다',C.green,28),v,'data-projection="both"');
  return {body:s+caption('별은 고정 · 궤도와 별의 거리 비율은 실제와 다름'),data:{earthX:ex,earthY:ey,earthPhase:phase,starX:tx,starY:ty,projectedA:pa,projectedB:pb,months:t>=2?6:0}};
 }
 
 function annual(spec,t){
- const numeric=spec.sceneId==='a1_11',x=420,y=122,ey=427,b=137,an=Math.atan2(b,ey-y);
- let s=text(440,47,numeric?'전체 시차와 연주시차를 먼저 구분한다':'전체 각과 절반의 각',C.ink,31);
- s+=star(x,y,19)+text(x,y-35,'같은 별',C.gold,28)+circle(x,ey,22,C.gold)+text(x,ey+63,'태양',C.gold);
- s+=earth(x-b,ey)+earth(x+b,ey,C.pink)+text(x-b-18,ey+62,'관측 A',C.blue)+text(x+b+18,ey+62,'6개월 후 B',C.pink);
+ /* 2026-10-19 학습지 v3: 연주시차 = 공전 궤도 양 끝에서 관측한 별의 시차의 1/2, 두 시선이 이루는 각 = 2p.
+    a1_06: 1단계 시선·배경 위치 차이·p, 2단계 2p. a1_11(확장): 1단계 2p = 0.4″, 2단계 p = 0.2″, 3단계 5 pc */
+ const numeric=spec.sceneId==='a1_11',x=440,sy=200,ey=440,b=150,by=84,an=Math.atan2(b,ey-sy);
+ const e1=x-b,e2=x+b,p1=projection(e1,ey,x,sy,by),p2=projection(e2,ey,x,sy,by);
+ const vRay=fade(t,1),vHalf=numeric?fade(t,2):fade(t,1),vFull=numeric?fade(t,1):fade(t,2);
+ let s=text(440,40,numeric?'두 시선이 이루는 각과 연주시차':'공전 궤도 양 끝에서 본 별',C.ink,30);
+ s+=line(70,by,810,by,C.grid,3,1,'8 8')+text(80,by-14,'먼 배경 별',C.muted,24,'start');
+ [110,200,690,770].forEach(px=>s+=star(px,by,8,C.muted));
  s+=`<ellipse cx="${x}" cy="${ey}" rx="${b}" ry="42" fill="none" stroke="${C.grid}" stroke-width="2"/>`;
- const v1=fade(t,1),v2=fade(t,2),v3=fade(t,3);
- s+=group(ray(x-b,ey,x,y,C.blue,v1)+ray(x+b,ey,x,y,C.pink,v1)+arc(x,y,133,-an,an,C.gold,v1)+text(180,302,numeric?'전체 0.4″':'최대 시차 2p',C.gold,30),v1,'data-angle="2p"');
- s+=group(line(x,y+22,x,ey-40,C.muted,3,1,'6 8')+arc(x,y,85,0,an,C.green,v2)+line(x+29,y+85,635,181,C.green,2)+text(684,177,numeric?'p = 0.2″':'연주시차 p',C.green,29),v2,'data-angle="p"');
- if(numeric)s+=group(tag(605,318,214,'1 ÷ 0.2',C.green)+tag(605,381,214,'5 pc',C.gold),v3,'data-answer="5 pc"');
- else s+=group(tag(606,305,216,'전체 각 2p',C.gold)+tag(606,372,216,'절반의 각 p',C.green),v3);
- return {body:s+caption('원리를 보기 위해 각도를 크게 그린 모형'),data:{fullAngle:2*an,halfAngle:an,fullVisible:t>=1,halfVisible:t>=2,distanceVisible:numeric&&t>=3}};
+ s+=circle(x,ey,22,C.gold)+text(x,ey+62,'태양',C.gold,27);
+ s+=earth(e1,ey)+earth(e2,ey,C.pink)+text(e1-14,ey+62,'지구 ①',C.blue,27)+text(e2+14,ey+62,'지구 ②',C.pink,27);
+ s+=star(x,sy,19);
+ s+=group(ray(e1,ey,p1,by,C.blue,vRay)+ray(e2,ey,p2,by,C.pink,vRay)+circle(p1,by,9,C.blue)+circle(p2,by,9,C.pink)
+   +text(p1+16,by+36,'①에서 본 위치',C.blue,24,'start')+text(p2-16,by+36,'②에서 본 위치',C.pink,24,'end'),vRay,'data-sight="both"');
+ s+=group(line(x,sy+22,x,ey-30,C.muted,3,1,'6 8')+arc(x,sy,92,0,an,C.green)+text(x+34,sy+132,'p',C.green,32),vHalf,'data-angle="p"');
+ s+=group(arc(x,sy,150,-an,an,C.gold)+text(x-54,sy+190,'2p',C.gold,32),vFull,'data-angle="2p"');
+ if(numeric){
+  s+=group(tag(548,196,310,'2p = 0.4″',C.gold),vFull)+group(tag(548,262,310,'p = 0.4″의 1/2 = 0.2″',C.green),vHalf)+group(tag(548,328,310,'1 ÷ 0.2 = 5 pc',C.blue),fade(t,3),'data-answer="5 pc"');
+ }else{
+  s+=group(tag(548,196,310,'연주시차 p',C.green),vHalf)+group(tag(548,262,310,'두 시선이 이루는 각 2p',C.gold),vFull);
+ }
+ return {body:s+caption('지구 ①과 ②는 공전 궤도의 양 끝 · 각도는 크게 과장한 모형'),data:{fullAngle:2*an,halfAngle:an,fullVisible:vFull>=1,halfVisible:vHalf>=1,distanceVisible:numeric&&t>=3}};
 }
-
 function compare(spec,t){
  if(spec.sceneId==='a1_09')return precision(spec,t);
  let s=text(440,46,'같은 관찰 조건에서 두 별을 비교한다',C.ink,30);
@@ -2177,34 +2439,41 @@ function compare(spec,t){
  return {body:s+caption('별의 밝기·색을 이용하지 않고 위치 차이로 비교'),data:{nearAngle:Math.atan2(87,198),farAngle:Math.atan2(87,305),nearVisible:t>=2,farVisible:t>=3}};
 }
 function precision(spec,t){
- const shrink=fade(t,1),separation=112-76*shrink,uncertainty=58-45*fade(t,3);
- let s=text(440,48,'작은 위치 차이를 구별할 수 있을까?',C.ink,30);
- s+=rect(70,89,740,357)+text(440,129,'배경에 대한 관측 위치를 확대',C.muted,27);
- s+=line(125,315,755,315,C.grid,3,1,'7 8');
- const a=440-separation/2,b=440+separation/2;
- s+=group(`<ellipse cx="${a}" cy="281" rx="${uncertainty}" ry="56" fill="${C.blue}" opacity=".18"/><ellipse cx="${b}" cy="281" rx="${uncertainty}" ry="56" fill="${C.pink}" opacity=".18"/>`,fade(t,2));
- s+=star(a,281,16,C.blue)+star(b,281,16,C.pink)+line(a,192,a,332,C.blue,2,1,'5 6')+line(b,192,b,332,C.pink,2,1,'5 6');
- s+=text(203,214,'관측 A',C.blue,29)+text(674,214,'관측 B',C.pink,29);
- s+=group(text(440,391,'먼 별 → 작은 위치 차이',C.gold,31),fade(t,1));
- s+=group(tag(85,454,335,t>=2.5?'오차 범위가 좁아지면':'오차 범위가 겹치면',C.blue),fade(t,2));
- s+=group(tag(441,454,353,t>=2.5?'작은 차이도 구별 가능':'두 위치를 구별하기 어려움',C.green),fade(t,2));
- return {body:s+caption('점의 위치 차이와 측정 오차를 비교한 모형'),data:{separation,uncertainty,resolved:uncertainty<separation/2}};
+ /* 2026-10-19: 1단계 먼 별 → 위치 차이 작아짐, 2단계 정밀도가 다른 두 장비의 오차 범위, 3단계 더 먼 별 → 정밀한 장비로도 구별하기 어려움 */
+ const sep=150-80*fade(t,1)-54*fade(t,3),split=fade(t,2);
+ const cx=560,y1=290-78*split,y2=290+78*split;
+ let s=text(440,48,'두 관측 위치의 구별과 장비의 정밀도',C.ink,30);
+ s+=rect(60,84,760,400)+text(440,124,'배경에 대한 두 관측 위치를 확대',C.muted,26);
+ const row=(y,rx,op,label,col)=>{
+  const a=cx-sep/2,b=cx+sep/2,ok=sep/2>rx;
+  let r=group(`<ellipse cx="${fmt(a)}" cy="${y}" rx="${rx}" ry="${Math.max(rx*.7,12)}" fill="${C.blue}" opacity=".22"/><ellipse cx="${fmt(b)}" cy="${y}" rx="${rx}" ry="${Math.max(rx*.7,12)}" fill="${C.pink}" opacity=".22"/>`,split);
+  r+=star(a,y,14,C.blue)+star(b,y,14,C.pink);
+  r+=group(text(90,y+10,label,col,27,'start')+text(800,y+10,ok?'구별 가능':'구별 어려움',ok?C.green:C.pink,26,'end'),split);
+  return group(r,op);
+ };
+ s+=row(y1,58,1,'정밀도가 낮은 장비',C.ink);
+ s+=row(y2,22,split,'정밀도가 높은 장비',C.ink);
+ s+=group(text(cx-sep/2,y1-34,'①',C.blue,24)+text(cx+sep/2,y1-34,'②',C.pink,24),1-split);
+ s+=group(text(440,452,t<2.5?'먼 별 → 작은 위치 차이':'더 먼 별 → 더 작은 위치 차이',C.gold,29),fade(t,1));
+ return {body:s+caption('두 관측 위치의 차이와 측정 오차 범위를 비교한 모형'),data:{separation:sep,precise:22,rough:58,preciseResolved:sep/2>22,roughResolved:sep/2>58}};
 }
 function parsec(spec,t){
- let s=text(440,45,'작은 각으로 큰 거리를 나타낸다',C.ink,30);
- s+=group(rect(40,78,800,88)+text(440,133,'1°  =  60′       1′  =  60″',C.blue,38),fade(t,1));
+ /* 2026-10-19: 학습지 13~16 순서. 1단계 각도 단위, 2단계 1″ ↔ 1 pc, 3단계 3.26광년, 4단계 광년 = 거리 */
+ let s=text(440,45,'아주 작은 각과 먼 거리의 단위',C.ink,30);
+ s+=group(rect(40,78,800,88)+text(440,133,'1° = 60′,  1′ = 60″',C.blue,38),fade(t,1));
  const x=300,y=214,ey=406,b=86,a=Math.atan2(b,ey-y),v2=fade(t,2);
- let geo=star(x,y,16)+earth(x-b,ey)+circle(x,ey,17,C.gold)+ray(x-b,ey,x,y,C.blue)+line(x,y+15,x,ey-17,C.grid,2,1,'5 7')+arc(x,y,63,-a,0,C.gold)+text(x-81,y+72,'1″',C.gold,30)+text(x,ey+47,'태양',C.gold,27);
+ let geo=star(x,y,16)+earth(x-b,ey)+circle(x,ey,17,C.gold)+ray(x-b,ey,x,y,C.blue)+line(x,y+15,x,ey-17,C.grid,2,1,'5 7')+arc(x,y,63,-a,0,C.gold)+text(x-81,y+72,'1″',C.gold,30)+text(x,ey+47,'태양',C.gold,27)+text(x-b,ey+47,'지구',C.blue,27);
  geo+=line(x+64,y,x+64,ey,C.green,4)+text(x+87,317,'1 pc',C.green,35,'start');
  s+=group(geo,v2,'data-definition="1arcsec-1pc"');
- s+=group(tag(500,236,313,'1 pc ≈ 3.26광년',C.gold)+rect(501,309,312,142)+text(657,358,'광년은 거리 단위',C.ink,29)+text(657,401,'빛이 1년간 간 거리',C.muted,27),fade(t,3));
- return {body:s+caption('작은 각과 먼 거리를 이해하기 위한 확대 모형'),data:{arcsecondsVisible:t>=1,parsecVisible:t>=2,lightyearVisible:t>=3}};
+ s+=group(tag(500,236,313,'1 pc ≈ 3.26광년',C.gold),fade(t,3));
+ s+=group(rect(501,309,312,142)+text(657,358,'광년: 빛이 1년 동안',C.ink,28)+text(657,401,'진행한 거리',C.ink,28),fade(t,4));
+ return {body:s+caption('작은 각과 먼 거리를 이해하기 위한 확대 모형'),data:{arcsecondsVisible:t>=1,parsecVisible:t>=2,lightyearVisible:t>=3,lightyearDistance:t>=4}};
 }
 function calc(spec,t){
  let s=text(440,44,'연주시차의 역수로 거리 계산',C.ink,30);
  s+=group(rect(56,87,768,111)+text(440,155,'거리(pc) = 1 ÷ 연주시차(″)',C.blue,39),fade(t,1));
- s+=group(rect(56,223,768,129)+text(245,270,'p = 0.25″',C.gold,34)+text(560,311,'1 ÷ 0.25 = 4 pc',C.green,38)+ray(302,285,378,285,C.muted,fade(t,2)),fade(t,2),'data-answer="4 pc"');
- s+=group(rect(56,378,768,119)+text(247,424,'0.5″ → 0.25″',C.gold,32)+text(603,424,'2 pc → 4 pc',C.green,32)+text(247,470,'연주시차 절반',C.gold,28)+text(603,470,'거리 2배',C.green,28),fade(t,3));
+ s+=group(rect(56,223,768,129)+text(230,300,'p = 0.25″',C.gold,36)+text(380,300,'→',C.muted,38)+text(590,300,'1 ÷ 0.25 = 4 pc',C.green,38),fade(t,2),'data-answer="4 pc"');
+ s+=group(rect(56,378,768,119)+text(247,424,'0.5″ → 0.25″',C.gold,32)+text(603,424,'2 pc → 4 pc',C.green,32)+text(247,470,'연주시차 1/2',C.gold,28)+text(603,470,'거리 2배',C.green,28),fade(t,3));
  return {body:s+caption('성취기준 밖의 확장 학습'),data:{formulaVisible:t>=1,exampleVisible:t>=2,ratioVisible:t>=3}};
 }
 function table(spec,t){
@@ -2212,8 +2481,8 @@ function table(spec,t){
  let s=text(440,45,'연주시차 자료 해석',C.ink,31);
  rows.forEach((row,i)=>{s+=rect(55,90+i*86,770,76,i?'#1b304c':'#294768');row.forEach((cell,j)=>s+=text(xs[j],140+i*86,cell,i?C.ink:C.blue,32));});
  [1,2,3].forEach((k)=>{const op=fade(t,k),col=[C.blue,C.gold,C.green][k-1],x=xs[k];s+=group(`<rect x="${x-70}" y="174" width="140" height="73" rx="13" fill="none" stroke="${col}" stroke-width="4"/>`,op);});
- s+=group(tag(64,299,750,'A: 연주시차가 가장 크다 → 가장 가깝다',C.blue),fade(t,1));
- s+=group(tag(64,365,750,'B: A의 연주시차 절반 → 거리 2배',C.gold),fade(t,2));
+ s+=group(tag(64,299,750,'A: 1 ÷ 0.4 = 2.5 pc',C.blue),fade(t,1));
+ s+=group(tag(64,365,750,'B: 1 ÷ 0.2 = 5 pc (A의 2배)',C.gold),fade(t,2));
  s+=group(tag(64,431,750,'C: 1 ÷ 0.1 = 10 pc',C.green),fade(t,3));
  return {body:s+caption('수업용 가상 자료 · 수치 계산은 확장 학습'),data:{answerA:t>=1,answerB:t>=2,answerC:t>=3}};
 }
@@ -2233,23 +2502,26 @@ window.ParallaxConcept={
 };
 })();
 
-window.NOTES={"P1": "창가의 학생 A, 복도 쪽 학생 B, 교실 가운데의 선생님을 짚습니다. 선생님은 움직이지 않습니다. 오른쪽 방향키: A의 시선을 칠판까지 잇기 → A가 보는 선생님과 오른쪽 급식 메뉴판 → B가 보는 선생님과 왼쪽 시간표 → 두 시야 비교. 물체의 실제 이동이 아니라 관찰 위치에 따른 차이입니다. 선은 빛이 눈에서 나가는 것이 아니라 바라보는 방향을 배경까지 연장한 것입니다.", "P2": "학생 C가 선생님보다 A·B에 가까운 곳에서 발표합니다. 관찰하는 A·B의 자리는 그대로입니다. C 등장 → A가 보는 모습 → B가 보는 모습 → 선생님을 볼 때와 칠판 위 위치 차이 비교. 가까운 물체일수록 두 관찰 위치에서 보이는 방향 차이가 큽니다. 칠판 위 간격은 각도 그 자체가 아닙니다.", "P3": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "P4": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "P5": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "P6": "학생 A·B의 두 관찰 위치는 지구의 서로 다른 공전 위치에 대응합니다. 선생님·학생 C는 관측할 별, 칠판은 훨씬 먼 배경 별에 대응합니다. 지구 두 개가 동시에 존재한다는 뜻이 아닙니다. 같은 지구가 태양 주위를 공전하며 6개월 전후의 자리에서 같은 별을 관측합니다. 실제 별의 거리는 훨씬 멀고 각도는 훨씬 작습니다. 다음 장면에서 연주 운동을 복습한 뒤 연주시차와 구분합니다.", "P7": "1학년의 연주 운동을 먼저 떠올립니다. 태양의 연주 운동은 배경 별자리에 대해 동쪽으로 이동해 보이는 현상입니다. 연주시차는 같은 가까운 별의 위치가 먼 배경 별에 대해 달라 보이는 현상으로, 둘은 같은 현상이 아닙니다. 지구의 공전이라는 원인을 연결합니다. 베셀은 1838년 백조자리 61의 연주시차 측정 결과를 발표했습니다. 별까지 직접 가지 않아도 거리를 잴 수 있다는 이야기로 손가락 시차 탐구를 시작합니다.", "P8": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "P9": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "P10": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "P11": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "P12": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "P13": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "P14": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "P15": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "P16": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다."};
+window.NOTES={"P1": "창가의 학생 A, 복도 쪽 학생 B, 교실 가운데의 선생님을 짚습니다. 선생님은 움직이지 않습니다. 오른쪽 방향키: A의 시선을 칠판까지 잇기 → A가 보는 선생님과 오른쪽 급식 메뉴판 → B가 보는 선생님과 왼쪽 시간표 → 두 시야 비교. 선생님은 움직이지 않았는데 배경에 대해 다른 위치에 보입니다. 이것이 다음 장면에서 정의할 시차입니다. 선은 빛이 눈에서 나가는 것이 아니라 바라보는 방향을 배경까지 연장한 것입니다.", "P2": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "P3": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "P4": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "P5": "학생 C가 선생님보다 A·B에 가까운 곳에서 발표합니다. 관찰하는 A·B의 자리는 그대로입니다. C 등장 → A가 보는 모습 → B가 보는 모습 → 선생님을 볼 때와 칠판 위 위치 차이 비교. A·B 사이 거리는 그대로이고 대상까지의 거리만 다릅니다. 가까이 있는 C의 위치 차이가 더 큽니다. 칠판 위 간격은 각도 그 자체가 아닙니다. 다음 장면에서 학습지 문장으로 정리합니다.", "P6": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "P7": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "P8": "학생 A·B의 두 관찰 위치는 지구의 서로 다른 공전 위치에 대응합니다. 선생님·학생 C는 관측할 별, 칠판은 훨씬 먼 배경 별에 대응합니다. 지구 두 개가 동시에 존재한다는 뜻이 아닙니다. 같은 지구가 태양 주위를 공전하며 6개월 전후의 자리에서 같은 별을 관측합니다. 실제 별의 거리는 훨씬 멀고 각도는 훨씬 작습니다. 다음 장면에서 지구의 공전과 별이 보이는 위치를 학습지 문장으로 정리합니다.", "P9": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "P10": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "P11": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "P12": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "P13": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "P14": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "P15": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "P16": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "P17": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "P18": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "P19": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다."};
 Deck.scene('a1_classroom',{steps:4,build(root){ClassroomParallax.build(root,'teacher');},enter(c){return ClassroomParallax.enter(c,'teacher');},go(c,k){return ClassroomParallax.go(c,'teacher',k);}});
 Deck.scene('a1_near',{steps:4,build(root){ClassroomParallax.build(root,'near');},enter(c){return ClassroomParallax.enter(c,'near');},go(c,k){return ClassroomParallax.go(c,'near',k);}});
 Deck.scene('a1_bridge',{steps:4,build(root){ClassroomParallax.build(root,'bridge');},enter(c){return ClassroomParallax.enter(c,'bridge');},go(c,k){return ClassroomParallax.go(c,'bridge',k);}});
-Deck.scene('a1_01',{steps:3,build(root){root.querySelector('.astro-figure').innerHTML='<img class="intro-art" src="assets/astronomy/night-sky.webp" alt="별이 보이는 밤하늘 삽화"><figcaption>AI 생성 삽화 · 실제 관측 사진 아님</figcaption>';},enter(c){c.root.dataset.focus='0';},async go(c,k){c.root.dataset.focus=String(k);c.sfx('step');if(!c.reduced)await c.a(c.$('.intro-art'),[{transform:'scale(1)'},{transform:'scale(1.035)'},{transform:'scale(1)'}],{dur:1100}).finished;}});
-Deck.scene('a1_02',{steps:3,build(root){ParallaxConcept.build(root,{"title": "관찰 위치와 보이는 방향", "points": ["왼쪽 눈과 오른쪽 눈의 위치가 다르다.", "같은 손가락도 배경에 대한 위치가 달라 보인다.", "두 방향이 이루는 각을 시차라고 한다."], "diagram": "parallaxView", "note": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_02"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "관찰 위치와 보이는 방향", "points": ["왼쪽 눈과 오른쪽 눈의 위치가 다르다.", "같은 손가락도 배경에 대한 위치가 달라 보인다.", "두 방향이 이루는 각을 시차라고 한다."], "diagram": "parallaxView", "note": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_02"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "관찰 위치와 보이는 방향", "points": ["왼쪽 눈과 오른쪽 눈의 위치가 다르다.", "같은 손가락도 배경에 대한 위치가 달라 보인다.", "두 방향이 이루는 각을 시차라고 한다."], "diagram": "parallaxView", "note": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_02"},k);}});
-Deck.scene('a1_03',{steps:3,build(root){ParallaxConcept.build(root,{"title": "물체까지의 거리와 시차", "points": ["관찰 위치 사이의 거리는 일정하게 둔다.", "가까운 물체는 시차가 크다.", "먼 물체는 시차가 작다."], "diagram": "parallax", "note": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_03"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "물체까지의 거리와 시차", "points": ["관찰 위치 사이의 거리는 일정하게 둔다.", "가까운 물체는 시차가 크다.", "먼 물체는 시차가 작다."], "diagram": "parallax", "note": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_03"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "물체까지의 거리와 시차", "points": ["관찰 위치 사이의 거리는 일정하게 둔다.", "가까운 물체는 시차가 크다.", "먼 물체는 시차가 작다."], "diagram": "parallax", "note": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_03"},k);}});
-Deck.scene('a1_04',{steps:3,build(root){ParallaxConcept.build(root,{"title": "관찰 위치 사이의 거리", "points": ["물체까지의 거리는 그대로 둔다.", "두 관찰 위치가 멀어지면 시차가 커진다.", "거리 비교에는 같은 관찰 조건이 필요하다."], "diagram": "baseline", "note": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_04"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "관찰 위치 사이의 거리", "points": ["물체까지의 거리는 그대로 둔다.", "두 관찰 위치가 멀어지면 시차가 커진다.", "거리 비교에는 같은 관찰 조건이 필요하다."], "diagram": "baseline", "note": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_04"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "관찰 위치 사이의 거리", "points": ["물체까지의 거리는 그대로 둔다.", "두 관찰 위치가 멀어지면 시차가 커진다.", "거리 비교에는 같은 관찰 조건이 필요하다."], "diagram": "baseline", "note": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_04"},k);}});
-Deck.scene('a1_05',{steps:3,build(root){ParallaxConcept.build(root,{"title": "지구의 공전과 별의 위치", "points": ["지구는 태양 주위를 공전한다.", "6개월 간격으로 관찰 위치가 크게 달라진다.", "가까운 별은 먼 배경 별에 대해 위치가 달라 보인다."], "diagram": "orbit", "note": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "tag": "개념", "ext": false, "caption": "각도와 거리를 확대·축소한 원리 모형", "table": null, "values": null, "sceneId": "a1_05"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "지구의 공전과 별의 위치", "points": ["지구는 태양 주위를 공전한다.", "6개월 간격으로 관찰 위치가 크게 달라진다.", "가까운 별은 먼 배경 별에 대해 위치가 달라 보인다."], "diagram": "orbit", "note": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "tag": "개념", "ext": false, "caption": "각도와 거리를 확대·축소한 원리 모형", "table": null, "values": null, "sceneId": "a1_05"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "지구의 공전과 별의 위치", "points": ["지구는 태양 주위를 공전한다.", "6개월 간격으로 관찰 위치가 크게 달라진다.", "가까운 별은 먼 배경 별에 대해 위치가 달라 보인다."], "diagram": "orbit", "note": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "tag": "개념", "ext": false, "caption": "각도와 거리를 확대·축소한 원리 모형", "table": null, "values": null, "sceneId": "a1_05"},k);}});
-Deck.scene('a1_06',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차의 정의", "points": ["6개월 간격으로 보이는 최대 시차를 찾는다.", "그 최대 시차의 절반이 연주시차 p이다.", "그림의 전체 각 2p와 절반 p를 구분한다."], "diagram": "annual", "note": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_06"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차의 정의", "points": ["6개월 간격으로 보이는 최대 시차를 찾는다.", "그 최대 시차의 절반이 연주시차 p이다.", "그림의 전체 각 2p와 절반 p를 구분한다."], "diagram": "annual", "note": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_06"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차의 정의", "points": ["6개월 간격으로 보이는 최대 시차를 찾는다.", "그 최대 시차의 절반이 연주시차 p이다.", "그림의 전체 각 2p와 절반 p를 구분한다."], "diagram": "annual", "note": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_06"},k);}});
-Deck.scene('a1_07',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차로 거리 비교", "points": ["같은 지구 공전 궤도를 이용한다.", "연주시차가 크면 가까운 별이다.", "연주시차가 작으면 먼 별이다."], "diagram": "compareP", "note": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_07"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차로 거리 비교", "points": ["같은 지구 공전 궤도를 이용한다.", "연주시차가 크면 가까운 별이다.", "연주시차가 작으면 먼 별이다."], "diagram": "compareP", "note": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_07"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차로 거리 비교", "points": ["같은 지구 공전 궤도를 이용한다.", "연주시차가 크면 가까운 별이다.", "연주시차가 작으면 먼 별이다."], "diagram": "compareP", "note": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_07"},k);}});
-Deck.scene('a1_08',{steps:3,build(root){ParallaxConcept.build(root,{"title": "각도와 거리의 단위", "points": ["1° = 60′, 1′ = 60″", "연주시차 1″인 별까지의 거리 = 1 pc", "1 pc는 약 3.26광년이다."], "diagram": "parsec", "note": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_08"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "각도와 거리의 단위", "points": ["1° = 60′, 1′ = 60″", "연주시차 1″인 별까지의 거리 = 1 pc", "1 pc는 약 3.26광년이다."], "diagram": "parsec", "note": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_08"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "각도와 거리의 단위", "points": ["1° = 60′, 1′ = 60″", "연주시차 1″인 별까지의 거리 = 1 pc", "1 pc는 약 3.26광년이다."], "diagram": "parsec", "note": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_08"},k);}});
-Deck.scene('a1_09',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차의 측정 한계", "points": ["먼 별일수록 연주시차가 작아진다.", "아주 작은 각은 정확히 측정하기 어렵다.", "측정 가능한 거리는 장비의 정밀도에 따라 달라진다."], "diagram": "compareP", "note": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_09"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차의 측정 한계", "points": ["먼 별일수록 연주시차가 작아진다.", "아주 작은 각은 정확히 측정하기 어렵다.", "측정 가능한 거리는 장비의 정밀도에 따라 달라진다."], "diagram": "compareP", "note": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_09"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차의 측정 한계", "points": ["먼 별일수록 연주시차가 작아진다.", "아주 작은 각은 정확히 측정하기 어렵다.", "측정 가능한 거리는 장비의 정밀도에 따라 달라진다."], "diagram": "compareP", "note": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_09"},k);}});
-Deck.scene('a1_10',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차의 역수로 거리 계산", "points": ["거리(pc) = 1 ÷ 연주시차(″)", "p = 0.25″ → 1 ÷ 0.25 = 4 pc", "연주시차가 절반이면 거리는 2배이다."], "diagram": "calcP", "note": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_10"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차의 역수로 거리 계산", "points": ["거리(pc) = 1 ÷ 연주시차(″)", "p = 0.25″ → 1 ÷ 0.25 = 4 pc", "연주시차가 절반이면 거리는 2배이다."], "diagram": "calcP", "note": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_10"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차의 역수로 거리 계산", "points": ["거리(pc) = 1 ÷ 연주시차(″)", "p = 0.25″ → 1 ÷ 0.25 = 4 pc", "연주시차가 절반이면 거리는 2배이다."], "diagram": "calcP", "note": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_10"},k);}});
-Deck.scene('a1_11',{steps:3,build(root){ParallaxConcept.build(root,{"title": "전체 시차가 주어진 경우", "points": ["6개월 간격의 최대 시차가 0.4″이다.", "연주시차 p = 0.4″ ÷ 2 = 0.2″", "거리 = 1 ÷ 0.2 = 5 pc"], "diagram": "annual", "note": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "tag": "자료 해석", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_11"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "전체 시차가 주어진 경우", "points": ["6개월 간격의 최대 시차가 0.4″이다.", "연주시차 p = 0.4″ ÷ 2 = 0.2″", "거리 = 1 ÷ 0.2 = 5 pc"], "diagram": "annual", "note": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "tag": "자료 해석", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_11"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "전체 시차가 주어진 경우", "points": ["6개월 간격의 최대 시차가 0.4″이다.", "연주시차 p = 0.4″ ÷ 2 = 0.2″", "거리 = 1 ÷ 0.2 = 5 pc"], "diagram": "annual", "note": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "tag": "자료 해석", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_11"},k);}});
-Deck.scene('a1_12',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차 자료 해석", "points": ["가장 가까운 별은 A이다.", "B의 거리는 A의 2배이다.", "C의 거리는 10 pc이다."], "diagram": "table", "note": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "tag": "자료 해석", "ext": true, "caption": "", "table": [["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]], "values": null, "sceneId": "a1_12"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차 자료 해석", "points": ["가장 가까운 별은 A이다.", "B의 거리는 A의 2배이다.", "C의 거리는 10 pc이다."], "diagram": "table", "note": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "tag": "자료 해석", "ext": true, "caption": "", "table": [["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]], "values": null, "sceneId": "a1_12"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차 자료 해석", "points": ["가장 가까운 별은 A이다.", "B의 거리는 A의 2배이다.", "C의 거리는 10 pc이다."], "diagram": "table", "note": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "tag": "자료 해석", "ext": true, "caption": "", "table": [["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]], "values": null, "sceneId": "a1_12"},k);}});
-Deck.scene('a1_13',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차 핵심 정리", "points": ["시차: 관찰 위치에 따라 달라 보이는 방향의 차이", "연주시차: 최대 시차의 절반", "큰 연주시차 → 가까운 별"], "diagram": "parallax", "note": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다.", "tag": "정리", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_13"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차 핵심 정리", "points": ["시차: 관찰 위치에 따라 달라 보이는 방향의 차이", "연주시차: 최대 시차의 절반", "큰 연주시차 → 가까운 별"], "diagram": "parallax", "note": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다.", "tag": "정리", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_13"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차 핵심 정리", "points": ["시차: 관찰 위치에 따라 달라 보이는 방향의 차이", "연주시차: 최대 시차의 절반", "큰 연주시차 → 가까운 별"], "diagram": "parallax", "note": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다.", "tag": "정리", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_13"},k);}});
+Deck.scene('a1_01',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주 운동 복습", "points": ["태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보인다.", "계절에 따라 밤하늘에 보이는 별자리가 달라진다.", "두 현상은 지구가 태양 주위를 공전하기 때문에 나타난다."], "diagram": "svg:l1_intro_annual.svg", "note": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "tag": "도입", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_01"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주 운동 복습", "points": ["태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보인다.", "계절에 따라 밤하늘에 보이는 별자리가 달라진다.", "두 현상은 지구가 태양 주위를 공전하기 때문에 나타난다."], "diagram": "svg:l1_intro_annual.svg", "note": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "tag": "도입", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_01"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주 운동 복습", "points": ["태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보인다.", "계절에 따라 밤하늘에 보이는 별자리가 달라진다.", "두 현상은 지구가 태양 주위를 공전하기 때문에 나타난다."], "diagram": "svg:l1_intro_annual.svg", "note": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "tag": "도입", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_01"},k);}});
+Deck.scene('a1_02',{steps:3,build(root){ParallaxConcept.build(root,{"title": "왼쪽 눈과 오른쪽 눈으로 본 손가락", "points": ["왼쪽 눈으로 보면 손가락이 ㅂ 위에 있는 것처럼 보인다.", "오른쪽 눈으로 보면 손가락이 ㄴ 위에 있는 것처럼 보인다.", "답: (ㅂ, ㄴ). 손가락은 움직이지 않았다."], "diagram": "svg:l1_finger_q.svg", "note": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_02"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "왼쪽 눈과 오른쪽 눈으로 본 손가락", "points": ["왼쪽 눈으로 보면 손가락이 ㅂ 위에 있는 것처럼 보인다.", "오른쪽 눈으로 보면 손가락이 ㄴ 위에 있는 것처럼 보인다.", "답: (ㅂ, ㄴ). 손가락은 움직이지 않았다."], "diagram": "svg:l1_finger_q.svg", "note": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_02"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "왼쪽 눈과 오른쪽 눈으로 본 손가락", "points": ["왼쪽 눈으로 보면 손가락이 ㅂ 위에 있는 것처럼 보인다.", "오른쪽 눈으로 보면 손가락이 ㄴ 위에 있는 것처럼 보인다.", "답: (ㅂ, ㄴ). 손가락은 움직이지 않았다."], "diagram": "svg:l1_finger_q.svg", "note": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_02"},k);}});
+Deck.scene('a1_03',{steps:2,build(root){ParallaxConcept.build(root,{"title": "물체까지의 거리에 따른 시차", "points": ["두 관찰 위치 사이의 거리는 그대로 둔다.", "학습지 5번 줄"], "diagram": "parallax", "note": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_03"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "물체까지의 거리에 따른 시차", "points": ["두 관찰 위치 사이의 거리는 그대로 둔다.", "학습지 5번 줄"], "diagram": "parallax", "note": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_03"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "물체까지의 거리에 따른 시차", "points": ["두 관찰 위치 사이의 거리는 그대로 둔다.", "학습지 5번 줄"], "diagram": "parallax", "note": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_03"},k);}});
+Deck.scene('a1_04',{steps:2,build(root){ParallaxConcept.build(root,{"title": "관찰 위치에 따른 시차", "points": ["물체까지의 거리는 그대로 둔다.", "학습지 4번 줄"], "diagram": "baseline", "note": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_04"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "관찰 위치에 따른 시차", "points": ["물체까지의 거리는 그대로 둔다.", "학습지 4번 줄"], "diagram": "baseline", "note": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_04"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "관찰 위치에 따른 시차", "points": ["물체까지의 거리는 그대로 둔다.", "학습지 4번 줄"], "diagram": "baseline", "note": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "tag": "탐구", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_04"},k);}});
+Deck.scene('a1_05',{steps:3,build(root){ParallaxConcept.build(root,{"title": "관찰 위치의 변화와 별이 보이는 위치", "points": ["학습지 7번 줄", "학습지 8번 줄", "학습지 9번 줄"], "diagram": "orbit", "note": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "tag": "개념", "ext": false, "caption": "각도와 거리를 확대·축소한 원리 모형", "table": null, "values": null, "sceneId": "a1_05"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "관찰 위치의 변화와 별이 보이는 위치", "points": ["학습지 7번 줄", "학습지 8번 줄", "학습지 9번 줄"], "diagram": "orbit", "note": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "tag": "개념", "ext": false, "caption": "각도와 거리를 확대·축소한 원리 모형", "table": null, "values": null, "sceneId": "a1_05"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "관찰 위치의 변화와 별이 보이는 위치", "points": ["학습지 7번 줄", "학습지 8번 줄", "학습지 9번 줄"], "diagram": "orbit", "note": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "tag": "개념", "ext": false, "caption": "각도와 거리를 확대·축소한 원리 모형", "table": null, "values": null, "sceneId": "a1_05"},k);}});
+Deck.scene('a1_06',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차의 정의", "points": ["학습지 10번 줄", "학습지 11번 줄", "문항 ③ 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문이다."], "diagram": "annual", "note": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_06"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차의 정의", "points": ["학습지 10번 줄", "학습지 11번 줄", "문항 ③ 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문이다."], "diagram": "annual", "note": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_06"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차의 정의", "points": ["학습지 10번 줄", "학습지 11번 줄", "문항 ③ 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문이다."], "diagram": "annual", "note": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_06"},k);}});
+Deck.scene('a1_07',{steps:2,build(root){ParallaxConcept.build(root,{"title": "연주시차와 별까지의 거리", "points": ["같은 공전 궤도에서 별까지의 거리만 바꾼다.", "학습지 12번 줄"], "diagram": "compareP", "note": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_07"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차와 별까지의 거리", "points": ["같은 공전 궤도에서 별까지의 거리만 바꾼다.", "학습지 12번 줄"], "diagram": "compareP", "note": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_07"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차와 별까지의 거리", "points": ["같은 공전 궤도에서 별까지의 거리만 바꾼다.", "학습지 12번 줄"], "diagram": "compareP", "note": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_07"},k);}});
+Deck.scene('a1_08',{steps:3,build(root){ParallaxConcept.build(root,{"title": "각도 단위와 pc, 광년", "points": ["학습지 13번 줄", "학습지 14번 줄", "학습지 15번 줄"], "diagram": "parsec", "note": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_08"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "각도 단위와 pc, 광년", "points": ["학습지 13번 줄", "학습지 14번 줄", "학습지 15번 줄"], "diagram": "parsec", "note": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_08"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "각도 단위와 pc, 광년", "points": ["학습지 13번 줄", "학습지 14번 줄", "학습지 15번 줄"], "diagram": "parsec", "note": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_08"},k);}});
+Deck.scene('a1_09',{steps:2,build(root){ParallaxConcept.build(root,{"title": "연주시차의 측정 한계", "points": ["학습지 17번 줄", "학습지 18번 줄"], "diagram": "compareP", "note": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_09"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차의 측정 한계", "points": ["학습지 17번 줄", "학습지 18번 줄"], "diagram": "compareP", "note": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_09"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차의 측정 한계", "points": ["학습지 17번 줄", "학습지 18번 줄"], "diagram": "compareP", "note": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_09"},k);}});
+Deck.scene('a1_10',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차의 역수로 거리 계산", "points": ["거리(pc) = 1 ÷ 연주시차(″)", "p = 0.25″ → 1 ÷ 0.25 = 4 pc", "연주시차가 1/2이 되면 거리는 2배가 된다."], "diagram": "calcP", "note": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_10"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차의 역수로 거리 계산", "points": ["거리(pc) = 1 ÷ 연주시차(″)", "p = 0.25″ → 1 ÷ 0.25 = 4 pc", "연주시차가 1/2이 되면 거리는 2배가 된다."], "diagram": "calcP", "note": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_10"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차의 역수로 거리 계산", "points": ["거리(pc) = 1 ÷ 연주시차(″)", "p = 0.25″ → 1 ÷ 0.25 = 4 pc", "연주시차가 1/2이 되면 거리는 2배가 된다."], "diagram": "calcP", "note": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_10"},k);}});
+Deck.scene('a1_11',{steps:3,build(root){ParallaxConcept.build(root,{"title": "두 시선이 이루는 각이 주어진 경우", "points": ["공전 궤도 양 끝에서 본 두 시선이 이루는 각이 0.4″이다.", "연주시차 p = 0.4″의 1/2 = 0.2″", "거리 = 1 ÷ 0.2 = 5 pc"], "diagram": "annual", "note": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_11"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "두 시선이 이루는 각이 주어진 경우", "points": ["공전 궤도 양 끝에서 본 두 시선이 이루는 각이 0.4″이다.", "연주시차 p = 0.4″의 1/2 = 0.2″", "거리 = 1 ÷ 0.2 = 5 pc"], "diagram": "annual", "note": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_11"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "두 시선이 이루는 각이 주어진 경우", "points": ["공전 궤도 양 끝에서 본 두 시선이 이루는 각이 0.4″이다.", "연주시차 p = 0.4″의 1/2 = 0.2″", "거리 = 1 ÷ 0.2 = 5 pc"], "diagram": "annual", "note": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "tag": "확장", "ext": true, "caption": "", "table": null, "values": null, "sceneId": "a1_11"},k);}});
+Deck.scene('a1_12',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차 자료로 거리 계산", "points": ["A까지의 거리는 1 ÷ 0.4 = 2.5 pc이다.", "B까지의 거리는 5 pc로 A의 2배이다.", "C까지의 거리는 10 pc이다."], "diagram": "table", "note": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "tag": "확장", "ext": true, "caption": "", "table": [["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]], "values": null, "sceneId": "a1_12"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차 자료로 거리 계산", "points": ["A까지의 거리는 1 ÷ 0.4 = 2.5 pc이다.", "B까지의 거리는 5 pc로 A의 2배이다.", "C까지의 거리는 10 pc이다."], "diagram": "table", "note": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "tag": "확장", "ext": true, "caption": "", "table": [["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]], "values": null, "sceneId": "a1_12"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차 자료로 거리 계산", "points": ["A까지의 거리는 1 ÷ 0.4 = 2.5 pc이다.", "B까지의 거리는 5 pc로 A의 2배이다.", "C까지의 거리는 10 pc이다."], "diagram": "table", "note": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "tag": "확장", "ext": true, "caption": "", "table": [["별", "A", "B", "C"], ["연주시차", "0.4″", "0.2″", "0.1″"]], "values": null, "sceneId": "a1_12"},k);}});
+Deck.scene('a1_ws_parallax',{steps:3,build(root){ParallaxConcept.build(root,{"title": "시차", "points": ["학습지 1번 줄", "학습지 2번 줄", "학습지 3번 줄"], "diagram": "svg:l1_finger.svg", "note": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_ws_parallax"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "시차", "points": ["학습지 1번 줄", "학습지 2번 줄", "학습지 3번 줄"], "diagram": "svg:l1_finger.svg", "note": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_ws_parallax"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "시차", "points": ["학습지 1번 줄", "학습지 2번 줄", "학습지 3번 줄"], "diagram": "svg:l1_finger.svg", "note": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_ws_parallax"},k);}});
+Deck.scene('a1_ws_size',{steps:3,build(root){ParallaxConcept.build(root,{"title": "시차의 크기", "points": ["학습지 6번 줄", "시차가 가장 작은 것: (나)", "(가)보다 물체가 멀고, (다)보다 관찰 위치 사이가 가깝다."], "diagram": "svg:l1_conditions_q.svg", "note": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_ws_size"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "시차의 크기", "points": ["학습지 6번 줄", "시차가 가장 작은 것: (나)", "(가)보다 물체가 멀고, (다)보다 관찰 위치 사이가 가깝다."], "diagram": "svg:l1_conditions_q.svg", "note": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_ws_size"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "시차의 크기", "points": ["학습지 6번 줄", "시차가 가장 작은 것: (나)", "(가)보다 물체가 멀고, (다)보다 관찰 위치 사이가 가깝다."], "diagram": "svg:l1_conditions_q.svg", "note": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_ws_size"},k);}});
+Deck.scene('a1_far',{steps:3,build(root){ParallaxConcept.build(root,{"title": "같은 궤도에서 본 세 별", "points": ["별 A, B, C의 연주시차: 0.4″, 0.2″, 0.1″", "연주시차가 큰 별일수록 지구에서 가깝다.", "가까운 별부터: A, B, C"], "diagram": "svg:l1_far.svg", "note": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_far"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "같은 궤도에서 본 세 별", "points": ["별 A, B, C의 연주시차: 0.4″, 0.2″, 0.1″", "연주시차가 큰 별일수록 지구에서 가깝다.", "가까운 별부터: A, B, C"], "diagram": "svg:l1_far.svg", "note": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_far"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "같은 궤도에서 본 세 별", "points": ["별 A, B, C의 연주시차: 0.4″, 0.2″, 0.1″", "연주시차가 큰 별일수록 지구에서 가깝다.", "가까운 별부터: A, B, C"], "diagram": "svg:l1_far.svg", "note": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "tag": "개념", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_far"},k);}});
+Deck.scene('a1_13',{steps:3,build(root){ParallaxConcept.build(root,{"title": "연주시차 핵심 정리", "points": ["시차: 서로 다른 지점에서 볼 때 먼 배경에 대해 나타나는 물체의 위치 차이", "연주시차: 공전 궤도 양 끝에서 관측한 별의 시차의 1/2", "연주시차가 큰 별일수록 지구에서 가깝다."], "diagram": "parallax", "note": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다.", "tag": "정리", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_13"});},enter(c){c.root.dataset.focus='0';return ParallaxConcept.enter(c,{"title": "연주시차 핵심 정리", "points": ["시차: 서로 다른 지점에서 볼 때 먼 배경에 대해 나타나는 물체의 위치 차이", "연주시차: 공전 궤도 양 끝에서 관측한 별의 시차의 1/2", "연주시차가 큰 별일수록 지구에서 가깝다."], "diagram": "parallax", "note": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다.", "tag": "정리", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_13"});},go(c,k){c.root.dataset.focus=String(k);return ParallaxConcept.go(c,{"title": "연주시차 핵심 정리", "points": ["시차: 서로 다른 지점에서 볼 때 먼 배경에 대해 나타나는 물체의 위치 차이", "연주시차: 공전 궤도 양 끝에서 관측한 별의 시차의 1/2", "연주시차가 큰 별일수록 지구에서 가깝다."], "diagram": "parallax", "note": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다.", "tag": "정리", "ext": false, "caption": "", "table": null, "values": null, "sceneId": "a1_13"},k);}});
 
 </script><script>/* Same-origin real simulator pages; controls use the simulator's own input handlers. */
 window.AstroEmbedded=(()=>{
@@ -2298,8 +2570,8 @@ window.AstroEmbedded=(()=>{
  return {register};
 })();
 
-window.NOTES={"P1": "창가의 학생 A, 복도 쪽 학생 B, 교실 가운데의 선생님을 짚습니다. 선생님은 움직이지 않습니다. 오른쪽 방향키: A의 시선을 칠판까지 잇기 → A가 보는 선생님과 오른쪽 급식 메뉴판 → B가 보는 선생님과 왼쪽 시간표 → 두 시야 비교. 물체의 실제 이동이 아니라 관찰 위치에 따른 차이입니다. 선은 빛이 눈에서 나가는 것이 아니라 바라보는 방향을 배경까지 연장한 것입니다.", "P2": "학생 C가 선생님보다 A·B에 가까운 곳에서 발표합니다. 관찰하는 A·B의 자리는 그대로입니다. C 등장 → A가 보는 모습 → B가 보는 모습 → 선생님을 볼 때와 칠판 위 위치 차이 비교. 가까운 물체일수록 두 관찰 위치에서 보이는 방향 차이가 큽니다. 칠판 위 간격은 각도 그 자체가 아닙니다.", "P3": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "P4": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "P5": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "P6": "학생 A·B의 두 관찰 위치는 지구의 서로 다른 공전 위치에 대응합니다. 선생님·학생 C는 관측할 별, 칠판은 훨씬 먼 배경 별에 대응합니다. 지구 두 개가 동시에 존재한다는 뜻이 아닙니다. 같은 지구가 태양 주위를 공전하며 6개월 전후의 자리에서 같은 별을 관측합니다. 실제 별의 거리는 훨씬 멀고 각도는 훨씬 작습니다. 다음 장면에서 연주 운동을 복습한 뒤 연주시차와 구분합니다.", "P7": "1학년의 연주 운동을 먼저 떠올립니다. 태양의 연주 운동은 배경 별자리에 대해 동쪽으로 이동해 보이는 현상입니다. 연주시차는 같은 가까운 별의 위치가 먼 배경 별에 대해 달라 보이는 현상으로, 둘은 같은 현상이 아닙니다. 지구의 공전이라는 원인을 연결합니다. 베셀은 1838년 백조자리 61의 연주시차 측정 결과를 발표했습니다. 별까지 직접 가지 않아도 거리를 잴 수 있다는 이야기로 손가락 시차 탐구를 시작합니다.", "P8": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "P9": "지구가 공전 궤도의 반대편으로 이동한다. → 6개월 뒤: 별은 그대로, 지구의 관측 위치가 바뀐다. → 지구 시점: 먼 배경별 사이에서 노란 별의 위치를 본다. → 6개월 뒤: 노란 별이 배경별에 대해 다른 위치에 보인다. → 더 먼 별로 바꾸고, 처음 위치에서 다시 관측한다. → 같은 6개월 간격: 더 먼 별의 위치 변화가 작다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습", "P10": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "P11": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "P12": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "P13": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "P14": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "P15": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "P16": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "P17": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다."};
-AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "연주시차 3D 모형", "kind": "parallax", "url": "3d-parallax.html?embed=1", "limit": "각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습", "states": [{"caption": "지구가 공전 궤도의 반대편으로 이동한다.", "values": {"#dist": 20, "#month": 0}, "click": ["[data-view=\"space\"]", "#fit-space"], "motion": null}, {"caption": "6개월 뒤: 별은 그대로, 지구의 관측 위치가 바뀐다.", "values": {"#dist": 20}, "click": ["[data-view=\"space\"]"], "motion": {"selector": "#month", "from": 0, "to": 60, "duration": 1800}}, {"caption": "지구 시점: 먼 배경별 사이에서 노란 별의 위치를 본다.", "values": {"#dist": 20, "#month": 0}, "click": ["[data-view=\"earth\"]"], "motion": null}, {"caption": "6개월 뒤: 노란 별이 배경별에 대해 다른 위치에 보인다.", "values": {"#dist": 20}, "click": ["[data-view=\"earth\"]"], "motion": {"selector": "#month", "from": 0, "to": 60, "duration": 1800}}, {"caption": "더 먼 별로 바꾸고, 처음 위치에서 다시 관측한다.", "values": {"#dist": 40, "#month": 0}, "click": ["[data-view=\"earth\"]"], "motion": null}, {"caption": "같은 6개월 간격: 더 먼 별의 위치 변화가 작다.", "values": {"#dist": 40}, "click": ["[data-view=\"earth\"]"], "motion": {"selector": "#month", "from": 0, "to": 60, "duration": 1800}}]});
+window.NOTES={"P1": "창가의 학생 A, 복도 쪽 학생 B, 교실 가운데의 선생님을 짚습니다. 선생님은 움직이지 않습니다. 오른쪽 방향키: A의 시선을 칠판까지 잇기 → A가 보는 선생님과 오른쪽 급식 메뉴판 → B가 보는 선생님과 왼쪽 시간표 → 두 시야 비교. 선생님은 움직이지 않았는데 배경에 대해 다른 위치에 보입니다. 이것이 다음 장면에서 정의할 시차입니다. 선은 빛이 눈에서 나가는 것이 아니라 바라보는 방향을 배경까지 연장한 것입니다.", "P2": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "P3": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "P4": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "P5": "학생 C가 선생님보다 A·B에 가까운 곳에서 발표합니다. 관찰하는 A·B의 자리는 그대로입니다. C 등장 → A가 보는 모습 → B가 보는 모습 → 선생님을 볼 때와 칠판 위 위치 차이 비교. A·B 사이 거리는 그대로이고 대상까지의 거리만 다릅니다. 가까이 있는 C의 위치 차이가 더 큽니다. 칠판 위 간격은 각도 그 자체가 아닙니다. 다음 장면에서 학습지 문장으로 정리합니다.", "P6": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "P7": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "P8": "학생 A·B의 두 관찰 위치는 지구의 서로 다른 공전 위치에 대응합니다. 선생님·학생 C는 관측할 별, 칠판은 훨씬 먼 배경 별에 대응합니다. 지구 두 개가 동시에 존재한다는 뜻이 아닙니다. 같은 지구가 태양 주위를 공전하며 6개월 전후의 자리에서 같은 별을 관측합니다. 실제 별의 거리는 훨씬 멀고 각도는 훨씬 작습니다. 다음 장면에서 지구의 공전과 별이 보이는 위치를 학습지 문장으로 정리합니다.", "P9": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "P10": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "P11": "우주에서 본 모습: 지구가 공전 궤도의 한쪽 끝에 있다. → 6개월 뒤: 별은 그대로, 지구가 공전 궤도의 다른 쪽 끝으로 옮겨 간다. → 지구 시점: 먼 배경별 사이에서 노란 별의 위치를 본다. → 6개월 뒤: 노란 별이 배경별에 대해 다른 위치에 보인다. → 더 먼 별로 바꾸고, 처음 위치에서 다시 관측한다. → 같은 6개월 간격: 더 먼 별의 위치 변화가 작다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습", "P12": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "P13": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "P14": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "P15": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "P16": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "P17": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "P18": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "P19": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "P20": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다."};
+AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "연주시차 3D 모형", "kind": "parallax", "url": "3d-parallax.html?embed=1", "limit": "각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습", "states": [{"caption": "우주에서 본 모습: 지구가 공전 궤도의 한쪽 끝에 있다.", "values": {"#dist": 20, "#month": 60}, "click": ["[data-view=\"space\"]", "#fit-space"], "motion": null}, {"caption": "6개월 뒤: 별은 그대로, 지구가 공전 궤도의 다른 쪽 끝으로 옮겨 간다.", "values": {"#dist": 20}, "click": ["[data-view=\"space\"]"], "motion": {"selector": "#month", "from": 60, "to": 120, "duration": 1800}}, {"caption": "지구 시점: 먼 배경별 사이에서 노란 별의 위치를 본다.", "values": {"#dist": 20, "#month": 60}, "click": ["[data-view=\"earth\"]"], "motion": null}, {"caption": "6개월 뒤: 노란 별이 배경별에 대해 다른 위치에 보인다.", "values": {"#dist": 20}, "click": ["[data-view=\"earth\"]"], "motion": {"selector": "#month", "from": 60, "to": 120, "duration": 1800}}, {"caption": "더 먼 별로 바꾸고, 처음 위치에서 다시 관측한다.", "values": {"#dist": 40, "#month": 60}, "click": ["[data-view=\"earth\"]"], "motion": null}, {"caption": "같은 6개월 간격: 더 먼 별의 위치 변화가 작다.", "values": {"#dist": 40}, "click": ["[data-view=\"earth\"]"], "motion": {"selector": "#month", "from": 60, "to": 120, "duration": 1800}}]});
 </script><script>
 /* 표지의 물리 관계 모형. 천체 크기/거리의 실제 비율은 의도적으로 생략한다.
    모든 움직임은 Ctx 관리 tween으로 한 번 재생하며 복원 시 같은 끝 상태다. */
@@ -2344,9 +2616,9 @@ AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "�
       s+=line(x-half,300+dy,x+half,300+dy,'#08232e',1.5);
     }
     s+=line(155,492,x,492,'#b9d4df',2)+line(155,480,155,504,'#b9d4df',2)+line(x,480,x,504,'#b9d4df',2);
-    s+=text((155+x)/2,540,`거리 ${d.toFixed(1)}배`,'op-small');
-    s+=text(420,80,`빛이 퍼지는 면적 ${fixed(d*d).toFixed(1)}배`,'op-small');
-    s+=text(x,150,p>.999?'1/4':'', 'op-value');
+    // 2026-10-19(2차시 FIXER): 표지가 학습지 7·8번 답(1/4배·면적 4배)을 미리 보여 주지 않게 면적 배수·비율 글자를 뺐다. 거리만 바꾸는 모양만 남긴다.
+    s+=text((155+x)/2,540,`거리 ${Number(d.toFixed(1))}배`,'op-small');
+    s+=text(420,80,'같은 광원에서 거리만 바꾼다','op-small');
     s+=text(420,610,'같은 면적이 받는 빛을 비교','op-small');
     return s;
   }
@@ -2380,8 +2652,7 @@ AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "�
     s+=ellipse(cx,base,95,Math.max(27,42*tilt),'#ebc7a5','opacity=".28"')+ellipse(cx,base,71,Math.max(18,24*tilt),'#eed8b4','opacity=".5"');
     const ax=3.96,r=162,ex=cx+r*Math.cos(ax),ey=base+r*Math.sin(ax)*tilt;
     s+=circle(ex,ey,8,'#ffd65f')+line(ex,ey-8,ex,ey-57,'#e6ca7c',2)+text(ex,ey-70,'태양계','op-small');
-    s+=text(420,58,p<.5?'위에서 본 구조':'옆에서 본 구조');
-    s+=text(420,615,'실제 별 수와 크기 비율을 생략한 모형','op-small');
+    s+=text(420,58,p<.5?'위에서 본 모습':'비스듬히 본 모습');  // 10-19 최종 점검: 기울인 원반이라 「옆에서 본」 대신 「비스듬히 본」, 아래 작은 글은 notes[4] 와 겹쳐 뺌
     return s;
   }
   function constituents(p){
@@ -2398,7 +2669,7 @@ AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "�
       const a=q*2.399963,r=Math.sqrt(seeded(q+51))*113*z;
       s+=circle(Math.cos(a)*r,Math.sin(a)*r,2+seeded(q+19)*2.4,'#e8d2a8');
     }
-    s+='</g>'+text(235,556,'기체와 먼지','op-small')+text(625,556,'별들의 모임','op-small');
+    s+='</g>'+text(235,556,'구름처럼 퍼져 있다','op-small')+text(625,556,'별들이 모여 있다','op-small');
     s+=line(430,163,430,572,'#294c5e',2);
     return s;
   }
@@ -2411,11 +2682,11 @@ AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "�
       const px=cx+x*a,py=cy+y*a;
       s+=ellipse(px,py,22,10,j?'#9bd3e0':'#f4d58e',`transform="rotate(-25 ${px} ${py})"`)+circle(px,py,5,'#fbfaf1')+text(px,py+48,names[j],'op-small');
     });
-    s+=text(420,66,'A를 기준으로 관측')+text(420,608,'은하 크기는 유지 · 은하 사이 거리는 증가','op-small');
+    s+=text(420,66,'여러 은하 사이의 거리(모식도)');  // 2026-10-19 6차시 리뷰: 7·8·10번 답이 표지에서 미리 보이지 않게 바꿈
     return s;
   }
   const renders={1:parallax,2:brightness,3:tenpc,4:galaxy,5:constituents,6:expansion};
-  const notes={1:'거리와 크기의 실제 비율은 생략',2:'빛의 흡수는 생략한 모형',3:'별을 실제로 옮기는 것은 아님',4:'우리은하의 구조를 단순화한 모형',5:'관측 사진이 아닌 구성 물질 비교 모형',6:'A는 관측 기준 · 우주 팽창의 중심이 아님'};
+  const notes={1:'거리와 크기의 실제 비율은 생략',2:'빛의 흡수는 생략한 모형',3:'별을 실제로 옮기는 것은 아님',4:'우리은하의 구조를 단순화한 모형',5:'관측 사진이 아닌 구성 물질 비교 모형',6:'은하의 크기와 거리는 실제와 다른 모식도'};
   function render(root,n,p){
     root.querySelector('.opening-model svg').innerHTML=renders[n](p);
     root.dataset.openingProgress=p.toFixed(4);
@@ -2432,8 +2703,8 @@ AstroEmbedded.register({"id": "a1_lab_parallax", "anchor": "a1_05", "title": "�
   };
 })();
 
-window.NOTES={"P1": "오늘의 주제는 연주시차와 별까지의 거리입니다. 제목은 첫 화면부터 보입니다. 별과 우주 · 01차시, 관찰 위치 · 시차 · 거리 비교. 이 모형은 주제의 관계를 보여 주며 실제 천체의 크기·거리 비율을 재현한 것은 아닙니다. 다음 화면에서 오늘 배울 개념의 순서를 먼저 짚습니다.", "P2": "시차: 관찰 위치에 따른 방향 차이 → 연주시차: 지구의 공전과 별의 위치 → 거리 비교: 가까운 별과 먼 별 → 거리 계산: 성취기준 밖의 확장 학습. 개념 설명으로 들어가면 오른쪽 위에서 현재 배우는 키워드를 확인할 수 있습니다.", "P3": "1학년의 연주 운동을 먼저 떠올립니다. 태양의 연주 운동은 배경 별자리에 대해 동쪽으로 이동해 보이는 현상입니다. 연주시차는 같은 가까운 별의 위치가 먼 배경 별에 대해 달라 보이는 현상으로, 둘은 같은 현상이 아닙니다. 지구의 공전이라는 원인을 연결합니다. 베셀은 1838년 백조자리 61의 연주시차 측정 결과를 발표했습니다. 별까지 직접 가지 않아도 거리를 잴 수 있다는 이야기로 손가락 시차 탐구를 시작합니다.", "P4": "창가의 학생 A, 복도 쪽 학생 B, 교실 가운데의 선생님을 짚습니다. 선생님은 움직이지 않습니다. 오른쪽 방향키: A의 시선을 칠판까지 잇기 → A가 보는 선생님과 오른쪽 급식 메뉴판 → B가 보는 선생님과 왼쪽 시간표 → 두 시야 비교. 물체의 실제 이동이 아니라 관찰 위치에 따른 차이입니다. 선은 빛이 눈에서 나가는 것이 아니라 바라보는 방향을 배경까지 연장한 것입니다.", "P5": "학생 C가 선생님보다 A·B에 가까운 곳에서 발표합니다. 관찰하는 A·B의 자리는 그대로입니다. C 등장 → A가 보는 모습 → B가 보는 모습 → 선생님을 볼 때와 칠판 위 위치 차이 비교. 가까운 물체일수록 두 관찰 위치에서 보이는 방향 차이가 큽니다. 칠판 위 간격은 각도 그 자체가 아닙니다.", "P6": "눈 대신 서로 떨어진 두 관찰점을 생각해도 됩니다. 대상과 배경을 함께 비교해야 위치 변화가 드러납니다.", "P7": "시차를 비교할 때 관찰점 사이 거리를 같게 해야 합니다. 화면의 거리 조절 결과를 손가락 실험과 연결해 설명합니다.", "P8": "먼 물체를 보기 위해 관찰 위치를 더 크게 바꿀 수 있습니다. 이것이 지구의 공전을 이용하는 이유로 이어집니다.", "P9": "학생 A·B의 두 관찰 위치는 지구의 서로 다른 공전 위치에 대응합니다. 선생님·학생 C는 관측할 별, 칠판은 훨씬 먼 배경 별에 대응합니다. 지구 두 개가 동시에 존재한다는 뜻이 아닙니다. 같은 지구가 태양 주위를 공전하며 6개월 전후의 자리에서 같은 별을 관측합니다. 실제 별의 거리는 훨씬 멀고 각도는 훨씬 작습니다. 다음 장면에서 연주 운동을 복습한 뒤 연주시차와 구분합니다.", "P10": "그림은 공전 궤도면에 알맞게 놓인 별을 이용한 단순화입니다. 별과 궤도의 실제 크기·거리 비율을 그대로 그린 것은 아닙니다.", "P11": "지구가 공전 궤도의 반대편으로 이동한다. → 6개월 뒤: 별은 그대로, 지구의 관측 위치가 바뀐다. → 지구 시점: 먼 배경별 사이에서 노란 별의 위치를 본다. → 6개월 뒤: 노란 별이 배경별에 대해 다른 위치에 보인다. → 더 먼 별로 바꾸고, 처음 위치에서 다시 관측한다. → 같은 6개월 간격: 더 먼 별의 위치 변화가 작다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습", "P12": "전체 벌어진 각을 연주시차로 읽는 실수가 많습니다. 한쪽 각 p와 두 관찰 방향 사이의 각 2p를 각각 짚습니다.", "P13": "밝기나 색은 이 비교에 필요하지 않습니다. 연주시차의 크기만 비교해 가까운 순서를 판단하게 합니다.", "P14": "광년은 시간이 아니라 빛이 1년 동안 진행한 거리입니다. 초 단위 각도 기호와 시간의 초를 혼동하지 않도록 설명합니다.", "P15": "교과서의 약 100 pc는 전통적인 지상 관측 설명입니다. 현대 우주 관측까지 모두 100 pc로 제한된다고 일반화하지 않습니다.", "P16": "여기부터 성취기준 밖의 확장 학습입니다. 공식 유도보다 단위와 역관계를 확인합니다. 전체 최대 시차가 주어졌다면 먼저 절반으로 바꿉니다.", "P17": "새로 만든 예제입니다. 첫 단계에서는 전체 시차라는 조건을 읽고, 다음 단계에서 절반을 구한 뒤 거리를 계산합니다.", "P18": "표의 A·B·C는 수업용 가상 별입니다. 먼저 정성적으로 순서를 구하고 마지막에 수치 계산으로 확인합니다.", "P19": "공식을 가리고도 가까운 별과 먼 별을 설명할 수 있는지 확인합니다. 다음 시간에는 밝기를 이용한 비교를 다룹니다."};
-window.KW={"items": [{"kw": "시차"}, {"kw": "연주시차"}, {"kw": "거리 비교"}, {"kw": "거리 계산"}], "at": [-1, -1, -1, -1, -1, 0, 0, 0, -1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4]};
+window.NOTES={"P1": "오늘의 주제는 연주시차와 별까지의 거리입니다. 제목은 첫 화면부터 보입니다. 별과 우주 · 01차시, 시차 · 연주시차 · 단위와 측정 한계. 이 모형은 주제의 관계를 보여 주며 실제 천체의 크기·거리 비율을 재현한 것은 아닙니다. 다음 화면에서 오늘 배울 개념의 순서를 먼저 짚습니다.", "P2": "시차: 관측 위치에 따른 위치 차이 → 연주시차: 지구의 공전과 별의 위치 → 단위와 측정 한계: 각도 단위 · pc · 광년 → 거리 계산: 성취기준 밖의 확장 학습. 개념 설명으로 들어가면 오른쪽 위에서 현재 배우는 키워드를 확인할 수 있습니다.", "P3": "1학년 때 배운 태양의 연주 운동을 먼저 떠올려 봅시다. 그림은 지구의 북극 쪽에서 내려다본 모습입니다. 지구에서 보면 태양은 쌍둥이자리 쪽에 있고, 3개월 뒤에는 처녀자리 쪽에 보여요. 그래서 태양은 별자리 사이를 서쪽에서 동쪽으로 이동하는 것처럼 보입니다. 밤에는 태양 반대쪽 별자리가 보이므로 계절에 따라 밤하늘에 보이는 별자리도 달라집니다. 두 현상 모두 지구가 태양 주위를 공전하기 때문에 나타나요. 오늘은 지구의 공전 때문에 가까운 별이 보이는 위치가 달라지는 현상을 배우고, 이것으로 별까지의 거리를 비교합니다. 원인은 같지만 두 현상이 같은 것은 아닙니다.", "P4": "창가의 학생 A, 복도 쪽 학생 B, 교실 가운데의 선생님을 짚습니다. 선생님은 움직이지 않습니다. 오른쪽 방향키: A의 시선을 칠판까지 잇기 → A가 보는 선생님과 오른쪽 급식 메뉴판 → B가 보는 선생님과 왼쪽 시간표 → 두 시야 비교. 선생님은 움직이지 않았는데 배경에 대해 다른 위치에 보입니다. 이것이 다음 장면에서 정의할 시차입니다. 선은 빛이 눈에서 나가는 것이 아니라 바라보는 방향을 배경까지 연장한 것입니다.", "P5": "학습지의 시차 카드를 채웁니다. 시차는 서로 다른 지점에서 물체를 관측할 때 먼 배경에 대해 나타나는 물체의 위치 차이입니다. 시차는 두 관측 지점과 물체가 이루는 각도로 측정해요. 그림처럼 왼쪽 눈과 오른쪽 눈으로 번갈아 보면 손가락이 칠판 글자 사이에서 옮겨 간 것처럼 보이지만, 손가락의 실제 위치는 변하지 않았습니다. 관측 위치가 바뀌어서 배경에 대해 위치 차이가 생긴 것처럼 보일 뿐입니다.", "P6": "학습지 문항 ①입니다. 왼쪽 눈과 오른쪽 눈으로 번갈아 볼 때 손가락이 칠판의 어느 글자 위에 있는 것처럼 보이는지 (왼쪽 눈, 오른쪽 눈) 순서로 골라 봅시다. 눈에서 손가락을 지나는 직선을 칠판 글자까지 이어 보면 됩니다. 왼쪽 눈에서 그은 직선은 손가락을 지나 오른쪽의 ㅂ에, 오른쪽 눈에서 그은 직선은 왼쪽의 ㄴ에 닿아요. 답은 ⑤ (ㅂ, ㄴ)입니다. ③ (ㄹ, ㄹ)처럼 같은 글자에 보인다고 답했다면 두 눈의 위치가 다르다는 점을 다시 확인합니다. 손가락은 그대로이고 보는 위치만 바뀌었어요.", "P7": "시차의 크기를 바꾸는 조건을 하나씩 살펴봅니다. 먼저 물체는 그대로 두고 두 관찰 위치만 서로 멀리 떨어뜨려 봅시다. 두 시선이 이루는 각이 커지고 배경에 대한 위치 차이도 커져요. 두 관찰 위치가 서로 멀어지면 시차가 커집니다. 여기서 멀어지는 것은 두 관찰 위치 사이의 거리이고, 물체까지의 거리는 그대로입니다.", "P8": "학생 C가 선생님보다 A·B에 가까운 곳에서 발표합니다. 관찰하는 A·B의 자리는 그대로입니다. C 등장 → A가 보는 모습 → B가 보는 모습 → 선생님을 볼 때와 칠판 위 위치 차이 비교. A·B 사이 거리는 그대로이고 대상까지의 거리만 다릅니다. 가까이 있는 C의 위치 차이가 더 큽니다. 칠판 위 간격은 각도 그 자체가 아닙니다. 다음 장면에서 학습지 문장으로 정리합니다.", "P9": "이번에는 두 관찰 위치 사이의 거리는 그대로 두고 물체까지의 거리만 바꿉니다. 먼 물체를 가까이 옮기면 두 시선이 이루는 각이 커지고, 배경에 대한 위치 차이도 커집니다. 그래서 물체까지의 거리가 가까울수록 시차가 커집니다. 앞에서 본 학생 C가 선생님보다 시차가 컸던 것과 같아요.", "P10": "앞의 두 조건을 한 문장으로 정리합니다. 시차는 물체까지의 거리가 가까울수록, 두 관측 위치 사이의 거리가 멀수록 큽니다. 학습지 문항 ②에서 (가)~(다) 가운데 시차가 가장 작은 것은 (나)입니다. (가)와 (나)는 관찰 위치 사이의 거리가 같고 (나)의 물체가 더 멀어요. (나)와 (다)는 물체까지의 거리가 같고 (나)의 관찰 위치 사이가 더 가깝습니다.", "P11": "학생 A·B의 두 관찰 위치는 지구의 서로 다른 공전 위치에 대응합니다. 선생님·학생 C는 관측할 별, 칠판은 훨씬 먼 배경 별에 대응합니다. 지구 두 개가 동시에 존재한다는 뜻이 아닙니다. 같은 지구가 태양 주위를 공전하며 6개월 전후의 자리에서 같은 별을 관측합니다. 실제 별의 거리는 훨씬 멀고 각도는 훨씬 작습니다. 다음 장면에서 지구의 공전과 별이 보이는 위치를 학습지 문장으로 정리합니다.", "P12": "교실에서 본 시차를 우주로 옮겨 봅시다. 지구는 태양 주위를 공전합니다. 6개월이 지나면 지구는 공전 궤도의 반대쪽으로 옮겨 가므로 별을 관찰하는 위치가 크게 달라져요. 이때 가까운 별은 먼 배경 별에 대해 위치가 달라 보입니다. 별이 움직인 것이 아니라 관찰하는 지구의 위치가 바뀐 것입니다. 그림은 각도와 거리를 크게 과장했어요.", "P13": "우주에서 본 모습: 지구가 공전 궤도의 한쪽 끝에 있다. → 6개월 뒤: 별은 그대로, 지구가 공전 궤도의 다른 쪽 끝으로 옮겨 간다. → 지구 시점: 먼 배경별 사이에서 노란 별의 위치를 본다. → 6개월 뒤: 노란 별이 배경별에 대해 다른 위치에 보인다. → 더 먼 별로 바꾸고, 처음 위치에서 다시 관측한다. → 같은 6개월 간격: 더 먼 별의 위치 변화가 작다. 모형은 장면에 들어오면 자동으로 준비됩니다. 오른쪽 방향키로 다음 관측 조건을 보여 줍니다. 각도·크기 과장 · 먼 배경별의 시차 생략 · 수치 계산은 별도 확장 학습", "P14": "지구가 공전 궤도의 양 끝, 곧 지구가 가장 멀리 떨어진 두 지점에 있을 때 같은 별을 관측합니다. 이때 생기는 별의 시차의 1/2이 연주시차입니다. 연주시차를 p라고 하면, 두 지점에서 본 두 시선이 별에서 이루는 각은 2p예요. 그림에서 별과 태양을 잇는 점선 한쪽의 각이 p, 두 시선 사이의 각 전체가 2p입니다. 손으로 짚어 가며 둘을 구분합니다. 세 번째 줄에서 학습지 문항 ③을 정리합니다. 별이 실제로 움직여서가 아니라 지구가 공전하여 별을 관찰하는 위치가 달라지기 때문에 별이 보이는 위치가 달라집니다.", "P15": "같은 지구 공전 궤도에서 관측하므로 별까지의 거리만 비교 조건이 됩니다. 별이 가까우면 연주시차가 크고, 별이 멀면 연주시차가 작아요. 그래서 연주시차가 큰 별일수록 지구에서 가깝습니다. 별의 밝기나 색은 이 비교에 쓰지 않습니다. 실제 연주시차는 1″보다 작은 아주 작은 각이라는 점도 말해 둡니다.", "P16": "학습지 문항 ④입니다. 같은 공전 궤도에서 본 세 별을 비교하면, 별이 멀수록 표시한 각 p가 작아집니다. A, B, C의 연주시차가 0.4″, 0.2″, 0.1″이므로 연주시차가 가장 큰 A가 가장 가깝고, 그다음이 B, C입니다.", "P17": "연주시차는 아주 작은 각이라 도(°)보다 작은 단위를 씁니다. 1°는 60′, 1′은 60″예요. 여기서 ″는 시간의 초가 아니라 각도의 단위입니다. 연주시차가 1″인 별까지의 거리를 1 pc(파섹)라고 하고, 1 pc는 약 3.26광년입니다. 광년은 시간이 아니라 빛이 1년 동안 진행한 거리예요.", "P18": "별이 멀수록 연주시차가 작아집니다. 관측한 두 위치에는 측정 오차가 있어서, 오차 범위가 위치 차이보다 넓으면 두 위치를 구별할 수 없어요. 정밀한 장비일수록 오차 범위가 좁아 더 작은 연주시차까지 잴 수 있습니다. 그래서 측정 가능한 거리는 장비의 정밀도에 따라 달라집니다. 그래도 아주 먼 별의 아주 작은 각은 정확히 측정하기 어렵습니다. 교과서의 약 100 pc는 전통적인 지상 관측의 예이고, 모든 관측의 절대적인 한계는 아닙니다.", "P19": "여기부터는 성취기준 밖의 확장 학습이고 학습지에는 없습니다. 연주시차가 1″이면 1 pc이므로, 거리(pc)는 1을 연주시차(″)로 나누어 구합니다. 연주시차와 거리는 서로 반비례해요. 공전 궤도 양 끝에서 본 두 시선이 이루는 각(2p)이 주어졌다면 먼저 그 1/2을 구해 연주시차로 바꿉니다.", "P20": "성취기준 밖의 확장 예제입니다. 먼저 주어진 0.4″가 두 시선이 이루는 각(2p)이라는 것을 읽습니다. 그 1/2인 0.2″가 연주시차이고, 거리는 1 ÷ 0.2 = 5 pc입니다.", "P21": "성취기준 밖의 확장 예제입니다. 학습지 문항 ④의 A, B, C를 그대로 계산해 봅니다. 연주시차가 1/2이면 거리는 2배라는 관계도 함께 확인합니다.", "P22": "학습지를 덮고 시차와 연주시차의 뜻, 연주시차와 거리의 관계를 말로 설명해 봅시다. 다음 시간에는 별의 밝기와 등급을 배웁니다."};
+window.KW={"items": [{"kw": "시차"}, {"kw": "연주시차"}, {"kw": "단위와 측정 한계"}, {"kw": "거리 계산"}], "at": [-1, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 4]};
 Deck.scene('a1_cover',{steps:0,build(root){AstroOpening.build(root,1);},enter(c){return AstroOpening.enter(c,1);}});
 Deck.scene('a1_keywords',{steps:4,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);c.sfx(k==4?'chime':'step');}});
 
@@ -2446,6 +2717,8 @@ Deck.scene('a1_keywords',{steps:4,enter(c){c.root.dataset.focus='0';},go(c,k){c.
    모든 움직임은 c.tween / c.loop(장면을 떠나면 저절로 멈춤)만 쓴다. 정지 캡처(still)·동작 줄이기에서는 멈춘 끝 상태. */
 (() => {
 'use strict';
+/* 2026-10-18: 차시별 원리 모형은 polish-lN.js 로 나눴다(차시 담당이 각자 고친다). 이 파일은 공용 도우미 + 시선 유도 + 장면 등록.
+   빌드 순서: polish.js(도우미·AstroPolish) → polish-lN.js(AstroPolish.SIMS[장면ID] = [함수, 설명]) → AstroPolish.start() */
 const STILL = document.documentElement.classList.contains('still');
 const C = {bg:'#0c1b30', panel:'#142c44', line:'#6d92ab', ink:'#f2f7ff', sub:'#bed6e8', gold:'#ffd67c', blue:'#72d9ee', pink:'#ffabbb', green:'#9de4c1', red:'#ff8a6b'};
 const clamp = x => Math.max(0, Math.min(1, x)), f = (t, k) => clamp(t - k + 1), n = x => Number((+x).toFixed(2));
@@ -2462,135 +2735,12 @@ function arrow(x, y, x2, y2, col, w = 4, op = 1) { const a = Math.atan2(y2 - y, 
 function galaxy(x, y, r, col, tilt = .45, rot = 0) { return `<g transform="translate(${n(x)} ${n(y)}) rotate(${n(rot)})"><ellipse rx="${n(r)}" ry="${n(r * tilt)}" fill="${col}" opacity=".22"/><ellipse rx="${n(r * .62)}" ry="${n(r * tilt * .62)}" fill="none" stroke="${col}" stroke-width="2.4"/><circle r="${n(r * .2)}" fill="#fff6dc"/></g>`; }
 function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
 function wrap(body, label) { return `<svg class="ap-svg" viewBox="0 0 880 560" role="img" aria-label="${esc(label)}">${rr(0, 0, 880, 560, C.bg, 'none', 24)}${body}</svg>`; }
+window.AstroPolish = {STILL, C, clamp, f, n, lerp, ease, esc, tx, rr, ci, ln, g, glow, arrowHead, arrow, galaxy, rng, wrap, SIMS: {}};
+})();
 
-/* ── a1_07 연주시차로 거리 비교: 같은 공전 궤도에서 별의 거리만 바꾼다 ── */
-function parallaxCompare(st, time) {
-  const sx = 440, sy = 392, b = 150;                           // 태양 · 6개월 간격 두 관측 위치의 절반 거리(과장)
-  const near = 150, far = 280;
-  let D = st < 2 ? near : st < 3 ? lerp(near, far, ease(clamp(st - 2))) : far;
-  if (st >= 3 && time > 0) D = lerp(near, far, .5 + .5 * Math.cos(time * .7));   // 끝 단계: 거리를 오가며 p 를 실시간 비교
-  const starY = sy - D, p = Math.atan2(b, D), pDeg = p * 180 / Math.PI;
-  let s = tx(440, 46, '같은 공전 궤도에서 별까지의 거리만 바꾼다', 29);
-  s += ln(70, 82, 810, 82, C.line, 2, .9, '8 8');
-  [110, 210, 680, 780].forEach(x => s += ci(x, 82, 4, C.sub, .8));
-  s += tx(800, 112, '먼 배경 별', 24, C.sub, 'end');
-  s += `<ellipse cx="${sx}" cy="${sy}" rx="${b}" ry="44" fill="none" stroke="${C.line}" stroke-width="3"/>`;
-  s += glow(sx, sy, 17, C.gold) + tx(sx, sy + 92, '태양', 26, C.gold);
-  const orbA = time * .9, ex = sx + b * Math.cos(orbA), ey = sy + 44 * Math.sin(orbA);
-  s += g(ci(ex, ey, 9, C.blue), st < 1 ? 1 : .35);               // 공전하는 지구(현재 위치)
-  const mark = f(st, 1);
-  s += g(ci(sx - b, sy, 12, C.blue) + ci(sx + b, sy, 12, C.pink) + tx(sx - b - 10, sy + 92, '관측 A', 26, C.blue) + tx(sx + b + 10, sy + 92, '6개월 뒤 B', 26, C.pink), mark);
-  const show = f(st, 2) > 0 ? 1 : 0;
-  if (show) {
-    s += ln(sx - b, sy, sx, starY, C.blue, 3.5) + ln(sx + b, sy, sx, starY, C.pink, 3.5) + ln(sx, sy, sx, starY, C.sub, 2, .8, '6 7');
-    const r = 46, a0 = Math.PI / 2, a1 = Math.PI / 2 + p;           // 별에서 태양 방향과 관측 A 방향 사이의 각 p
-    const x0 = sx + r * Math.cos(a0), y0 = starY + r * Math.sin(a0), x1 = sx - r * Math.sin(p), y1 = starY + r * Math.cos(p);
-    s += `<path d="M${n(x0)} ${n(y0)}A${r} ${r} 0 0 1 ${n(x1)} ${n(y1)}" fill="none" stroke="${C.gold}" stroke-width="5"/>`;
-    s += tx(sx - 64, starY + 70, 'p', 30, C.gold);
-    s += `<g>${'<polygon points="0,-17 5,-5 17,-5 7,3 11,16 0,8 -11,16 -7,3 -17,-5 -5,-5" fill="#ffd67c" transform="translate(' + n(sx) + ' ' + n(starY) + ')"/>'}</g>`;
-    const closeNow = D < (near + far) / 2;
-    s += rr(612, 150, 236, 150, '#132f49', closeNow ? C.gold : C.blue, 14);
-    s += tx(730, 196, `p ≈ ${n(pDeg).toFixed(0)}°`, 30, C.gold) + tx(730, 236, '(원리 모형 · 과장)', 22, C.sub);
-    s += tx(730, 280, closeNow ? '큰 p → 가까운 별' : '작은 p → 먼 별', 27, closeNow ? C.gold : C.blue);
-  }
-  s += tx(440, 540, '각도와 거리를 크게 과장한 원리 모형 · 실제 연주시차는 1″보다 작다', 22, C.sub);
-  return s;
-}
-
-/* ── a2_08 등급 차와 밝기 비: 한 등급마다 약 2.512배 → 다섯 번이면 100배 ── */
-function magLadder(st, time) {
-  const R = Math.pow(100, .2), xs = [130, 254, 378, 502, 626, 750], base = 440, H = 185;
-  let s = tx(440, 46, '1등급부터 6등급까지 · 밝기는 6등급을 1로', 29);
-  for (let i = 0; i < 6; i++) {
-    const bright = Math.pow(R, 5 - i), h = Math.max(2.5, H * bright / 100), x = xs[i];
-    s += glow(x, 100, 6 + 13 * Math.pow(bright / 100, .3), i < 2 ? C.gold : i < 4 ? '#ffe7a8' : C.blue);
-    s += rr(x - 30, base - h, 60, h, i === 0 ? C.gold : '#5f86a6', 'none', 6);
-    s += tx(x, base + 38, `${i + 1}등급`, 26, C.ink);
-    s += g(tx(x, base - h - 12, i === 0 ? '100' : i === 5 ? '1' : n(bright).toFixed(bright < 10 ? 1 : 0), 24, C.sub), f(st, 2));
-  }
-  const hop = st >= 1 ? (time > 0 ? Math.floor(time * 1.3) % 5 : 4) : -1;  // 오른쪽에서 왼쪽으로 한 칸씩 ×2.5
-  for (let j = 0; j < 5; j++) {
-    const xa = xs[5 - j], xb = xs[4 - j], on = st < 2 ? (j === hop || (st >= 1 && time <= 0 && j === 4)) : true;
-    const op = st < 1 ? 0 : st < 2 ? (on ? 1 : .25) : f(st, 2) * (on ? 1 : .6);
-    s += g(`<path d="M${xa - 8} 214Q${(xa + xb) / 2} 176 ${xb + 12} 212" fill="none" stroke="${C.green}" stroke-width="4"/>` + arrowHead(xb + 12, 212, 2.2, C.green, 12) + tx((xa + xb) / 2, 168, '×약 2.5', 23, C.green), op);
-  }
-  s += g(rr(30, 494, 410, 50, '#173d3a', C.green, 14) + tx(235, 528, '×2.512를 다섯 번 = 100배', 26, C.green), f(st, 2));
-  s += g(arrow(840, 538, 470, 538, C.gold, 4) + tx(655, 524, '숫자가 작을수록 밝다', 25, C.gold), f(st, 3));
-  return s;
-}
-
-/* ── a2_11 거리 변화와 등급 변화(확장): 같은 별이 멀어지며 밝기·등급이 함께 변한다 ── */
-function recede(st, time) {
-  let d = lerp(1, 10, ease(clamp(st)));
-  if (st >= 3 && time > 0) d = 1 + 9 * (.5 - .5 * Math.cos(time * .55));   // 끝 단계: 거리를 오가며 실시간 대응
-  const x0 = 130, x = x0 + 66 * (d - 1), bright = 1 / (d * d), mag = 1 + 5 * Math.log10(d);
-  let s = tx(440, 46, '같은 별을 멀리 옮긴다 · 별 자체의 밝기는 그대로', 29);
-  s += `<path d="M70 210Q92 196 114 210Q92 224 70 210" fill="#eef6ff" stroke="${C.blue}" stroke-width="3"/>` + ci(92, 210, 6, C.blue) + tx(92, 256, '관찰자', 22, C.sub);
-  s += ln(x0, 270, 724, 270, C.line, 2);
-  for (let k = 1; k <= 10; k++) s += ln(x0 + 66 * (k - 1), 262, x0 + 66 * (k - 1), 278, C.line, 2) + (k === 1 || k === 10 || k === 5 ? tx(x0 + 66 * (k - 1), 304, `${k}`, 22, C.sub) : '');
-  s += tx(750, 304, '배', 22, C.sub, 'start');
-  s += glow(x, 210, 6 + 18 * Math.pow(bright, .25), C.gold);
-  const frac = Math.round(d * d);
-  s += rr(70, 340, 230, 130, '#132f49', C.blue, 14) + tx(185, 385, '거리', 25, C.sub) + tx(185, 440, `${n(d).toFixed(1)}배`, 40, C.blue);
-  s += g(rr(325, 340, 230, 130, '#132f49', C.gold, 14) + tx(440, 385, '밝기', 25, C.sub) + tx(440, 440, frac <= 1 ? '1' : `1/${frac}`, 40, C.gold), f(st, 1));
-  s += g(rr(580, 340, 230, 130, '#173d3a', C.green, 14) + tx(695, 385, '겉보기 등급', 25, C.sub) + tx(695, 440, `${n(mag).toFixed(1)}등급`, 40, C.green), f(st, 2));
-  s += g(tx(440, 516, '거리 10배 → 밝기 1/100 → 등급 5 증가 (1등급 → 6등급)', 25, C.ink), f(st, 3));
-  s += tx(440, 548, '성취기준 밖의 확장 학습 · 별빛의 흡수는 생략', 21, C.sub);
-  return s;
-}
-
-/* ── 은하 분포(고정 씨앗) ── */
-const FIELD = (() => { const r = rng(20261013), out = []; for (let i = 0; i < 26; i++) { const a = r() * Math.PI * 2, d = 70 + r() * 360; out.push({x: Math.cos(a) * d * 1.25, y: Math.sin(a) * d * .78, rot: r() * 180, col: [C.gold, C.blue, C.pink, '#c9b8ff'][i % 4]}); } return out; })();
-
-/* ── a6_02 외부 은하 사이의 거리: 넓은 규모의 팽창 + 중력으로 묶인 은하 쌍 ── */
-function cosmicField(st, time) {
-  const cx = 360, cy = 290;
-  let a = lerp(1, 1.35, ease(clamp(st)));
-  let fade = 1;
-  if (st >= 1 && time > 0) { const ph = (time / 7) % 1; a = 1 + .45 * ph; fade = ph > .88 ? (1 - ph) / .12 : ph < .06 ? ph / .06 : 1; }
-  let s = tx(440, 46, '넓은 규모: 은하 사이의 간격이 함께 늘어난다', 29);
-  s += `<clipPath id="apfc"><rect x="20" y="70" width="840" height="410" rx="16"/></clipPath><g clip-path="url(#apfc)">`;
-  let body = '';
-  FIELD.forEach(q => {
-    const x = cx + q.x * a, y = cy + q.y * a;
-    body += galaxy(x, y, 15, q.col, .42, q.rot);
-    if (st >= 1) body += g(ln(cx + q.x * .82, cy + q.y * .82, x - q.x * .06, y - q.y * .06, C.line, 2, .55, '4 6'), .9);
-  });
-  // 중력으로 묶인 은하 쌍: 쌍의 중심은 팽창을 따라가지만 둘 사이 간격은 그대로(서로 돈다)
-  const px = cx + 190 * a, py = cy + 88 * a, ang = time * .8;
-  const pair = galaxy(px + 22 * Math.cos(ang), py + 9 * Math.sin(ang), 13, C.green, .42, 30) + galaxy(px - 22 * Math.cos(ang), py - 9 * Math.sin(ang), 13, C.green, .42, 120);
-  body += pair;
-  s += g(body, fade) + '</g>';
-  s += galaxy(cx, cy, 20, C.blue, .45, 20) + tx(cx, cy + 46, '기준 은하', 24, C.blue);
-  s += g(rr(px - 90, py + 24, 180, 44, '#173d3a', C.green, 12) + tx(px, py + 54, '묶인 은하 쌍', 23, C.green), f(st, 3) * fade);
-  s += g(rr(560, 84, 290, 52, '#132f49', C.gold, 12) + tx(705, 118, '관측 → 우주 팽창', 26, C.gold), f(st, 2));
-  s += tx(440, 520, '화면 가운데는 관찰 기준일 뿐 우주의 중심이 아니다 · 은하 크기는 그대로', 22, C.sub);
-  s += tx(440, 549, '가까이 묶인 은하 쌍은 중력 때문에 간격이 늘지 않는다', 22, C.sub);
-  return s;
-}
-
-/* ── a6_09 우주의 과거와 현재: 모든 곳의 간격이 함께 줄었다 늘어난다(한 점의 폭발이 아님) ── */
-const LATTICE = (() => { const r = rng(9138), out = []; for (let i = -16; i <= 16; i++) for (let j = -11; j <= 11; j++) out.push({x: i * 64 + (r() - .5) * 30, y: j * 64 + (r() - .5) * 30}); return out; })();
-function cosmicHistory(st, time) {
-  // s: 과거(작음) → 현재(1). 단계 1 = 과거로 되감기, 2 = 현재로, 3 = 나이 표시
-  let sc = st <= 1 ? lerp(1, .32, ease(clamp(st))) : lerp(.32, 1, ease(clamp(st - 1)));
-  if (st >= 3 && time > 0) { const ph = (time / 10) % 1; sc = ph < .15 ? lerp(1, .32, ease(ph / .15)) : ph < .6 ? lerp(.32, 1, ease((ph - .15) / .45)) : 1; }
-  const hot = clamp((1 - sc) / .68);                                  // 1 = 뜨겁고 촘촘
-  const cx = 440, cy = 270, bgc = `rgb(${n(lerp(18, 96, hot))},${n(lerp(32, 40, hot))},${n(lerp(58, 30, hot))})`;
-  let s = `<clipPath id="aphc"><rect x="20" y="20" width="840" height="430" rx="16"/></clipPath><rect x="20" y="20" width="840" height="430" rx="16" fill="${bgc}"/><g clip-path="url(#aphc)">`;
-  const col = hot > .5 ? '#ffe2a8' : hot > .2 ? '#ffd0d6' : '#9fdcff';
-  LATTICE.forEach(q => { const x = cx + q.x * sc, y = cy + q.y * sc; if (x > 0 && x < 880 && y > 0 && y < 470) s += ci(x, y, 4.2, col, .9); });
-  s += '</g>';
-  s += rr(190, 32, 500, 50, 'rgba(8,20,38,.82)', 'none', 12) + tx(440, 66, hot > .55 ? '과거: 더 뜨겁고 밀도가 높다' : hot > .1 ? '팽창하며 식는다' : '현재: 간격이 넓어진 우주', 30, hot > .55 ? '#fff0c9' : C.ink);
-  const yb = 488, xa = 120, xb = 760, tm = xa + (xb - xa) * clamp((sc - .32) / .68);
-  s += ln(xa, yb, xb, yb, C.line, 4) + tx(xa, yb + 36, '과거', 24, '#ffc48a') + tx(xb, yb + 36, '현재', 24, C.blue);
-  s += ci(tm, yb, 11, C.gold);
-  s += g(rr(300, yb - 64, 280, 46, '#2b3a1f', C.gold, 12) + tx(440, yb - 32, '우주의 나이 약 138억 년', 25, C.gold), f(st, 3));
-  s += tx(440, 549, '모든 곳의 간격이 함께 변하는 모형 · 한 점에서 빈 공간으로 터진 폭발이 아님', 21, C.sub);
-  return s;
-}
-
-const SIMS = {a1_07: [parallaxCompare, '연주시차로 거리 비교 — 같은 궤도, 거리만 바꾼 원리 모형'], a2_08: [magLadder, '등급 차와 밝기 비 — 1등급부터 6등급까지의 밝기 사다리'], a2_11: [recede, '거리 변화와 등급 변화 — 같은 별이 멀어지는 모형'], a6_02: [cosmicField, '외부 은하 사이의 거리 — 넓은 규모의 팽창과 묶인 은하 쌍'], a6_09: [cosmicHistory, '우주의 과거와 현재 — 모든 곳의 간격이 함께 변하는 모형']};
+window.AstroPolish.start = () => {
+'use strict';
+const {STILL, C, clamp, f, n, lerp, ease, esc, tx, rr, ci, ln, g, glow, arrowHead, arrow, galaxy, rng, wrap, SIMS} = window.AstroPolish;
 
 function paint(root, id, st, time) {
   const fig = root.querySelector('.astro-figure'); if (!fig) return;
@@ -2599,10 +2749,11 @@ function paint(root, id, st, time) {
   fig.dataset.apStage = String(n(st));
 }
 Object.keys(SIMS).forEach(id => {
-  if (!document.getElementById(id)) return;
+  const sec = document.getElementById(id);
+  if (!sec || sec.hasAttribute('data-ws-fig')) return;   // 학습지 그림(svg:) 장면은 ws_blanks 가 맡는다
   const live = () => !STILL && !(window.Deck && Deck.REDUCED);
   Deck.scene(id, {
-    steps: 3,
+    steps: Math.max(3, sec.querySelectorAll('.astro-point').length),
     build(root) { root.classList.add('ap-live'); paint(root, id, 0, 0); },
     enter(c) {
       c.root.dataset.focus = '0'; c.data.ap = 0; c.data.apT = 0; paint(c.root, id, 0, 0);
@@ -2629,7 +2780,55 @@ function mark(sec) {
 }
 const mo = new MutationObserver(list => list.forEach(m => mark(m.target)));
 document.querySelectorAll('section.slide.astro').forEach(sec => { mark(sec); mo.observe(sec, {attributes: true, attributeFilter: ['data-focus']}); });
+};
+
+/* 2026-10-18 분리: 1차시 원리 모형(옛 polish.js). 1차시 담당만 고친다. 도우미는 window.AstroPolish(polish.js). */
+(() => {
+'use strict';
+const {STILL, C, clamp, f, n, lerp, ease, esc, tx, rr, ci, ln, g, glow, arrowHead, arrow, galaxy, rng, wrap, SIMS} = window.AstroPolish;
+/* ── a1_07 연주시차로 거리 비교: 같은 공전 궤도에서 별의 거리만 바꾼다 ── */
+function parallaxCompare(st, time) {
+  const sx = 440, sy = 392, b = 150;                           // 태양 · 공전 궤도 양 끝(지구 ①·②) 사이 거리의 1/2(과장)
+  const near = 150, far = 280;
+  let D = st < 2 ? near : st < 3 ? lerp(near, far, ease(clamp(st - 2))) : far;
+  if (st >= 3 && time > 0) D = lerp(near, far, .5 + .5 * Math.cos(time * .7));   // 끝 단계: 거리를 오가며 p 를 실시간 비교
+  const starY = sy - D, p = Math.atan2(b, D), pDeg = p * 180 / Math.PI;
+  let s = tx(440, 46, '같은 공전 궤도에서 별까지의 거리만 바꾼다', 29);
+  s += ln(70, 82, 810, 82, C.line, 2, .9, '8 8');
+  [110, 210, 680, 780].forEach(x => s += ci(x, 82, 4, C.sub, .8));
+  s += tx(800, 112, '먼 배경 별', 24, C.sub, 'end');
+  s += `<ellipse cx="${sx}" cy="${sy}" rx="${b}" ry="44" fill="none" stroke="${C.line}" stroke-width="3"/>`;
+  s += glow(sx, sy, 17, C.gold) + tx(sx, sy + 92, '태양', 26, C.gold);
+  const orbA = time * .9, ex = sx + b * Math.cos(orbA), ey = sy + 44 * Math.sin(orbA);
+  s += g(ci(ex, ey, 9, C.blue), st < 1 ? 1 : .35);               // 공전하는 지구(현재 위치)
+  const mark = f(st, 1);
+  s += g(ci(sx - b, sy, 12, C.blue) + ci(sx + b, sy, 12, C.pink) + tx(sx - b - 10, sy + 92, '지구 ①', 26, C.blue) + tx(sx + b + 10, sy + 92, '지구 ② (6개월 뒤)', 26, C.pink), mark);
+  const show = f(st, 2) > 0 ? 1 : 0;
+  if (show) {
+    s += ln(sx - b, sy, sx, starY, C.blue, 3.5) + ln(sx + b, sy, sx, starY, C.pink, 3.5) + ln(sx, sy, sx, starY, C.sub, 2, .8, '6 7');
+    const r = 46, a0 = Math.PI / 2, a1 = Math.PI / 2 + p;           // 별에서 태양 방향과 관측 A 방향 사이의 각 p
+    const x0 = sx + r * Math.cos(a0), y0 = starY + r * Math.sin(a0), x1 = sx - r * Math.sin(p), y1 = starY + r * Math.cos(p);
+    s += `<path d="M${n(x0)} ${n(y0)}A${r} ${r} 0 0 1 ${n(x1)} ${n(y1)}" fill="none" stroke="${C.gold}" stroke-width="5"/>`;
+    s += tx(sx - 64, starY + 70, 'p', 30, C.gold);
+    s += `<g>${'<polygon points="0,-17 5,-5 17,-5 7,3 11,16 0,8 -11,16 -7,3 -17,-5 -5,-5" fill="#ffd67c" transform="translate(' + n(sx) + ' ' + n(starY) + ')"/>'}</g>`;
+    const closeNow = D < (near + far) / 2;
+    s += rr(612, 150, 236, 150, '#132f49', closeNow ? C.gold : C.blue, 14);
+    s += tx(730, 196, `p ≈ ${n(pDeg).toFixed(0)}°`, 30, C.gold) + tx(730, 236, '(원리 모형 · 과장)', 22, C.sub);
+    s += tx(730, 280, closeNow ? '큰 p → 가까운 별' : '작은 p → 먼 별', 27, closeNow ? C.gold : C.blue);
+  }
+  s += tx(440, 540, '각도와 거리를 크게 과장한 원리 모형 · 실제 연주시차는 1″보다 작다', 22, C.sub);
+  return s;
+}
+
+SIMS.a1_07 = [parallaxCompare, '연주시차로 거리 비교 — 같은 궤도, 거리만 바꾼 원리 모형'];
 })();
 
+AstroPolish.start();
+</script><script>
+Deck.scene('a1_01',{steps:3,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);const f=c.$('.astro-figure');if(f&&!c.instant&&!c.reduced)c.a(f,[{outlineColor:'transparent'},{outlineColor:'#5abbed'},{outlineColor:'transparent'}],{dur:800});}});
+Deck.scene('a1_02',{steps:3,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);const f=c.$('.astro-figure');if(f&&!c.instant&&!c.reduced)c.a(f,[{outlineColor:'transparent'},{outlineColor:'#5abbed'},{outlineColor:'transparent'}],{dur:800});}});
+Deck.scene('a1_ws_parallax',{steps:3,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);const f=c.$('.astro-figure');if(f&&!c.instant&&!c.reduced)c.a(f,[{outlineColor:'transparent'},{outlineColor:'#5abbed'},{outlineColor:'transparent'}],{dur:800});}});
+Deck.scene('a1_ws_size',{steps:3,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);const f=c.$('.astro-figure');if(f&&!c.instant&&!c.reduced)c.a(f,[{outlineColor:'transparent'},{outlineColor:'#5abbed'},{outlineColor:'transparent'}],{dur:800});}});
+Deck.scene('a1_far',{steps:3,enter(c){c.root.dataset.focus='0';},go(c,k){c.root.dataset.focus=String(k);const f=c.$('.astro-figure');if(f&&!c.instant&&!c.reduced)c.a(f,[{outlineColor:'transparent'},{outlineColor:'#5abbed'},{outlineColor:'transparent'}],{dur:800});}});
 </script></body>
 </html>
