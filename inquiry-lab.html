@@ -1,8 +1,22 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>별과 우주 탐구실</title><style>
 :root{color-scheme:dark;--bg:#07101f;--panel:#101c38;--line:#33406e;--text:#edf4ff;--muted:#c2d1eb;--gold:#ffd166;--mint:#6ef0e6}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,'Malgun Gothic',sans-serif;line-height:1.6}main{max-width:1100px;margin:auto;padding:20px}h1{font-size:28px;margin:0 0 8px}h2{font-size:22px;margin:0 0 10px}p{margin:8px 0}nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}a,button,select{font:inherit}nav a,button,select{background:#172d4d;color:var(--text);border:1px solid #5a7298;border-radius:10px;padding:8px 13px;text-decoration:none;cursor:pointer}nav a[aria-current]{background:var(--mint);color:#032327}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.panel{padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-top:14px}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin:12px 0}.controls label{display:flex;align-items:center;flex-wrap:wrap;gap:9px}input[type=range]{accent-color:var(--mint);width:180px}output{color:var(--gold);font-weight:700;min-width:4em}.viz{background:#050c1a;border:1px solid var(--line);border-radius:12px;overflow:hidden}.viz svg{display:block;width:100%;height:auto;aspect-ratio:900/380}.viz text{font:21px system-ui,'Malgun Gothic',sans-serif;fill:#e8f1ff}.viz .small{font-size:17px;fill:#c2d1eb}.readout{font-size:20px;color:var(--gold);font-weight:700;min-height:32px}.note{color:var(--muted);font-size:16px}.scope{border-left:4px solid #d4a3ff;padding:10px 16px;background:#211a36;margin-top:12px}table{border-collapse:collapse;width:100%;margin:12px 0;text-align:center}th,td{padding:9px;border:1px solid var(--line)}th{background:#1b3152}footer{font-size:12px;text-align:center;color:var(--muted);margin:25px}.flow{stroke-dasharray:8 8;animation:flow 2s linear infinite}@keyframes flow{to{stroke-dashoffset:-64}}html.embed header,html.embed nav{display:none}html.embed main{padding:8px}.hidden{display:none!important}.answer{color:var(--mint);font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}summary{cursor:pointer;font-weight:700}article[hidden]{display:none}@media(max-width:600px){main{padding:12px}.panel{padding:12px}.controls{gap:12px}.row{grid-template-columns:1fr}.viz{overflow:auto}.viz svg{min-width:700px}h1{font-size:23px}th,td{padding:7px;font-size:14px}input[type=range]{width:150px}}@media(prefers-reduced-motion:reduce){.flow{animation:none}*{scroll-behavior:auto!important}}.viz:fullscreen{display:grid;place-items:center;background:#050c1a}.viz:fullscreen svg{max-height:100vh;max-width:100vw;min-width:0}
-html.embed[data-mode=brightness] #lab>.panel:first-child{grid-template-rows:92px auto 1fr!important}html.embed[data-mode=brightness] #lab .note{font-size:24px!important;line-height:1.5!important;align-self:start}html.embed[data-mode=brightness] #result{margin-top:30px!important}
-</style></head><body><main><header><h1>별과 우주 탐구실</h1><p>한 가지 조건을 바꾸고, 결과를 비교합니다.</p></header><nav aria-label="탐구 선택"></nav><article id="lab"></article></main><footer id="app-credit">© 2026 조승재(과학이조선생) · 해누리중학교 · 최종 업데이트 2026-10-19</footer>
+/* 2026-10-20 강의 embed(brightness·magnitude·nebula, html.lab-big): 그림이 iframe 을 가득 채우고 조작부는 오른쪽 위 한 줄. 안내 글·결과 문장은 강의 캡션·대본이 맡으므로 숨김. 강의가 넣는 CSS 보다 구체적으로 써서 이긴다. */
+html.embed.lab-big,html.embed.lab-big body{height:100%!important;margin:0!important;overflow:hidden!important;background:#07111f!important}
+html.embed.lab-big main{height:100%!important;max-width:none!important;width:100%!important;margin:0!important;padding:0!important}
+html.embed.lab-big footer,html.embed.lab-big #lab>.panel:first-child>h2,html.embed.lab-big #lab #result,html.embed.lab-big #lab .note,html.embed.lab-big #lab #fs,html.embed.lab-big #lab>.panel:not(:first-child),html.embed.lab-big #lab>.scope{display:none!important}
+html.embed.lab-big #lab{height:100%!important}
+html.embed.lab-big #lab>.panel:first-child{height:100%!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto minmax(0,1fr)!important;gap:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+html.embed.lab-big #lab>.panel:first-child .controls{grid-column:1!important;grid-row:1!important;justify-content:flex-end!important;align-items:center!important;gap:6px 26px!important;margin:0!important;padding:8px 22px 2px!important;border:0!important;font-size:19px!important;color:#aebfdb}
+html.embed.lab-big #lab .controls label{font-size:19px!important;gap:8px!important}
+html.embed.lab-big #lab .controls label:has(input:disabled){display:none!important}
+html.embed.lab-big #lab .controls select,html.embed.lab-big #lab .controls button{font-size:18px!important;padding:3px 10px!important;border-radius:8px!important}
+html.embed.lab-big #lab .controls input[type=range]{width:150px!important}
+html.embed.lab-big #lab .controls output{font-size:19px!important;min-width:3.4em!important}
+html.embed.lab-big #lab #viz{grid-column:1!important;grid-row:2!important;position:relative!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;display:block!important;border:0!important;border-radius:0!important;background:transparent!important;overflow:hidden!important}
+html.embed.lab-big #lab #viz svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;min-width:0!important;aspect-ratio:auto!important}
+html.embed.lab-big .flowB{stroke-dasharray:24 14;animation:flowB 1.6s linear infinite}@keyframes flowB{to{stroke-dashoffset:-76}}@media(prefers-reduced-motion:reduce){html.embed.lab-big .flowB{animation:none}}
+</style></head><body><main><header><h1>별과 우주 탐구실</h1><p>한 가지 조건을 바꾸고, 결과를 비교합니다.</p></header><nav aria-label="탐구 선택"></nav><article id="lab"></article></main><footer id="app-credit">© 2026 조승재(과학이조선생) · 해누리중학교 · 최종 업데이트 2026-10-20</footer>
 <script>
 'use strict';
 const modes={brightness:'거리와 별의 밝기',magnitude:'겉보기·절대 등급',color:'별의 색과 표면 온도',nebula:'성운과 성단',expansion:'우주 팽창'};
@@ -19,7 +33,79 @@ const txt=(x,y,s,cls='')=>`<text x="${x}" y="${y}" text-anchor="middle" class="$
 const light=(x,y,r,c='#ffd166')=>circle(x,y,r*2,c+'15')+circle(x,y,r*1.5,c+'30')+circle(x,y,r,c);
 const num=n=>Number(n.toFixed(3)).toString();
 const shell=(control,note)=>`<section class="panel"><h2>${modes[mode]}</h2>${control}<div class="viz" id="viz"></div><p class="readout" id="result" aria-live="polite"></p><p class="note">${note}</p><button id="fs" type="button">모형 크게 보기</button></section>`;
-function render(markup,result){document.getElementById('viz').innerHTML=svg(markup);document.getElementById('result').textContent=result;}
+function render(markup,result,big){document.getElementById('viz').innerHTML=big||svg(markup);document.getElementById('result').textContent=result;}
+// ---- 2026-10-20 강의 embed 큰 그림(brightness·magnitude·nebula 만). embed 가 아닌 화면·다른 mode 는 위의 옛 그림 그대로.
+//      과학 모형은 옛 그림과 같다(같은 넓이 빛 ∝ 자체 밝기/거리², 10 pc 기준, 성운 빛 경로). 그림 글씨는 1760×720 기준 26~54px.
+const BIG=document.documentElement.classList.contains('embed')&&['brightness','magnitude','nebula'].includes(mode);
+if(BIG)document.documentElement.classList.add('lab-big');
+const FF="system-ui,'Malgun Gothic',sans-serif";
+const bT=(x,y,s,o={})=>`<text x="${x}" y="${y}" text-anchor="${o.a||'middle'}" style="font:${o.w||600} ${o.s||30}px ${FF};fill:${o.c||'#e8f1ff'}">${s}</text>`;
+const bL=(x1,y1,x2,y2,c,w,extra='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${extra}/>`;
+const bC=(x,y,r,c,extra='')=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" ${extra}/>`;
+const bArrow=(id,c)=>`<marker id="${id}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`;
+const bGlowDef=(id,c)=>`<radialGradient id="${id}"><stop offset="0" stop-color="${c}" stop-opacity=".62"/><stop offset=".42" stop-color="${c}" stop-opacity=".24"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`;
+const bGlow=(x,y,r,id)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${id})"/>`;
+const bSvg=(inner,defs='')=>`<svg viewBox="0 0 1760 720" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${modes[mode]} 모형"><defs>${bGlowDef('gl-o','#ffd166')+bGlowDef('gl-y','#ffe7a1')+bGlowDef('gl-w','#fff1cd')+defs}</defs>${inner}</svg>`;
+const bFrac=(n,d)=>{const g=(a,b)=>b?g(b,a%b):a,k=g(n,d);return d/k===1?String(n/k):(n/k)+'/'+(d/k);};
+function brightBig(r,L){
+ // 옆에서 본 빛 퍼짐(별 → 거리 1~4배의 판) + 앞에서 본 판(r×r 칸, 같은 넓이 = 한 칸). 칸 색 진하기 = 같은 넓이에 들어오는 빛(L/r²).
+ const sx=150,cy=330,dx=235,hh=46,X=k=>sx+dx*k,b=L/(r*r),fill=(.14+.81*Math.max(0,Math.min(6,Math.log2(b)+4))/6).toFixed(3),cone=L>=4?.24:L>=2?.16:.1;
+ let m=`<path d="M${sx} ${cy}L${X(4)} ${cy-hh*4}L${X(4)} ${cy+hh*4}Z" fill="#ffd166" fill-opacity=".05"/><path d="M${sx} ${cy}L${X(r)} ${cy-hh*r}L${X(r)} ${cy+hh*r}Z" fill="#ffd166" fill-opacity="${cone}"/>`+bL(sx,cy,X(r),cy-hh*r,'#ffd166',4)+bL(sx,cy,X(r),cy+hh*r,'#ffd166',4);
+ for(let k=1;k<=4;k++)if(k!==r)m+=bL(X(k),cy-hh*k,X(k),cy+hh*k,'#2f4a70',4);
+ m+=bL(X(r),cy-hh*r,X(r),cy+hh*r,'#6ef0e6',8)+bL(X(r),cy-hh*r,X(r),cy-hh*r+2*hh,'#ffd166',8)+bT(X(r),cy-hh*r-24,'판',{s:30,w:700,c:'#6ef0e6'});
+ m+=bL(sx,600,X(4)+30,600,'#4a6488',3);
+ for(let k=1;k<=4;k++)m+=bL(X(k),588,X(k),612,k===r?'#6ef0e6':'#4a6488',k===r?5:3)+bT(X(k),656,k+'배',{s:30,w:k===r?800:600,c:k===r?'#6ef0e6':'#b5c7e4'});
+ m+=bT(sx,656,'거리',{s:30,c:'#9fb3d1'});
+ m+=bGlow(sx,cy,74,'gl-o')+bC(sx,cy,28,'#ffd166')+bT(sx,238,'별',{s:32,w:700})+bT(sx,452,'별 자체의 밝기',{s:30,c:'#d6e3f7'})+bT(sx,502,L+'배',{s:32,w:800,c:'#ffd166'});
+ const px=1478,py=330,cs=72,side=cs*r,gx=px-side/2,gy=py-side/2;
+ m+=bT(px,112,'앞에서 본 판',{s:30,c:'#9fdcf0'});
+ for(let i=0;i<r;i++)for(let j=0;j<r;j++)m+=`<rect x="${gx+i*cs}" y="${gy+j*cs}" width="${cs}" height="${cs}" fill="#ffd166" fill-opacity="${fill}" stroke="#6ef0e6" stroke-opacity=".6" stroke-width="3"/>`;
+ m+=`<rect x="${gx}" y="${gy}" width="${side}" height="${side}" fill="none" stroke="#6ef0e6" stroke-width="5"/><rect x="${gx}" y="${gy}" width="${cs}" height="${cs}" fill="none" stroke="#ffd166" stroke-width="7"/>`;
+ m+=bT(gx,gy-22,'같은 넓이',{a:'start',s:30,w:700,c:'#ffd166'})+bT(px,566,'같은 넓이에 들어오는 빛',{s:30,c:'#d6e3f7'})+bT(px,636,bFrac(L,r*r)+'배',{s:54,w:800,c:'#ffd166'});
+ return bSvg(m);
+}
+function magBig(r,M){
+ // 지구에서 잰 거리(가로) 위의 별 A·별 B + 10 pc 기준선, 오른쪽 = 지구에서 본 밝기(원 넓이 ∝ 밝기). 성취기준 밖 수치(겉보기 등급 값)는 쓰지 않고 크기 관계만.
+ const X=d=>180+37*d,ya=235,yb=485,mA=M+5*Math.log10(r/10),rad=mm=>Math.max(8,Math.min(80,30*Math.pow(10,(2-mm)/5))),rel=r<10?'&lt;':r>10?'&gt;':'=';
+ const star=(x,y)=>bGlow(x,y,38,'gl-y')+bC(x,y,15,'#ffe7a1'),glow=(x,y,rr)=>bGlow(x,y,rr*1.55,'gl-y')+bC(x,y,rr,'#ffe7a1');
+ let s=bL(X(10),150,X(10),600,'#8fe3b0',4,'stroke-dasharray="14 12"')+bT(X(10),128,'10 pc',{s:32,w:800,c:'#8fe3b0'})+bL(X(0),ya,X(0),yb,'#3a5577',3);
+ for(const y of [ya,yb]){s+=bL(X(0),y,X(30),y,'#3a5577',4);for(let d=5;d<=30;d+=5)s+=bL(X(d),y-9,X(d),y+9,'#3a5577',3);}
+ s+=bT(X(20),545,'20 pc',{s:30,c:'#9fb3d1'})+bT(X(30),545,'30 pc',{s:30,c:'#9fb3d1'});
+ s+=bC(X(0),360,36,'#3fa7c4')+`<circle cx="${X(0)}" cy="360" r="36" fill="none" stroke="#bfefff" stroke-width="3"/>`+bT(X(0)-52,371,'지구',{a:'end',s:30,w:700,c:'#bfefff'});
+ const right=r===15;
+ s+=star(X(r),ya)+bT(right?X(r)+26:X(r)-26,ya-30,'별 A · '+r+' pc',{a:right?'start':'end',s:30,w:700})+star(X(10),yb)+bT(X(10)-26,yb-30,'별 B · 10 pc',{a:'end',s:30,w:700});
+ s+=`<rect x="1380" y="78" width="360" height="614" rx="20" fill="#0b1730" stroke="#2b4466" stroke-width="2"/>`+bT(1560,130,'지구에서 본 밝기',{s:30,w:700,c:'#cfe0ff'});
+ s+=glow(1560,272,rad(mA))+bT(1560,398,'별 A · 절대 '+M+'등급',{s:30})+bT(1560,446,'겉보기 '+rel+' 절대',{s:30,w:800,c:'#ffdb7a'});
+ s+=glow(1560,548,rad(2))+bT(1560,622,'별 B · 절대 2등급',{s:30})+bT(1560,670,'겉보기 = 절대',{s:30,w:800,c:'#ffdb7a'});
+ return bSvg(s);
+}
+function nebulaBig(k,cloud,ray){
+ // 옆에서 본 빛의 경로: 별(왼쪽) → 성운(가운데) → 관찰자(오른쪽). 화살표 = 빛이 가는 방향.
+ const sx=170,cy=360,cx=870,ox=1600,hash=a=>{const z=Math.sin(a)*43758.5453;return z-Math.floor(z);};
+ let s='',defs=bArrow('nb-y','#ffe7a1')+bArrow('nb-p','#d4a3ff')+bArrow('nb-r','#ff9cad')+bArrow('nb-b','#a8d6ff');
+ const R=(x1,y1,x2,y2,c,id,w=6,o=1)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-opacity="${o}" stroke-linecap="round" class="flowB" marker-end="url(#${id})"/>`;
+ if(k==='open'||k==='globular'){
+  if(k==='open'){const cl=[[-170,-50],[20,-120],[170,40],[-40,110]];
+   for(let i=0;i<42;i++){const c=cl[i%4],u=Math.max(1e-6,hash(i*12.9898+1.3)),th=hash(i*78.233+4.1)*Math.PI*2,big=hash(i*5.17+9.3)>.82,rr=Math.min(150,Math.sqrt(-2*Math.log(u))*62),x=cx+c[0]+Math.cos(th)*rr,y=350+c[1]+Math.sin(th)*rr*.85;
+    if(big)s+=bGlow(x,y,24,'gl-w');s+=bC(x,y,big?9:5.5,i%4?'#fff1cd':'#b5d9ff');}}
+  else{defs+='<radialGradient id="nb-core"><stop offset="0" stop-color="#fff1cd" stop-opacity=".55"/><stop offset="1" stop-color="#fff1cd" stop-opacity="0"/></radialGradient>';s+=`<circle cx="${cx}" cy="350" r="170" fill="url(#nb-core)"/>`;
+   for(let i=0;i<900;i++){const th=hash(i*19.197+3)*Math.PI*2,rad=Math.pow(hash(i*11.37+5),1.85)*285;s+=bC(cx+Math.cos(th)*rad,350+Math.sin(th)*rad,2.6,i%4?'#fff1cd':'#b5d9ff');}}
+  return bSvg(s+bT(cx,692,k==='open'?'산개 성단':'구상 성단',{s:32,w:700}),defs);
+ }
+ defs+='<radialGradient id="nb-e"><stop offset="0" stop-color="#ff6f8a" stop-opacity=".72"/><stop offset="1" stop-color="#dc6878" stop-opacity=".2"/></radialGradient><radialGradient id="nb-rf"><stop offset="0" stop-color="#8fc1ff" stop-opacity=".62"/><stop offset="1" stop-color="#74a8df" stop-opacity=".18"/></radialGradient>';
+ s+=bGlow(sx,cy,80,'gl-y')+bC(sx,cy,30,'#fff0b3')+bT(sx,262,'별',{s:32,w:700});
+ s+=`<path d="M1540 ${cy}Q${ox} 312 1660 ${cy}Q${ox} 408 1540 ${cy}Z" fill="none" stroke="#e8f1ff" stroke-width="4"/>`+bC(ox,cy,17,'#a8d6ff')+bT(ox,452,'관찰자',{s:30,w:700});
+ if(cloud)s+=`<ellipse cx="${cx}" cy="${cy}" rx="270" ry="205" fill="${k==='emission'?'url(#nb-e)':k==='reflection'?'url(#nb-rf)':'#121522'}" stroke="#70849f" stroke-width="3"/>`+bT(cx,618,k==='emission'?'기체':'기체·먼지',{s:30,c:'#cfd9ea'});
+ if(ray){
+  if(!cloud)s+=R(224,cy,1522,cy,'#ffe7a1','nb-y');
+  else if(k==='emission'){s+=R(224,cy,700,cy,'#d4a3ff','nb-p')+bT(440,322,'에너지',{s:30,w:700,c:'#e3c6ff'})+R(1050,cy,1522,cy,'#ff9cad','nb-r')+bT(1290,322,'기체가 빛 방출',{s:30,w:700,c:'#ffc2cc'});
+   for(const [x1,y1,x2,y2] of [[730,205,670,150],[1010,205,1070,150],[730,515,670,570],[1010,515,1070,570]])s+=R(x1,y1,x2,y2,'#ff9cad','nb-r',5,.55);}
+  else if(k==='reflection'){s+=R(224,352,846,302,'#ffe7a1','nb-y')+R(906,304,1522,356,'#a8d6ff','nb-b')+bT(1330,296,'먼지가 별빛 산란',{s:30,w:700,c:'#cfe6ff'});
+   for(const [x1,y1,x2,y2] of [[880,270,880,190],[858,282,800,228],[862,326,806,392]])s+=R(x1,y1,x2,y2,'#a8d6ff','nb-b',5,.55);}
+  else s+=R(224,cy,588,cy,'#ffe7a1','nb-y')+bT(410,322,'별빛이 가려짐',{s:30,w:700,c:'#ffe7a1'});
+ }
+ return bSvg(s,defs);
+}
 function bright(){
  lab.innerHTML=shell('<div class="controls"><label>거리 <input id="distance" aria-label="광원과 관측자 사이 거리" type="range" min="1" max="4" step="1" value="1"><output id="dv">1배</output></label><label>별 자체의 밝기 <select id="lum"><option value="1">같은 별 · 1배</option><option value="2">2배 밝은 별</option><option value="4">4배 밝은 별</option></select></label><button id="reset">처음 조건</button></div>','사방으로 같은 양의 빛을 내는 별을 가정합니다. 먼지의 흡수는 제외했습니다. 빛 퍼짐은 구면의 일부를 평면에 나타낸 모형입니다. 별 그림의 크기는 실제 크기를 비교하는 자료가 아닙니다.');
  lab.innerHTML+='<section class="panel"><h2>조건 비교</h2><table><thead><tr><th>같은 별까지의 거리</th><th>1배</th><th>2배</th><th>3배</th><th>4배</th></tr></thead><tbody><tr><th>겉보기 밝기</th><td>1</td><td>1/4</td><td>1/9</td><td>1/16</td></tr></tbody></table><p>거리가 같아도 별 자체의 밝기가 다르면 겉보기 밝기는 달라집니다.</p></section>';
@@ -28,14 +114,14 @@ function bright(){
  for(let k=1;k<=4;k++){m+=line(90+150*k,180-25*k,90+150*k,180+25*k,k===r?'#6ef0e6':'#304364',k===r?5:2)+txt(90+150*k,330,k+'배');}
  m+=light(90,180,19)+txt(90,80,'별')+txt(90,300,'자체 밝기 '+L+'배')+line(90,180,x,180-h,'#ffd166')+line(90,180,x,180+h,'#ffd166')+txt(x,65,'관측 위치')+txt(800,300,'같은 넓이');
  m+=`<rect x="742" y="142" width="110" height="100" fill="rgba(255,209,102,${Math.min(.98,.10+.45*Math.sqrt(b))})" stroke="#fff"/>`+txt(798,128,'받는 빛');
- render(m,`기준 밝기의 ${L===1&&r>1?'1/'+r**2:num(b)}배`);}
+ render(m,`기준 밝기의 ${L===1&&r>1?'1/'+r**2:num(b)}배`,BIG&&brightBig(r,L));}
  d.addEventListener('input',draw);l.addEventListener('change',draw);document.getElementById('reset').onclick=()=>{d.value=1;l.value=1;draw()};draw();
 }
 function magnitude(){
  lab.innerHTML=shell('<div class="controls"><label>별 A까지의 거리 <input id="distance" aria-label="별 A까지의 거리" type="range" min="5" max="30" step="5" value="10"><output id="dv">10 pc</output></label><label>별 A의 절대 등급 <select id="absolute"><option value="0">0등급</option><option value="2" selected>2등급</option><option value="4">4등급</option></select></label><button id="ten">10 pc에 놓기</button></div>','별 A는 거리를 바꾸어도 실제 밝기가 같습니다. 별 B는 10 pc에 둔 비교 별입니다. 숫자가 작은 등급일수록 밝습니다. 별빛 원의 크기·농도는 보기 좋게 조절한 표현입니다.');
  lab.innerHTML+='<div class="scope"><b>성취기준 밖의 확장 학습</b><p>이 모형의 거리 변화에 따른 겉보기 등급 수치는 확장 자료입니다. 수치 계산을 외우기보다, 10 pc에서 겉보기 등급과 절대 등급이 같아지는 조건을 확인합니다.</p></div>';
  const d=document.getElementById('distance'),a=document.getElementById('absolute');
- function draw(){const r=+d.value,M=+a.value,m=M+5*Math.log10(r/10);document.getElementById('dv').value=r+' pc';render(light(235,145,Math.max(9,Math.min(45,25*Math.pow(10,(2-m)/5))),'#ffd166')+light(660,145,25,'#ffd166')+txt(235,72,'별 A')+txt(660,72,'비교 별 B')+txt(235,245,'거리 '+r+' pc')+txt(660,245,'거리 10 pc')+txt(235,285,'겉보기 '+m.toFixed(1)+'등급')+txt(660,285,'겉보기 2.0등급')+txt(235,325,'절대 '+M.toFixed(1)+'등급')+txt(660,325,'절대 2.0등급'),r===10?'10 pc에서는 겉보기 등급 = 절대 등급':r<10?'10 pc보다 가까우면 겉보기 등급의 수가 더 작습니다.':'10 pc보다 멀면 겉보기 등급의 수가 더 큽니다.');}
+ function draw(){const r=+d.value,M=+a.value,m=M+5*Math.log10(r/10);document.getElementById('dv').value=r+' pc';render(light(235,145,Math.max(9,Math.min(45,25*Math.pow(10,(2-m)/5))),'#ffd166')+light(660,145,25,'#ffd166')+txt(235,72,'별 A')+txt(660,72,'비교 별 B')+txt(235,245,'거리 '+r+' pc')+txt(660,245,'거리 10 pc')+txt(235,285,'겉보기 '+m.toFixed(1)+'등급')+txt(660,285,'겉보기 2.0등급')+txt(235,325,'절대 '+M.toFixed(1)+'등급')+txt(660,325,'절대 2.0등급'),r===10?'10 pc에서는 겉보기 등급 = 절대 등급':r<10?'10 pc보다 가까우면 겉보기 등급의 수가 더 작습니다.':'10 pc보다 멀면 겉보기 등급의 수가 더 큽니다.',BIG&&magBig(r,M));}
  d.oninput=draw;a.onchange=draw;document.getElementById('ten').onclick=()=>{d.value=10;draw()};draw();
 }
 function color(){
@@ -55,7 +141,7 @@ function nebula(){
  if(cloud){m+=`<ellipse cx="450" cy="170" rx="115" ry="91" fill="${k==='emission'?'#dc687855':k==='reflection'?'#74a8df55':'#171926'}" stroke="#70849f"/>`+txt(450,296,k==='emission'?'기체':'기체·먼지');}
  if(ray){if(!cloud)m+=line(155,173,730,173,'#ffe7a1',3,'class="flow"');else if(k==='emission')m+=line(155,174,337,174,'#d4a3ff',3,'class="flow"')+line(476,160,730,166,'#ff9cad',3,'class="flow"')+txt(252,138,'에너지')+txt(620,124,'기체가 빛 방출');else if(k==='reflection')m+=line(155,173,440,153,'#ffe7a1',3,'class="flow"')+line(455,153,730,166,'#a8d6ff',3,'class="flow"')+txt(606,126,'먼지가 별빛 산란');else m+=line(155,173,340,173,'#ffe7a1',3,'class="flow"')+txt(591,144,'별빛이 가려짐');}
  r=!cloud?'성운 물질을 제거하면 별빛이 관찰자에게 직접 옵니다.':k==='emission'?'별에서 받은 에너지로 성운의 기체가 빛을 냅니다.':k==='reflection'?'성운의 먼지가 주변 별빛을 산란시켜 보입니다.':'성운이 뒤쪽 별빛을 가려 어둡게 보입니다.';}
- render(m,r);}
+ render(m,r,BIG&&nebulaBig(k,cloud,ray));}
  kind.onchange=draw;matter.onchange=draw;rays.onchange=draw;draw();
 }
 function expansion(){
