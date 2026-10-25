@@ -74,6 +74,24 @@ html.embed #app-credit{margin:12px;font-size:11px}
 @media(max-width:600px){.stage{height:450px}.hud{top:8px;left:8px;max-width:calc(100% - 16px)}.tag{max-width:100%;font-size:13px}.readout,.dirbar{top:auto;bottom:12px;right:8px;min-width:125px;padding:7px}.inset{display:none}.panel{gap:12px;padding:12px}.ctl{flex-wrap:wrap}.stage-head{padding:12px}.view-btns{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+/* 2026-10-20 강의(?embed=1)에서만: 모형이 칸을 꽉 채우고, 안내 글·버튼 줄은 숨김(강의 단계가 시점을 바꿈).
+   남기는 글은 시점 이름표(왼쪽 위)·보는 방향 이름(오른쪽 위)·위에서 본 작은 지도(오른쪽 아래)뿐. embed 가 아닌 화면은 그대로. */
+html.embed body{background:#04070f}
+html.embed .wrap{padding:0!important;max-width:none!important}
+html.embed .stage-card{border:0!important;border-radius:0!important;box-shadow:none!important;background:#04070f}
+html.embed .stage-head,html.embed .panel,html.embed .note-row,html.embed .hud,html.embed #app-credit,html.embed .sq-card{display:none!important}
+html.embed .stage{height:100vh!important}
+html.embed .lect-view{position:absolute;left:28px;top:24px;font-family:var(--disp);font-size:36px;font-weight:700;letter-spacing:-.02em;color:#e8eeff;background:rgba(4,7,15,.72);border:2px solid #33406e;border-radius:16px;padding:8px 22px;pointer-events:none}
+html.embed .dirbar{top:24px;right:28px;min-width:0;max-width:none;padding:10px 24px;border-radius:16px;border-width:2px}
+html.embed .dirbar .dl,html.embed .dirbar .meter,html.embed .dirbar .dd{display:none!important}
+html.embed .dirbar .dv{font-family:var(--disp);font-size:34px!important;font-weight:700;margin:0;color:#ffd166}
+html.embed .inset{right:28px;bottom:24px;padding:10px 12px 8px;border-radius:16px;border-width:2px}
+html.embed .inset .ilabel{font-family:var(--disp);font-size:26px!important;font-weight:700;color:#c6d2ee;margin-bottom:6px}
+html.embed #cv-map{width:300px;height:300px}
+html.embed #lect-yaw{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
+html.embed .lect-sun{position:absolute;left:0;top:0;font-family:var(--disp);font-size:34px;font-weight:800;letter-spacing:-.02em;color:#c9f5a6;pointer-events:none;white-space:nowrap;
+ text-shadow:0 0 6px #04070f,0 0 3px #04070f,0 0 2px #04070f;transform:translate(-50%,-100%)}
+html.embed .simfs-btn{display:none!important}
 </style>
 </head>
 <body>
@@ -132,6 +150,8 @@ html.embed #app-credit{margin:12px;font-size:11px}
 'use strict';
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('embed');
+const EMBED = document.documentElement.classList.contains('embed');   // 2026-10-20 강의용 분기(아래 EMBED 조건 안에서만 달라짐)
+const LECT_BAR = EMBED ? .5 : 0;   // 강의: 중심 막대를 태양계-중심 선에서 약 29° 돌려 놓는다(실제 약 25~30°, 학습지 그림처럼). embed 밖은 0(원래 그대로)
 const stage = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
@@ -305,20 +325,20 @@ function drawMap(){
   mCx.fillStyle = 'rgba(143,208,255,.14)';
   mCx.beginPath(); mCx.arc(cx,cy,DISK_R*sc,0,Math.PI*2); mCx.fill();
   mCx.fillStyle = 'rgba(255,227,176,.5)';
-  mCx.beginPath(); mCx.ellipse(cx,cy,8*sc*1.6,5*sc*1.6,0,0,Math.PI*2); mCx.fill();
+  mCx.beginPath(); mCx.ellipse(cx,cy,8*sc*1.6,5*sc*1.6,LECT_BAR,0,Math.PI*2); mCx.fill();
   /* 태양계 위치 */
   const ox = cx + obsPos.x*sc, oy = cy + obsPos.z*sc;
   /* 시선 부채꼴 (수평 성분, world x→오른쪽, z→아래) */
   if (view==='in'){
     const a = Math.atan2(Math.cos(yaw), Math.sin(yaw));   // canvas 각도: atan2(dz,dx)
-    mCx.fillStyle = 'rgba(255,209,102,.22)';
+    mCx.fillStyle = EMBED ? 'rgba(255,209,102,.4)' : 'rgba(255,209,102,.22)';
     mCx.beginPath(); mCx.moveTo(ox,oy);
-    mCx.arc(ox,oy, 66, a-.42, a+.42); mCx.closePath(); mCx.fill();
+    mCx.arc(ox,oy, EMBED ? W*.4 : 66, a-.42, a+.42); mCx.closePath(); mCx.fill();
   }
   mCx.fillStyle = '#a9f07a';
-  mCx.beginPath(); mCx.arc(ox,oy,4,0,Math.PI*2); mCx.fill();
-  mCx.fillStyle = '#9aa8cf'; mCx.font = '10px Pretendard, sans-serif'; mCx.textAlign='center';
-  mCx.fillText(atCenter?'태양계(가정: 중심)':'태양계', ox, oy-8);
+  mCx.beginPath(); mCx.arc(ox,oy,EMBED?7:4,0,Math.PI*2); mCx.fill();
+  mCx.fillStyle = EMBED ? '#c9f5a6' : '#9aa8cf'; mCx.font = EMBED ? 'bold 24px Pretendard, "Malgun Gothic", sans-serif' : '10px Pretendard, sans-serif'; mCx.textAlign='center';
+  mCx.fillText(atCenter?'태양계(가정: 중심)':'태양계', ox, oy-(EMBED?16:8));
 }
 
 function resize(){
@@ -345,7 +365,9 @@ function draw(){
       Math.sin(yaw)*Math.cos(pitch), Math.sin(pitch), Math.cos(yaw)*Math.cos(pitch));
     inCam.lookAt(inCam.position.clone().add(look));
     const {deg, frac} = dirInfo();
-    const name = atCenter ? '관측자가 중심에 있는 가정'
+    const name = EMBED   /* 강의: 계절·별자리 이름(뒤 장면의 답)은 빼고 학습지 그림과 같은 방향 이름만 */
+      ? (Math.abs(pitch)>.55 ? '원반 위아래 방향' : deg < 45 ? '은하 중심 방향' : deg > 135 ? '반대 방향' : '원반을 따라 옆 방향')
+      : atCenter ? '관측자가 중심에 있는 가정'
       : Math.abs(pitch)>.55 ? '은하 원반에서 위아래로 벗어난 방향'
       : deg < 45 ? '은하 중심 쪽 (여름 밤하늘 · 궁수자리)'
       : deg > 135 ? '중심 반대쪽 (겨울 밤하늘)'
@@ -358,6 +380,47 @@ function draw(){
     ctl.update(); renderer.render(scene, outCam);
   }
   drawMap();
+}
+/* ══ 2026-10-20 강의(?embed=1) 전용 — embed 가 아니면 아무것도 하지 않는다 ══
+   · 시점 이름표(위에서/옆에서/태양계의 자리에서) · 은하가 칸에 꽉 차게 카메라 거리 조정 · 태양계 표식 크게
+   · 숨은 입력 #lect-yaw(도, 0 = 은하 중심 방향): 강의 단계가 값으로 보는 방향을 정한다(되돌리기·점프에도 같은 방향) */
+if (EMBED) {
+  const viewTag = document.createElement('div'); viewTag.className = 'lect-view'; stage.appendChild(viewTag);
+  const inset = document.getElementById('inset-map');
+  inset.querySelector('.ilabel').textContent = '보는 방향';
+  mCv.width = mCv.height = 300;
+  /* 태양계 표식: 고리는 굵게, 3D 글자(작은 스프라이트) 대신 화면 글자(34px)를 고리 위에 붙인다 */
+  sunMark.children.forEach(ch => { if (ch.isSprite) ch.visible = false; else ch.scale.multiplyScalar(1.6); });
+  ring.geometry.dispose(); ring.geometry = new THREE.TorusGeometry(2.2, .3, 10, 48);
+  scene.children.forEach(o => { if (o.isPoints && o.geometry.attributes.position.count === 3200) o.rotation.y = -LECT_BAR; });   // 중심 막대(팽대부 점 3200개)
+  const sunTag = document.createElement('div'); sunTag.className = 'lect-sun'; sunTag.textContent = '태양계'; stage.appendChild(sunTag);
+  const sunV = new THREE.Vector3();
+  (function placeSunTag(){
+    if (view === 'out') {
+      sunV.copy(sunMark.position).project(outCam);          // 고리 가운데의 화면 자리 → 글자는 그 위 34px(위·옆 어느 시점에서도 고리와 안 겹침)
+      sunTag.style.display = sunV.z < 1 ? '' : 'none';
+      sunTag.style.left = ((sunV.x + 1) / 2 * stage.clientWidth).toFixed(1) + 'px';
+      sunTag.style.top = ((1 - sunV.y) / 2 * stage.clientHeight - 34).toFixed(1) + 'px';
+    } else sunTag.style.display = 'none';
+    requestAnimationFrame(placeSunTag);
+  })();
+  /* 밖에서 본 모습의 별 점을 2.2배 크게(칠판에서 나선팔·막대 모양이 보이게) — 태양계 자리에서 본 하늘(size 3 고정)은 그대로 */
+  scene.traverse(o => { if (o.isPoints) { o.material.userData.baseSize *= 2.2; o.material.size = o.material.userData.baseSize; o.material.needsUpdate = true; } });
+  let outMode = 'top';
+  const label = () => {
+    viewTag.textContent = view === 'in' ? '태양계의 자리에서 본 하늘' : outMode === 'side' ? '옆에서 본 우리은하' : outMode === 'top' ? '위에서 본 우리은하' : '밖에서 본 우리은하';
+    inset.style.display = view === 'in' ? '' : 'none';
+  };
+  document.querySelectorAll('.vbtn').forEach(b => b.addEventListener('click', () => { if (b.dataset.view === 'out') outMode = 'free'; label(); }));
+  document.getElementById('top-btn').addEventListener('click', () => { outCam.position.set(0, 148, .01); ctl.update(); outMode = 'top'; label(); });
+  document.getElementById('side-btn').addEventListener('click', () => { outCam.position.set(0, 5, 98); ctl.update(); outMode = 'side'; label(); });
+  renderer.domElement.addEventListener('pointerdown', () => { if (view === 'out') { outMode = 'free'; label(); } });
+  const yawIn = document.createElement('input');
+  Object.assign(yawIn, { type: 'range', id: 'lect-yaw', min: 0, max: 360, step: 1, value: 0, tabIndex: -1 });
+  yawIn.setAttribute('aria-hidden', 'true');
+  yawIn.addEventListener('input', () => { yaw = -Math.PI / 2 + (+yawIn.value) * Math.PI / 180; pitch = 0; spinning = false; });
+  stage.appendChild(yawIn);
+  document.getElementById('top-btn').click();
 }
 resize();
 function animate(){draw();requestAnimationFrame(animate)}
