@@ -4,68 +4,146 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#080d1a">
 <title>별과 우주 · 학습지 연계 강의화면</title>
 <style>
-:root{--bg:#081426;--card:#10223a;--line:#24405f;--t1:#f3f7ff;--t2:#b9cde0;--t3:#7f9bb5;--gold:#ffd16d;--sky:#7fd3e6}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--t1);font:17px/1.65 'Pretendard','Malgun Gothic',system-ui,sans-serif;
- background-image:radial-gradient(1px 1px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 68% 9%,#fff6 50%,transparent 51%),radial-gradient(1.5px 1.5px at 85% 32%,#ffe9a8aa 50%,transparent 51%),radial-gradient(1px 1px at 33% 41%,#fff5 50%,transparent 51%),radial-gradient(1px 1px at 52% 76%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 8% 88%,#fff5 50%,transparent 51%);background-attachment:fixed}
-main{max-width:1080px;margin:auto;padding:56px 20px 40px}
-.over{color:var(--sky);font-weight:700;letter-spacing:.02em}
-h1{font-size:46px;line-height:1.2;letter-spacing:-.04em;margin:8px 0 14px}
-.lead{color:var(--t2);font-size:19px;margin:0 0 30px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 26px;color:inherit;text-decoration:none;transition:border-color .2s,transform .2s}
-a.card:hover{border-color:var(--gold);transform:translateY(-2px)}
-a.card:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-.no{color:var(--gold);font-weight:800;font-size:15px;letter-spacing:.06em}
-.card h2{font-size:25px;line-height:1.35;margin:6px 0 8px;letter-spacing:-.02em}
-.kw{color:var(--t2);font-size:16px;margin:0 0 14px}
-.meta{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:var(--t3)}
-.go{color:var(--sky);font-weight:700}
-.box{margin-top:34px;background:#0d1d33;border:1px solid var(--line);border-radius:16px;padding:20px 24px;color:var(--t2)}
-.box h3{margin:0 0 10px;color:var(--t1);font-size:19px}
-.keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 24px;margin:0;padding:0;list-style:none}
-kbd{display:inline-block;min-width:28px;text-align:center;background:#1c3352;border:1px solid #33557a;border-radius:6px;padding:0 7px;margin-right:8px;color:var(--t1);font:600 14px/1.6 system-ui,sans-serif}
-footer{margin-top:40px;font-size:14px;color:var(--t3);text-align:center}
-@media(max-width:720px){.grid,.keys{grid-template-columns:1fr}h1{font-size:34px}main{padding:36px 16px}}
+:root{
+  --abyss:#080d1a;--surface:#161f3d;--surface2:#1e2950;--line:#2b3763;--line-soft:#222c54;
+  --ink:#eaf0ff;--ink-dim:#a8b6dc;--ink-mute:#7382ad;--accent:#7c9cff;
+  --c1:#ffd166;--c2:#67e8e0;--c3:#9ae66e;--c4:#ff8fb1;--c5:#c4a7ff;--c6:#7c9cff;
+  --disp:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--disp);color:var(--ink);line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:radial-gradient(1100px 620px at 80% -10%,rgba(124,156,255,.16),transparent 62%),
+             radial-gradient(800px 520px at 8% 12%,rgba(196,167,255,.12),transparent 58%),
+             radial-gradient(900px 600px at 50% 110%,rgba(103,232,224,.07),transparent 60%),var(--abyss);
+  background-attachment:fixed}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none;width:100%;height:100%}
+main{max-width:1120px;margin:0 auto;padding:64px 20px 48px}
+
+.hero{text-align:center;margin-bottom:38px}
+.orbit{width:120px;height:120px;margin:0 auto 18px;position:relative}
+.orbit svg{width:100%;height:100%;overflow:visible}
+.over{display:inline-block;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--accent);
+  border:1px solid var(--line);border-radius:999px;padding:4px 14px;background:rgba(22,31,61,.6)}
+h1{font-size:50px;line-height:1.18;letter-spacing:-.045em;font-weight:800;margin:16px 0 12px}
+h1 em{font-style:normal;background:linear-gradient(90deg,#ffd166,#ff8fb1 45%,#c4a7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--ink-dim);font-size:18px;max-width:640px;margin:0 auto}
+
+.dl{display:flex;align-items:center;gap:18px;margin:34px auto 40px;max-width:760px;padding:20px 24px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,209,102,.14),rgba(196,167,255,.10));border:1px solid rgba(255,209,102,.45);color:inherit;text-decoration:none;
+  transition:transform .2s,border-color .2s,box-shadow .2s}
+.dl:hover{transform:translateY(-2px);border-color:var(--c1);box-shadow:0 18px 50px -22px rgba(255,209,102,.5)}
+.dl:focus-visible{outline:3px solid var(--c1);outline-offset:4px}
+.dl .ic{flex:none;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:rgba(255,209,102,.18)}
+.dl b{display:block;font-size:20px;letter-spacing:-.02em}
+.dl span{color:var(--ink-dim);font-size:15px}
+.dl .arr{margin-left:auto;color:var(--c1);font-weight:800;font-size:16px;white-space:nowrap}
+
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+a.card{--c:var(--accent);position:relative;display:flex;flex-direction:column;padding:24px 24px 20px;border-radius:20px;color:inherit;text-decoration:none;overflow:hidden;
+  background:linear-gradient(180deg,rgba(30,41,80,.82),rgba(22,31,61,.82));border:1px solid var(--line);backdrop-filter:blur(6px);
+  transition:transform .2s,border-color .2s,box-shadow .2s}
+a.card::before{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--c) 30%,transparent),transparent 70%)}
+a.card:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 20px 50px -24px color-mix(in srgb,var(--c) 70%,transparent)}
+a.card:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.card .ic{width:46px;height:46px;margin-bottom:14px}
+.card .no{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--c)}
+.card h2{font-size:22px;line-height:1.35;letter-spacing:-.025em;margin:4px 0 8px}
+.card p{color:var(--ink-dim);font-size:15px;margin-bottom:16px;flex:1}
+.card .meta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--ink-mute);border-top:1px solid var(--line-soft);padding-top:12px}
+.card .go{color:var(--c);font-weight:700}
+.c1{--c:var(--c1)}.c2{--c:var(--c2)}.c3{--c:var(--c4)}.c4{--c:var(--c5)}.c5{--c:var(--c3)}.c6{--c:var(--c6)}
+
+.row{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:30px}
+.box{background:rgba(22,31,61,.78);border:1px solid var(--line);border-radius:20px;padding:22px 24px;color:var(--ink-dim);backdrop-filter:blur(6px)}
+.box h3{color:var(--ink);font-size:18px;margin-bottom:12px}
+.keys{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;font-size:15px}
+kbd{display:inline-block;min-width:30px;text-align:center;background:var(--surface2);border:1px solid var(--line);border-bottom-width:3px;border-radius:7px;padding:0 7px;margin-right:8px;color:var(--ink);font:700 13px/1.7 system-ui,sans-serif}
+.box p+p{margin-top:8px}
+footer{margin-top:44px;text-align:center;font-size:13px;color:var(--ink-mute)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.row{grid-template-columns:1fr}}
+@media(max-width:600px){.grid,.keys{grid-template-columns:1fr}h1{font-size:36px}main{padding:44px 16px 36px}.dl{flex-wrap:wrap}.dl .arr{margin-left:72px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<canvas id="stars" aria-hidden="true"></canvas>
 <main>
-<div class="over">중학교 과학 2 · Ⅷ. 별과 우주</div>
-<h1>학습지 연계 강의화면</h1>
-<p class="lead">개념정리 학습지와 함께 쓰는 전자칠판용 강의화면입니다. 방향키를 누를 때마다 학습지 빈칸의 답이 번호와 같은 순서로 나타납니다.</p>
+<section class="hero">
+  <div class="orbit" aria-hidden="true"><svg viewBox="-60 -60 120 120">
+    <defs><radialGradient id="sun"><stop offset="0" stop-color="#fff3c4"/><stop offset=".55" stop-color="#ffd166"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient></defs>
+    <circle r="26" fill="url(#sun)"/><circle r="11" fill="#ffd166"/>
+    <ellipse rx="48" ry="20" fill="none" stroke="#7c9cff" stroke-opacity=".55" stroke-width="1.5" transform="rotate(-18)"/>
+    <g transform="rotate(-18)"><circle r="5.5" fill="#67e8e0"><animateMotion dur="9s" repeatCount="indefinite" path="M48,0 A48,20 0 1,1 -48,0 A48,20 0 1,1 48,0"/></circle></g>
+  </svg></div>
+  <span class="over">중학교 과학 2 · Ⅷ. 별과 우주</span>
+  <h1>학습지 연계 <em>강의화면</em></h1>
+  <p class="lead">개념정리 학습지와 함께 쓰는 전자칠판용 강의화면입니다. 방향키를 누를 때마다 학습지 빈칸의 답이 번호 순서대로 나타납니다.</p>
+</section>
+
+<a class="dl" href="https://sen1299-my.sharepoint.com/:f:/g/personal/chuseonjae_haenuri_ms_kr/IgAwtl8_6tNoQ6_IbczYl3TMAcGspPGnwxA5bLQFMXdp-iQ?e=qR3uff" target="_blank" rel="noopener">
+  <span class="ic" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd166" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></span>
+  <span><b>개념정리 학습지 내려받기</b><span>1~6차시 학습지 (학생용·교사용) 폴더</span></span>
+  <span class="arr">폴더 열기 ↗</span>
+</a>
 
 <div class="grid">
-<a class="card" href="lecture-01-parallax.html"><div class="no">01차시</div><h2>연주시차와 별까지의 거리</h2><p class="kw">시차 · 연주시차 · 단위와 측정 한계 · 거리 계산(확장)</p><div class="meta"><span>학습지 빈칸 18개</span><span class="go">열기 →</span></div></a>
-<a class="card" href="lecture-02-brightness.html"><div class="no">02차시</div><h2>별의 밝기와 등급</h2><p class="kw">밝기에 영향을 주는 조건 · 거리에 따른 밝기 변화 · 별의 등급</p><div class="meta"><span>학습지 빈칸 20개</span><span class="go">열기 →</span></div></a>
-<a class="card" href="lecture-03-magnitude-color.html"><div class="no">03차시</div><h2>겉보기·절대 등급과 별의 색</h2><p class="kw">겉보기·절대 등급 · 10 pc 기준 거리 비교 · 별의 색과 표면 온도</p><div class="meta"><span>학습지 빈칸 16개</span><span class="go">열기 →</span></div></a>
-<a class="card" href="lecture-04-milkyway.html"><div class="no">04차시</div><h2>우리은하의 구조와 은하수</h2><p class="kw">천체의 규모 · 우리은하의 모양과 크기 · 은하수</p><div class="meta"><span>학습지 빈칸 21개</span><span class="go">열기 →</span></div></a>
-<a class="card" href="lecture-05-nebula-clusters.html"><div class="no">05차시</div><h2>성운과 성단</h2><p class="kw">별 사이의 물질 · 성운의 종류 · 성단 · 관측 대상의 구분</p><div class="meta"><span>학습지 빈칸 20개</span><span class="go">열기 →</span></div></a>
-<a class="card" href="lecture-06-expansion.html"><div class="no">06차시</div><h2>우주 팽창</h2><p class="kw">외부 은하 · 풍선 모형 · 팽창의 중심 · 우주의 나이</p><div class="meta"><span>학습지 빈칸 16개</span><span class="go">열기 →</span></div></a>
+<a class="card c1" href="lecture-01-parallax.html">
+  <svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="10" r="4" fill="#ffd166"/><path d="M8 40 24 10 40 40" fill="none" stroke="#ffd166" stroke-width="2.5" stroke-linejoin="round"/><circle cx="8" cy="40" r="3.5" fill="#67e8e0"/><circle cx="40" cy="40" r="3.5" fill="#ff8fb1"/></svg>
+  <div class="no">01차시</div><h2>연주시차와 별까지의 거리</h2><p>시차 · 연주시차 · 단위와 측정 한계 · 거리 계산(확장)</p>
+  <div class="meta"><span>학습지 빈칸 18개</span><span class="go">열기 →</span></div></a>
+<a class="card c2" href="lecture-02-brightness.html">
+  <svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="9" cy="24" r="5" fill="#67e8e0"/><path d="M14 22 40 10M14 26 40 38" stroke="#67e8e0" stroke-opacity=".6" stroke-width="2"/><rect x="34" y="12" width="8" height="24" rx="2" fill="none" stroke="#67e8e0" stroke-width="2.5"/></svg>
+  <div class="no">02차시</div><h2>별의 밝기와 등급</h2><p>밝기에 영향을 주는 조건 · 거리에 따른 밝기 변화 · 별의 등급</p>
+  <div class="meta"><span>학습지 빈칸 20개</span><span class="go">열기 →</span></div></a>
+<a class="card c3" href="lecture-03-magnitude-color.html">
+  <svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="12" cy="24" r="6" fill="#9cc4ff"/><circle cx="26" cy="24" r="5" fill="#fff3c4"/><circle cx="38" cy="24" r="4.5" fill="#ff8f6b"/><path d="M6 38h36" stroke="#ff8fb1" stroke-width="2.5" stroke-dasharray="3 4"/></svg>
+  <div class="no">03차시</div><h2>겉보기·절대 등급과 별의 색</h2><p>겉보기·절대 등급 · 10 pc 기준 거리 비교 · 별의 색과 표면 온도</p>
+  <div class="meta"><span>학습지 빈칸 16개</span><span class="go">열기 →</span></div></a>
+<a class="card c4" href="lecture-04-milkyway.html">
+  <svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="7" ry="4" fill="#ffe2a8"/><path d="M24 24c10-12 20-4 16 6M24 24C14 36 4 28 8 18" fill="none" stroke="#c4a7ff" stroke-width="3" stroke-linecap="round"/><circle cx="35" cy="31" r="2.2" fill="#ffd166"/></svg>
+  <div class="no">04차시</div><h2>우리은하의 구조와 은하수</h2><p>천체의 규모 · 우리은하의 모양과 크기 · 은하수</p>
+  <div class="meta"><span>학습지 빈칸 21개</span><span class="go">열기 →</span></div></a>
+<a class="card c5" href="lecture-05-nebula-clusters.html">
+  <svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 28c0-9 9-14 16-11 5-6 16-3 16 6 5 2 4 12-4 12H13c-4 0-5-4-5-7Z" fill="#9ae66e" fill-opacity=".28" stroke="#9ae66e" stroke-width="2"/><circle cx="18" cy="12" r="1.8" fill="#fff"/><circle cx="23" cy="9" r="1.5" fill="#fff"/><circle cx="21" cy="15" r="1.4" fill="#fff"/></svg>
+  <div class="no">05차시</div><h2>성운과 성단</h2><p>별 사이의 물질 · 성운의 종류 · 성단 · 관측 대상의 구분</p>
+  <div class="meta"><span>학습지 빈칸 20개</span><span class="go">열기 →</span></div></a>
+<a class="card c6" href="lecture-06-expansion.html">
+  <svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="#7c9cff" stroke-width="2.5"/><circle cx="17" cy="19" r="2.4" fill="#ffd166"/><circle cx="31" cy="17" r="2.4" fill="#ffd166"/><circle cx="27" cy="31" r="2.4" fill="#ffd166"/><path d="M24 2v4M24 42v4M2 24h4M42 24h4" stroke="#7c9cff" stroke-width="2" stroke-linecap="round"/></svg>
+  <div class="no">06차시</div><h2>우주 팽창</h2><p>외부 은하 · 풍선 모형 · 팽창의 중심 · 우주의 나이</p>
+  <div class="meta"><span>학습지 빈칸 16개</span><span class="go">열기 →</span></div></a>
 </div>
 
-<div class="box">
-<h3>조작</h3>
+<div class="row">
+<div class="box"><h3>조작</h3>
 <ul class="keys">
-<li><kbd>→</kbd>다음 단계 (Space도 됨)</li>
-<li><kbd>←</kbd>이전 단계</li>
-<li><kbd>R</kbd>지금 장면 다시 보기</li>
-<li><kbd>O</kbd>전체 장면 보기</li>
-<li><kbd>L</kbd>레이저 포인터 (Esc로 끄기)</li>
-<li><kbd>F</kbd>전체 화면</li>
-<li><kbd>M</kbd>소리 켜기·끄기</li>
-<li><kbd>T</kbd>수업 대본 보기</li>
-</ul>
+<li><kbd>→</kbd>다음 단계 (Space)</li><li><kbd>←</kbd>이전 단계</li>
+<li><kbd>R</kbd>지금 장면 다시 보기</li><li><kbd>O</kbd>전체 장면 보기</li>
+<li><kbd>L</kbd>레이저 포인터</li><li><kbd>F</kbd>전체 화면</li>
+<li><kbd>M</kbd>소리 켜기·끄기</li><li><kbd>T</kbd>수업 대본</li>
+</ul></div>
+<div class="box"><h3>쓰실 때</h3>
+<p>1차시 「거리 계산」은 성취기준 밖 확장 내용이라 학습지에는 없습니다.</p>
+<p>시뮬레이터 장면은 화면 안에서 바로 조작할 수 있고, 조작한 뒤에도 방향키로 넘어갑니다.</p>
 </div>
-
-<div class="box">
-<h3>쓰실 때</h3>
-1차시 「거리 계산」은 성취기준 밖 확장 내용이라 학습지에는 없습니다. 시뮬레이터가 들어간 장면은 화면 안에서 바로 조작할 수 있고, 조작한 뒤에도 방향키로 다음 단계로 넘어갑니다.
 </div>
 
 <footer>© 2026 · 최종 업데이트: 2026-10-28</footer>
 </main>
+<script>
+(function(){
+  var c=document.getElementById('stars'),x=c.getContext('2d'),S=[],still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){var d=Math.min(devicePixelRatio||1,2);c.width=innerWidth*d;c.height=innerHeight*d;x.setTransform(d,0,0,d,0,0);
+    S=[];var n=Math.round(innerWidth*innerHeight/5200);for(var i=0;i<n;i++)S.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.3+.2,p:Math.random()*6.28,s:.4+Math.random()*1.2,g:Math.random()<.08});}
+  function draw(t){x.clearRect(0,0,innerWidth,innerHeight);
+    for(var i=0;i<S.length;i++){var s=S[i],a=still?.7:.45+.45*Math.sin(t/1000*s.s+s.p);
+      x.globalAlpha=a;x.fillStyle=s.g?'#ffe7a8':'#ffffff';x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();}
+    if(!still)requestAnimationFrame(draw);}
+  addEventListener('resize',function(){size();if(still)draw(0);});size();requestAnimationFrame(draw);
+})();
+</script>
 </body>
 </html>
