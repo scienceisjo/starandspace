@@ -11,7 +11,7 @@
 html,body{height:100%;background:#000;overflow:hidden}
 body{font-family:"Pretendard","Malgun Gothic",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;user-select:none;touch-action:none}
 canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
-#gl{z-index:0}#fx{z-index:1;pointer-events:none}
+#gl{z-index:0}#fx{z-index:1;pointer-events:none}#shipc{z-index:2;pointer-events:none}
 .hud{position:fixed;z-index:3;pointer-events:none}
 .glass{background:var(--glass);border:1px solid var(--edge);border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(0,0,0,.4) inset,0 10px 40px rgba(0,0,0,.45)}
 #nav{left:18px;top:16px;padding:12px 16px;min-width:250px}
@@ -55,6 +55,16 @@ textarea{width:100%;min-height:68px;font:inherit;font-size:17px;padding:12px 14p
 .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
 #toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:11;padding:10px 18px;font-size:15px;opacity:0;transition:opacity .3s;pointer-events:none}
 #toast.show{opacity:1}
+#view{right:18px;top:280px;pointer-events:auto}
+#view button{font-size:14px;padding:9px 14px;border-radius:12px}
+#cmpPanel{left:50%;top:50%;transform:translate(-50%,-50%);padding:22px 26px;text-align:center;pointer-events:none;display:none}
+#cmpPanel.show{display:block}
+#cmpPanel h3{font-size:clamp(18px,2vw,24px);margin-bottom:14px}
+#cmpPanel .two{display:flex;gap:28px;justify-content:center}
+#cmpPanel canvas{position:static;width:min(26vw,280px);height:min(26vw,280px);border-radius:50%;background:#000;box-shadow:0 0 0 1px var(--edge),0 0 30px rgba(126,243,255,.15) inset}
+#cmpPanel b{display:block;margin-top:8px;font-size:18px}
+#cmpPanel small{display:block;color:var(--dim);font-size:14px}
+#cruise.on{background:linear-gradient(180deg,#b9ffcf,#4ee08a);box-shadow:0 0 26px rgba(78,224,138,.45)}
 #app-credit{position:fixed;z-index:3;left:0;right:0;bottom:4px;text-align:center;font-size:10px;color:rgba(160,180,220,.45);pointer-events:none}
 @media(max-width:1100px){#msg{max-width:calc(100vw - 40px);top:auto;bottom:150px}#map{width:180px;height:180px}#scopes{bottom:auto;top:200px}.scope{width:116px}.scope canvas{width:100px;height:100px}#hint{display:none}}
 @media(max-width:620px){#nav{min-width:0;padding:8px 12px}#nav .r{font-size:12px}#nav .r b{font-size:14px}#map{width:130px;height:130px}#scopes{top:auto;bottom:150px;left:auto;right:12px;flex-direction:column}#msg{bottom:96px}}
@@ -63,6 +73,7 @@ textarea{width:100%;min-height:68px;font:inherit;font-size:17px;padding:12px 14p
 <body>
 <canvas id="gl"></canvas>
 <canvas id="fx"></canvas>
+<canvas id="shipc"></canvas>
 <div id="flash"></div>
 
 <div id="nav" class="hud glass">
@@ -81,11 +92,16 @@ textarea{width:100%;min-height:68px;font:inherit;font-size:17px;padding:12px 14p
 </div>
 <div id="ctl" class="hud">
   <button id="go" class="gold">🚀 베가로 출발</button>
-  <button id="fly" hidden>▶ 날아가기 (누르고 있기)</button>
+  <button id="fly" hidden>▶ 누르고 있기 (스페이스바)</button>
+  <button id="cruise" hidden>🛸 자동 비행 켜기</button>
   <button id="warp" class="warp" hidden>⚡ 워프 40배</button>
   <button id="next" class="ghost" hidden></button>
 </div>
-<div id="hint" class="hud">끌어서 둘러보기 · 두 번 클릭 = 목적지 보기<br>스페이스 / → 누르고 있기 = 날아가기</div>
+<div id="view" class="hud"><button id="vbtn" class="ghost">👁 시점: 뒤에서 보기</button></div>
+<div id="cmpPanel" class="hud glass"><h3>태양계에서 본 두 별, 밝기를 비교해 보세요</h3>
+  <div class="two"><div><canvas id="bigV" width="560" height="560"></canvas><b>베가</b><small>거문고자리 · 여름철 밤하늘</small></div>
+  <div><canvas id="bigR" width="560" height="560"></canvas><b>리겔</b><small>오리온자리 · 겨울철 밤하늘</small></div></div></div>
+<div id="hint" class="hud">끌어서 둘러보기 · 두 번 클릭 = 앞 보기<br>스페이스바 누르고 있기 = 날아가기 · 자동 비행 버튼도 됨</div>
 <div id="app-credit">제작 : 과학을 사랑하는 선생님 · © 2026 · All rights reserved · 최종 업데이트: 2026-11-02</div>
 
 <div id="q"><div class="qcard glass">
@@ -128,7 +144,15 @@ const CAT=[
 ['미라크',17.43,35.62,197,2.07,1.58],['알페라츠',2.10,29.09,97,2.06,-0.11],['두베',165.93,61.75,123,1.79,1.07],
 ['알카이드',206.89,49.31,104,1.86,-0.10],['알리오트',193.51,55.96,83,1.77,-0.02],['미르파크',51.08,49.86,510,1.79,0.48],
 ['엘나트',81.57,28.61,134,1.65,-0.13],['알헤나',99.43,16.40,109,1.93,0.00],['샤울라',263.40,-37.10,570,1.62,-0.22],
-['라스알헤그',263.73,12.56,48.6,2.08,0.15],['코르 카롤리',194.01,38.32,115,2.89,-0.12]
+['라스알헤그',263.73,12.56,48.6,2.08,0.15],['코르 카롤리',194.01,38.32,115,2.89,-0.12],
+// 태양계 이웃의 실제 별(대부분 맨눈으로는 어둡다)
+['바너드별',269.45,4.69,5.96,9.5,1.74],['볼프 359',164.12,7.01,7.86,13.5,2.0],['랄랑드 21185',165.83,35.97,8.31,7.52,1.51],
+['로스 154',282.46,-23.84,9.69,10.4,1.7],['에리다누스자리 엡실론',53.23,-9.46,10.5,3.73,0.88],['라카유 9352',346.47,-35.85,10.7,7.34,1.48],
+['로스 128',176.94,0.80,11.0,11.1,1.75],['백조자리 61',316.72,38.75,11.4,5.21,1.18],['그룸브리지 34',4.6,44.02,11.6,8.08,1.56],
+['인디언자리 엡실론',330.84,-56.79,11.9,4.69,1.06],['고래자리 타우',26.02,-15.94,11.9,3.50,0.72],['캅테인별',77.92,-45.02,12.8,8.85,1.57],
+['에리다누스자리 40',63.82,-7.65,16.3,4.43,0.82],['뱀주인자리 70',271.36,2.50,16.6,4.03,0.86],['용자리 시그마',293.09,69.66,18.8,4.67,0.79],
+['카시오페이아자리 에타',12.28,57.82,19.4,3.44,0.59],['뱀주인자리 36',258.84,-26.60,19.5,5.08,0.85],['공작자리 델타',302.18,-66.18,19.9,3.55,0.76],
+['목동자리 크시',222.85,19.10,22,4.55,0.73],['물뱀자리 베타',6.44,-77.25,24.3,2.80,0.62]
 ];
 // 우주 좌표(광년): 적도 좌표 → three.js(y 위)
 function eq2v(ra,dec,r){const a=ra*D2R,d=dec*D2R;return new THREE.Vector3(r*Math.cos(d)*Math.cos(a),r*Math.sin(d),-r*Math.cos(d)*Math.sin(a));}
@@ -141,6 +165,16 @@ function bv2rgb(bv){ // B−V → 대략의 별빛 색
   return[r,g,b];}
 const STARS=CAT.map(([n,ra,dec,d,m,bv])=>({name:n,pos:eq2v(ra,dec,d),d0:d,m0:m,rgb:bv2rgb(bv)}));
 const VEGA=STARS[0],RIGEL=STARS[1];
+// 항로 주변의 이웃 별: 태양 근처 실제 별 밀도(1세제곱광년에 약 0.004개)로 항로를 둘러싼 원기둥 안에 흩뿌린다.
+// 대부분 어두운 적색 왜성이라 맨눈으로는 안 보이지만, 지나쳐 가는 움직임을 보이도록 흐리게 그린다.
+const NEAR=[];
+(function(){let sd=777;const r=()=>{sd=(sd*16807)%2147483647;return(sd-1)/2147483646;};
+  for(const T of [VEGA,RIGEL]){const L=T.pos.length(),dir=T.pos.clone().normalize(),rad=14;const n=Math.round(0.004*Math.PI*rad*rad*L);
+    const a=new THREE.Vector3(1,0,0);if(Math.abs(dir.dot(a))>.9)a.set(0,1,0);const u=new THREE.Vector3().crossVectors(dir,a).normalize(),v=new THREE.Vector3().crossVectors(dir,u);
+    for(let i=0;i<n;i++){const t=r()*L,ang=r()*6.283,rr=rad*Math.sqrt(r());const p=dir.clone().multiplyScalar(t).addScaledVector(u,Math.cos(ang)*rr).addScaledVector(v,Math.sin(ang)*rr);
+      if(p.length()<1.5)continue;const red=r()<.75;const M=red?10+r()*5:2+r()*5;  // 절대 등급(대략)
+      NEAR.push({pos:p,M,rgb:red?[1,.62,.42]:(r()<.5?[1,.92,.8]:[.85,.9,1])});}}})();
+const magNear=(s,p)=>s.M+5*Math.log10(Math.max(s.pos.distanceTo(p),1e-3)/32.6);   // 10 pc = 32.6광년
 const magAt=(s,p)=>s.m0+5*Math.log10(Math.max(s.pos.distanceTo(p),1e-4)/s.d0);  // 그 자리에서의 겉보기 밝기(등급)
 
 // ── three.js 배경: 먼 별 + 은하수(무한히 멀어 시차 없음 → 카메라를 따라감) ──
@@ -198,12 +232,12 @@ mats.push(pointsLayer(16000,()=>{let l=R()*Math.PI*2;if(R()<.5)l=gauss()*1.0;con
 
 // ── 상태 ──
 const ship=new THREE.Vector3(0,0,0);
-let phase='home',target=null,holding=false,warp=false,vel=0,time=0,legTime=0,yaw=0,pitch=0,trail=[];
+let phase='home',target=null,holding=false,cruise=false,chase=true,warp=false,vel=0,time=0,legTime=0,yaw=0,pitch=0,trail=[];
 const SPEED=1,WARP=40,ARRIVE=0.5;
 const fx=$('fx'),c2=fx.getContext('2d');let W=0,H=0,DPR=1;
 function fit(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;renderer.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();
   fx.width=W*DPR;fx.height=H*DPR;c2.setTransform(DPR,0,0,DPR,0,0);mats.forEach(m=>m.uniforms.px.value=renderer.getPixelRatio()*Math.min(1.25,Math.max(.75,H/900)));
-  const mc=$('mapc'),r=mc.getBoundingClientRect();mc.width=r.width*DPR;mc.height=r.height*DPR;}
+  const mc=$('mapc'),r=mc.getBoundingClientRect();mc.width=r.width*DPR;mc.height=r.height*DPR;if(typeof sr!=='undefined'){sr.setSize(W,H,false);scam.aspect=W/H;scam.updateProjectionMatrix();}}
 addEventListener('resize',fit);
 
 // ── 둘러보기 ──
@@ -212,7 +246,7 @@ gl.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};g
 gl.addEventListener('pointermove',e=>{if(!drag)return;yaw=drag.yaw-(e.clientX-drag.x)*0.004;pitch=Math.max(-1.4,Math.min(1.4,drag.pitch+(e.clientY-drag.y)*0.004));});
 gl.addEventListener('pointerup',()=>drag=null);gl.addEventListener('pointercancel',()=>drag=null);
 gl.addEventListener('dblclick',()=>{yaw=0;pitch=0;});
-let lookAt=VEGA.pos.clone().normalize();
+let lookAt=VEGA.pos.clone().normalize(),lookGoal=lookAt.clone();
 function aim(){ // 목적지(또는 시작 화면의 두 별 사이)를 기준으로 끌어서 돌린 방향
   const base=(target?target.pos.clone().sub(ship):lookAt.clone()).normalize();
   const up=new THREE.Vector3(0,1,0);const right=new THREE.Vector3().crossVectors(base,up).normalize();const realUp=new THREE.Vector3().crossVectors(right,base);
@@ -238,6 +272,49 @@ function drawStar(ctx,s,x,y,m,scale){const L=look(m),k=scale||1;
       ctx.beginPath();ctx.moveTo(x-dx*len,y-dy*len);ctx.lineTo(x+dx*len,y+dy*len);ctx.stroke();}}
   ctx.globalAlpha=1;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,L.core*.5*k,0,6.283);ctx.fill();}
 
+function drawNear(){c2.globalCompositeOperation='lighter';
+  for(const s of NEAR){const d=s.pos.distanceTo(ship);if(d>40)continue;const p=project(s.pos);if(!p||p.x<-20||p.x>W+20||p.y<-20||p.y>H+20)continue;
+    const m=magNear(s,ship);const a=Math.max(.28,Math.min(1,.9-(m-2)*.06));const r=Math.max(1.1,Math.min(5,3.2-(m-2)*.18));
+    const [cr,cg,cb]=s.rgb.map(v=>Math.round(v*255));c2.globalAlpha=a*.35;c2.fillStyle=`rgb(${cr},${cg},${cb})`;c2.beginPath();c2.arc(p.x,p.y,r*2.6,0,6.283);c2.fill();
+    c2.globalAlpha=a;c2.beginPath();c2.arc(p.x,p.y,r*.7,0,6.283);c2.fill();}
+  c2.globalAlpha=1;c2.globalCompositeOperation='source-over';}
+
+// ── 내 우주선(뒤에서 보는 시점) — 별 그림 위에 따로 그린다 ──
+const shipCanvas=$('shipc');
+const sr=new THREE.WebGLRenderer({canvas:shipCanvas,antialias:true,alpha:true});sr.setPixelRatio(Math.min(devicePixelRatio||1,2));sr.setClearColor(0,0);
+const sscene=new THREE.Scene(),scam=new THREE.PerspectiveCamera(50,1,.1,200);
+sscene.add(new THREE.HemisphereLight(0xb8d4ff,0x1a2140,.75));const key=new THREE.DirectionalLight(0xffffff,1.3);sscene.add(key);const rim=new THREE.DirectionalLight(0x7ef3ff,.7);sscene.add(rim);
+const craft=new THREE.Group();sscene.add(craft);
+(function(){const hull=new THREE.MeshStandardMaterial({color:0xdfe6f2,metalness:.55,roughness:.32});
+  const dark=new THREE.MeshStandardMaterial({color:0x2a3552,metalness:.6,roughness:.45});const glass=new THREE.MeshStandardMaterial({color:0x7ef3ff,emissive:0x2a8fb0,metalness:.2,roughness:.1});
+  const accent=new THREE.MeshStandardMaterial({color:0xffb347,emissive:0x663300,metalness:.4,roughness:.4});
+  const body=new THREE.Mesh(new THREE.CylinderGeometry(.42,.62,3.2,24),hull);body.rotation.x=Math.PI/2;craft.add(body);
+  const nose=new THREE.Mesh(new THREE.ConeGeometry(.42,1.5,24),hull);nose.rotation.x=-Math.PI/2;nose.position.z=-2.35;craft.add(nose);
+  const cock=new THREE.Mesh(new THREE.SphereGeometry(.36,20,14,0,Math.PI*2,0,Math.PI/2),glass);cock.position.set(0,.3,-1.0);cock.scale.set(1,.8,1.9);craft.add(cock);
+  const wing=new THREE.Mesh(new THREE.BoxGeometry(3.6,.08,1.3),dark);wing.position.set(0,-.05,.55);craft.add(wing);
+  for(const sx of [-1,1]){const tip=new THREE.Mesh(new THREE.BoxGeometry(.12,.5,.9),accent);tip.position.set(sx*1.8,.12,.75);craft.add(tip);
+    const pod=new THREE.Mesh(new THREE.CylinderGeometry(.2,.26,1.5,16),hull);pod.rotation.x=Math.PI/2;pod.position.set(sx*.95,-.12,.9);craft.add(pod);}
+  const fin=new THREE.Mesh(new THREE.BoxGeometry(.08,.9,1.0),dark);fin.position.set(0,.55,1.15);craft.add(fin);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.6,.07,10,30),accent);ring.position.z=1.6;craft.add(ring);})();
+// 엔진 불꽃(가산 합성 원뿔)
+const flames=[];
+for(const [x,y,s] of [[0,0,1],[-.95,-.12,.55],[.95,-.12,.55]]){const g=new THREE.Group();g.position.set(x,y,1.65);craft.add(g);
+  for(const [c,o,w] of [[0x7ef3ff,.55,1],[0xffffff,.8,.45]]){const m=new THREE.Mesh(new THREE.ConeGeometry(.42*s*w,1,20,1,true),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+    m.rotation.x=-Math.PI/2;m.position.z=.5;g.add(m);}flames.push({g,s});}
+const fwd=new THREE.Vector3(),camUp=new THREE.Vector3(),camRight=new THREE.Vector3();
+function drawShip(t){if(!chase||phase==='compare'||phase==='log'){sr.clear();return;}
+  scam.quaternion.copy(cam.quaternion);scam.position.set(0,0,0);scam.fov=cam.fov;scam.updateProjectionMatrix();
+  cam.getWorldDirection(fwd);camUp.copy(cam.up);camRight.crossVectors(fwd,camUp).normalize();camUp.crossVectors(camRight,fwd).normalize();
+  const shake=warpAmt*.04*(still?0:1);
+  craft.position.copy(fwd).multiplyScalar(14).addScaledVector(camUp,-3.3+Math.sin(t/430)*.06+(Math.random()-.5)*shake).addScaledVector(camRight,(Math.random()-.5)*shake);
+  const goal=(target?target.pos.clone().sub(ship):lookAt.clone()).normalize();
+  craft.up.copy(camUp);craft.lookAt(craft.position.clone().sub(goal));   // 앞(−z)이 목적지 쪽
+  craft.rotateX(-.22);craft.rotateZ(Math.max(-.5,Math.min(.5,-yaw*.6)));   // 살짝 위에서 내려다보는 각도
+  key.position.copy(fwd).multiplyScalar(-1).addScaledVector(camUp,2).addScaledVector(camRight,1.5);rim.position.copy(fwd).addScaledVector(camRight,-2);
+  const pow=Math.min(1.6,vel>0?.35+Math.min(vel,1)*.65+warpAmt*1.2:0.08);
+  for(const f of flames){const flick=still?1:.88+Math.random()*.24;f.g.scale.set(1,1,Math.max(.05,pow*flick*(1+warpAmt*2.2)));f.g.visible=pow>.06;}
+  sr.render(sscene,scam);}
+
 // 워프 빛줄기
 const streaks=[];for(let i=0;i<260;i++)streaks.push({a:R()*6.283,r:R(),v:.4+R()*1.2,h:R()});
 function drawWarp(dt,amt){if(amt<=0.01)return;const cx=W/2,cy=H/2,M=Math.hypot(W,H)/2;c2.globalCompositeOperation='lighter';
@@ -257,7 +334,7 @@ function reticle(s,label,color){const p=project(s.pos);const cx=W/2,cy=H/2;
   c2.font='700 14px Pretendard,Malgun Gothic,sans-serif';c2.fillStyle=color;c2.textAlign='center';c2.fillText(label,ex-Math.cos(a)*30,ey-Math.sin(a)*30+5);c2.globalAlpha=1;}
 
 // 망원경 창(두 별을 같은 기준으로 비교)
-function scope(id,s){const cv=$(id),x=cv.getContext('2d'),w=cv.width;x.clearRect(0,0,w,w);x.save();x.beginPath();x.arc(w/2,w/2,w/2,0,6.283);x.clip();
+function scope(id,s){const cv=typeof id==='string'?$(id):id,x=cv.getContext('2d'),w=cv.width;x.clearRect(0,0,w,w);x.save();x.beginPath();x.arc(w/2,w/2,w/2,0,6.283);x.clip();
   x.fillStyle='#000';x.fillRect(0,0,w,w);x.globalCompositeOperation='lighter';
   const m=magAt(s,ship),L=look(m);const sc=Math.min(1,(w*0.9)/(L.halo*2));drawStarCtx(x,s,w/2,w/2,m,sc*1.6);x.restore();
   x.strokeStyle='rgba(126,243,255,.25)';x.lineWidth=2;x.beginPath();x.moveTo(w/2,8);x.lineTo(w/2,26);x.moveTo(w/2,w-8);x.lineTo(w/2,w-26);x.moveTo(8,w/2);x.lineTo(26,w/2);x.moveTo(w-8,w/2);x.lineTo(w-26,w/2);x.stroke();}
@@ -281,35 +358,39 @@ function drawMap(){const mc=$('mapc'),x=mc.getContext('2d'),w=mc.width,h=mc.heig
 // ── 흐름 ──
 function say(h,p){$('mh').textContent=h;$('mp').textContent=p||'';}
 function btn(id,on,txt){const b=$(id);b.hidden=!on;if(txt)b.textContent=txt;}
-function setPhase(p){phase=p;['go','fly','warp','next'].forEach(i=>btn(i,false));
+function setPhase(p){phase=p;['go','fly','cruise','warp','next'].forEach(i=>btn(i,false));$('cmpPanel').classList.remove('show');
+  if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
   if(p==='home'){target=null;ship.set(0,0,0);time=0;legTime=0;vel=0;warp=false;trail=[];yaw=0;pitch=0;$('sDest').textContent='-';
-    lookAt=VEGA.pos.clone().normalize();
-    say('태양계에서 본 베가와 리겔은 거의 똑같이 밝아요.','아래 두 망원경 창을 비교해 보세요. 베가는 여름, 리겔은 겨울 밤하늘의 별이에요. 우주선은 1초에 1광년(빛보다 빠른 상상 속 속도)으로 날아요.');btn('go',true,'🚀 베가로 출발');}
-  if(p==='toVega'){target=VEGA;legTime=0;$('sDest').textContent='베가';say('베가를 향해!','버튼이나 스페이스·→ 키를 누르고 있으면 날아가요. 가는 동안 망원경 창의 두 별을 살펴보세요.');btn('fly',true);}
+    lookGoal=VEGA.pos.clone().normalize();cruise=false;$('cruise').classList.remove('on');$('cruise').textContent='🛸 자동 비행 켜기';
+    say('우리 우주선은 지금 태양계에 있어요.','먼저 베가를 찾았어요. 거문고자리의 밝은 별이에요(여름철 밤하늘).');btn('next',true,'🔭 이번엔 리겔 보기');}
+  if(p==='home2'){lookGoal=RIGEL.pos.clone().normalize();say('이번엔 리겔이에요.','오리온자리의 밝은 별이에요(겨울철 밤하늘). 베가와 비교하면 밝기가 어떤가요?');btn('next',true,'⚖ 두 별 나란히 비교하기');}
+  if(p==='compare'){$('cmpPanel').classList.add('show');say('두 별의 밝기가 거의 같아요!','태양계에서 보면 베가와 리겔은 거의 똑같이 밝게 보여요. 그럼 두 별까지 가는 데 걸리는 시간도 비슷할까요? 우주선은 1초에 1광년(빛보다 빠른 상상 속 속도)으로 날아요.');btn('go',true,'🚀 베가로 출발');}
+  if(p==='toVega'){target=VEGA;legTime=0;$('sDest').textContent='베가';say('베가를 향해!','버튼이나 스페이스바를 누르고 있거나, 자동 비행을 켜면 날아가요. 옆으로 지나가는 이웃 별들도 보세요.');btn('fly',true);btn('cruise',true);}
   if(p==='vegaArr'){say('베가 도착! 약 '+Math.round(legTime)+'초 걸렸어요.','이번엔 리겔이에요. 태양계에서 베가랑 비슷하게 보였으니, 비슷하게 걸리겠죠?');btn('next',true,'🌍 태양계로 돌아가서 리겔로 출발');}
-  if(p==='toRigel'){target=RIGEL;ship.set(0,0,0);trail=[];legTime=0;yaw=0;pitch=0;$('sDest').textContent='리겔';say('리겔을 향해!','베가처럼 25초쯤 걸릴까요?');btn('fly',true);}
+  if(p==='toRigel'){target=RIGEL;ship.set(0,0,0);trail=[];legTime=0;yaw=0;pitch=0;$('sDest').textContent='리겔';say('리겔을 향해!','베가처럼 25초쯤 걸릴까요?');btn('fly',true);btn('cruise',true);}
   if(p==='rigelArr'){warp=false;say('드디어 리겔 도착!','태양계에서는 베가와 비슷하게 보였는데… 무엇이 이상한가요? 망원경 창도 다시 비교해 보세요.');btn('next',true,'📝 항해 일지 쓰기');}}
-function arrive(){holding=false;$('fly').classList.remove('on');setPhase(phase==='toVega'?'vegaArr':'rigelArr');}
+function arrive(){holding=false;cruise=false;$('cruise').classList.remove('on');$('cruise').textContent='🛸 자동 비행 켜기';$('fly').classList.remove('on');setPhase(phase==='toVega'?'vegaArr':'rigelArr');}
 
 let last=0,warpAmt=0;
 function frame(t){const dt=Math.min(.05,(t-last)/1000||0);last=t;
   const flying=(phase==='toVega'||phase==='toRigel');
-  const want=flying?(warp?WARP:holding?SPEED:0):0;vel+=(want-vel)*Math.min(1,dt*(warp?1.6:6));if(vel<.002&&want===0)vel=0;
+  const want=flying?(warp?WARP:(holding||cruise)?SPEED:0):0;vel+=(want-vel)*Math.min(1,dt*(warp?1.6:6));if(vel<.002&&want===0)vel=0;
   if(flying&&vel>0){const d=target.pos.distanceTo(ship),step=Math.min(vel*dt,Math.max(0,d-ARRIVE));ship.addScaledVector(target.pos.clone().sub(ship).normalize(),step);
     time+=dt;legTime+=dt;if(!trail.length||trail[trail.length-1].distanceTo(ship)>Math.max(.5,ship.length()/80))trail.push(ship.clone());
     if(phase==='toRigel'&&legTime>20&&$('warp').hidden&&!warp){btn('warp',true);say('리겔이 아직도 조그맣다…','이 속도로는 남은 거리만큼 초가 걸려요. 워프를 켜 볼까요?');}
     if(d-step<=ARRIVE+1e-6)arrive();}
   warpAmt+=((warp&&vel>2?1:0)-warpAmt)*Math.min(1,dt*2.5);
+  if(!target){lookAt.lerp(lookGoal,Math.min(1,dt*2.2)).normalize();}
   cam.fov=62+warpAmt*16;cam.updateProjectionMatrix();aim();renderer.render(scene,cam);
   c2.clearRect(0,0,W,H);c2.globalCompositeOperation='lighter';
   const list=STARS.map(s=>({s,m:magAt(s,ship)})).sort((a,b)=>b.m-a.m);
   for(const {s,m} of list){const p=project(s.pos);if(!p)continue;if(p.x<-400||p.x>W+400||p.y<-400||p.y>H+400)continue;drawStar(c2,s,p.x,p.y,m,1);}
-  c2.globalCompositeOperation='source-over';drawWarp(dt,warpAmt);
+  c2.globalCompositeOperation='source-over';drawNear();drawWarp(dt,warpAmt);
   // 아주 밝은 별 바로 곁: 눈부심
   const mt=target?magAt(target,ship):99;const fl=$('flash');const glare=Math.max(0,Math.min(.75,(-mt-8)/10));fl.style.opacity=glare;
   fl.style.background=`radial-gradient(circle at 50% 50%,rgba(${target===RIGEL?'200,220,255':'235,240,255'},.9),rgba(160,190,255,.25) 45%,rgba(0,0,0,0) 75%)`;
-  if(phase==='home'){reticle(VEGA,'베가','#cfe2ff');reticle(RIGEL,'리겔','#a9c4ff');}else if(target)reticle(target,target.name,'#7ef3ff');
-  scope('scV',VEGA);scope('scR',RIGEL);drawMap();
+  if(!target){reticle(VEGA,'베가','#cfe2ff');reticle(RIGEL,'리겔','#a9c4ff');}else reticle(target,target.name,'#7ef3ff');
+  scope('scV',VEGA);scope('scR',RIGEL);if(phase==='compare'){scope('bigV',VEGA);scope('bigR',RIGEL);}drawMap();drawShip(t);
   $('sDist').textContent=ship.length()<10?ship.length().toFixed(1):Math.round(ship.length());
   $('sLeft').textContent=target?(Math.max(0,target.pos.distanceTo(ship)-ARRIVE)<0.05?'도착':Math.round(target.pos.distanceTo(ship))+' 광년'):'-';
   $('sSpd').textContent=vel<.01?'정지':(vel>=2?'워프 '+Math.round(vel)+' 광년/초':vel.toFixed(1)+' 광년/초');
@@ -317,16 +398,18 @@ function frame(t){const dt=Math.min(.05,(t-last)/1000||0);last=t;
   requestAnimationFrame(frame);}
 
 // ── 조작 ──
-$('go').onclick=()=>{if(phase==='home')setPhase('toVega');};
-$('next').onclick=()=>{if(phase==='vegaArr')setPhase('toRigel');else if(phase==='rigelArr')openLog();};
+$('go').onclick=()=>{if(phase==='home'||phase==='home2'||phase==='compare')setPhase('toVega');};
+$('next').onclick=()=>{if(phase==='home')setPhase('home2');else if(phase==='home2')setPhase('compare');else if(phase==='vegaArr')setPhase('toRigel');else if(phase==='rigelArr')openLog();};
+$('cruise').onclick=()=>{if(phase!=='toVega'&&phase!=='toRigel')return;cruise=!cruise;$('cruise').classList.toggle('on',cruise);$('cruise').textContent=cruise?'⏸ 자동 비행 끄기':'🛸 자동 비행 켜기';$('cruise').blur();};
+$('vbtn').onclick=()=>{chase=!chase;$('vbtn').textContent=chase?'👁 시점: 뒤에서 보기':'👁 시점: 조종석';$('vbtn').blur();};
 $('warp').onclick=()=>{if(phase!=='toRigel'||$('warp').hidden)return;warp=!warp;$('warp').textContent=warp?'⏸ 워프 끄기':'⚡ 워프 40배';if(warp)say('⚡ 워프 중!','1초에 40광년씩 날아가요. 망원경 창의 리겔을 지켜보세요.');};
 const fly=$('fly');const on=e=>{e&&e.preventDefault();holding=true;fly.classList.add('on');},off=()=>{holding=false;fly.classList.remove('on');};
 fly.addEventListener('pointerdown',on);addEventListener('pointerup',off);addEventListener('pointercancel',off);fly.addEventListener('pointerleave',off);addEventListener('blur',off);
 addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA')return;
-  if((e.code==='Space'||e.code==='ArrowRight')&&!fly.hidden){e.preventDefault();on();}
+  if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();if(!fly.hidden)on();return;}
   if(e.code==='Enter'){const b=['go','next'].map($).find(b=>!b.hidden);if(b){e.preventDefault();b.click();}}
   if(e.code==='KeyW')$('warp').click();});
-addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowRight')off();});
+addEventListener('keyup',e=>{if(e.target.tagName==='TEXTAREA')return;if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();off();}});
 
 // ── 항해 일지 → 질문나무 ──
 function openLog(){phase='log';$('q').classList.add('show');$('cmpV').style.width=(25/860*100).toFixed(1)+'%';$('cmpR').style.width='100%';
