@@ -2308,7 +2308,49 @@ window.X1 = (function () {
       <rect x="-24" y="68" width="48" height="10" rx="4" fill="#b8b8bd"/><path d="M-14 78 h28 l-6 12 h-16 z" fill="#6e6e73"/>
     </g>`;
   }
-  return { TAU, COL, cv, stars, drawStars, glow, rotY, rotX, proj, fib, dirs, sci, bulb };
+  /* ── 움직임 속도(S 키·도구막대 단추): 1× → ½× → ¼× ──
+     알갱이·회전·장면 속 이동에 함께 적용. 장면 코드는 X1.clock() 으로 늦춘 시간을, X1.ms(ms) 로 늘린 지속 시간을 쓴다.
+     값은 이 탭에서만 기억(sessionStorage) — 다음에 열면 1× 로 시작 */
+  const SPEEDS = [1, .5, .25], LABEL = ['1×', '½×', '¼×'];
+  let si = 0;
+  try { si = Math.max(0, SPEEDS.indexOf(+sessionStorage.getItem('x1_speed'))); } catch (e) {}
+  const k = () => SPEEDS[si];
+  const ms = v => Math.round(v / k());
+  function clock() { let T = 0; return dt => (T += dt * k()); }
+  let btn = null, badge = null;
+  function paint() {
+    if (btn) { btn.textContent = LABEL[si]; btn.classList.toggle('slow', si > 0); btn.setAttribute('aria-pressed', si > 0 ? 'true' : 'false'); }
+    if (badge) { badge.hidden = si === 0; badge.textContent = '느리게 보기 ' + LABEL[si] + ' · 화면 속 시간이 천천히 흘러요'; }
+  }
+  function cycle() { si = (si + 1) % SPEEDS.length; try { sessionStorage.setItem('x1_speed', String(SPEEDS[si])); } catch (e) {} paint(); }
+  function mount() {
+    const hud = document.getElementById('hud');
+    if (!hud || document.getElementById('x1-speed')) return;
+    btn = document.createElement('button'); btn.id = 'x1-speed'; btn.type = 'button';
+    btn.setAttribute('aria-label', '움직임 속도 바꾸기 (S)'); btn.setAttribute('aria-keyshortcuts', 'S');
+    btn.title = '움직임 속도 1× → ½× → ¼× (S)';
+    btn.addEventListener('click', e => { e.stopPropagation(); cycle(); });
+    hud.insertBefore(btn, hud.querySelector('[data-a="full"]'));
+    badge = document.createElement('div'); badge.id = 'x1-speed-badge'; badge.hidden = true; document.body.appendChild(badge);
+    const st = document.createElement('style');
+    st.textContent = '#hud #x1-speed{width:auto;min-width:56px;padding:0 14px;border-radius:9999px;font-size:17px;font-weight:700}'
+      + '#hud #x1-speed.slow{background:#FF9F0A;color:#1d1d1f}'
+      + '#x1-speed-badge{position:fixed;left:18px;bottom:18px;z-index:51;padding:8px 16px;border-radius:9999px;background:rgba(255,159,10,.92);color:#1d1d1f;font:700 15px/1.2 Pretendard,sans-serif;pointer-events:none}'
+      + '#x1-speed-badge[hidden]{display:none}html.still #x1-speed-badge{display:none}';
+    document.head.appendChild(st);
+    const tb = document.querySelector('#help table');
+    if (tb) { const r = tb.insertRow(); r.innerHTML = '<td><kbd>S</kbd></td><td>움직임 속도 1× → ½× → ¼× · 알갱이·회전·이동이 천천히</td>'; }
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      if (e.key === 's' || e.key === 'S') { cycle(); e.preventDefault(); }
+    });
+    paint();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(mount, 0));
+  else setTimeout(mount, 0);
+
+  return { TAU, COL, cv, stars, drawStars, glow, rotY, rotX, proj, fib, dirs, sci, bulb, k, ms, clock };
 })();
 
 }catch(e){console.error("[object x1.js]",e)}
@@ -2326,8 +2368,9 @@ try{
       const W = Array.from({ length: 300 }, () => ({ a: R() * X1.TAU, r: 20 + R() * 900, s: R() * 1.6 + .5, v: .6 + R() * .8 }));
       c.sfx('whoosh', 80, 1600, .7); c.sfx('rise', 1300);
       const T0 = c.still ? 6 : 0;                                         // 정지 캡처는 별이 떠오른 뒤 모습으로
-      c.loop((t0, dt) => {
-        const t = t0 + T0;
+      const clk = X1.clock();
+      c.loop((t0, dt0) => {
+        const dt = dt0 * X1.k(), t = clk(dt0) + T0;
         g.clearRect(0, 0, 1920, 1080);
         X1.drawStars(g, BG, t, Math.min(1, t / 1.5));
         const warp = c.reduced ? 0 : Math.max(0, 1 - t / 1.9);            // 처음 2초는 빠르게, 그 뒤 천천히 떠다님
@@ -2414,7 +2457,7 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1) { c.sfx('whoosh', 0, 1800, .6); await c.tween(2200, p => { st.p = p; }, { ease: 'inOut' }); }
+      if (k === 1) { c.sfx('whoosh', 0, 1800, .6); await c.tween(X1.ms(2200), p => { st.p = p; }, { ease: 'inOut' }); }
       if (k === 2) c.sfx('pop');
     },
   });
@@ -2458,7 +2501,7 @@ try{
       if (k === 1 || k === 2) {
         const from = st.z, to = k + 1;
         c.sfx('slide', 0, 1600);
-        await c.tween(1800, p => { st.z = from + (to - from) * p; c.data.draw(); }, { ease: 'inOut' });
+        await c.tween(X1.ms(1800), p => { st.z = from + (to - from) * p; c.data.draw(); }, { ease: 'inOut' });
       }
       if (k === 3) c.sfx('pop');
       if (k === 4) { const ok = c.$(`#${S}-ok`); ok.classList.add('on'); c.a(ok, [{ transform: 'scale(1)' }, { transform: 'scale(1.08)' }, { transform: 'scale(1)' }], { dur: 600 }); c.sfx('ding'); }
@@ -2471,7 +2514,7 @@ try{
 try{
 
 (function () {
-  const S = 'x1_05_lum', SX = 560, SY = 560, RATE = 140, SPD = 520;
+  const S = 'x1_05_lum', SX = 560, SY = 560, RATE = 140, SPD = 380;
   Deck.scene(S, {
     steps: 2,
     enter(c) {
@@ -2481,8 +2524,9 @@ try{
       let carry = 0, pi = 0, lastSec = -1;
       const T0 = c.still ? 3 : 0;
       for (let i = 0; i < (c.still ? 360 : 0); i++) P.push({ d: POOL[(pi++) % POOL.length], b: T0 - i / RATE });   // 정지 캡처는 이미 퍼진 모습
-      c.loop((t0, dt) => {
-        const t = t0 + T0;
+      const clk = X1.clock();
+      c.loop((t0, dt0) => {
+        const dt = dt0 * X1.k(), t = clk(dt0) + T0;
         carry += RATE * dt;
         while (carry >= 1) { P.push({ d: POOL[(pi++) % POOL.length], b: t - (carry - 1) / RATE }); carry -= 1; }
         g.clearRect(0, 0, 1920, 1080); X1.drawStars(g, BG, t, .6);
@@ -2523,7 +2567,7 @@ try{
 try{
 
 (function () {
-  const S = 'x1_06_flux', SX = 240, SY = 560, PX = 380, H = .25, RATE = 260, SPD = 1.5;   // SPD: 1초에 1.5배 거리
+  const S = 'x1_06_flux', SX = 240, SY = 560, PX = 380, H = .25, RATE = 260, SPD = 1.1;   // SPD: 1초에 1.1배 거리
   const CA = Math.cos(30 * Math.PI / 180);
   Deck.scene(S, {
     steps: 3,
@@ -2537,9 +2581,10 @@ try{
       const st = c.data.st = { d: 1 }, P = [];
       let carry = 0, pi = 0;
       const T0 = c.still ? 4 : 0;
-      if (c.still) for (let i = 0; i < RATE * 2.2; i++) P.push({ v: POOL[(pi++) % POOL.length], b: T0 - i / RATE, hit: null });
-      c.loop((t0, dt) => {
-        const t = t0 + T0, d = st.d, wx = SX + d * PX;
+      if (c.still) for (let i = 0; i < RATE * 3.4; i++) P.push({ v: POOL[(pi++) % POOL.length], b: T0 - i / RATE, hit: null });
+      const clk = X1.clock();
+      c.loop((t0, dt0) => {
+        const dt = dt0 * X1.k(), t = clk(dt0) + T0, d = st.d, wx = SX + d * PX;
         carry += RATE * dt;
         while (carry >= 1) { P.push({ v: POOL[(pi++) % POOL.length], b: t - (carry - 1) / RATE, hit: null }); carry -= 1; }
         g.clearRect(0, 0, 1920, 1080); X1.drawStars(g, BG, t, .5);
@@ -2575,7 +2620,7 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1 || k === 2) { const from = st.d, to = k + 1; c.sfx('slide', 0, 1400); await c.tween(1600, p => { st.d = from + (to - from) * p; }, { ease: 'inOut' }); }
+      if (k === 1 || k === 2) { const from = st.d, to = k + 1; c.sfx('slide', 0, 1400); await c.tween(X1.ms(1600), p => { st.d = from + (to - from) * p; }, { ease: 'inOut' }); }
       if (k === 3) c.sfx('pop');
     },
   });
@@ -2619,7 +2664,7 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1 || k === 2) { const from = st.d, to = k + 1; c.sfx('slide', 0, 1300); await c.tween(1500, p => { st.d = from + (to - from) * p; c.data.draw(); }, { ease: 'inOut' }); }
+      if (k === 1 || k === 2) { const from = st.d, to = k + 1; c.sfx('slide', 0, 1300); await c.tween(X1.ms(1500), p => { st.d = from + (to - from) * p; c.data.draw(); }, { ease: 'inOut' }); }
       if (k === 3) c.sfx('ding');
     },
   });
@@ -2671,7 +2716,8 @@ try{
       c.data.draw();
       const FL = [];
       c.data.spray = () => { st.burst = 1; c.sfx('puff'); for (let i = 0; i < 60; i++) FL.push({ a: (R() * 2 - 1), t0: -R() * .45 }); };
-      c.loop((t, dtt) => {
+      c.loop((t, dt0) => {
+        const dtt = dt0 * X1.k();
         g.clearRect(0, 0, 1920, 1080);
         const d = st.d, wx = NX + U1 * d;
         for (let i = FL.length - 1; i >= 0; i--) {
@@ -2689,7 +2735,7 @@ try{
       const st = c.data.st;
       if (k === 1 || k === 2) {
         const from = st.d, to = k + 1; c.sfx('slide', 0, 1300);
-        await c.tween(1500, p => { st.d = from + (to - from) * p; c.data.draw(); }, { ease: 'inOut' });
+        await c.tween(X1.ms(1500), p => { st.d = from + (to - from) * p; c.data.draw(); }, { ease: 'inOut' });
         if (!c.instant) c.data.spray();
       }
       if (k === 3) c.sfx('pop');
@@ -2711,7 +2757,9 @@ try{
       const st = c.data.st = { n: 1 };
       const dEl = c.$(`#${S}-d`), cEl = c.$(`#${S}-c`), fEl = c.$(`#${S}-f`);
       const W = p => [(p[0] - 1.6) * SC, p[1] * SC, p[2] * SC];       // 세계 → 그리기 좌표(가운데로)
-      c.loop(t => {
+      const clk = X1.clock();
+      c.loop((t0, dt0) => {
+        const t = clk(dt0);
         const yaw = c.reduced || c.still ? .62 : .62 + .22 * Math.sin(t * .35);
         const cam = { yaw, pitch: .32, dist: 1900, f: 1500, cx: 820, cy: 600 };
         const P = p => X1.proj(W(p), cam);
@@ -2740,7 +2788,7 @@ try{
         /* 빛 알갱이: 같은 수가 판을 지난다 */
         g.fillStyle = '#FFD60A';
         for (const r of RAYS) {
-          const s = ((t * .45 + r.ph) % 1) * far * 1.02, p = P([r.d[0] * s / r.d[0] * 1, r.d[1] * s / r.d[0], r.d[2] * s / r.d[0]]);
+          const s = ((t * .3 + r.ph) % 1) * far * 1.02, p = P([r.d[0] * s / r.d[0] * 1, r.d[1] * s / r.d[0], r.d[2] * s / r.d[0]]);
           g.globalAlpha = .8; g.beginPath(); g.arc(p[0], p[1], 2.6, 0, X1.TAU); g.fill();
         }
         g.globalAlpha = 1;
@@ -2752,7 +2800,7 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1 || k === 2) { const from = st.n, to = k + 1; c.sfx('rise', 0); await c.tween(1500, p => { st.n = from + (to - from) * p; }, { ease: 'inOut' }); }
+      if (k === 1 || k === 2) { const from = st.n, to = k + 1; c.sfx('rise', 0); await c.tween(X1.ms(1500), p => { st.n = from + (to - from) * p; }, { ease: 'inOut' }); }
       if (k === 3) c.sfx('ding');
     },
   });
@@ -2768,7 +2816,7 @@ try{
     steps: 4,
     async go(c, k) {
       c.sfx(k === 3 ? 'pop' : k === 4 ? 'ding' : 'scan', 0, 900);
-      if (k === 2) { const b = c.$(`#${S}-big`); c.a(b, [{ transform: 'scale(.5)', transformOrigin: '220px 560px' }, { transform: 'scale(1)', transformOrigin: '220px 560px' }], { dur: 1100, ease: 'out' }); }
+      if (k === 2) { const b = c.$(`#${S}-big`); c.a(b, [{ transform: 'scale(.5)', transformOrigin: '220px 560px' }, { transform: 'scale(1)', transformOrigin: '220px 560px' }], { dur: X1.ms(1100), ease: 'out' }); }
     },
   });
 })();
@@ -2785,7 +2833,9 @@ try{
       const { g } = X1.cv(c, `#${S}-cv`), BG = X1.stars(140, 61), F = X1.fib(N);
       const rEl = c.$(`#${S}-r`), nEl = c.$(`#${S}-n`);
       const st = c.data.st = { r: 1 };
-      c.loop(t => {
+      const clk = X1.clock();
+      c.loop((t0, dt0) => {
+        const t = clk(dt0);
         const yaw = c.reduced || c.still ? .35 : .35 + .5 * Math.sin(t * .22), r = st.r;
         const cam = { yaw, pitch: .28, dist: 1700, f: 1200, cx: 660, cy: 590 };
         g.clearRect(0, 0, 1920, 1080); X1.drawStars(g, BG, t, .45);
@@ -2814,7 +2864,7 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1 || k === 2) { const from = st.r, to = k + 1; c.sfx('rise'); await c.tween(1800, p => { st.r = from + (to - from) * p; }, { ease: 'inOut' }); }
+      if (k === 1 || k === 2) { const from = st.r, to = k + 1; c.sfx('rise'); await c.tween(X1.ms(1800), p => { st.r = from + (to - from) * p; }, { ease: 'inOut' }); }
       if (k === 3) c.sfx('ding');
     },
   });
@@ -2835,9 +2885,9 @@ try{
       if (k === 4) {
         const a = c.$(`#${S}-A`), f = c.$(`#${S}-F`);
         c.sfx('rise');
-        c.a(a, [{ transform: 'scale(1)' }, { transform: 'scale(1.35)' }, { transform: 'scale(1)' }], { dur: 900 });
+        c.a(a, [{ transform: 'scale(1)' }, { transform: 'scale(1.35)' }, { transform: 'scale(1)' }], { dur: X1.ms(900) });
         await c.wait(400);
-        c.a(f, [{ transform: 'scale(1)' }, { transform: 'scale(.62)' }, { transform: 'scale(1)' }], { dur: 900 });
+        c.a(f, [{ transform: 'scale(1)' }, { transform: 'scale(.62)' }, { transform: 'scale(1)' }], { dur: X1.ms(900) });
       }
     },
   });
@@ -2873,8 +2923,9 @@ try{
     enter(c) {
       const { g } = X1.cv(c, `#${S}-cv`), BG = X1.stars(160, 71), R = U.rng(8);
       const GR = Array.from({ length: 260 }, () => { const a = R() * X1.TAU, r = Math.sqrt(R()) * RS * .96; return { x: CX + Math.cos(a) * r, y: CY + Math.sin(a) * r, s: 10 + R() * 18, ph: R() * X1.TAU, sp: .6 + R() }; });
-      c.loop(t0 => {
-        const t = c.reduced || c.still ? 1 : t0;
+      const clk = X1.clock();
+      c.loop((t00, dt0) => {
+        const t0 = clk(dt0), t = c.reduced || c.still ? 1 : t0;
         g.clearRect(0, 0, 1920, 1080); X1.drawStars(g, BG, t, .5);
         X1.glow(g, CX, CY, RS * 2.3, 'rgba(255,170,40,.20)', 1, 'rgba(255,220,140,.5)');
         const body = g.createRadialGradient(CX - 40, CY - 40, RS * .1, CX, CY, RS);
@@ -2894,7 +2945,7 @@ try{
       if (k === 1) c.sfx('rise');
       if (k === 2) {
         const el = c.$(`#${S}-dig`); c.sfx('counter', 0, 1600);
-        await c.tween(1700, p => { el.textContent = DIG.slice(0, Math.max(1, Math.round(DIG.length * p))); }, { ease: 'linear' });
+        await c.tween(X1.ms(1700), p => { el.textContent = DIG.slice(0, Math.max(1, Math.round(DIG.length * p))); }, { ease: 'linear' });
       }
       if (k === 3) c.sfx('ding');
     },
@@ -2913,8 +2964,9 @@ try{
       const { g } = X1.cv(c, `#${S}-cv`), BG = X1.stars(200, 81);
       const st = c.data.st = { sph: 0, hi: 0 };
       const LAT = [-60, -30, 0, 30, 60], LON = Array.from({ length: 12 }, (_, i) => i * 15);
-      c.loop(t0 => {
-        const t = c.reduced || c.still ? 2 : t0;
+      const clk = X1.clock();
+      c.loop((t00, dt0) => {
+        const t0 = clk(dt0), t = c.reduced || c.still ? 2 : t0;
         const cam = { yaw: .5 + t * .06, pitch: .42, dist: 1600, f: 1200, cx: 600, cy: 610 };
         const P = p => X1.proj(p, cam);
         g.clearRect(0, 0, 1920, 1080); X1.drawStars(g, BG, t, .5);
@@ -2942,7 +2994,7 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1) { c.sfx('rise'); await c.tween(1400, p => { st.sph = p; }); }
+      if (k === 1) { c.sfx('rise'); await c.tween(X1.ms(1400), p => { st.sph = p; }); }
       if (k === 2) c.sfx('pop');
       if (k === 3) { c.sfx('ding'); await c.tween(600, p => { st.hi = p; }); }
     },
@@ -2961,7 +3013,7 @@ try{
     build(root) { root.querySelector(`#${S}-bulbs`).innerHTML = Array.from({ length: 14 }, () => `<span class="bb">${B(false)}</span>`).join(''); },
     async go(c, k) {
       if (k === 1) c.sfx('slide');
-      if (k === 2) await c.count(c.$(`#${S}-n`), 0, 1361, { dur: 1600 });
+      if (k === 2) await c.count(c.$(`#${S}-n`), 0, 1361, { dur: X1.ms(1600) });
       if (k === 3) c.sfx('pop');
       if (k === 4) {
         const bs = c.$$(`#${S}-bulbs .bb`);
@@ -2970,7 +3022,7 @@ try{
           bs[i].innerHTML = B(true); bs[i].querySelector('.h').setAttribute('opacity', (.85 * part).toFixed(2));
           if (part < 1) bs[i].querySelector('.gl').setAttribute('fill', '#f7eec4');
           if (!c.instant) c.sfx('tick', 0, 1 + i * .04);
-          await c.wait(110);
+          await c.wait(X1.ms(110));
         }
         c.sfx('ding', 100);
       }
@@ -3012,7 +3064,7 @@ try{
     async go(c, k) {
       const i = TOUR[k], to = c.data.show(i), from = c.data.cur;
       const fmt = v => v >= 100 ? Math.round(v).toLocaleString('ko-KR') : v >= 10 ? Math.round(v) + '' : v.toFixed(1);
-      await c.count(c.$(`#${S}-f`), from, to, { dur: 1300, fmt });
+      await c.count(c.$(`#${S}-f`), from, to, { dur: X1.ms(1300), fmt });
       c.data.cur = to;
     },
   });
@@ -3029,8 +3081,9 @@ try{
     enter(c) {
       const { g } = X1.cv(c, `#${S}-cv`), BG = X1.stars(160, 91), FB = X1.fib(900);
       const ex = SX + RR, ey = SY;                                  // 껍질 위 지구 자리
-      c.loop(t0 => {
-        const t = c.reduced || c.still ? 2 : t0;
+      const clk = X1.clock();
+      c.loop((t00, dt0) => {
+        const t0 = clk(dt0), t = c.reduced || c.still ? 2 : t0;
         g.clearRect(0, 0, 1920, 1080); X1.drawStars(g, BG, t, .5);
         g.save(); g.beginPath(); g.rect(0, 300, 1060, 780); g.clip();
         for (const d of FB) {                                       // 큰 공 껍질의 앞쪽(옆에서 본 모습)
@@ -3063,8 +3116,9 @@ try{
     enter(c) {
       const { g } = X1.cv(c, `#${S}-cv`), BG = X1.stars(200, 21);
       const st = c.data.st = { sh: 0, big: 0, dim: 1 };
-      c.loop(t0 => {
-        const t = c.reduced || c.still ? 1 : t0;
+      const clk = X1.clock();
+      c.loop((t00, dt0) => {
+        const t0 = clk(dt0), t = c.reduced || c.still ? 1 : t0;
         g.clearRect(0, 0, 1920, 1080);
         g.globalAlpha = st.dim; X1.drawStars(g, BG, t, .45); g.globalAlpha = 1;
         const D = st.dim;
@@ -3092,8 +3146,8 @@ try{
     },
     async go(c, k) {
       const st = c.data.st;
-      if (k === 1) { c.sfx('rise'); await c.tween(1200, p => { st.sh = p; }); }
-      if (k === 2) { c.sfx('ding'); await c.tween(1200, p => { st.big = p; }, { ease: 'spring' }); }
+      if (k === 1) { c.sfx('rise'); await c.tween(X1.ms(1200), p => { st.sh = p; }); }
+      if (k === 2) { c.sfx('ding'); await c.tween(X1.ms(1200), p => { st.big = p; }, { ease: 'spring' }); }
       if (k === 3) { c.sfx('chime'); await c.tween(700, p => { st.dim = 1 - p; }); }
       if (k === 4) c.sfx('rise');
     },
