@@ -1244,7 +1244,7 @@ function setBg(tab){
 function fit(cv){
   const dpr=Math.min(devicePixelRatio||1,2.5);
   const w=cv.clientWidth||cv.parentElement.clientWidth||320;
-  const h=parseInt(cv.getAttribute('height'))||300;
+  const h=+(cv.dataset.h||(cv.dataset.h=parseInt(cv.getAttribute('height'))||300));
   cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
   const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w,h};
 }
@@ -2847,6 +2847,65 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('gui
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',count);else count();
  document.addEventListener('visibilitychange',function(){if(!document.hidden)count();});
 }catch(e){}})();
+</script>
+<style id="read-first-style">.panel > *{scroll-margin-top:170px}</style>
+<script id="read-first">
+/* 📖 위에서부터 읽고 내려가기 — 「그 자리로 데려다줘」·「아직 안 한 곳으로」가 위의 설명을 건너뛰지 않게.
+   단계 본문 덩어리(제목·머리말·카드)가 화면에 충분히 머물렀거나(글자 수에 맞춰 1.5~6초) 그 안을 눌렀으면 '읽음'.
+   데려다줄 곳보다 위에 안 읽은 덩어리가 있으면 그 덩어리로 먼저 데려가고, 단추 글자도 바꾼다. */
+(function(){
+ if(typeof gotoUndone!=='function'||typeof undoneTarget!=='function'||typeof openGuide!=='function')return;
+ S.readB=S.readB||{};
+ var SKIP='.stepline,.cta-row,.msn-banner,script,style,template';
+ function blocks(p){return Array.prototype.filter.call(p.children,function(el){
+  return !el.matches(SKIP)&&(el.textContent||'').replace(/\s+/g,'').length>=6;});}
+ function key(p,el){var i=blocks(p).indexOf(el);return i<0?'':p.id+':'+i;}
+ function isRead(p,el){if(!el.offsetHeight)return true;var k=key(p,el);return !k||!!S.readB[k];}
+ function mark(p,el){var k=key(p,el);if(!k||S.readB[k])return;S.readB[k]=1;try{save();}catch(e){}}
+ function need(el){var n=(el.textContent||'').replace(/\s+/g,'').length;return Math.max(1500,Math.min(6000,n*25));}
+ var acc=new WeakMap();
+ function visEnough(el){var r=el.getBoundingClientRect(),vh=innerHeight,top=Math.max(r.top,0),bot=Math.min(r.bottom,vh),v=Math.max(0,bot-top);
+  return v>=Math.min(r.height*0.5,vh*0.4);}
+ var last=Date.now();
+ setInterval(function(){
+  var now=Date.now(),dt=Math.min(now-last,1000);last=now;
+  if(document.hidden||document.body.classList.contains('cover-on'))return;
+  var g=document.getElementById('guide');if(g&&g.classList.contains('show'))return;
+  var p=document.querySelector('.panel.show');if(!p)return;
+  blocks(p).forEach(function(el){if(isRead(p,el)||!visEnough(el))return;
+   var a=(acc.get(el)||0)+dt;acc.set(el,a);if(a>=need(el))mark(p,el);});
+ },400);
+ document.addEventListener('pointerdown',function(e){var p=e.target.closest&&e.target.closest('.panel');if(!p)return;
+  var b=blocks(p).filter(function(el){return el.contains(e.target);})[0];if(b)mark(p,b);},true);
+ /* 할 일 자리를 낱말 맞추기로 찾다 빗나가는 일이 있어, data-goto="미션 이름의 일부" 를 단 곳이 있으면 그쪽이 이긴다 */
+ var _ut=undoneTarget;
+ undoneTarget=function(tab){var t=_ut(tab);
+  try{var p=document.getElementById('panel-'+tab);if(t&&p){var hit=Array.prototype.filter.call(p.querySelectorAll('[data-goto]'),function(e){return String(t.label).indexOf(e.dataset.goto)>=0;})[0];if(hit)t.el=hit;}}catch(e){}
+  return t;};
+ function firstUnread(tab){
+  var p=document.getElementById('panel-'+tab);if(!p)return null;
+  var t=undoneTarget(tab);if(!t||!t.el)return null;
+  var bl=blocks(p),ti=bl.length;
+  for(var i=0;i<bl.length;i++){if(bl[i]===t.el||bl[i].contains(t.el)){ti=i;break;}}
+  for(var j=0;j<ti;j++)if(!isRead(p,bl[j]))return {el:bl[j],label:t.label};
+  return null;}
+ var _go=gotoUndone;
+ gotoUndone=function(tab){
+  var u=null;try{u=firstUnread(tab);}catch(e){}
+  if(!u)return _go(tab);
+  try{u.el.scrollIntoView({block:'start',behavior:(typeof reduceMotion!=='undefined'&&reduceMotion)?'auto':'smooth'});}catch(e){u.el.scrollIntoView();}
+  u.el.classList.remove('goto-flash');void u.el.offsetWidth;u.el.classList.add('goto-flash');
+  setTimeout(function(){u.el.classList.remove('goto-flash');},2000);
+  var lab=String(u.label).replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'').replace(/ → 제출$/,'');
+  toast('📖 여기부터 읽으며 내려가요 — 다 읽으면 <b>'+lab+'</b> 자리가 나와요');
+ };
+ var _og=openGuide;
+ openGuide=function(tab){
+  var r=_og.apply(this,arguments);
+  try{var b=document.getElementById('guideGo'),u=firstUnread(tab||S.tab);
+   b.textContent=u?'📖 읽을 곳부터 데려다줘':'🧭 그 자리로 데려다줘';}catch(e){}
+  return r;};
+})();
 </script>
 </body>
 </html>

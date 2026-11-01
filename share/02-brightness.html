@@ -758,6 +758,57 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 #guide .gd-list li.on span{color:#1d7a34}
 #guide .gd-list li.cur span{color:#0b3d91;font-weight:700}
 </style>
+<style id="vlab-style">
+.vlab{border:1px solid var(--line);border-radius:14px;padding:12px 14px 10px;background:rgba(7,13,28,.55)}
+.vl-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vl-head h3{margin:0;font-size:clamp(18px,2.4vw,21px)}
+.vl-how{margin:8px 0 10px;padding-left:22px;font-size:15px;line-height:1.6;color:var(--ink-dim)}
+.vl-how b{color:var(--ink)}
+.vl-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:12px;align-items:start}
+.vl-bench,.vl-graph{background:#050a17;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.vl-bench canvas,.vl-graph canvas{display:block;width:100%}
+.vl-bench canvas{cursor:ew-resize}.vl-graph canvas{cursor:crosshair}
+.vl-ctl{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;margin-top:10px}
+.vl-dist{display:flex;flex-direction:column;gap:6px;font-size:15px;font-weight:700;color:var(--ink)}
+.vl-dist b{color:#ff8fb1}
+.vl-dist span{white-space:nowrap}
+.vl-dist input{width:100%}
+.vl-read{display:flex;align-items:baseline;gap:5px;padding:7px 12px;border-radius:10px;border:1px solid rgba(103,232,224,.5);background:rgba(103,232,224,.08)}
+.vl-read span{font-size:13px;font-weight:700;color:var(--ink-dim)}
+.vl-read b{font-size:22px;color:#67e8e0;font-variant-numeric:tabular-nums;min-width:3.4em;text-align:right}
+.vl-read small{font-size:13px;color:var(--ink-dim)}
+.vl-cond{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:14px;color:var(--ink-dim)}
+.vl-cond .wsref{margin:0}
+.vl-cond b{color:var(--ink)}
+.vl-tog{font:inherit;font-size:14px;font-weight:700;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:#0e1730;color:var(--ink);cursor:pointer}
+.vl-tog.warn{border-color:#ff8fb1;color:#ffb3c8;background:rgba(255,143,177,.12)}
+table.dtable.vl-table{width:100%;min-width:0;font-size:14px;margin:0 0 8px;border:1px solid var(--line);border-radius:10px;background:#0e1830}
+.vl-table th{font-size:12.5px;line-height:1.25;padding:6px 5px;white-space:nowrap}
+.vl-table td{padding:5px 5px;text-align:center;line-height:1.3;white-space:nowrap}
+.vl-table td.dist{text-align:left;white-space:nowrap;font-weight:700}
+.vl-table td small,.vl-table .ratio small{display:inline;margin-left:4px;font-size:11.5px;color:var(--ink-dim);font-weight:600}
+.vl-table tr.here td{background:rgba(255,143,177,.10)}
+.vl-table tr.opt td{opacity:.85}
+.vl-table .vl-now{color:#ffd166;white-space:nowrap}
+.vl-table .vl-warn{color:#ffb3c8}
+.vl-gbtn{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.vl-msg{margin:10px 0 0;font-size:15.5px}
+.vl-real summary{cursor:pointer;font-weight:800;font-size:17px;color:var(--ink)}
+.vlab.vl-max{position:fixed;inset:0;z-index:1000;border-radius:0;overflow:auto;background:#0b1226;padding:14px 18px}
+body.vl-maxed{overflow:hidden}
+.vlab.vl-max .vl-how{display:none}
+.panel > *{scroll-margin-top:170px}
+@media (max-width:900px){
+ .vl-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);grid-template-areas:"bench bench" "ctl ctl" "cond cond" "table graph" "table gbtn";gap:10px 12px}
+ .vl-left,.vl-right{display:contents}
+ .vl-bench{grid-area:bench}.vl-ctl{grid-area:ctl;margin-top:0}.vl-cond{grid-area:cond;margin-top:0}
+ #mTable{grid-area:table;align-self:start}.vl-graph{grid-area:graph}.vl-gbtn{grid-area:gbtn;margin-top:0}
+}
+@media (max-width:560px){
+ .vl-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"bench" "ctl" "cond" "table" "graph" "gbtn"}
+ .vl-ctl{grid-template-columns:1fr auto}.vl-ctl .vl-dist{grid-column:1/-1}
+}
+</style>
 </head>
 <body><script id="hub-sso">
 /* 🎒 과학시간 허브(질문나무 계정)로 로그인돼 있으면 관문 없이 혼자 탐구 — elec_stu 를 만들어 둔다 */
@@ -922,9 +973,9 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
 <section class="panel" id="panel-explore">
   <div class="stepline"><span class="sbadge">STEP 2</span><span class="swhat">탐구하기 · 예측 → 측정 → 설명</span></div>
   <h2 class="sec">거리를 2배로 하면, 밝기는 몇 배가 될까?</h2>
-  <p class="lead">재어 보기 전에 — 먼저 예측부터. 이 예측이 빗나가는 것이 오늘 수업의 핵심입니다.</p>
+  <p class="lead">재어 보기 전에 — 먼저 예측부터. 그다음 가상 실험실에서 센서를 옮기며 직접 재고, 그래프에 점을 찍어 확인합니다.</p>
 
-  <div class="card" style="margin-top:20px">
+  <div class="card" style="margin-top:20px" data-goto="예측">
     <div class="badge" style="margin-bottom:12px">🔮 ① 예측 (Predict)</div>
     <h3 class="card-t">광원에서 <span class="t4">거리를 2배</span>로 멀리하면, 그 자리의 <span class="t2">빛의 세기</span>는?</h3>
     <div class="choices" id="poeChoices">
@@ -933,62 +984,74 @@ body.solo .mode-now{color:var(--m-primary-deep,#0457cb);background:#e8f0fc;borde
       <button class="choice" data-poe="c"><span class="key">다</span>거의 변하지 않는다</button>
     </div>
     <div class="explain" id="poeExplain"></div>
-    <p class="help">대부분 '가'를 고릅니다. 그게 자연스러운 직관이에요. 이제 실제로 재어 봅시다.</p>
+    <p class="help">대부분 '가'를 고릅니다. 그게 자연스러운 직관이에요. 이제 가상 실험실에서 재어 봅시다.</p>
     <div class="note class"><span class="ic">💬</span><div><b>교실 연결</b> — 손을 들어 예측을 <b>집계</b>하고 칠판에 적어 두세요. 측정 후 다시 그 숫자를 보게 하면 인지 갈등이 훨씬 강하게 남습니다.</div></div>
   </div>
 
-  <!-- 실측 실험실 -->
-  <div class="card" style="margin-top:18px">
-    <div class="badge" style="margin-bottom:12px">📏 ② 측정 (Observe)</div>
-    <div class="lab">
-      <h3>🔬 광원으로부터의 거리에 따른 빛의 세기</h3>
-      <p class="lead" style="font-size:17px">교과서 탐구입니다. 스마트 기기의 <b>조도 측정 앱</b>을 조도계로 씁니다.</p>
-      <ol class="steps-how">
-        <li>줄자 끝에 <b>광원 장치</b>를 놓고, 스마트 기기에서 <b>조도 측정 앱</b>을 실행합니다.</li>
-        <li><b>주변을 어둡게</b> 한 뒤, 광원에서 <b class="t4">20 cm</b> 거리에 기기를 두고 빛의 세기를 잽니다.</li>
-        <li>같은 방법으로 <b class="t4">40 cm</b>(2배), <b class="t4">60 cm</b>(3배)에서도 재어 아래 표에 적습니다.</li>
-        <li>비율은 <b>자동으로 계산</b>됩니다. 20 cm에서 잰 값을 기준(1)으로 삼아요.</li>
+  <!-- 가상 실험실 -->
+  <div class="card" style="margin-top:18px" data-goto="가상 실험">
+    <div class="badge" style="margin-bottom:12px">🔬 ② 가상 실험 (Observe)</div>
+    <div class="vlab" id="vlab">
+      <div class="vl-head">
+        <h3>🔬 가상 실험실 · 측정하고 점 찍기</h3>
+        <button type="button" class="btn ghost sm" id="vlMax" aria-pressed="false">⛶ 크게 보기</button>
+      </div>
+      <ol class="vl-how">
+        <li><b>센서</b>를 끌거나 막대를 움직여 <b>20 cm</b>에 두고 <b>📝 기록</b>을 누릅니다.</li>
+        <li>같은 방법으로 <b>40 cm</b>(2배), <b>60 cm</b>(3배)에서도 잽니다. 80 cm(4배)는 더 해 보기예요.</li>
+        <li>표에 <b>📍 찍기</b>가 뜨면 그래프에서 그 값의 자리를 <b>눌러 점을 찍습니다</b>.</li>
       </ol>
-      <div class="note" style="margin-top:12px"><span class="ic">🎛️</span><div><span class="wsref">학습지 4~5</span><br><b>같게 할 조건</b> — 광원의 밝기, 센서(기기)가 빛을 받는 방향<br><b>바꿀 조건</b> — 광원까지의 거리 하나만</div></div>
+      <div class="vl-grid">
+        <div class="vl-left">
+          <div class="vl-bench"><canvas id="vlBench" height="200" data-fs-done="1" role="img" aria-label="광원과 빛 센서가 놓인 실험대. 센서를 좌우로 끌어 거리를 바꾼다"></canvas></div>
+          <div class="vl-ctl">
+            <label class="vl-dist"><span>센서까지의 거리 <b id="vlDv">20 cm</b></span>
+              <input type="range" id="vlD" min="10" max="90" step="5" value="20" aria-label="광원에서 센서까지의 거리(cm)"></label>
+            <div class="vl-read"><span>빛의 세기</span><b id="vlLx">0</b><small>lx</small></div>
+            <button type="button" class="btn primary" id="vlRec">📝 기록</button>
+          </div>
+          <div class="vl-cond">
+            <span class="wsref">학습지 4~5</span>
+            <span><b>바꿀 조건</b> 📏 거리</span>
+            <span><b>같게 할 조건</b> 💡 광원의 밝기 ·</span>
+            <button type="button" class="vl-tog" id="vlDir" aria-pressed="false">📱 센서 방향: 광원 쪽 정면</button>
+          </div>
+        </div>
+        <div class="vl-right">
+          <table class="dtable vl-table" id="mTable"></table>
+          <div class="vl-graph"><canvas id="gcv" height="210" data-fs-done="1" role="img" aria-label="거리와 빛의 세기 그래프. 기록한 값의 자리를 눌러 점을 찍는다"></canvas></div>
+          <div class="vl-gbtn">
+            <button type="button" class="btn ghost sm" id="vlTheory" aria-pressed="false">〰️ 예측 선</button>
+            <button type="button" class="btn ghost sm" id="vlAuto">🤖 대신 찍기</button>
+            <button type="button" class="btn ghost sm" id="clearBtn">↺ 처음부터</button>
+          </div>
+        </div>
+      </div>
+      <p class="help vl-msg" id="fitMsg">센서를 20 cm에 두고 📝 기록부터 눌러 보세요.</p>
+    </div>
+    <p class="honest"><span class="ic">📌</span>가상 실험실의 값은 실제 광원과 센서의 원리대로 계산하고, 실제 센서처럼 조금씩 흔들리게 했어요. 그림 속 광원과 센서의 크기는 실제 비율이 아닙니다.</p>
+  </div>
+
+  <div class="card vl-real" style="margin-top:16px">
+    <details>
+      <summary>🏫 교실에서 실제로 재어 볼 때 (선택)</summary>
+      <ol class="steps-how" style="margin-top:12px">
+        <li>줄자 끝에 <b>광원 장치</b>를 놓고, 스마트 기기에서 <b>조도 측정 앱</b>을 실행합니다.</li>
+        <li><b>주변을 어둡게</b> 한 뒤, 광원에서 <b>20 cm</b> 거리에 기기를 두고 빛의 세기를 잽니다.</li>
+        <li>같은 방법으로 <b>40 cm</b>(2배), <b>60 cm</b>(3배)에서도 재어 표로 정리합니다.</li>
+      </ol>
       <div class="note" style="border-color:var(--danger);background:rgba(255,93,108,.07)">
         <span class="ic">🥽</span><div><b>안전</b> — 주변을 어둡게 한 상태에서 밝은 광원을 켜므로 눈부심 사고가 날 수 있습니다.
         광원을 직접 들여다보지 말고, 필요하면 보안경을 씁니다.</div></div>
-
-      <div class="dtable-wrap">
-        <table class="dtable" id="mTable">
-          <tr><th>거리</th><th>빛의 세기 (lx)</th><th>20 cm일 때에 대한 비</th></tr>
-        </table>
-      </div>
-      <div class="btn-row">
-        <button class="btn ghost sm" id="sampleBtn">예시 데이터 넣기</button>
-        <button class="btn ghost sm" id="clearBtn">지우기</button>
-        <button class="btn ghost sm" id="copyBtn">표 복사</button>
-      </div>
-      <p class="help">조도계 앱이 없거나 시간이 부족하면 <b class="k">예시 데이터</b>로 진행해도 됩니다(교과서 예시값).</p>
-
-      <div class="graph-wrap"><canvas id="gcv" height="240"></canvas></div>
-      <div class="legend">
-        <span><i style="background:#ffd166"></i>내가 잰 값</span>
-        <span><i style="background:#67e8e0"></i>거리의 제곱에 반비례할 때 예상되는 값</span>
-      </div>
-      <p class="help" id="fitMsg">값을 넣으면 두 선이 겹치는지 확인할 수 있어요.</p>
-
       <div class="note class"><span class="ic">💬</span><div><b>탐구 지도 유의점</b> — ① 조도계가 없으면 조도 측정 앱을 설치한 스마트 기기를 씁니다. ② 다른 모둠 광원의 영향을 받지 않도록 자리를 배치하세요. ③ 광원은 점광원에 가까운 작은 것을, 광원과 조도계는 일직선상에 둡니다. ④ 여러 번 재어 평균을 내면 결과가 깔끔합니다.</div></div>
-    </div>
-
-    <!-- 다르게 해 보기 -->
-    <div class="card" style="margin-top:16px;background:rgba(154,230,110,.05);border-color:#3a5e3a">
-      <h3 class="card-t">🧪 다르게 해 보기 — 조도계 없이도 됩니다</h3>
-      <p class="lead" style="font-size:17.5px;margin-top:8px">
-        종이컵 바닥에 <b>작은 정사각형 구멍</b>을 뚫어 광원에 붙입니다.
-        그 빛이 모눈종이의 <b class="t3">1칸</b>, <b class="t3">4칸</b>, <b class="t3">9칸</b>을 비출 때
-        밝기가 어떻게 달라지는지 눈으로 관찰합니다.</p>
+      <h4 style="margin:16px 0 6px">🧪 조도계 없이 — 종이컵과 모눈종이</h4>
+      <p class="lead" style="font-size:17px">종이컵 바닥에 <b>작은 정사각형 구멍</b>을 뚫어 광원에 붙입니다.
+        그 빛이 모눈종이의 <b class="t3">1칸</b>, <b class="t3">4칸</b>, <b class="t3">9칸</b>을 비출 때 밝기가 어떻게 달라지는지 눈으로 관찰합니다.</p>
       <figure class="fig" data-fig="grid"
         data-alt="광원에서 나온 사각형 빛이 거리에 따라 모눈종이의 1칸, 4칸, 9칸을 비추는 모습"
         data-cap="같은 양의 빛이 1칸 → 4칸 → 9칸으로 넓게 퍼진다. 한 칸이 받는 빛은 그만큼 줄어든다."></figure>
-      <p class="help">빛의 총량은 그대로인데 비추는 <b class="t3">면적</b>만 넓어집니다. 그래서 한 칸이 받는 밝기가 줄어드는 거예요.</p>
       <div class="note class"><span class="ic">💬</span><div><b>지도 방안</b> — 검은색으로 감싼 종이컵 바닥에 정사각형 구멍을 작게 뚫어 스마트 기기 광원 부위에 붙입니다. 구멍 뚫을 때 다치지 않도록 주의시키세요. 면적과 밝기를 먼저 이야기하게 한 뒤 거리와 연결합니다.</div></div>
-    </div>
+    </details>
   </div>
 
   <div class="card" style="margin-top:18px">
@@ -1578,7 +1641,7 @@ function setBg(tab){
 function fit(cv){
   const dpr=Math.min(devicePixelRatio||1,2.5);
   const w=cv.clientWidth||cv.parentElement.clientWidth||320;
-  const h=parseInt(cv.getAttribute('height'))||240;
+  const h=+(cv.dataset.h||(cv.dataset.h=parseInt(cv.getAttribute('height'))||240));
   cv.style.height=h+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
   const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
   return {ctx,w,h};
@@ -1603,12 +1666,12 @@ let CLOZE_TOTAL=0;
 function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));}catch(e){}}
 function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch(e){return null;}}
 
-function measCount(){return DISTS.filter(d=>+S.meas[d]>0).length;}
+function measCount(){return DISTS.filter(d=>+S.meas[d]>0&&(S.plot||{})[d]&&(S.mdir||{})[d]!=='t').length;}
 function progChecks(){
   return [
     {label:'1단계 열어 보기',            ok:!!S.visited.engage},
     {label:'2단계 · 결과 예측하기',      ok:!!S.poe},
-    {label:'2단계 · 세 거리 모두 측정',  ok:measCount()>=3},
+    {label:'2단계 · 가상 실험 — 20·40·60 cm 측정·점 찍기',  ok:measCount()>=3},
     {label:'2단계 · 실험 조건 퀴즈',     ok:!!S.mini.explore},
     {label:'3단계 · 빈칸 모두 채우기',   ok:CLOZE_TOTAL>0&&Object.keys(S.cloze).length>=CLOZE_TOTAL},
     {label:'3단계 · 거리와 밝기 퀴즈',   ok:!!S.mini.explain},
@@ -1694,7 +1757,7 @@ function showTab(id,noScroll,force){
   $('#panel-'+id).classList.add('show');
   $$('#tabNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
   setBg(id); S.tab=id; S.visited[id]=true; save(); updateProgress();
-  if(id==='explore')requestAnimationFrame(drawGraph);
+  if(id==='explore')requestAnimationFrame(()=>{drawBench();drawGraph();});
   if(id==='explain'&&window.__spreadResize)window.__spreadResize();
   if(!noScroll)scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
 }
@@ -2299,108 +2362,223 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('gui
   if(S.poe)lock(S.poe);
 })();
 
-/* 실측 표 + 그래프 */
+/* ═══════════ 🔬 가상 실험실 — 거리에 따른 빛의 세기 ═══════════
+   센서 값 = K × 방향 계수 ÷ 거리² (실제 센서처럼 ±0.8% 흔들림)
+   방향 계수: 광원 쪽 정면 1, 60° 비스듬히 cos60° = 0.5 (평평한 센서가 받는 빛)
+   표 = 20·40·60·80 cm(1·2·3·4배). 기록한 값은 학생이 그래프를 눌러 점을 찍는다. */
+S.plot=S.plot||{};S.mdir=S.mdir||{};
+const VL_ROWS=[20,40,60,80], VL_K=900000, VL_YMAX=2500, VL_TOL=24;
+let vlD=20, vlTilt=false, vlLx=0, vlMiss=null, vlMissN=0, vlTheory=false;
+const vlFmt=n=>Math.round(n).toLocaleString('ko-KR');
+function vlRead(){
+  const j=1+(Math.random()*2-1)*0.008;
+  vlLx=Math.round(VL_K*(vlTilt?0.5:1)/(vlD*vlD)*j);
+  const el=$('#vlLx');if(el)el.textContent=vlFmt(vlLx);
+}
+function vlNext(){return VL_ROWS.find(d=>+S.meas[d]>0&&!S.plot[d]);}
 function fracLabel(r){
   if(!isFinite(r)||r<=0)return '';
   const cands=[[1,1],[1,2],[1,3],[1,4],[1,6],[1,9],[1,16]];
   let best=null,bd=1e9;
   cands.forEach(([a,b])=>{const d=Math.abs(r-a/b); if(d<bd){bd=d;best=[a,b];}});
-  if(bd>0.09)return '';
+  if(bd>0.03)return '';
   return best[1]===1?'≈ 1':`≈ ${best[0]}/${best[1]}`;
 }
 function renderTable(){
-  const t=$('#mTable');
-  t.innerHTML='<tr><th>거리</th><th>빛의 세기 (lx)</th><th>20 cm일 때에 대한 비</th></tr>'+
-    DISTS.map(d=>`<tr><td class="dist">${d} cm</td>
-      <td><input type="number" inputmode="decimal" min="0" step="0.1" data-d="${d}" value="${S.meas[d]??''}" placeholder="—"></td>
-      <td class="ratio" data-r="${d}">—</td></tr>`).join('');
-  $$('#mTable input').forEach(inp=>{
-    inp.addEventListener('input',()=>{
-      const d=inp.dataset.d, v=parseFloat(inp.value);
-      if(isFinite(v)&&v>0)S.meas[d]=v; else delete S.meas[d];
-      save(); updateRatios(); drawGraph(); updateProgress();
-      if(measCount()===3)toast('세 거리 모두 측정 완료! 아래 그래프에서 두 선을 비교해 보세요 📈','good');
-    });
-  });
+  const t=$('#mTable');if(!t)return;
+  const nx=vlNext(), b=+S.meas[20];
+  t.innerHTML='<tr><th>거리</th><th>빛의 세기(lx)</th><th>20 cm 대비</th><th>점</th></tr>'+
+    VL_ROWS.map((d,i)=>{
+      const v=+S.meas[d], tilt=S.mdir[d]==='t', r=(v&&b)?v/b:0;
+      const pt=!v?'':(S.plot[d]?'✅':(d===nx?'<b class="vl-now">📍 찍기</b>':'📍'));
+      return `<tr class="${d===vlD?'here':''}${d===80?' opt':''}"><td class="dist">${d} cm<small>${i+1}배</small></td>`+
+        `<td>${v?vlFmt(v)+(tilt?'<small class="vl-warn">비스듬히</small>':''):'—'}</td>`+
+        `<td class="ratio">${r?r.toFixed(2)+'<small>'+fracLabel(r)+'</small>':'—'}</td><td class="pt">${pt}</td></tr>`;
+    }).join('');
   updateRatios();
 }
 function updateRatios(){
-  const base=+S.meas[DISTS[0]];
-  DISTS.forEach(d=>{
-    const cell=$(`[data-r="${d}"]`); if(!cell)return;
-    const v=+S.meas[d];
-    if(!base||!v){cell.innerHTML='—';return;}
-    const r=v/base;
-    cell.innerHTML=`${r.toFixed(2)}<small>${fracLabel(r)}</small>`;
-  });
-  const msg=$('#fitMsg');
-  if(measCount()<3){msg.textContent='값을 넣으면 두 선이 겹치는지 확인할 수 있어요.';return;}
-  const base2=+S.meas[20];
-  const dev=DISTS.map(d=>Math.abs((+S.meas[d]/base2)-(400/(d*d))));
-  const maxDev=Math.max(...dev);
-  msg.innerHTML= maxDev<0.12
-    ? '✅ 잰 값이 <b>거리의 제곱에 반비례</b>하는 예상값과 거의 겹칩니다. 규칙을 확인했어요!'
-    : '두 선이 조금 어긋났네요. 주변이 충분히 어두웠는지, 광원과 조도계가 일직선인지 확인하고 다시 재어 보세요.';
+  const msg=$('#fitMsg');if(!msg)return;
+  const mixed=VL_ROWS.some(d=>+S.meas[d]>0&&S.mdir[d]==='t');
+  const need=[20,40,60].filter(d=>!(+S.meas[d]>0)), nx=vlNext();
+  if(mixed)msg.innerHTML='⚠️ <b>센서를 비스듬히 두고 잰 값</b>이 섞여 있어요. 방향까지 바뀌면 값이 거리 때문에 달라졌는지 알 수 없어요. 센서를 <b>광원 쪽 정면</b>으로 돌려 그 거리에서 다시 기록하세요.';
+  else if(nx)msg.innerHTML='📍 그래프에서 <b>가로 '+nx+' cm</b>, <b>세로 '+vlFmt(+S.meas[nx])+' lx</b> 자리를 눌러 점을 찍으세요.';
+  else if(need.length)msg.innerHTML='센서를 <b>'+need[0]+' cm</b>에 두고 <b>📝 기록</b>을 누르세요.';
+  else if(!S.plot[80])msg.innerHTML='✅ 20·40·60 cm 점을 다 찍었어요. 표의 <b>「20 cm 대비」</b>를 보고, 예측 <b>가(1/2배)</b>와 <b>나(1/4배)</b> 중 어느 쪽이 맞았는지 확인해요. 80 cm(4배)도 재어 보면 줄어드는 모양이 더 잘 보여요.';
+  else msg.innerHTML='✅ 네 점을 다 찍었어요. 점을 이은 선은 <b>직선이 아니라 곡선</b>이에요. 〰️ 예측 선을 눌러 예측 가·나와 견주어 보세요.';
+}
+/* 실험대 */
+const vlBX=w=>({x0:58,x1:w-26});
+function drawBench(){
+  const cv=$('#vlBench');if(!cv||!cv.clientWidth)return;
+  const {ctx,w,h}=fit(cv);ctx.clearRect(0,0,w,h);
+  const {x0,x1}=vlBX(w), px=d=>x0+d/100*(x1-x0), rY=h-38, cy=Math.round(rY*0.5)+8;
+  ctx.save();ctx.beginPath();ctx.rect(0,0,w,rY);ctx.clip();
+  const g=ctx.createRadialGradient(x0,cy,4,x0,cy,(x1-x0)*0.95);
+  g.addColorStop(0,'rgba(255,236,170,.55)');g.addColorStop(.18,'rgba(255,214,120,.22)');
+  g.addColorStop(.5,'rgba(255,209,102,.07)');g.addColorStop(1,'rgba(255,209,102,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,rY);
+  ctx.strokeStyle='rgba(255,220,140,.15)';ctx.lineWidth=1;
+  for(let k=-5;k<=5;k++){const a=k*0.14;ctx.beginPath();ctx.moveTo(x0,cy);ctx.lineTo(x0+Math.cos(a)*w,cy+Math.sin(a)*w);ctx.stroke();}
+  ctx.restore();
+  /* 자 */
+  ctx.fillStyle='#e8d9b0';ctx.fillRect(x0-16,rY,(x1-x0)+32,28);
+  ctx.strokeStyle='#5b4a26';ctx.fillStyle='#3d311a';ctx.font='700 11px Pretendard, sans-serif';ctx.textAlign='center';
+  for(let d=0;d<=100;d+=5){const x=px(d);ctx.lineWidth=d%10?1:1.5;ctx.beginPath();ctx.moveTo(x,rY);ctx.lineTo(x,rY+(d%10?6:11));ctx.stroke();
+    if(d%10===0)ctx.fillText(d,x,rY+23);}
+  ctx.textAlign='right';ctx.fillStyle=CV('ink-mute');ctx.font='600 11px Pretendard, sans-serif';ctx.fillText('눈금 단위: cm',x1+16,rY-6);
+  /* 광원 */
+  ctx.strokeStyle='#8a94b8';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x0,cy+12);ctx.lineTo(x0,rY);ctx.stroke();
+  const bg=ctx.createRadialGradient(x0,cy,0,x0,cy,26);bg.addColorStop(0,'#fff');bg.addColorStop(.35,'#ffe9a8');bg.addColorStop(1,'rgba(255,209,102,0)');
+  ctx.fillStyle=bg;ctx.beginPath();ctx.arc(x0,cy,26,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff6d8';ctx.beginPath();ctx.arc(x0,cy,10,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=CV('ink');ctx.font='700 13px Pretendard, sans-serif';ctx.textAlign='center';ctx.fillText('광원',x0,cy-32);
+  /* 거리 표시 */
+  const sx=px(vlD), dy=rY-14;
+  ctx.strokeStyle='rgba(255,143,177,.85)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(x0,dy);ctx.lineTo(sx,dy);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#ff8fb1';ctx.font='800 13px Pretendard, sans-serif';
+  ctx.fillText(vlD+' cm'+(VL_ROWS.includes(vlD)&&vlD>20?' · '+vlD/20+'배':''),(x0+sx)/2,dy-6);
+  /* 센서 */
+  ctx.strokeStyle='#8a94b8';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(sx,cy+28);ctx.lineTo(sx,rY);ctx.stroke();
+  ctx.fillStyle='#ff6b5c';ctx.beginPath();ctx.moveTo(sx,rY+1);ctx.lineTo(sx-7,rY-10);ctx.lineTo(sx+7,rY-10);ctx.closePath();ctx.fill();
+  ctx.save();ctx.translate(sx,cy);ctx.rotate(vlTilt?-Math.PI/3:0);
+  ctx.fillStyle='#2b3763';ctx.strokeStyle='#a9b8e6';ctx.lineWidth=1.6;
+  ctx.beginPath();if(ctx.roundRect)ctx.roundRect(-9,-27,18,54,5);else ctx.rect(-9,-27,18,54);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#67e8e0';ctx.beginPath();ctx.arc(-9,-8,4,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  /* 센서 값 말풍선 */
+  const txt=vlFmt(vlLx)+' lx';ctx.font='800 15px Pretendard, sans-serif';
+  const tw=ctx.measureText(txt).width+18, bx=Math.min(Math.max(sx-tw/2,4),w-tw-4), by=Math.max(cy-62,4);
+  ctx.fillStyle='rgba(7,13,28,.92)';ctx.strokeStyle='#67e8e0';ctx.lineWidth=1.4;
+  ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx,by,tw,26,8);else ctx.rect(bx,by,tw,26);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#67e8e0';ctx.textAlign='left';ctx.fillText(txt,bx+9,by+18);
+}
+function vlSet(d){
+  d=Math.max(10,Math.min(90,Math.round(d/5)*5));
+  if(d===vlD)return;
+  vlD=d;const sl=$('#vlD');if(sl){sl.value=d;sl.style.setProperty('--p',((d-10)/80*100)+'%');}
+  const dv=$('#vlDv');if(dv)dv.textContent=d+' cm';
+  vlRead();drawBench();renderTable();A.blip(380+d*4,.04,'triangle',.07);
+}
+/* 그래프 */
+function vlG(w,h){const pad={l:58,r:14,t:16,b:40};
+  return {pad,px:d=>pad.l+d/90*(w-pad.l-pad.r),py:v=>h-pad.b-v/VL_YMAX*(h-pad.t-pad.b)};}
+function vlMono(ctx,pts){ /* 넘치지 않는 부드러운 곡선(Fritsch–Carlson) */
+  const n=pts.length;if(n<2)return;
+  const dx=[],m=[],t=new Array(n);
+  for(let i=0;i<n-1;i++){dx[i]=pts[i+1].x-pts[i].x;m[i]=(pts[i+1].y-pts[i].y)/dx[i];}
+  t[0]=m[0];t[n-1]=m[n-2];
+  for(let i=1;i<n-1;i++)t[i]=(m[i-1]*m[i]<=0)?0:(m[i-1]+m[i])/2;
+  for(let i=0;i<n-1;i++){if(m[i]===0){t[i]=t[i+1]=0;continue;}
+    const a=t[i]/m[i],b=t[i+1]/m[i],q=a*a+b*b;if(q>9){const k=3/Math.sqrt(q);t[i]=k*a*m[i];t[i+1]=k*b*m[i];}}
+  ctx.moveTo(pts[0].x,pts[0].y);
+  for(let i=0;i<n-1;i++){const h=dx[i];
+    ctx.bezierCurveTo(pts[i].x+h/3,pts[i].y+t[i]*h/3,pts[i+1].x-h/3,pts[i+1].y-t[i+1]*h/3,pts[i+1].x,pts[i+1].y);}
 }
 function drawGraph(){
-  const cv=$('#gcv'); if(!cv||!cv.clientWidth)return;
-  const {ctx,w,h}=fit(cv);
-  ctx.clearRect(0,0,w,h);
-  const pad={l:54,r:16,t:16,b:34};
-  const base=+S.meas[20];
-  const vals=DISTS.map(d=>+S.meas[d]||0);
-  const theory=DISTS.map(d=>base?base*400/(d*d):0);
-  const ymax=Math.max(10,...vals,...theory)*1.15;
-  const px=d=>pad.l+(d-10)/(70-10)*(w-pad.l-pad.r);
-  const py=v=>h-pad.b-(v/ymax)*(h-pad.t-pad.b);
-  /* 축 */
-  ctx.strokeStyle=CV('line');ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,h-pad.b);ctx.lineTo(w-pad.r,h-pad.b);ctx.stroke();
-  ctx.fillStyle=CV('ink-mute');ctx.font='600 11px "JetBrains Mono", monospace';ctx.textAlign='center';
-  DISTS.forEach(d=>{ctx.fillText(d,px(d),h-pad.b+16);});
-  ctx.fillText('cm',px(65),h-pad.b+16);
-  ctx.textAlign='right';
-  [0,ymax/2,ymax].forEach(v=>{
-    ctx.fillText(Math.round(v),pad.l-8,py(v)+4);
-    ctx.setLineDash([3,5]);ctx.strokeStyle=CV('line-soft');
-    ctx.beginPath();ctx.moveTo(pad.l,py(v));ctx.lineTo(w-pad.r,py(v));ctx.stroke();ctx.setLineDash([]);
-  });
-  ctx.save();ctx.translate(15,(pad.t+h-pad.b)/2);ctx.rotate(-Math.PI/2);
-  ctx.textAlign='center';ctx.font='600 11px Pretendard, sans-serif';ctx.fillStyle=CV('ink-mute');
+  const cv=$('#gcv');if(!cv||!cv.clientWidth)return;
+  const {ctx,w,h}=fit(cv);ctx.clearRect(0,0,w,h);
+  const {pad,px,py}=vlG(w,h);
+  ctx.lineWidth=1;ctx.font='600 12px Pretendard, sans-serif';
+  for(let v=0;v<=VL_YMAX;v+=500){ctx.strokeStyle=v?CV('line-soft'):CV('line');ctx.setLineDash(v?[3,5]:[]);
+    ctx.beginPath();ctx.moveTo(pad.l,py(v));ctx.lineTo(w-pad.r,py(v));ctx.stroke();
+    ctx.setLineDash([]);ctx.fillStyle=CV('ink-dim');ctx.textAlign='right';ctx.fillText(vlFmt(v),pad.l-7,py(v)+4);}
+  for(let d=0;d<=90;d+=10){ctx.strokeStyle=d?CV('line-soft'):CV('line');ctx.setLineDash(d?[3,5]:[]);
+    ctx.beginPath();ctx.moveTo(px(d),pad.t);ctx.lineTo(px(d),h-pad.b);ctx.stroke();
+    ctx.setLineDash([]);ctx.fillStyle=CV('ink-dim');ctx.textAlign='center';ctx.fillText(d,px(d),h-pad.b+16);}
+  ctx.fillStyle=CV('ink');ctx.font='700 12px Pretendard, sans-serif';ctx.textAlign='right';
+  ctx.fillText('거리 (cm)',w-pad.r,h-6);
+  ctx.save();ctx.translate(14,(pad.t+h-pad.b)/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';
   ctx.fillText('빛의 세기 (lx)',0,0);ctx.restore();
-  if(!base){
-    ctx.fillStyle=CV('ink-mute');ctx.font='600 13px Pretendard, sans-serif';ctx.textAlign='center';
-    ctx.fillText('20 cm에서 잰 값을 먼저 넣어 주세요',w/2,h/2);return;
+  const base=(+S.meas[20]>0&&S.mdir[20]!=='t')?+S.meas[20]:0;
+  if(vlTheory&&base){
+    [[d=>base*20/d,CV('c4'),'예측 가 (1/2배씩)'],[d=>base*400/(d*d),CV('c2'),'예측 나 (1/4배씩)']].forEach(([f,col,lab],k)=>{
+      ctx.save();ctx.beginPath();ctx.rect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);ctx.clip();
+      ctx.strokeStyle=col;ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.beginPath();
+      for(let d=18;d<=90;d+=1){const y=py(f(d));d===18?ctx.moveTo(px(d),y):ctx.lineTo(px(d),y);}
+      ctx.stroke();ctx.restore();ctx.setLineDash([]);
+      ctx.fillStyle=col;ctx.font='700 12px Pretendard, sans-serif';ctx.textAlign='right';ctx.fillText('- - '+lab,w-pad.r-4,pad.t+14+k*17);
+    });
   }
-  /* 이론값 */
-  ctx.strokeStyle=CV('c2');ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.beginPath();
-  for(let d=20;d<=60;d+=1){const y=base*400/(d*d); d===20?ctx.moveTo(px(d),py(y)):ctx.lineTo(px(d),py(y));}
-  ctx.stroke();ctx.setLineDash([]);
-  DISTS.forEach((d,i)=>{if(theory[i]){ctx.beginPath();ctx.arc(px(d),py(theory[i]),4,0,Math.PI*2);
-    ctx.fillStyle=CV('c2');ctx.fill();}});
-  /* 실측값 */
-  const pts=DISTS.map((d,i)=>({d,v:vals[i]})).filter(p=>p.v>0);
-  if(pts.length>1){
-    ctx.strokeStyle=CV('c1');ctx.lineWidth=2.5;ctx.beginPath();
-    pts.forEach((p,i)=>i?ctx.lineTo(px(p.d),py(p.v)):ctx.moveTo(px(p.d),py(p.v)));ctx.stroke();
-  }
-  pts.forEach(p=>{ctx.beginPath();ctx.arc(px(p.d),py(p.v),5.5,0,Math.PI*2);
-    ctx.fillStyle=CV('c1');ctx.shadowColor=CV('c1');ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;});
+  const pts=VL_ROWS.filter(d=>S.plot[d]&&+S.meas[d]>0).map(d=>({x:px(d),y:py(+S.meas[d])}));
+  if(pts.length>=3){ctx.strokeStyle='rgba(255,209,102,.75)';ctx.lineWidth=2.2;ctx.beginPath();vlMono(ctx,pts);ctx.stroke();}
+  pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,6,0,Math.PI*2);ctx.fillStyle=CV('c1');ctx.shadowColor=CV('c1');ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;});
+  const nx=vlNext();
+  if(nx&&vlMissN>=2){const tx=px(nx),ty=py(+S.meas[nx]);
+    ctx.strokeStyle='rgba(255,143,177,.6)';ctx.setLineDash([4,4]);ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(tx,h-pad.b);ctx.lineTo(tx,ty);ctx.lineTo(pad.l,ty);ctx.stroke();ctx.setLineDash([]);}
+  if(vlMiss){ctx.strokeStyle='#ff6b5c';ctx.lineWidth=2.4;const {x,y}=vlMiss;
+    ctx.beginPath();ctx.moveTo(x-6,y-6);ctx.lineTo(x+6,y+6);ctx.moveTo(x+6,y-6);ctx.lineTo(x-6,y+6);ctx.stroke();}
+  if(nx){ctx.fillStyle=CV('c1');ctx.font='800 13px Pretendard, sans-serif';ctx.textAlign='left';
+    ctx.fillText('📍 찍을 점: '+nx+' cm, '+vlFmt(+S.meas[nx])+' lx',pad.l+8,pad.t+14);}
+  else if(!pts.length){ctx.fillStyle=CV('ink-dim');ctx.font='700 13px Pretendard, sans-serif';ctx.textAlign='center';
+    ctx.fillText('값을 기록하면 여기에 점을 찍어요',(pad.l+w-pad.r)/2,(pad.t+h-pad.b)/2);}
 }
-$('#sampleBtn').addEventListener('click',()=>{
-  DISTS.forEach((d,i)=>S.meas[d]=SAMPLE[i]); save(); renderTable(); drawGraph(); updateProgress(); A.pop();
-  toast('교과서 예시 데이터를 넣었어요 📋','good');
-});
-$('#clearBtn').addEventListener('click',()=>{S.meas={};save();renderTable();drawGraph();updateProgress();A.pop();});
-$('#copyBtn').addEventListener('click',async()=>{
-  if(!measCount())return toast('아직 잰 값이 없어요','bad');
-  const base=+S.meas[20];
-  const text=['거리(cm)\t빛의 세기(lx)\t20cm 대비 비']
-    .concat(DISTS.map(d=>`${d}\t${S.meas[d]??''}\t${base&&S.meas[d]?(S.meas[d]/base).toFixed(2):''}`)).join('\n');
-  try{await navigator.clipboard.writeText(text);toast('표를 복사했어요 — 엑셀에 붙여넣기 📋','good');}
-  catch(e){toast('복사에 실패했어요','bad');}
-});
-let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGraph,180);});
+(function(){
+  const cv=$('#vlBench'), sl=$('#vlD'), gv=$('#gcv');
+  if(!cv||!sl||!gv)return;
+  cv.style.touchAction='pan-y';
+  const dAt=e=>{const r=cv.getBoundingClientRect(),k=cv.clientWidth/r.width,{x0,x1}=vlBX(cv.clientWidth);
+    return ((e.clientX-r.left)*k-x0)/(x1-x0)*100;};
+  let drag=false;
+  cv.addEventListener('pointerdown',e=>{drag=true;try{cv.setPointerCapture(e.pointerId);}catch(_){}vlSet(dAt(e));});
+  cv.addEventListener('pointermove',e=>{if(drag)vlSet(dAt(e));});
+  ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>{drag=false;}));
+  sl.addEventListener('input',()=>vlSet(+sl.value));
+  sl.style.setProperty('--p','12.5%');
+  $('#vlRec').addEventListener('click',()=>{
+    if(!VL_ROWS.includes(vlD)){A.wrong();return toast('표에 있는 거리(<b>20·40·60·80 cm</b>)에 센서를 두고 기록해요','bad');}
+    const again=+S.meas[vlD]>0;
+    S.meas[vlD]=vlLx;S.mdir[vlD]=vlTilt?'t':'f';delete S.plot[vlD];vlMiss=null;vlMissN=0;
+    save();renderTable();drawGraph();updateProgress();A.pop();
+    toast((again?'🔁 다시 ':'📝 ')+vlD+' cm에서 <b>'+vlFmt(vlLx)+' lx</b> 기록! 그래프에 점을 찍어요 📍','good');
+  });
+  $('#vlDir').addEventListener('click',function(){
+    vlTilt=!vlTilt;this.setAttribute('aria-pressed',vlTilt?'true':'false');this.classList.toggle('warn',vlTilt);
+    this.textContent=vlTilt?'📱 센서 방향: 비스듬히 (60°)':'📱 센서 방향: 광원 쪽 정면';
+    vlRead();drawBench();A.blip(520,.05,'triangle',.08);
+    if(vlTilt)toast('같은 거리인데 값이 달라졌죠? 그래서 측정하는 동안 센서 방향은 <b>똑같이</b> 해야 해요');
+  });
+  gv.addEventListener('pointerdown',e=>{
+    const nx=vlNext();
+    if(!nx)return toast(VL_ROWS.some(d=>+S.meas[d]>0)?'찍을 점이 없어요 — 다음 거리에서 📝 기록부터 해요':'먼저 실험대에서 값을 📝 기록해요');
+    const r=gv.getBoundingClientRect(),k=gv.clientWidth/r.width,x=(e.clientX-r.left)*k,y=(e.clientY-r.top)*k;
+    const {px,py}=vlG(gv.clientWidth,+gv.dataset.h||210),tx=px(nx),ty=py(+S.meas[nx]);
+    if(Math.abs(x-tx)<=VL_TOL&&Math.abs(y-ty)<=VL_TOL){
+      S.plot[nx]=1;vlMiss=null;vlMissN=0;save();A.correct();renderTable();drawGraph();updateProgress();
+      toast('📍 '+nx+' cm 점을 찍었어요!','good');
+    }else{
+      vlMiss={x,y};vlMissN++;A.wrong();drawGraph();
+      toast(Math.abs(x-tx)>VL_TOL?'가로축(거리)에서 <b>'+nx+' cm</b> 위치를 먼저 찾아요':'세로축(빛의 세기)에서 <b>'+vlFmt(+S.meas[nx])+' lx</b> 높이를 찾아요','bad');
+    }
+  });
+  $('#vlTheory').addEventListener('click',function(){
+    if(!(+S.meas[20]>0&&S.mdir[20]!=='t'))return toast('20 cm 값을 정면으로 먼저 기록해야 선을 그릴 수 있어요','bad');
+    vlTheory=!vlTheory;this.setAttribute('aria-pressed',vlTheory?'true':'false');drawGraph();
+  });
+  $('#vlAuto').addEventListener('click',()=>{
+    const left=VL_ROWS.filter(d=>+S.meas[d]>0&&!S.plot[d]);
+    if(!left.length)return toast('대신 찍을 점이 없어요');
+    left.forEach(d=>S.plot[d]=1);vlMiss=null;vlMissN=0;save();renderTable();drawGraph();updateProgress();A.pop();
+  });
+  $('#clearBtn').addEventListener('click',()=>{S.meas={};S.plot={};S.mdir={};vlMiss=null;vlMissN=0;vlTheory=false;
+    $('#vlTheory').setAttribute('aria-pressed','false');save();renderTable();drawGraph();updateProgress();A.pop();});
+  /* 크게 보기 — 머리 띠를 덮고 실험실만 화면 가득 */
+  const box=$('#vlab'), mx=$('#vlMax');
+  function setMax(on){
+    box.classList.toggle('vl-max',on);document.body.classList.toggle('vl-maxed',on);
+    mx.textContent=on?'✕ 작게 보기':'⛶ 크게 보기';mx.setAttribute('aria-pressed',on?'true':'false');
+    cv.dataset.h=on?Math.max(200,Math.round(innerHeight*0.36)):200;
+    gv.dataset.h=on?Math.max(210,Math.round(innerHeight*0.40)):210;
+    drawBench();drawGraph();if(on)box.scrollTop=0;
+  }
+  mx.addEventListener('click',()=>setMax(!box.classList.contains('vl-max')));
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&box.classList.contains('vl-max'))setMax(false);});
+  vlRead();
+  setInterval(()=>{const p=$('#panel-explore');if(document.hidden||!p||!p.classList.contains('show'))return;vlRead();drawBench();},700);
+})();
+let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{drawBench();drawGraph();},180);});
 
 /* ═══════════ 🔦 빛 퍼짐 시뮬레이터 ═══════════
    거리 n배 → 비추는 면적 n²칸, 한 칸이 받는 밝기 1/n² */
@@ -3214,6 +3392,65 @@ let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(drawGrap
       +'<div class="big">숫자가 작은 <b>별 '+who+'</b>가 <b>'+RATIO[d]+'</b> 밝게 보여요.</div>';
   }
   A.addEventListener('change',paint);B.addEventListener('change',paint);paint();
+})();
+</script>
+<style id="read-first-style">.panel > *{scroll-margin-top:170px}</style>
+<script id="read-first">
+/* 📖 위에서부터 읽고 내려가기 — 「그 자리로 데려다줘」·「아직 안 한 곳으로」가 위의 설명을 건너뛰지 않게.
+   단계 본문 덩어리(제목·머리말·카드)가 화면에 충분히 머물렀거나(글자 수에 맞춰 1.5~6초) 그 안을 눌렀으면 '읽음'.
+   데려다줄 곳보다 위에 안 읽은 덩어리가 있으면 그 덩어리로 먼저 데려가고, 단추 글자도 바꾼다. */
+(function(){
+ if(typeof gotoUndone!=='function'||typeof undoneTarget!=='function'||typeof openGuide!=='function')return;
+ S.readB=S.readB||{};
+ var SKIP='.stepline,.cta-row,.msn-banner,script,style,template';
+ function blocks(p){return Array.prototype.filter.call(p.children,function(el){
+  return !el.matches(SKIP)&&(el.textContent||'').replace(/\s+/g,'').length>=6;});}
+ function key(p,el){var i=blocks(p).indexOf(el);return i<0?'':p.id+':'+i;}
+ function isRead(p,el){if(!el.offsetHeight)return true;var k=key(p,el);return !k||!!S.readB[k];}
+ function mark(p,el){var k=key(p,el);if(!k||S.readB[k])return;S.readB[k]=1;try{save();}catch(e){}}
+ function need(el){var n=(el.textContent||'').replace(/\s+/g,'').length;return Math.max(1500,Math.min(6000,n*25));}
+ var acc=new WeakMap();
+ function visEnough(el){var r=el.getBoundingClientRect(),vh=innerHeight,top=Math.max(r.top,0),bot=Math.min(r.bottom,vh),v=Math.max(0,bot-top);
+  return v>=Math.min(r.height*0.5,vh*0.4);}
+ var last=Date.now();
+ setInterval(function(){
+  var now=Date.now(),dt=Math.min(now-last,1000);last=now;
+  if(document.hidden||document.body.classList.contains('cover-on'))return;
+  var g=document.getElementById('guide');if(g&&g.classList.contains('show'))return;
+  var p=document.querySelector('.panel.show');if(!p)return;
+  blocks(p).forEach(function(el){if(isRead(p,el)||!visEnough(el))return;
+   var a=(acc.get(el)||0)+dt;acc.set(el,a);if(a>=need(el))mark(p,el);});
+ },400);
+ document.addEventListener('pointerdown',function(e){var p=e.target.closest&&e.target.closest('.panel');if(!p)return;
+  var b=blocks(p).filter(function(el){return el.contains(e.target);})[0];if(b)mark(p,b);},true);
+ /* 할 일 자리를 낱말 맞추기로 찾다 빗나가는 일이 있어, data-goto="미션 이름의 일부" 를 단 곳이 있으면 그쪽이 이긴다 */
+ var _ut=undoneTarget;
+ undoneTarget=function(tab){var t=_ut(tab);
+  try{var p=document.getElementById('panel-'+tab);if(t&&p){var hit=Array.prototype.filter.call(p.querySelectorAll('[data-goto]'),function(e){return String(t.label).indexOf(e.dataset.goto)>=0;})[0];if(hit)t.el=hit;}}catch(e){}
+  return t;};
+ function firstUnread(tab){
+  var p=document.getElementById('panel-'+tab);if(!p)return null;
+  var t=undoneTarget(tab);if(!t||!t.el)return null;
+  var bl=blocks(p),ti=bl.length;
+  for(var i=0;i<bl.length;i++){if(bl[i]===t.el||bl[i].contains(t.el)){ti=i;break;}}
+  for(var j=0;j<ti;j++)if(!isRead(p,bl[j]))return {el:bl[j],label:t.label};
+  return null;}
+ var _go=gotoUndone;
+ gotoUndone=function(tab){
+  var u=null;try{u=firstUnread(tab);}catch(e){}
+  if(!u)return _go(tab);
+  try{u.el.scrollIntoView({block:'start',behavior:(typeof reduceMotion!=='undefined'&&reduceMotion)?'auto':'smooth'});}catch(e){u.el.scrollIntoView();}
+  u.el.classList.remove('goto-flash');void u.el.offsetWidth;u.el.classList.add('goto-flash');
+  setTimeout(function(){u.el.classList.remove('goto-flash');},2000);
+  var lab=String(u.label).replace(/^[\d·~]+단계 · /,'').replace(/^[\d·~]+단계 /,'').replace(/ → 제출$/,'');
+  toast('📖 여기부터 읽으며 내려가요 — 다 읽으면 <b>'+lab+'</b> 자리가 나와요');
+ };
+ var _og=openGuide;
+ openGuide=function(tab){
+  var r=_og.apply(this,arguments);
+  try{var b=document.getElementById('guideGo'),u=firstUnread(tab||S.tab);
+   b.textContent=u?'📖 읽을 곳부터 데려다줘':'🧭 그 자리로 데려다줘';}catch(e){}
+  return r;};
 })();
 </script>
 </body>
