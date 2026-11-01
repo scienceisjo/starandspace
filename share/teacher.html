@@ -214,7 +214,7 @@ const PAGES={
  'gas-pressure':['gas','1 압력'],'gas-gaspressure':['gas','2 기체의 압력'],'gas-boyle':['gas','3 압력과 부피'],'gas-charles':['gas','4 온도와 부피'],'gas-cases':['gas','5 부피 변화 조사'],
  'star-parallax':['star','1 연주 시차'],'star-brightness':['star','2 밝기와 거리'],'star-magnitude':['star','3 별의 등급'],'star-color':['star','4 색과 온도'],'star-milkyway':['star','5 우리은하'],'star-objects':['star','6 천체 관측'],'star-nebula':['star','7 성운과 성단'],'star-expanding':['star','8 팽창하는 우주']};
 const pageName=k=>PAGES[k]?PAGES[k][1]:k, pageUnit=k=>PAGES[k]?PAGES[k][0]:(String(k).split('-')[0]);
-const TEXT_LABEL={askTa:'나의 질문/생각',emRule:'표에서 찾은 규칙',essay:'사고력·블록 답',labRule:'실험 규칙',blockAns:'블록 질문 답',ruleTa:'표에서 찾은 규칙',ruleTxt:'표에서 찾은 규칙',conclTa:'나의 결론',conclTaFs:'(전체 화면 결론 메모)',eqTa:'확인 문제 서술형',open:'내 생각(밝기 줄이기)',why:'예상한 까닭',law:'내 말로 옴의 법칙',guess:'내 생각(예상)',summary:'내 말로 정리',note:'표에서 읽어 낸 것',
+const TEXT_LABEL={askTa:'나의 질문/생각',emRule:'표에서 찾은 규칙',essay:'사고력·블록 답',labRule:'실험 규칙',blockAns:'블록 질문 답',ruleTa:'표에서 찾은 규칙',ruleTxt:'표에서 찾은 규칙',conclTa:'나의 결론',conclTaFs:'(전체 화면 결론 메모)',eqTa:'확인 문제 서술형',open:'내 생각(밝기 줄이기)',why:'예상한 까닭',law:'내 말로 옴의 법칙',guess:'내 생각(예상)',summary:'내 말로 정리',magcmp:'등급 비교(−1등급과 4등급)',note:'표에서 읽어 낸 것',
  rule:'표에서 찾은 규칙',pin:'누름못 풍선 설명',obs:'관찰 기록',balloon:'풍선 설명',block1:'블록 답(공기가 미는 까닭)',conclusion:'결론 문장',jtube:'J자 관 설명',block2:'봉지 여행 블록',compare:'보일·샤를 구분',topic:'영상 주제',principle:'원리 한 줄',sb1:'스토리보드 1',sb2:'스토리보드 2',sb3:'스토리보드 3',sb4:'스토리보드 4',sb5:'스토리보드 5',sb6:'스토리보드 6',roles:'역할 나누기',review:'오늘의 한 줄'};
 let ADMIN='', CODES=[], STU=[], FB=[], ME=null;
 async function rpc(n,a){const r=await sb.rpc(n,a);if(r.error)throw new Error(r.error.message||String(r.error));return r.data;}
