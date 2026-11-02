@@ -110,12 +110,12 @@ textarea{width:100%;min-height:68px;font:inherit;font-size:17px;padding:12px 14p
   <div class="cmp"><span>베가</span><i id="cmpV" style="background:#cfe2ff"></i><span>25광년 · 약 25초</span></div>
   <div class="cmp"><span>리겔</span><i id="cmpR" style="background:#a9c4ff"></i><span>약 860광년</span></div>
   <label for="odd">① 항해하면서 이상하다고 느낀 점</label>
-  <textarea id="odd" placeholder="예) 리겔은 훨씬 먼데도 지구에서는 베가와 비슷하게 보였다."></textarea>
+  <textarea id="odd" placeholder="예) 리겔은 베가보다 34배 넘게 먼데도 태양계에서는 비슷하게 밝아 보였다."></textarea>
   <label for="ques">② 그래서 궁금해진 것 (질문으로)</label>
-  <textarea id="ques" placeholder="질문으로 써 보세요."></textarea>
+  <textarea id="ques" placeholder="질문으로 써 보세요. 아래 시작말을 눌러서 이어 써도 돼요."></textarea>
   <div class="chips">
-    <button type="button" data-s="왜 ">왜 ~?</button><button type="button" data-s="얼마나 ">얼마나 ~?</button>
-    <button type="button" data-s="만약 ">만약 ~라면?</button><button type="button" data-s="어떻게 하면 ">어떻게 하면 ~?</button>
+    <button type="button" data-s="별까지의 거리가 2배가 되면 ">거리가 ~배가 되면 ~?</button><button type="button" data-s="두 별을 같은 거리에 놓고 보면 ">같은 거리에 놓으면 ~?</button>
+    <button type="button" data-s="왜 ">왜 ~?</button><button type="button" data-s="만약 ">만약 ~라면?</button>
   </div>
   <div class="row"><button type="button" class="ghost" id="again">다시 항해하기</button><button type="button" class="gold" id="send">복사하고 질문나무 열기</button></div>
 </div></div>
@@ -416,7 +416,8 @@ function openLog(){phase='log';$('q').classList.add('show');$('cmpV').style.widt
   try{const s=JSON.parse(localStorage.getItem('star-trip')||'{}');if(s.odd)$('odd').value=s.odd;if(s.ques)$('ques').value=s.ques;}catch(e){}$('odd').focus();}
 function save(){try{localStorage.setItem('star-trip',JSON.stringify({odd:$('odd').value,ques:$('ques').value}));}catch(e){}}
 $('odd').oninput=save;$('ques').oninput=save;
-document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{const t=$('ques');if(!t.value.trim())t.value=b.dataset.s;t.focus();t.setSelectionRange(t.value.length,t.value.length);save();});
+const STARTS=[...document.querySelectorAll('.chips button')].map(b=>b.dataset.s.trim());
+document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{const t=$('ques');if(!t.value.trim()||STARTS.includes(t.value.trim()))t.value=b.dataset.s;t.focus();t.setSelectionRange(t.value.length,t.value.length);save();});
 $('again').onclick=()=>{$('q').classList.remove('show');setPhase('home');};
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2400);}
 $('send').onclick=async()=>{const q=$('ques').value.trim();if(!q){toast('② 질문을 먼저 써 주세요.');$('ques').focus();return;}
