@@ -1854,10 +1854,69 @@ try{
 })();
 
 }catch(e){console.error("[object 10_elec.js]",e)}
+/* ── 89_ink.js ── */
+try{
+/* 판서 입력 규칙(window.LectureInk) v1 — 2026-11-04 아이패드 수업 요청
+ * canonical: 전기강의_빌드/objects/89_ink.js (기체압력강의_빌드 · 소비전력강의_빌드 objects/ 에 같은 사본)
+ * · 레이저(90_laser.js) · 펜(91_pen.js) · 도구 상자(93_toolbox.js)가 함께 쓰는 «누가 그릴 수 있나» 규칙.
+ *   펜슬(pointerType 'pen') · 마우스는 늘 그린다. 손가락(touch)은 «손가락 그리기» 설정을 따른다:
+ *     auto(기본) — 이 기기에서 펜슬을 한 번도 안 썼으면 손가락도 그림(전자칠판), 펜슬이 한 번 감지되면 그때부터 손가락은 화면 넘기기만(굿노트처럼).
+ *     on — 손가락도 늘 그림 · off — 손가락은 늘 넘기기만.  (localStorage: lecture_ink_touch · lecture_ink_pen)
+ * · 도구 상자 · HUD · 메모 · 전체 보기 위를 누르면 그리지 않는다(skip).
+ * · 전체 화면이거나 판서 도구가 켜져 있으면 화면을 끄는 «아래로 쓸어내리기» 같은 기본 터치 동작을 막는다.
+ */
+(function () {
+  'use strict';
+  if (window.LectureInk) return;
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  var mode = store.get('lecture_ink_touch') || 'auto';
+  if (['auto', 'on', 'off'].indexOf(mode) < 0) mode = 'auto';
+  var seenPen = store.get('lecture_ink_pen') === '1';
+  var on = {};
+  var subs = [];
+  function emit() { subs.forEach(function (f) { try { f(); } catch (e) {} }); }
+  function anyOn() { for (var k in on) if (on[k]) return true; return false; }
+  function isFull() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  var style = document.createElement('style');
+  style.textContent = 'html,body{overscroll-behavior:none}html.ink-on,html.ink-on body,html.ink-on #viewport{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}';
+  (document.head || document.documentElement).appendChild(style);
+  var SKIP = '#hud,#lecture-tools,#notes,#ov,#help,#kw,#blank,button,a,input,select,textarea,label,[contenteditable],[data-interactive]';
+  window.LectureInk = {
+    get mode() { return mode; },
+    get seenPen() { return seenPen; },
+    setMode: function (m) { mode = m; store.set('lecture_ink_touch', m); emit(); },
+    allowTouch: function () { return mode === 'on' || (mode === 'auto' && !seenPen); },
+    /* 이 포인터로 그려도 되나 — 펜슬이 처음 보이면 기억해 둔다 */
+    accepts: function (e) {
+      if (e.pointerType === 'pen') { if (!seenPen) { seenPen = true; store.set('lecture_ink_pen', '1'); emit(); } return true; }
+      if (e.pointerType === 'touch') return this.allowTouch();
+      return true;
+    },
+    skip: function (t) { return !!(t && t.closest && t.closest(SKIP)); },
+    setOn: function (name, v) { on[name] = !!v; document.documentElement.classList.toggle('ink-on', anyOn()); emit(); },
+    isOn: function (name) { return !!on[name]; },
+    onChange: function (f) { subs.push(f); }
+  };
+  // 전체 화면 · 판서 중에는 화면이 밀리거나(아래로 쓸어 전체 화면 끄기 등) 확대되지 않게 — 메모 · 전체 보기처럼 스크롤이 필요한 곳은 둔다
+  document.addEventListener('touchmove', function (e) {
+    if (!(anyOn() || isFull())) return;
+    if (e.target && e.target.closest && e.target.closest('#notes,#ov,#help,#lecture-tools')) return;
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+  document.addEventListener('gesturestart', function (e) { if (anyOn() || isFull()) e.preventDefault(); });
+})();
+
+}catch(e){console.error("[object 89_ink.js]",e)}
 /* ── 90_laser.js ── */
 try{
-/* Lecture laser pointer v2 — canonical: 전기강의_빌드/objects/90_laser.js
- * 소비전력강의_빌드/objects/90_laser.js is the identical build copy.
+/* Lecture laser pointer v3 — canonical: 전기강의_빌드/objects/90_laser.js
+ * 소비전력강의_빌드 · 기체압력강의_빌드 objects/90_laser.js are identical build copies.
+ * v3 (2026-11-04): the canvas never takes pointer events. Window capture listeners draw only for pointers
+ *   that window.LectureInk (89_ink.js) accepts — Apple Pencil · mouse always, fingers by the ink setting —
+ *   so finger taps and swipes still reach the deck (and the toolbox) while the laser is on.
  * Hold the full stroke until release; then fade it for 1100 ms.
  * Page-level UI: RAF sleeps while a held stroke is stationary, independently of scene Ctx.
  */
@@ -1871,7 +1930,7 @@ try{
     canvas.setAttribute('aria-hidden', 'true');
     canvas.hidden = true;
     var style = document.createElement('style');
-    style.textContent = '#lecture-laser{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:49;touch-action:none;cursor:none;user-select:none;-webkit-user-select:none;}#lecture-laser[hidden]{display:none!important}#hud #lecture-laser-toggle[aria-pressed="true"]{background:#c82044;color:#fff;outline:2px solid #fff;outline-offset:2px}@media print{#lecture-laser,#lecture-laser-toggle{display:none!important}}';
+    style.textContent = '#lecture-laser{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:49;pointer-events:none;user-select:none;-webkit-user-select:none;}html.laser-on #viewport{cursor:none}#lecture-laser[hidden]{display:none!important}#hud #lecture-laser-toggle[aria-pressed="true"]{background:#c82044;color:#fff;outline:2px solid #fff;outline-offset:2px}@media print{#lecture-laser,#lecture-laser-toggle{display:none!important}}';
     document.head.appendChild(style);
     document.body.appendChild(canvas);
     var ctx = canvas.getContext('2d');
@@ -1931,11 +1990,7 @@ try{
       if (points.some(function (p) { return p.t !== null; })) raf = requestAnimationFrame(render);
     }
     function paint() { if (!raf) raf = requestAnimationFrame(render); }
-    function release() {
-      var id = activeId;
-      activeId = null;
-      if (id !== null && canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
-    }
+    function release() { activeId = null; }
     function clear() {
       release(); pointer = null; points = []; stopFrame();
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
@@ -1950,6 +2005,8 @@ try{
     function toggle(value) {
       enabled = typeof value === 'boolean' ? value : !enabled;
       clear(); canvas.hidden = !enabled; button.setAttribute('aria-pressed', String(enabled));
+      document.documentElement.classList.toggle('laser-on', enabled);
+      if (window.LectureInk) LectureInk.setOn('laser', enabled);
       if (enabled) resize();
     }
     function position(e) { return { x:e.clientX, y:e.clientY }; }
@@ -1977,20 +2034,30 @@ try{
         clear();
       }
     }, true);
-    canvas.addEventListener('pointerdown', function (e) {
-      e.preventDefault(); e.stopPropagation();
-      if (!enabled || activeId !== null || e.button !== 0 || !e.isPrimary) return;
-      activeId = e.pointerId; strokeId++;
-      canvas.setPointerCapture(e.pointerId); sample(e);
-    });
-    canvas.addEventListener('pointermove', function (e) {
-      e.preventDefault(); e.stopPropagation();
-      if (!enabled || !e.isPrimary || (activeId !== null && e.pointerId !== activeId)) return;
-      sample(e);
-    });
+    // 그리는 입력은 창 전체에서 먼저 받는다(capture) — 받아들인 포인터만 막고, 나머지(손가락 넘기기 · 도구 상자)는 그대로 흘려보낸다
+    var Ink = window.LectureInk || { accepts: function () { return true; }, skip: function () { return false; } };
+    var swallowClick = false;
+    window.addEventListener('pointerdown', function (e) {
+      if (!enabled || Ink.skip(e.target) || !Ink.accepts(e)) return;
+      e.preventDefault(); e.stopPropagation(); swallowClick = true;
+      if (activeId !== null || e.button !== 0 || !e.isPrimary) return;
+      activeId = e.pointerId; strokeId++; sample(e);
+    }, true);
+    window.addEventListener('pointermove', function (e) {
+      if (!enabled) return;
+      if (activeId !== null) {
+        if (e.pointerId !== activeId) return;
+        e.preventDefault(); e.stopPropagation(); sample(e); return;
+      }
+      if (e.pointerType === 'mouse' && !Ink.skip(e.target)) {
+        pointer = position(e); paint();
+        // 녹화 중 도구막대가 계속 뜨지 않게 — 화면 아래쪽에서만 HUD 를 깨운다
+        if (e.clientY < window.innerHeight - 90) e.stopPropagation();
+      }
+    }, true);
     function end(e) {
+      if (activeId === null || e.pointerId !== activeId) return;
       e.preventDefault(); e.stopPropagation();
-      if (e.pointerId !== activeId) return;
       sample(e, true);
       var releasedAt = performance.now();
       points.forEach(function (p) { if (p.s === strokeId && p.t === null) p.t = releasedAt; });
@@ -1999,14 +2066,11 @@ try{
       if (reduced.matches) points = [];
       paint();
     }
-    canvas.addEventListener('pointerup', end);
-    canvas.addEventListener('pointercancel', function (e) { if (e.pointerId === activeId) clear(); });
-    canvas.addEventListener('lostpointercapture', function (e) { if (e.pointerId === activeId) clear(); });
-    canvas.addEventListener('pointerleave', function () { if (activeId === null) { pointer = null; paint(); } });
-    canvas.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); });
-    canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); e.stopPropagation(); });
-    // Avoid a constantly visible toolbar in recordings; the lower edge still reveals it.
-    canvas.addEventListener('mousemove', function (e) { if (e.clientY < window.innerHeight - 90) e.stopPropagation(); });
+    window.addEventListener('pointerup', end, true);
+    window.addEventListener('pointercancel', function (e) { if (e.pointerId === activeId) clear(); }, true);
+    window.addEventListener('click', function (e) { if (swallowClick) { swallowClick = false; e.preventDefault(); e.stopPropagation(); } }, true);
+    window.addEventListener('contextmenu', function (e) { if (enabled && !Ink.skip(e.target)) { e.preventDefault(); e.stopPropagation(); } }, true);
+    document.addEventListener('mouseleave', function () { if (enabled && activeId === null) { pointer = null; paint(); } });
     hud.addEventListener('click', clear, true);
     new MutationObserver(function () { if (enabled) clear(); }).observe(document.getElementById('count'), {childList:true,subtree:true,characterData:true});
     new MutationObserver(function () { if (enabled) clear(); }).observe(document.getElementById('stepdots'), {childList:true});
@@ -2046,6 +2110,161 @@ window.QZ = {
 };
 
 }catch(e){console.error("[object 90_quiz.js]",e)}
+/* ── 91_pen.js ── */
+try{
+/* 강의 빨간 펜(판서) v2 — 2026-11-01 「개념 노트」 유튜브 강의 요청 · canonical: 전기강의_빌드/objects/91_pen.js(기체압력 · 소비전력 빌드에 같은 사본)
+ * v2(2026-11-04 아이패드): 모든 강의 화면 공용(objects/ 루트로 옮김). 캔버스는 입력을 받지 않고, 창 전체 capture 로
+ *   window.LectureInk(89_ink.js)가 받아들인 포인터(펜슬 · 마우스, 손가락은 설정에 따라)만 그린다 — 손가락 넘기기 · 도구 상자는 그대로.
+ * P 키·하단 펜 단추로 켜고 끈다. 그린 선은 남는다(레이저와 다름) — 펜을 꺼도 보이고, 꺼진 동안에는 클릭이 강의로 간다. 같은 장면의 단계를 넘겨도 남고, 다른 장면으로 가면 지워진다.
+ * C = 모두 지우기 · Z = 마지막 획 지우기 · Esc = 펜 끄기. 레이저(L)와 동시에 켜지지 않는다(한쪽을 켜면 다른 쪽이 꺼짐).
+ * 선은 무대(1920×1080) 좌표로 기억해 전체 화면·창 크기가 바뀌어도 같은 자리에 다시 그린다. 펜 모드의 클릭은 장면을 넘기지 않는다.
+ * 페이지 전체 도구라 장면 Ctx 와 수명을 나눈다. 그릴 것이 있을 때만 한 프레임 그린다(계속 도는 RAF 없음).
+ */
+(function () {
+  'use strict';
+  function mount() {
+    if (window.LecturePen || !window.Deck || !document.getElementById('hud')) return;
+    var hud = document.getElementById('hud'), stage = document.getElementById('stage');
+    var canvas = document.createElement('canvas');
+    canvas.id = 'lecture-pen'; canvas.setAttribute('aria-hidden', 'true');
+    var style = document.createElement('style');
+    style.textContent = '#lecture-pen{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:48;pointer-events:none;user-select:none;-webkit-user-select:none}html.pen-on #viewport{cursor:none}#hud #lecture-pen-toggle[aria-pressed="true"]{background:#d6332a;color:#fff;outline:2px solid #fff;outline-offset:2px}#hud #lecture-pen-clear[hidden]{display:none}@media print{#lecture-pen,#lecture-pen-toggle,#lecture-pen-clear{display:none!important}}';
+    document.head.appendChild(style);
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    if (!ctx) { canvas.remove(); style.remove(); return; }
+
+    var button = document.createElement('button');
+    button.id = 'lecture-pen-toggle'; button.type = 'button';
+    button.setAttribute('aria-label', '빨간 펜 켜기/끄기 (P)'); button.setAttribute('aria-keyshortcuts', 'P'); button.setAttribute('aria-pressed', 'false');
+    button.title = '빨간 펜 (P) · C 모두 지우기 · Z 한 획 지우기 · Esc 끄기';
+    button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 20l1.2-4.6L16.6 4a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8z"/><path d="M14.5 6.1l3.4 3.4"/></svg>';
+    var wipe = document.createElement('button');
+    wipe.id = 'lecture-pen-clear'; wipe.type = 'button'; wipe.hidden = true;
+    wipe.setAttribute('aria-label', '펜 자국 모두 지우기 (C)'); wipe.title = '펜 자국 모두 지우기 (C)';
+    wipe.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 20h12M5.5 14.5l8-8a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 18H8.9z"/></svg>';
+    var full = hud.querySelector('[data-a="full"]');
+    hud.insertBefore(button, full); hud.insertBefore(wipe, full);
+    var table = document.querySelector('#help table');
+    if (table) {
+      var row = table.insertRow();
+      row.innerHTML = '<td><kbd>P</kbd> · <kbd>C</kbd> · <kbd>Z</kbd></td><td>빨간 펜 켜기·끄기 · 모두 지우기 · 한 획 지우기 (다른 장면으로 가면 지워짐)</td>';
+    }
+
+    var SW = 1920, SH = 1080, W = 7, COLOR = '#e0261b';
+    var enabled = false, strokes = [], cur = null, activeId = null, hover = null, raf = 0, dpr = 1, lastScene = -1;
+    function box() { return stage.getBoundingClientRect(); }
+    function toStage(e) { var r = box(); return [(e.clientX - r.left) / r.width * SW, (e.clientY - r.top) / r.height * SH]; }
+    function render() {
+      raf = 0;
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+      var r = box(), sx = r.width / SW, sy = r.height / SH;
+      ctx.lineCap = ctx.lineJoin = 'round'; ctx.strokeStyle = COLOR; ctx.fillStyle = COLOR; ctx.lineWidth = W * sx;
+      strokes.forEach(function (s) {
+        var p = s.map(function (q) { return [r.left + q[0] * sx, r.top + q[1] * sy]; });
+        if (p.length === 1) { ctx.beginPath(); ctx.arc(p[0][0], p[0][1], W * sx / 2, 0, Math.PI * 2); ctx.fill(); return; }
+        ctx.beginPath(); ctx.moveTo(p[0][0], p[0][1]);
+        for (var i = 1; i < p.length - 1; i++) {
+          var mx = (p[i][0] + p[i + 1][0]) / 2, my = (p[i][1] + p[i + 1][1]) / 2;
+          ctx.quadraticCurveTo(p[i][0], p[i][1], mx, my);
+        }
+        ctx.lineTo(p[p.length - 1][0], p[p.length - 1][1]); ctx.stroke();
+      });
+      if (enabled && hover) {   // 펜촉 자리(녹화에 OS 커서가 안 잡혀도 보이게)
+        ctx.beginPath(); ctx.arc(hover[0], hover[1], Math.max(4, W * sx * .8), 0, Math.PI * 2);
+        ctx.fillStyle = COLOR; ctx.fill(); ctx.lineWidth = 1.6; ctx.strokeStyle = '#fff'; ctx.stroke();
+      }
+    }
+    function paint() { if (!raf) raf = requestAnimationFrame(render); }
+    function release() { activeId = null; cur = null; }
+    function clear() { release(); strokes = []; paint(); }
+    function undo() { release(); strokes.pop(); paint(); }
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px';
+      canvas.width = Math.round(window.innerWidth * dpr); canvas.height = Math.round(window.innerHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); hover = null; paint();
+    }
+    function toggle(value) {
+      enabled = typeof value === 'boolean' ? value : !enabled;
+      release(); hover = null;
+      canvas.classList.toggle('on', enabled); wipe.hidden = !enabled; button.setAttribute('aria-pressed', String(enabled));
+      document.documentElement.classList.toggle('pen-on', enabled);
+      if (window.LectureInk) LectureInk.setOn('pen', enabled);
+      if (enabled && window.LectureLaser && LectureLaser.enabled) LectureLaser.setEnabled(false);
+      paint();
+    }
+    button.addEventListener('click', function (e) { e.stopPropagation(); toggle(); button.blur(); });
+    wipe.addEventListener('click', function (e) { e.stopPropagation(); clear(); wipe.blur(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing || (e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'))) return;
+      var k = e.key.toLowerCase();
+      if (k === 'p') { if (!e.repeat) toggle(); e.preventDefault(); e.stopImmediatePropagation(); }
+      else if (enabled && k === 'c') { clear(); e.preventDefault(); e.stopImmediatePropagation(); }
+      else if (enabled && k === 'z') { undo(); e.preventDefault(); e.stopImmediatePropagation(); }
+      else if (enabled && e.key === 'Escape') { toggle(false); e.preventDefault(); e.stopImmediatePropagation(); }
+    }, true);
+    // 창 전체 capture — 받아들인 포인터(펜슬 · 마우스, 손가락은 설정에 따라)만 그리고 막는다. 손가락 넘기기 · 도구 상자는 그대로 지나간다
+    var Ink = window.LectureInk || { accepts: function () { return true; }, skip: function () { return false; } };
+    var swallowClick = false;
+    window.addEventListener('pointerdown', function (e) {
+      if (!enabled || Ink.skip(e.target) || !Ink.accepts(e)) return;
+      e.preventDefault(); e.stopPropagation(); swallowClick = true;
+      if (activeId !== null || e.button !== 0 || !e.isPrimary) return;
+      activeId = e.pointerId; cur = [toStage(e)]; strokes.push(cur); hover = [e.clientX, e.clientY]; paint();
+    }, true);
+    window.addEventListener('pointermove', function (e) {
+      if (!enabled) return;
+      if (activeId !== null) {
+        if (e.pointerId !== activeId) return;
+        e.preventDefault(); e.stopPropagation();
+        hover = [e.clientX, e.clientY];
+        var q = toStage(e), l = cur[cur.length - 1];
+        if (Math.hypot(q[0] - l[0], q[1] - l[1]) >= 1.5) cur.push(q);
+        paint(); return;
+      }
+      if (e.pointerType === 'mouse' && !Ink.skip(e.target)) {
+        hover = [e.clientX, e.clientY]; paint();
+        // 녹화 중 도구막대가 계속 뜨지 않게 — 화면 아래쪽에서만 HUD 를 깨운다(레이저와 같음)
+        if (e.clientY < window.innerHeight - 90) e.stopPropagation();
+      }
+    }, true);
+    function end(e) {
+      if (activeId === null || e.pointerId !== activeId) return;
+      e.preventDefault(); e.stopPropagation();
+      if (cur) { var q = toStage(e), l = cur[cur.length - 1]; if (q[0] !== l[0] || q[1] !== l[1]) cur.push(q); }
+      release(); if (e.pointerType !== 'mouse') hover = null; paint();
+    }
+    window.addEventListener('pointerup', end, true);
+    window.addEventListener('pointercancel', function (e) { if (e.pointerId === activeId) release(); }, true);
+    window.addEventListener('click', function (e) { if (swallowClick) { swallowClick = false; e.preventDefault(); e.stopPropagation(); } }, true);
+    window.addEventListener('contextmenu', function (e) { if (enabled && !Ink.skip(e.target)) { e.preventDefault(); e.stopPropagation(); } }, true);
+    document.addEventListener('mouseleave', function () { if (enabled && activeId === null) { hover = null; paint(); } });
+    // 다른 장면으로 가면 지운다(같은 장면의 단계 이동·다시 보기는 남김)
+    new MutationObserver(function () {
+      if (Deck.i !== lastScene) { lastScene = Deck.i; if (strokes.length) clear(); }
+    }).observe(document.getElementById('count'), { childList: true, subtree: true, characterData: true });
+    lastScene = Deck.i;
+    // 레이저를 켜면 펜은 꺼진다
+    var laserBtn = document.getElementById('lecture-laser-toggle');
+    if (laserBtn) new MutationObserver(function () { if (enabled && laserBtn.getAttribute('aria-pressed') === 'true') toggle(false); }).observe(laserBtn, { attributes: true, attributeFilter: ['aria-pressed'] });
+    window.addEventListener('resize', resize);
+    document.addEventListener('fullscreenchange', resize);
+    window.addEventListener('blur', release);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) release(); });
+    window.addEventListener('pagehide', release);
+    resize();
+    window.LecturePen = Object.freeze({
+      setEnabled: toggle, clear: clear, undo: undo,
+      get enabled() { return enabled; }, get drawing() { return activeId !== null; }, get strokes() { return strokes.length; }
+    });
+  }
+  // 엔진(DOMContentLoaded 타이머) → 레이저 → 펜 순서로 붙는다
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(function () { setTimeout(mount, 0); }, 0); });
+  else setTimeout(function () { setTimeout(mount, 0); }, 0);
+})();
+
+}catch(e){console.error("[object 91_pen.js]",e)}
 /* ── 91_recap.js ── */
 try{
 /* ═══════════════════════════════════════════════════════════════
@@ -2231,6 +2450,110 @@ try{
 })();
 
 }catch(e){console.error("[object 91_recap.js]",e)}
+/* ── 93_toolbox.js ── */
+try{
+/* 판서 도구 상자 v1 — 2026-11-04 아이패드 수업 요청 · canonical: 전기강의_빌드/objects/93_toolbox.js(기체압력 · 소비전력 빌드에 같은 사본)
+ * 오른쪽 아래 둥근 단추 하나 → 누르면 도구가 펼쳐진다: 레이저 · 빨간 펜 · 한 획 지우기 · 모두 지우기 · 손가락 그리기(자동/켬/끔) · 전체 화면.
+ * 도구 상자 위는 레이저 · 펜이 켜져 있어도 그리지 않는다(89_ink.js skip) — 손가락으로 눌러 여닫는다.
+ * 손가락 그리기 «자동»: 펜슬을 한 번이라도 쓰면 그때부터 펜슬만 그리고 손가락은 화면 넘기기(굿노트처럼). 전자칠판처럼 펜슬이 없으면 손가락으로 그림.
+ * 확인용 정지 화면(?still=1 · ?clean=1)과 인쇄에서는 숨긴다.
+ */
+(function () {
+  'use strict';
+  function mount() {
+    if (window.LectureTools || !window.Deck || !document.getElementById('hud')) return;
+    var Q = new URLSearchParams(location.search);
+    if (Q.get('still') === '1' || Q.get('clean') === '1') return;
+    var css = document.createElement('style');
+    css.textContent =
+      '#lecture-tools{position:fixed;right:16px;bottom:16px;z-index:70;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font:600 14px/1.2 "Pretendard Variable",Pretendard,system-ui,sans-serif;touch-action:manipulation;-webkit-user-select:none;user-select:none}' +
+      '#lecture-tools .tb-main{width:54px;height:54px;border-radius:50%;border:0;background:rgba(28,36,46,.55);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);opacity:.75;transition:opacity .2s,background .2s}' +
+      '#lecture-tools .tb-main:hover,#lecture-tools.open .tb-main{opacity:1;background:rgba(28,36,46,.88)}' +
+      '#lecture-tools .tb-main svg{width:26px;height:26px}' +
+      '#lecture-tools .tb-panel{display:none;flex-direction:column;gap:6px;padding:10px;border-radius:16px;background:rgba(250,250,247,.97);box-shadow:0 8px 28px rgba(0,0,0,.22);min-width:210px}' +
+      '#lecture-tools.open .tb-panel{display:flex}' +
+      '#lecture-tools .tb-panel button{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 14px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;color:#24303b;font:inherit;cursor:pointer;text-align:left}' +
+      '#lecture-tools .tb-panel button .ic{width:22px;text-align:center;font-size:18px}' +
+      '#lecture-tools .tb-panel button .k{margin-left:auto;font-weight:500;font-size:12px;color:#7d8892}' +
+      '#lecture-tools .tb-panel button[aria-pressed="true"]{background:#d6332a;color:#fff;border-color:#d6332a}' +
+      '#lecture-tools .tb-panel button[aria-pressed="true"] .k{color:#ffe2df}' +
+      '#lecture-tools .tb-panel hr{border:0;border-top:1px solid rgba(0,0,0,.08);margin:2px 0}' +
+      '#lecture-tools .tb-panel .tip{font-weight:500;font-size:12px;line-height:1.45;color:#55626e;padding:2px 4px;max-width:220px}' +
+      '@media print{#lecture-tools{display:none!important}}';
+    document.head.appendChild(css);
+    var box = document.createElement('div');
+    box.id = 'lecture-tools';
+    var has = { laser: !!window.LectureLaser, pen: !!window.LecturePen };
+    box.innerHTML =
+      '<div class="tb-panel" role="menu">' +
+        (has.laser ? '<button type="button" data-t="laser" aria-pressed="false"><span class="ic">🔴</span>레이저<span class="k">L</span></button>' : '') +
+        (has.pen ? '<button type="button" data-t="pen" aria-pressed="false"><span class="ic">✏️</span>빨간 펜<span class="k">P</span></button>' +
+                   '<button type="button" data-t="undo"><span class="ic">↶</span>한 획 지우기<span class="k">Z</span></button>' +
+                   '<button type="button" data-t="clear"><span class="ic">🧽</span>모두 지우기<span class="k">C</span></button>' : '') +
+        '<hr><button type="button" data-t="touch"><span class="ic">✋</span><span class="lb">손가락 그리기</span><span class="k" data-v></span></button>' +
+        '<div class="tip" data-tip></div>' +
+        '<button type="button" data-t="full"><span class="ic">⛶</span>전체 화면<span class="k">F</span></button>' +
+      '</div>' +
+      '<button type="button" class="tb-main" aria-label="판서 도구 열기/닫기" aria-expanded="false" title="판서 도구">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 20l1.2-4.6L16.6 4a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8z"/><path d="M14.5 6.1l3.4 3.4"/></svg>' +
+      '</button>';
+    document.body.appendChild(box);
+    var main = box.querySelector('.tb-main'), Ink = window.LectureInk;
+    var TOUCH = { auto: '자동', on: '켬', off: '끔' };
+    function sync() {
+      var b;
+      if ((b = box.querySelector('[data-t="laser"]'))) b.setAttribute('aria-pressed', String(window.LectureLaser.enabled));
+      if ((b = box.querySelector('[data-t="pen"]'))) b.setAttribute('aria-pressed', String(window.LecturePen.enabled));
+      if (Ink) {
+        box.querySelector('[data-v]').textContent = TOUCH[Ink.mode];
+        box.querySelector('[data-tip]').textContent =
+          Ink.mode === 'on' ? '손가락으로도 그립니다(전자칠판).' :
+          Ink.mode === 'off' ? '펜슬 · 마우스만 그립니다. 손가락은 화면 넘기기.' :
+          Ink.seenPen ? '자동: 펜슬이 감지되어 펜슬만 그립니다. 손가락은 화면 넘기기.' : '자동: 펜슬을 쓰면 그때부터 펜슬만 그립니다.';
+      }
+      var full = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      box.querySelector('[data-t="full"]').setAttribute('aria-pressed', String(full));
+    }
+    function setOpen(v) { box.classList.toggle('open', v); main.setAttribute('aria-expanded', String(v)); sync(); }
+    function fullscreen() {
+      var d = document, el = d.documentElement;
+      if (!(d.fullscreenElement || d.webkitFullscreenElement)) (el.requestFullscreen || el.webkitRequestFullscreen || function () {}).call(el);
+      else (d.exitFullscreen || d.webkitExitFullscreen || function () {}).call(d);
+    }
+    // 도구 상자 안의 누름은 강의(넘기기)로 가지 않게
+    ['pointerdown', 'pointerup', 'click', 'touchstart', 'touchend', 'mousedown', 'mouseup'].forEach(function (t) {
+      box.addEventListener(t, function (e) { e.stopPropagation(); }, false);
+    });
+    main.addEventListener('click', function () { setOpen(!box.classList.contains('open')); main.blur(); });
+    box.querySelector('.tb-panel').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      var t = b.dataset.t;
+      if (t === 'laser') { LectureLaser.setEnabled(); if (LectureLaser.enabled && window.LecturePen && LecturePen.enabled) LecturePen.setEnabled(false); }
+      else if (t === 'pen') LecturePen.setEnabled();
+      else if (t === 'undo') LecturePen.undo();
+      else if (t === 'clear') LecturePen.clear();
+      else if (t === 'touch' && Ink) Ink.setMode(Ink.mode === 'auto' ? 'off' : Ink.mode === 'off' ? 'on' : 'auto');
+      else if (t === 'full') fullscreen();
+      b.blur(); setTimeout(sync, 0);
+    });
+    if (Ink) Ink.onChange(sync);
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (t) { document.addEventListener(t, sync); });
+    ['lecture-laser-toggle', 'lecture-pen-toggle'].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) new MutationObserver(sync).observe(b, { attributes: true, attributeFilter: ['aria-pressed'] });
+    });
+    var table = document.querySelector('#help table');
+    if (table) { var row = table.insertRow(); row.innerHTML = '<td>오른쪽 아래 ✏️</td><td>판서 도구 상자 — 레이저 · 펜 · 지우기 · 손가락 그리기(자동이면 펜슬을 쓰는 순간부터 펜슬만 그림) · 전체 화면</td>'; }
+    sync();
+    window.LectureTools = Object.freeze({ open: function () { setOpen(true); }, close: function () { setOpen(false); }, get el() { return box; } });
+  }
+  // 엔진 → 레이저 → 펜 → 도구 상자 순서로 붙는다(레이저 · 펜이 있어야 단추를 만든다)
+  function later(n) { return function () { if (n <= 0) mount(); else setTimeout(later(n - 1), 0); }; }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(later(3), 0); });
+  else setTimeout(later(3), 0);
+})();
+
+}catch(e){console.error("[object 93_toolbox.js]",e)}
 /* ── x1.js ── */
 try{
 /* ═══════════════════════════════════════════════════════════════
