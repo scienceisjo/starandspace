@@ -3746,5 +3746,656 @@ try{
 
 }catch(e){console.error("[slide 14_recap.html]",e)}
 </script>
+<script>
+/* 판서 칠판 v1 — 2026-11-18 「판서식 수업과 강의 화면 합치기」 · canonical: 전기강의_빌드/objects/95_board.js
+ * 빨간 펜(91_pen.js)은 지나가는 강조(다른 장면으로 가면 지워짐), 이 모듈은 «남는 판서»다. 세 가지를 더한다.
+ *   1) 판서 칸 — 장면 HTML 에 [data-board="이름"] 요소를 두면 그 자리가 미리 비워 둔 판서 칸이 된다.
+ *      판서 펜(K)으로 그 안에만 써지고, 장면을 오가도 남는다. 칸의 바탕이 어두우면 분필 색, 밝으면 펜 색으로 쓴다.
+ *   2) 판서 영역 만들기(A) — 화면을 끌어 네모를 그리면 그 자리가 칠판이 된다(칠판 · 흰 종이 · 모눈 · 투명).
+ *      영역 손보기 상태에서 옮기기 · 크기 · 바탕 · 지우기 · 삭제. 장면마다 기억한다.
+ *   3) 메모 화면(D) — 설명 화면 위에 메모장을 띄운다. 오른쪽 반 · 왼쪽 반 · 전체, 여러 장(◀ ▶ ＋),
+ *      바탕 4가지(칠판 · 흰 종이 · 모눈 · 검정), 장마다 판서 저장, PNG 로 내려받기.
+ * 판서 펜 색 4개(칠판에서는 밝은 분필 색으로 바뀜) · 굵기 3단 · 지우개(E, 획 단위) · 한 획 되돌리기(Z).
+ * 누가 그리나는 89_ink.js(LectureInk) 규칙을 그대로 따른다 — 펜슬 · 마우스는 늘, 손가락은 «손가락 그리기» 설정대로.
+ * 판서는 이 기기(브라우저)에 덱마다 저장된다(localStorage lecture_board:<파일 경로>). 다른 기기로는 옮겨 가지 않는다.
+ * 도구 상자(93_toolbox.js)가 있으면 그 안에 「판서」 묶음을 끼워 넣고, 없으면 왼쪽 아래에 칠판 단추를 따로 만든다.
+ * 키: K 판서 펜 · E 지우개 · A 판서 영역 만들기·손보기 · D 메모 화면 · Z 한 획 되돌리기 · Esc 끄기/닫기
+ * 엔진(core.js 의 Deck · #stage 1920×1080)이 없으면 #stage 또는 [data-stage] 와 주소의 #장면 번호를 쓴다.
+ */
+(function () {
+  'use strict';
+  var SW = 1920, SH = 1080;
+  var CHALK = ['#f4f4ee', '#ffd84d', '#86d4ff', '#ff9db2'];   // 어두운 바탕(칠판·검정)에서 쓰는 분필 색
+  var INK = ['#1d1d1f', '#1f5fd1', '#d6332a', '#16824a'];      // 밝은 바탕(종이·모눈)에서 쓰는 펜 색
+  var WIDTHS = [4, 7, 12];
+  var AREA_BG = ['chalk', 'paper', 'grid', 'clear'];
+  var MEMO_BG = ['paper', 'grid', 'chalk', 'black'];
+  var BG_NAME = { chalk: '칠판', paper: '흰 종이', grid: '모눈', clear: '투명', black: '검정' };
+  var SIDES = ['right', 'left', 'full'];
+  var SIDE_NAME = { right: '오른쪽 반', left: '왼쪽 반', full: '전체' };
+
+  function mount() {
+    if (window.LectureBoard) return;
+    var stage = document.getElementById('stage') || document.querySelector('[data-stage]');
+    if (!stage) return;
+    var Q = new URLSearchParams(location.search);
+    var CLEAN = Q.get('still') === '1' || Q.get('clean') === '1';
+    var Ink = window.LectureInk || {
+      accepts: function () { return true; },
+      skip: function (t) { return !!(t && t.closest && t.closest('button,a,input,select,textarea,label,[contenteditable],[data-interactive]')); },
+      setOn: function () {}
+    };
+    var store = {
+      get: function (k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+      set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+    };
+
+    /* ── 저장 자료 ── */
+    var KEY = 'lecture_board:' + location.pathname;
+    var data = store.get(KEY);
+    if (!data || data.v !== 1) data = { v: 1, areas: {}, slots: {}, memo: { pages: [{ bg: 'paper', s: [] }], cur: 0, side: 'right' } };
+    if (!data.memo || !data.memo.pages || !data.memo.pages.length) data.memo = { pages: [{ bg: 'paper', s: [] }], cur: 0, side: 'right' };
+    var tool = store.get('lecture_board_tool') || {};
+    var ci = tool.c >= 0 && tool.c < 4 ? tool.c : 0, wi = tool.w >= 0 && tool.w < 3 ? tool.w : 1;
+    var saveT = 0, warned = false;
+    function save() {
+      clearTimeout(saveT);
+      saveT = setTimeout(function () {
+        if (!store.set(KEY, data) && !warned) { warned = true; toast('저장 공간이 꽉 찼어요. 메모를 PNG로 내려받고 지워 주세요.'); }
+      }, 300);
+    }
+
+    /* ── 그림판 층(무대 안이라 무대와 함께 커지고 작아진다) ── */
+    var css = document.createElement('style');
+    css.textContent = [
+      '#board-layer{position:absolute;left:0;top:0;width:' + SW + 'px;height:' + SH + 'px;z-index:25;pointer-events:none}',
+      '#board-layer .bd-area,#board-layer .bd-slot{position:absolute;pointer-events:none}',
+      '#board-layer .bd-area{border-radius:14px;overflow:hidden}',
+      '#board-layer .bd-ink,#board-memo .bd-ink{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;fill:none;stroke-linecap:round;stroke-linejoin:round}',
+      '.bd-bg-chalk{background:#25392f;box-shadow:inset 0 0 0 5px #5d4a35,inset 0 0 60px rgba(0,0,0,.35)}',
+      '.bd-bg-paper{background:#fbfbf7;box-shadow:inset 0 0 0 2px rgba(0,0,0,.14)}',
+      '.bd-bg-grid{background-color:#fcfcf9;background-image:linear-gradient(rgba(40,100,190,.16) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(40,100,190,.16) 1.5px,transparent 1.5px);background-size:48px 48px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.14)}',
+      '.bd-bg-black{background:#111214}',
+      '.bd-bg-clear{background:transparent}',
+      '#board-layer.edit .bd-area,#board-layer.edit .bd-slot{outline:4px dashed #ffb020;outline-offset:-4px}',
+      '#board-layer .bd-chrome{display:none;position:absolute;top:10px;right:10px;gap:6px;pointer-events:auto;touch-action:none}',
+      '#board-layer.edit .bd-chrome{display:flex}',
+      '#board-layer .bd-chrome button,#board-layer .bd-move,#board-memo .bm-bar button,#board-memo .bm-bar .bm-n{height:46px;min-width:46px;padding:0 14px;border:0;border-radius:11px;background:rgba(22,26,32,.84);color:#fff;font:600 21px/46px "Pretendard Variable",Pretendard,system-ui,sans-serif;cursor:pointer;white-space:nowrap}',
+      '#board-layer .bd-move{display:inline-block;cursor:move}',
+      '#board-layer .bd-size{display:none;position:absolute;right:0;bottom:0;width:52px;height:52px;pointer-events:auto;touch-action:none;cursor:nwse-resize;background:linear-gradient(135deg,transparent 50%,#ffb020 50%);border-bottom-right-radius:12px}',
+      '#board-layer.edit .bd-area .bd-size{display:block}',
+      '#board-layer .bd-band{position:absolute;border:4px dashed #ffb020;background:rgba(255,176,32,.10);border-radius:12px}',
+      '#board-layer .bd-hint{position:absolute;left:50%;top:22px;transform:translateX(-50%);padding:10px 22px;border-radius:9999px;background:rgba(22,26,32,.86);color:#fff;font:600 24px/1.3 "Pretendard Variable",Pretendard,system-ui,sans-serif;white-space:nowrap}',
+      '#board-memo{position:absolute;top:0;height:' + SH + 'px;z-index:35;display:none;pointer-events:auto}',
+      '#board-memo.open{display:block}',
+      '#board-memo[data-side="full"]{left:0;width:' + SW + 'px}',
+      '#board-memo[data-side="right"]{left:' + SW / 2 + 'px;width:' + SW / 2 + 'px;box-shadow:-14px 0 36px rgba(0,0,0,.28)}',
+      '#board-memo[data-side="left"]{left:0;width:' + SW / 2 + 'px;box-shadow:14px 0 36px rgba(0,0,0,.28)}',
+      '#board-memo .bm-sheet{position:absolute;inset:0}',
+      '#board-memo .bm-bar{position:absolute;left:50%;top:16px;transform:translateX(-50%);display:flex;gap:6px;padding:6px;border-radius:15px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);touch-action:none}',
+      '#board-memo .bm-bar .bm-n{background:rgba(22,26,32,.6);cursor:default}',
+      'html.board-making #viewport{cursor:crosshair}',
+      'html.board-pen #viewport{cursor:crosshair}',
+      '#lecture-tools .bd-tools{display:flex;flex-direction:column;gap:6px}',
+      '#lecture-tools .tb-panel{max-height:calc(100vh - 170px);overflow-y:auto;overscroll-behavior:contain}',
+      '.bd-tools .bd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}',
+      '#lecture-tools .bd-tools .bd-grid button,#lecture-board-tools .bd-tools .bd-grid button{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 9px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;color:#24303b;font:600 13px/1.15 "Pretendard Variable",Pretendard,system-ui,sans-serif;cursor:pointer;text-align:left;white-space:nowrap}',
+      '.bd-tools .bd-grid button .k{margin-left:auto;font-weight:500;font-size:11px;color:#7d8892}',
+      '.bd-tools .bd-grid button[aria-pressed="true"]{background:#1f6b4f!important;color:#fff!important;border-color:#1f6b4f!important}',
+      '.bd-tools .bd-grid button[aria-pressed="true"] .k{color:#d7f2e6}',
+      '.bd-sw .bd-undo{width:34px;margin-left:auto}',
+      '.bd-sw .bd-undo svg{width:18px;height:18px}',
+      '#lecture-tools .bd-ttl,#lecture-board-tools .bd-ttl{font-size:12px;font-weight:700;color:#7d8892;padding:2px 4px 0}',
+      '.bd-sw{display:flex;gap:6px;align-items:center;padding:0 2px}',
+      '.bd-sw button{min-height:34px!important;height:34px;min-width:34px;padding:0!important;border-radius:9999px!important;display:grid!important;place-items:center;justify-content:center}',
+      '.bd-sw button[data-col]{width:34px}',
+      '.bd-sw button[data-col] i{width:22px;height:22px;border-radius:50%;display:block}',
+      '.bd-sw button[aria-pressed="true"]{outline:3px solid #24303b;outline-offset:1px;background:#fff!important;color:#24303b!important}',
+      '.bd-sw button[data-wd]{width:34px}',
+      '.bd-sw button[data-wd] i{display:block;border-radius:9999px;background:#24303b;width:18px}',
+      '#lecture-board-tools{position:fixed;left:16px;bottom:88px;z-index:70;display:flex;flex-direction:column;align-items:flex-start;gap:8px;font:600 14px/1.2 "Pretendard Variable",Pretendard,system-ui,sans-serif;touch-action:manipulation;-webkit-user-select:none;user-select:none}',
+      '#lecture-board-tools .bt-main{width:54px;height:54px;border-radius:50%;border:0;background:rgba(28,36,46,.55);color:#fff;display:grid;place-items:center;cursor:pointer;opacity:.75}',
+      '#lecture-board-tools .bt-main:hover,#lecture-board-tools.open .bt-main{opacity:1;background:rgba(28,36,46,.88)}',
+      '#lecture-board-tools .bt-panel{display:none;flex-direction:column;gap:6px;padding:10px;border-radius:16px;background:rgba(250,250,247,.97);box-shadow:0 8px 28px rgba(0,0,0,.22);min-width:220px}',
+      '#lecture-board-tools.open .bt-panel{display:flex}',
+      '#lecture-board-tools .bt-panel>button,#lecture-board-tools .bd-tools>button{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 14px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;color:#24303b;font:inherit;cursor:pointer;text-align:left}',
+      '#lecture-board-tools .bd-tools{display:flex;flex-direction:column;gap:6px}',
+      '#lecture-tools .bd-tools>button .k,#lecture-board-tools .bd-tools>button .k{margin-left:auto;font-weight:500;font-size:12px;color:#7d8892}',
+      '#lecture-tools .bd-tools>button[aria-pressed="true"],#lecture-board-tools .bd-tools>button[aria-pressed="true"]{background:#1f6b4f;color:#fff;border-color:#1f6b4f}',
+      '#lecture-tools .bd-tools>button[aria-pressed="true"] .k,#lecture-board-tools .bd-tools>button[aria-pressed="true"] .k{color:#d7f2e6}',
+      '.bd-tools .ic{width:22px;display:grid;place-items:center}',
+      '.bd-tools .ic svg{width:20px;height:20px}',
+      '#board-toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);z-index:90;padding:10px 22px;border-radius:9999px;background:rgba(29,29,31,.9);color:#f5f5f7;font:600 16px/1.4 "Pretendard Variable",Pretendard,system-ui,sans-serif;opacity:0;transition:opacity .25s;pointer-events:none}',
+      '#board-toast.show{opacity:1}',
+      '@media print{#board-memo .bm-bar,#lecture-board-tools,#board-layer .bd-chrome,#board-layer .bd-size{display:none!important}}'
+    ].join('\n');
+    document.head.appendChild(css);
+
+    var layer = document.createElement('div');
+    layer.id = 'board-layer'; layer.setAttribute('aria-hidden', 'true');
+    stage.appendChild(layer);
+    var memo = document.createElement('div');
+    memo.id = 'board-memo';
+    memo.innerHTML = '<div class="bm-sheet"><svg class="bd-ink" xmlns="http://www.w3.org/2000/svg"></svg></div>' +
+      '<div class="bm-bar" data-interactive>' +
+      '<button type="button" data-m="prev" aria-label="이전 메모">◀</button><span class="bm-n"></span>' +
+      '<button type="button" data-m="next" aria-label="다음 메모">▶</button><button type="button" data-m="add" aria-label="새 메모 장">＋</button>' +
+      '<button type="button" data-m="bg"></button><button type="button" data-m="side"></button>' +
+      '<button type="button" data-m="clear">지우기</button><button type="button" data-m="png">PNG</button>' +
+      '<button type="button" data-m="close" aria-label="메모 닫기 (D)">닫기</button></div>';
+    stage.appendChild(memo);
+    var memoSheet = memo.querySelector('.bm-sheet'), memoSvg = memo.querySelector('.bd-ink'), memoBar = memo.querySelector('.bm-bar');
+    var toastEl = document.createElement('div'); toastEl.id = 'board-toast'; document.body.appendChild(toastEl);
+    var toastT = 0;
+    function toast(msg) { toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('show'); }, 2200); }
+
+    // 판서 칸 · 영역 손잡이 · 메모 막대 위의 누름이 강의 넘기기로 가지 않게
+    function guard(el) {
+      ['pointerdown', 'pointerup', 'click', 'touchstart', 'touchend', 'mousedown', 'mouseup'].forEach(function (t) {
+        el.addEventListener(t, function (e) { e.stopPropagation(); }, false);
+      });
+    }
+    guard(memoBar);
+
+    /* ── 좌표 ── */
+    function stageRect() { return stage.getBoundingClientRect(); }
+    function toStage(e) { var r = stageRect(); return [(e.clientX - r.left) / r.width * SW, (e.clientY - r.top) / r.height * SH]; }
+    function inStage(p) { return p[0] >= 0 && p[1] >= 0 && p[0] <= SW && p[1] <= SH; }
+    function r1(v) { return Math.round(v * 10) / 10; }
+
+    /* ── 지금 장면 ── */
+    function sceneKey() {
+      if (window.Deck && Deck.list && Deck.list[Deck.i]) return Deck.list[Deck.i].id || ('s' + Deck.i);
+      var m = /^#(\d+)/.exec(location.hash); return 's' + (m ? m[1] : '1');
+    }
+    function sceneEl() {
+      if (window.Deck && Deck.list && Deck.list[Deck.i]) return Deck.list[Deck.i];
+      return stage.querySelector('.slide.is-on,.slide.active,.scene.active,[data-scene].on') || stage;
+    }
+    function areas() { var k = sceneKey(); return data.areas[k] || (data.areas[k] = []); }
+
+    /* ── 선 그리기(SVG 경로) ── */
+    function pathD(p) {
+      var f = function (v) { return Math.round(v * 10) / 10; };
+      if (p.length === 1) return 'M' + f(p[0][0]) + ' ' + f(p[0][1]) + 'h.01';
+      var d = 'M' + f(p[0][0]) + ' ' + f(p[0][1]);
+      for (var i = 1; i < p.length - 1; i++) {
+        d += 'Q' + f(p[i][0]) + ' ' + f(p[i][1]) + ' ' + f((p[i][0] + p[i + 1][0]) / 2) + ' ' + f((p[i][1] + p[i + 1][1]) / 2);
+      }
+      var l = p[p.length - 1]; return d + 'L' + f(l[0]) + ' ' + f(l[1]);
+    }
+    var NS = 'http://www.w3.org/2000/svg';
+    function addPath(svg, s) {
+      var path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', pathD(s.p)); path.setAttribute('stroke', s.c); path.setAttribute('stroke-width', s.w);
+      svg.appendChild(path); return path;
+    }
+    function drawInk(svg, list, w, h) {
+      svg.setAttribute('viewBox', '0 0 ' + r1(w) + ' ' + r1(h));
+      svg.textContent = '';
+      (list || []).forEach(function (s) { addPath(svg, s); });
+    }
+
+    /* ── 바탕이 어두운가(분필 색을 쓸지) ── */
+    function lum(rgb) {
+      var m = /rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/.exec(rgb || '');
+      if (!m || (m[4] !== undefined && +m[4] < .2)) return null;
+      return (0.299 * m[1] + 0.587 * m[2] + 0.114 * m[3]) / 255;
+    }
+    function slideDark() { return !document.body.classList.contains('on-light'); }
+    function darkBg(bg, el) {
+      if (bg === 'chalk' || bg === 'black') return true;
+      if (bg === 'paper' || bg === 'grid') return false;
+      if (el && el.dataset && el.dataset.ink) return el.dataset.ink === 'light';   // data-ink="light" = 밝은 분필로 쓰라는 뜻
+      if (el) { var L = lum(getComputedStyle(el).backgroundColor); if (L !== null) return L < .45; }
+      return slideDark();
+    }
+
+    /* ── 판서 영역(끌어서 만든 칠판) ── */
+    var uid = function () { return 'a' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36); };
+    function areaEl(a) {
+      var n = layer.querySelector('.bd-area[data-id="' + a.id + '"]');
+      if (n) return n;
+      n = document.createElement('div');
+      n.className = 'bd-area'; n.dataset.id = a.id;
+      n.innerHTML = '<svg class="bd-ink" xmlns="http://www.w3.org/2000/svg"></svg>' +
+        '<div class="bd-chrome" data-interactive><span class="bd-move" data-interactive>옮기기</span>' +
+        '<button type="button" data-c="bg"></button><button type="button" data-c="clear">지우기</button><button type="button" data-c="del">삭제</button></div>' +
+        '<span class="bd-size" data-interactive></span>';
+      guard(n.querySelector('.bd-chrome')); guard(n.querySelector('.bd-size'));
+      n.querySelector('.bd-chrome').addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        var list = areas(), i = list.indexOf(find(a.id)); if (i < 0) return;
+        var A = list[i];
+        if (b.dataset.c === 'bg') { A.bg = AREA_BG[(AREA_BG.indexOf(A.bg) + 1) % AREA_BG.length]; }
+        else if (b.dataset.c === 'clear') { if (A.s.length) pushUndo(snapshotUndo(A.s)); A.s.length = 0; }
+        else if (b.dataset.c === 'del') { var keep = list.splice(i, 1)[0]; var key = sceneKey(); undo.push({ ctx: key, run: function () { areas().splice(Math.min(i, areas().length), 0, keep); } }); }
+        save(); renderAreas(); b.blur();
+      });
+      dragHandle(n.querySelector('.bd-move'), a.id, 'move');
+      dragHandle(n.querySelector('.bd-size'), a.id, 'size');
+      layer.appendChild(n);
+      return n;
+    }
+    function find(id) { var l = areas(); for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i]; return null; }
+    function renderAreas() {
+      var list = areas(), ids = list.map(function (a) { return a.id; });
+      layer.querySelectorAll('.bd-area').forEach(function (n) { if (ids.indexOf(n.dataset.id) < 0) n.remove(); });
+      list.forEach(function (a) {
+        var n = areaEl(a);
+        n.style.left = a.x + 'px'; n.style.top = a.y + 'px'; n.style.width = a.w + 'px'; n.style.height = a.h + 'px';
+        n.className = 'bd-area bd-bg-' + a.bg;
+        n.querySelector('[data-c="bg"]').textContent = '바탕: ' + BG_NAME[a.bg];
+        drawInk(n.querySelector('.bd-ink'), a.s, a.w, a.h);
+        layer.appendChild(n);   // 만든 순서대로 위에 쌓이게
+      });
+    }
+    function dragHandle(h, id, kind) {
+      var st = null;
+      h.addEventListener('pointerdown', function (e) {
+        var a = find(id); if (!a) return;
+        e.preventDefault(); e.stopPropagation();
+        st = { id: e.pointerId, p: toStage(e), x: a.x, y: a.y, w: a.w, h: a.h };
+        try { h.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      h.addEventListener('pointermove', function (e) {
+        if (!st || e.pointerId !== st.id) return;
+        var a = find(id); if (!a) return;
+        var p = toStage(e), dx = p[0] - st.p[0], dy = p[1] - st.p[1];
+        if (kind === 'move') { a.x = Math.round(Math.max(0, Math.min(SW - a.w, st.x + dx))); a.y = Math.round(Math.max(0, Math.min(SH - a.h, st.y + dy))); }
+        else { a.w = Math.round(Math.max(160, Math.min(SW - a.x, st.w + dx))); a.h = Math.round(Math.max(110, Math.min(SH - a.y, st.h + dy))); }
+        renderAreas();
+      });
+      function end(e) { if (!st || e.pointerId !== st.id) return; st = null; save(); }
+      h.addEventListener('pointerup', end); h.addEventListener('pointercancel', end);
+    }
+
+    /* ── 판서 칸([data-board]) — 장면 HTML 이 정한 자리 ── */
+    var slotBoxes = {};   // key → {el, box, svg, rect}
+    function slotKey(el) { return sceneKey() + '/' + (el.getAttribute('data-board') || 'board'); }
+    function visible(el) {
+      if (el.checkVisibility) return el.checkVisibility({ opacityProperty: true, visibilityProperty: true });
+      for (var n = el; n && n !== stage; n = n.parentElement) { var cs = getComputedStyle(n); if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity === 0) return false; }
+      return true;
+    }
+    function syncSlots() {
+      var sec = sceneEl(), els = sec ? Array.prototype.slice.call(sec.querySelectorAll('[data-board]')) : [];
+      var sr = stageRect(), kx = SW / (sr.width || 1), ky = SH / (sr.height || 1), seen = {};
+      els.forEach(function (el) {
+        var key = slotKey(el); seen[key] = 1;
+        var b = slotBoxes[key];
+        if (!b) {
+          var box = document.createElement('div'); box.className = 'bd-slot';
+          box.innerHTML = '<svg class="bd-ink" xmlns="http://www.w3.org/2000/svg"></svg><div class="bd-chrome" data-interactive><button type="button" data-c="clear">칸 지우기</button></div>';
+          guard(box.querySelector('.bd-chrome'));
+          box.querySelector('[data-c="clear"]').addEventListener('click', function (e) {
+            var l = data.slots[key]; if (l && l.length) { pushUndo(snapshotUndo(l)); l.length = 0; save(); drawSlot(slotBoxes[key]); } e.currentTarget.blur();
+          });
+          layer.appendChild(box);
+          b = slotBoxes[key] = { key: key, box: box, svg: box.querySelector('.bd-ink'), rect: null };
+        }
+        b.el = el;
+        var r = el.getBoundingClientRect();
+        var rect = { x: (r.left - sr.left) * kx, y: (r.top - sr.top) * ky, w: r.width * kx, h: r.height * ky };
+        var show = visible(el) && rect.w > 4 && rect.h > 4;
+        b.box.style.display = show ? '' : 'none';
+        b.vis = show;
+        var moved = !b.rect || Math.abs(b.rect.x - rect.x) > .5 || Math.abs(b.rect.y - rect.y) > .5 || Math.abs(b.rect.w - rect.w) > .5 || Math.abs(b.rect.h - rect.h) > .5;
+        if (moved) {
+          b.rect = rect;
+          b.box.style.left = rect.x + 'px'; b.box.style.top = rect.y + 'px'; b.box.style.width = rect.w + 'px'; b.box.style.height = rect.h + 'px';
+          var radius = getComputedStyle(el).borderRadius; b.box.style.borderRadius = radius; b.box.style.overflow = 'hidden';
+          drawSlot(b);
+        }
+      });
+      Object.keys(slotBoxes).forEach(function (k) { if (!seen[k]) { slotBoxes[k].box.remove(); delete slotBoxes[k]; } });
+    }
+    function drawSlot(b) { if (b && b.rect) drawInk(b.svg, data.slots[b.key] || [], b.rect.w, b.rect.h); }
+
+    /* ── 메모 화면 ── */
+    var memoOpen = false, modeBeforeMemo = 'off';
+    function memoRect() {
+      var s = data.memo.side;
+      return s === 'full' ? { x: 0, y: 0, w: SW, h: SH } : { x: s === 'right' ? SW / 2 : 0, y: 0, w: SW / 2, h: SH };
+    }
+    function page() { var m = data.memo; m.cur = Math.max(0, Math.min(m.pages.length - 1, m.cur | 0)); return m.pages[m.cur]; }
+    function renderMemo() {
+      var m = data.memo, pg = page(), r = memoRect();
+      memo.dataset.side = m.side;
+      memoSheet.className = 'bm-sheet bd-bg-' + pg.bg;
+      memo.querySelector('.bm-n').textContent = '메모 ' + (m.cur + 1) + ' / ' + m.pages.length;
+      memo.querySelector('[data-m="bg"]').textContent = '바탕: ' + BG_NAME[pg.bg];
+      memo.querySelector('[data-m="side"]').textContent = SIDE_NAME[m.side];
+      memo.querySelector('[data-m="prev"]').disabled = m.cur === 0;
+      memo.querySelector('[data-m="next"]').disabled = m.cur === m.pages.length - 1;
+      drawInk(memoSvg, pg.s, r.w, r.h);
+    }
+    function setMemo(v) {
+      memoOpen = typeof v === 'boolean' ? v : !memoOpen;
+      memo.classList.toggle('open', memoOpen);
+      if (memoOpen) { modeBeforeMemo = mode; if (mode === 'off' || mode === 'area') setMode('pen'); renderMemo(); }
+      else if (mode !== 'off' && modeBeforeMemo === 'off') setMode('off');
+      syncInk(); syncTools();
+    }
+    memoBar.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      var m = data.memo, t = b.dataset.m;
+      if (t === 'prev') m.cur = Math.max(0, m.cur - 1);
+      else if (t === 'next') m.cur = Math.min(m.pages.length - 1, m.cur + 1);
+      else if (t === 'add') { m.pages.splice(m.cur + 1, 0, { bg: page().bg, s: [] }); m.cur += 1; }
+      else if (t === 'bg') { var pg = page(); pg.bg = MEMO_BG[(MEMO_BG.indexOf(pg.bg) + 1) % MEMO_BG.length]; }
+      else if (t === 'side') m.side = SIDES[(SIDES.indexOf(m.side) + 1) % SIDES.length];
+      else if (t === 'clear') { var p = page(); if (p.s.length) { pushUndo(snapshotUndo(p.s, 'memo')); p.s.length = 0; } }
+      else if (t === 'png') exportPNG();
+      else if (t === 'close') { setMemo(false); b.blur(); return; }
+      save(); renderMemo(); b.blur();
+    });
+    function exportPNG() {
+      var pg = page(), r = memoRect(), cv = document.createElement('canvas');
+      cv.width = r.w; cv.height = r.h;
+      var g = cv.getContext('2d');
+      g.fillStyle = { paper: '#fbfbf7', grid: '#fcfcf9', chalk: '#25392f', black: '#111214' }[pg.bg] || '#fff';
+      g.fillRect(0, 0, r.w, r.h);
+      if (pg.bg === 'grid') {
+        g.strokeStyle = 'rgba(40,100,190,.16)'; g.lineWidth = 1.5;
+        for (var x = 0; x <= r.w; x += 48) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, r.h); g.stroke(); }
+        for (var y = 0; y <= r.h; y += 48) { g.beginPath(); g.moveTo(0, y); g.lineTo(r.w, y); g.stroke(); }
+      }
+      g.lineCap = g.lineJoin = 'round';
+      pg.s.forEach(function (s) { g.strokeStyle = s.c; g.lineWidth = s.w; g.stroke(new Path2D(pathD(s.p))); });
+      cv.toBlob(function (blob) {
+        if (!blob) return;
+        var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = (document.title || '강의').replace(/[\\/:*?"<>|]/g, '') + '_메모' + (data.memo.cur + 1) + '.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+      }, 'image/png');
+    }
+
+    /* ── 도구 상태 ── */
+    var mode = 'off';   // off · pen · erase · area
+    function syncInk() {
+      Ink.setOn('board', mode !== 'off' || memoOpen);
+      document.documentElement.classList.toggle('board-making', mode === 'area');
+      document.documentElement.classList.toggle('board-pen', mode === 'pen' || mode === 'erase');
+      layer.classList.toggle('edit', mode === 'area');
+      var hint = layer.querySelector('.bd-hint');
+      if (mode === 'area') {
+        if (!hint) { hint = document.createElement('div'); hint.className = 'bd-hint'; layer.appendChild(hint); }
+        hint.textContent = '끌어서 판서 영역을 만드세요 · 손잡이로 옮기기·크기 · A 또는 Esc 로 끝내기';
+      } else if (hint) hint.remove();
+    }
+    function setMode(m) {
+      if (m === mode) m = 'off';
+      mode = m;
+      if (mode !== 'off') {   // 레이저 · 빨간 펜과 동시에 켜지지 않는다
+        if (window.LecturePen && LecturePen.enabled) LecturePen.setEnabled(false);
+        if (window.LectureLaser && LectureLaser.enabled) LectureLaser.setEnabled(false);
+      }
+      act = null; band(null);
+      syncInk(); syncTools();
+    }
+    ['lecture-pen-toggle', 'lecture-laser-toggle'].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) new MutationObserver(function () { if (b.getAttribute('aria-pressed') === 'true' && mode !== 'off') { mode = 'off'; act = null; band(null); syncInk(); syncTools(); } })
+        .observe(b, { attributes: true, attributeFilter: ['aria-pressed'] });
+    });
+
+    /* ── 되돌리기 ── */
+    var undo = [];
+    function ctxKey() { return memoOpen ? 'memo' : sceneKey(); }
+    function pushUndo(u) { undo.push(u); if (undo.length > 200) undo.shift(); }
+    function snapshotUndo(list, ctx) { var copy = list.slice(); return { ctx: ctx || ctxKey(), run: function () { list.length = 0; Array.prototype.push.apply(list, copy); } }; }
+    function doUndo() {
+      var k = ctxKey();
+      for (var i = undo.length - 1; i >= 0; i--) {
+        if (undo[i].ctx === k || (!memoOpen && undo[i].ctx === sceneKey())) { var u = undo.splice(i, 1)[0]; u.run(); save(); redraw(); return; }
+      }
+      toast('되돌릴 판서가 없어요');
+    }
+    function redraw() { renderAreas(); Object.keys(slotBoxes).forEach(function (k) { drawSlot(slotBoxes[k]); }); if (memoOpen) renderMemo(); }
+
+    /* ── 어디에 쓰나 ── */
+    function surfaceAt(p) {
+      if (memoOpen) {
+        var r = memoRect();
+        if (p[0] >= r.x && p[0] <= r.x + r.w && p[1] >= r.y && p[1] <= r.y + r.h) {
+          var pg = page(); return { kind: 'memo', list: pg.s, ox: r.x, oy: r.y, svg: memoSvg, dark: darkBg(pg.bg), ctx: 'memo' };
+        }
+      }
+      var list = areas();
+      for (var i = list.length - 1; i >= 0; i--) {
+        var a = list[i];
+        if (p[0] >= a.x && p[0] <= a.x + a.w && p[1] >= a.y && p[1] <= a.y + a.h) {
+          var n = layer.querySelector('.bd-area[data-id="' + a.id + '"]');
+          return { kind: 'area', list: a.s, ox: a.x, oy: a.y, svg: n && n.querySelector('.bd-ink'), dark: darkBg(a.bg), ctx: sceneKey() };
+        }
+      }
+      var keys = Object.keys(slotBoxes);
+      for (var j = keys.length - 1; j >= 0; j--) {
+        var b = slotBoxes[keys[j]], R = b.rect;
+        if (!b.vis || !R) continue;
+        if (p[0] >= R.x && p[0] <= R.x + R.w && p[1] >= R.y && p[1] <= R.y + R.h) {
+          var l = data.slots[b.key] || (data.slots[b.key] = []);
+          return { kind: 'slot', list: l, ox: R.x, oy: R.y, svg: b.svg, dark: darkBg(null, b.el), ctx: sceneKey() };
+        }
+      }
+      return null;
+    }
+    function segDist(x, y, a, b) {   // 점 (x, y) 와 선분 a–b 사이 거리 — 점 사이가 먼 직선 획도 지우개에 걸리게
+      var dx = b[0] - a[0], dy = b[1] - a[1], L = dx * dx + dy * dy;
+      var t = L ? Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / L)) : 0;
+      return Math.hypot(x - (a[0] + t * dx), y - (a[1] + t * dy));
+    }
+    function eraseAt(s, p) {
+      var x = p[0] - s.ox, y = p[1] - s.oy, R = 16, hit = false;
+      for (var i = s.list.length - 1; i >= 0; i--) {
+        var pts = s.list[i].p, rr = R + s.list[i].w / 2, near = false;
+        if (pts.length === 1) near = Math.hypot(pts[0][0] - x, pts[0][1] - y) < rr;
+        for (var k = 1; k < pts.length && !near; k++) near = segDist(x, y, pts[k - 1], pts[k]) < rr;
+        if (near) {
+          (function (gone, at, lst) { pushUndo({ ctx: s.ctx, run: function () { lst.splice(at, 0, gone); } }); })(s.list.splice(i, 1)[0], i, s.list);
+          hit = true;
+        }
+      }
+      if (hit) { save(); redraw(); }
+    }
+
+    /* ── 영역 만들기 네모 ── */
+    var bandEl = null;
+    function band(r) {
+      if (!r) { if (bandEl) { bandEl.remove(); bandEl = null; } return; }
+      if (!bandEl) { bandEl = document.createElement('div'); bandEl.className = 'bd-band'; layer.appendChild(bandEl); }
+      bandEl.style.left = r.x + 'px'; bandEl.style.top = r.y + 'px'; bandEl.style.width = r.w + 'px'; bandEl.style.height = r.h + 'px';
+    }
+    function bandRect(a, b) {
+      var x = Math.max(0, Math.min(a[0], b[0])), y = Math.max(0, Math.min(a[1], b[1]));
+      return { x: Math.round(x), y: Math.round(y), w: Math.round(Math.min(SW, Math.max(a[0], b[0])) - x), h: Math.round(Math.min(SH, Math.max(a[1], b[1])) - y) };
+    }
+
+    /* ── 입력: 창 전체 capture(빨간 펜과 같은 방식) ── */
+    // 판서로 받은 누름 뒤에 오는 click 하나는 강의 넘기기로 가지 않게 삼킨다.
+    // 펜슬·손가락으로 끌면 click 이 안 올 때가 있어, 0.35초가 지나면 삼키기를 푼다(다음 단추 누름을 먹지 않게).
+    var act = null, swallow = false, swallowT = 0;
+    function grab(e) { e.preventDefault(); e.stopPropagation(); swallow = true; clearTimeout(swallowT); }
+    function letGo() { clearTimeout(swallowT); swallowT = setTimeout(function () { swallow = false; }, 350); }
+    window.addEventListener('pointerdown', function (e) {
+      if (mode === 'off' && !memoOpen) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      var t = e.target;
+      if (Ink.skip(t) || (t && t.closest && t.closest('.bd-chrome,.bd-size,.bm-bar,#lecture-board-tools,#lecture-tools'))) return;
+      var p = toStage(e);
+      if (act) { if (inStage(p)) grab(e); return; }   // 두 번째 손가락은 무시
+      if (!inStage(p)) return;
+      if (mode === 'area') {
+        grab(e); act = { kind: 'band', id: e.pointerId, a: p }; band(bandRect(p, p)); return;
+      }
+      var inMemo = memoOpen && surfaceAt(p) && surfaceAt(p).kind === 'memo';
+      if (mode === 'off') { if (inMemo) grab(e); return; }   // 펜을 끈 채 메모를 눌러도 뒤 장면이 넘어가지 않게
+      if (!Ink.accepts(e)) { if (inMemo && e.pointerType !== 'touch') grab(e); return; }
+      var s = surfaceAt(p);
+      if (!s || !s.svg) return;   // 판서 칸 밖 → 강의(넘기기)로 그대로
+      grab(e);
+      if (mode === 'erase') { act = { kind: 'erase', id: e.pointerId, s: s }; eraseAt(s, p); return; }
+      var stroke = { c: (s.dark ? CHALK : INK)[ci], w: WIDTHS[wi], p: [[r1(p[0] - s.ox), r1(p[1] - s.oy)]] };
+      s.list.push(stroke);
+      act = { kind: 'draw', id: e.pointerId, s: s, stroke: stroke, path: addPath(s.svg, stroke) };
+    }, true);
+    window.addEventListener('pointermove', function (e) {
+      if (!act || e.pointerId !== act.id) return;
+      e.preventDefault(); e.stopPropagation();
+      var p = toStage(e);
+      if (act.kind === 'band') { band(bandRect(act.a, p)); return; }
+      if (act.kind === 'erase') { eraseAt(act.s, p); return; }
+      var q = [r1(p[0] - act.s.ox), r1(p[1] - act.s.oy)], pts = act.stroke.p, l = pts[pts.length - 1];
+      if (Math.hypot(q[0] - l[0], q[1] - l[1]) >= 1.5) { pts.push(q); act.path.setAttribute('d', pathD(pts)); }
+    }, true);
+    function end(e) {
+      if (swallow) letGo();
+      if (!act || e.pointerId !== act.id) return;
+      e.preventDefault(); e.stopPropagation();
+      var a = act; act = null;
+      if (a.kind === 'band') {
+        var r = bandRect(a.a, toStage(e)); band(null);
+        if (r.w >= 120 && r.h >= 80) {
+          var A = { id: uid(), x: r.x, y: r.y, w: r.w, h: r.h, bg: 'chalk', s: [] };
+          areas().push(A);
+          var key = sceneKey();
+          pushUndo({ ctx: key, run: function () { var l = data.areas[key] || [], i = l.indexOf(A); if (i >= 0) l.splice(i, 1); } });
+          save(); renderAreas(); setMode('pen');   // 만들자마자 바로 쓴다 — 옮기기·크기는 A 로 다시 손보기
+          toast('판서 영역을 만들었어요. 바로 쓰면 됩니다. 옮기거나 크기를 바꾸려면 A');
+        } else toast('조금 더 크게 끌어 주세요');
+        return;
+      }
+      if (a.kind === 'draw') {
+        var lst = a.s.list, st = a.stroke;
+        pushUndo({ ctx: a.s.ctx, run: function () { var i = lst.lastIndexOf(st); if (i >= 0) lst.splice(i, 1); } });
+        save();
+      }
+    }
+    window.addEventListener('pointerup', end, true);
+    window.addEventListener('pointercancel', end, true);
+    window.addEventListener('click', function (e) {
+      if (!swallow) return;
+      swallow = false;
+      var t = e.target;   // 단추 · 손잡이 · 메모 막대 누름은 넘기기가 아니니 그대로 보낸다
+      if (Ink.skip(t) || (t && t.closest && t.closest('.bd-chrome,.bd-size,.bm-bar,#lecture-board-tools,#lecture-tools'))) return;
+      e.preventDefault(); e.stopPropagation();
+    }, true);
+    window.addEventListener('contextmenu', function (e) { if (mode !== 'off') { var p = toStage(e); if (inStage(p) && surfaceAt(p)) { e.preventDefault(); e.stopPropagation(); } } }, true);
+
+    /* ── 키 ── */
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing || (e.target.closest && e.target.closest('input,textarea,select,[contenteditable]'))) return;
+      var k = (e.key || '').toLowerCase(), hit = true;
+      if (k === 'k') { if (!e.repeat) setMode('pen'); }
+      else if (k === 'e') { if (!e.repeat) setMode('erase'); }
+      else if (k === 'a') { if (!e.repeat) setMode('area'); }
+      else if (k === 'd') { if (!e.repeat) setMemo(); }
+      else if (k === 'z' && (mode !== 'off' || memoOpen)) doUndo();
+      else if (e.key === 'Escape' && (mode !== 'off' || memoOpen)) { if (mode === 'area' || !memoOpen) setMode('off'); else setMemo(false); }
+      else hit = false;
+      if (hit) { e.preventDefault(); e.stopImmediatePropagation(); }
+    }, true);
+
+    /* ── 도구 단추(도구 상자 안 · 없으면 왼쪽 아래) ── */
+    var IC = {
+      pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M5 19l2-6 9-9 4 4-9 9z"/><path d="M5 19l4-1"/></svg>',
+      erase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M8 20h12M5.5 14.5l8-8a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 18H8.9z"/></svg>',
+      area: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-dasharray="3 2.4"><rect x="3.5" y="5" width="17" height="14" rx="2"/></svg>',
+      memo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M15 9h3M15 13h3"/></svg>',
+      undo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>',
+      board: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 20l2-4M17 20l-2-4M7 9.5c2-2 3 1 5-1"/></svg>'
+    };
+    var group = document.createElement('div');
+    group.className = 'bd-tools';
+    group.innerHTML = '<div class="bd-ttl">남는 판서</div>' +
+      '<div class="bd-grid">' +
+        '<button type="button" data-b="pen" aria-pressed="false" title="판서 펜 (K)"><span class="ic">' + IC.pen + '</span>판서 펜<span class="k">K</span></button>' +
+        '<button type="button" data-b="erase" aria-pressed="false" title="지우개 (E)"><span class="ic">' + IC.erase + '</span>지우개<span class="k">E</span></button>' +
+        '<button type="button" data-b="area" aria-pressed="false" title="판서 영역 만들기·손보기 (A)"><span class="ic">' + IC.area + '</span>판서 영역<span class="k">A</span></button>' +
+        '<button type="button" data-b="memo" aria-pressed="false" title="메모 화면 (D)"><span class="ic">' + IC.memo + '</span>메모 화면<span class="k">D</span></button>' +
+      '</div>' +
+      '<div class="bd-sw" role="group" aria-label="판서 색과 굵기">' +
+        [0, 1, 2, 3].map(function (i) { return '<button type="button" data-col="' + i + '" aria-pressed="false" title="칠판에서는 밝은 분필 색으로 써져요"><i style="background:linear-gradient(135deg,' + INK[i] + ' 50%,' + (i === 0 ? '#c9c9c3' : CHALK[i]) + ' 50%)"></i></button>'; }).join('') +
+        [0, 1, 2].map(function (i) { return '<button type="button" data-wd="' + i + '" aria-pressed="false" aria-label="굵기 ' + (i + 1) + '"><i style="height:' + [3, 6, 10][i] + 'px"></i></button>'; }).join('') +
+        '<button type="button" data-b="undo" class="bd-undo" aria-label="판서 한 획 되돌리기 (Z)" title="판서 한 획 되돌리기 (Z)">' + IC.undo + '</button>' +
+      '</div>';
+    group.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      e.stopPropagation();
+      if (b.dataset.col) { ci = +b.dataset.col; if (mode !== 'pen') setMode('pen'); }
+      else if (b.dataset.wd) { wi = +b.dataset.wd; if (mode !== 'pen') setMode('pen'); }
+      else if (b.dataset.b === 'memo') setMemo();
+      else if (b.dataset.b === 'undo') doUndo();
+      else setMode(b.dataset.b);
+      store.set('lecture_board_tool', { c: ci, w: wi });
+      syncTools(); b.blur();
+    });
+    function syncTools() {
+      group.querySelector('[data-b="pen"]').setAttribute('aria-pressed', String(mode === 'pen'));
+      group.querySelector('[data-b="erase"]').setAttribute('aria-pressed', String(mode === 'erase'));
+      group.querySelector('[data-b="area"]').setAttribute('aria-pressed', String(mode === 'area'));
+      group.querySelector('[data-b="memo"]').setAttribute('aria-pressed', String(memoOpen));
+      group.querySelectorAll('[data-col]').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.col === ci)); });
+      group.querySelectorAll('[data-wd]').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.wd === wi)); });
+    }
+    function placeTools() {
+      if (CLEAN) return;
+      var panel = document.querySelector('#lecture-tools .tb-panel');
+      if (panel) {
+        var hr = document.createElement('hr');
+        var first = panel.querySelector('hr');
+        panel.insertBefore(group, first || null);
+        panel.insertBefore(hr, group);
+        return;
+      }
+      var own = document.createElement('div');
+      own.id = 'lecture-board-tools';
+      own.innerHTML = '<div class="bt-panel"></div><button type="button" class="bt-main" aria-label="판서 도구 열기/닫기" aria-expanded="false" title="남는 판서">' + IC.board + '</button>';
+      own.querySelector('.bt-panel').appendChild(group);
+      document.body.appendChild(own);
+      guard(own);
+      var main = own.querySelector('.bt-main');
+      main.addEventListener('click', function () { var o = !own.classList.contains('open'); own.classList.toggle('open', o); main.setAttribute('aria-expanded', String(o)); main.blur(); });
+    }
+    var tries = 0;
+    (function waitTools() {
+      if (document.querySelector('#lecture-tools .tb-panel') || tries++ > 20) { placeTools(); syncTools(); return; }
+      setTimeout(waitTools, 50);
+    })();
+    var table = document.querySelector('#help table');
+    if (table) {
+      var row = table.insertRow();
+      row.innerHTML = '<td><kbd>K</kbd> · <kbd>E</kbd> · <kbd>A</kbd> · <kbd>D</kbd></td><td>남는 판서 — 판서 펜 · 지우개 · 판서 영역 만들기(끌기) · 메모 화면 (장면을 오가도 남음, Z 되돌리기)</td>';
+    }
+
+    /* ── 장면이 바뀌면 다시 그린다(가볍게 0.25초마다 확인) ── */
+    var lastKey = null;
+    function tick() {
+      if (document.hidden) return;
+      var k = sceneKey();
+      if (k !== lastKey) { lastKey = k; if (act && act.kind !== 'draw') { act = null; band(null); } renderAreas(); }
+      syncSlots();
+    }
+    setInterval(tick, 250);
+    window.addEventListener('hashchange', function () { setTimeout(tick, 30); });
+    window.addEventListener('resize', function () { setTimeout(syncSlots, 60); });
+    window.addEventListener('blur', function () { act = null; band(null); });
+    tick(); syncInk();
+
+    window.LectureBoard = Object.freeze({
+      setMode: setMode, setMemo: setMemo, undo: doUndo,
+      get mode() { return mode; }, get memoOpen() { return memoOpen; },
+      get data() { return data; },
+      clearAll: function () { data = { v: 1, areas: {}, slots: {}, memo: { pages: [{ bg: 'paper', s: [] }], cur: 0, side: data.memo.side } }; undo.length = 0; save(); Object.keys(slotBoxes).forEach(function (k) { slotBoxes[k].box.remove(); delete slotBoxes[k]; }); renderAreas(); syncSlots(); if (memoOpen) renderMemo(); }
+    });
+  }
+  // 엔진 → 레이저 → 펜 → 도구 상자 → 판서 칠판 순서로 붙는다
+  function later(n) { return function () { if (n <= 0) mount(); else setTimeout(later(n - 1), 0); }; }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(later(4), 0); });
+  else setTimeout(later(4), 0);
+})();
+</script>
 </body>
 </html>
