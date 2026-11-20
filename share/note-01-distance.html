@@ -3759,7 +3759,8 @@ try{
  * 누가 그리나는 89_ink.js(LectureInk) 규칙을 그대로 따른다 — 펜슬 · 마우스는 늘, 손가락은 «손가락 그리기» 설정대로.
  * 판서는 이 기기(브라우저)에 덱마다 저장된다(localStorage lecture_board:<파일 경로>). 다른 기기로는 옮겨 가지 않는다.
  * 도구 상자(93_toolbox.js)가 있으면 그 안에 「판서」 묶음을 끼워 넣고, 없으면 왼쪽 아래에 칠판 단추를 따로 만든다.
- * 키: K 판서 펜 · E 지우개 · A 판서 영역 만들기·손보기 · D 메모 화면 · Z 한 획 되돌리기 · Esc 끄기/닫기
+ * 키: K 판서 펜 · E 지우개 · A 판서 영역 만들기·손보기 · D 메모 화면 · X 판서 칸 접기·펴기 · Z 한 획 되돌리기 · Esc 끄기/닫기
+ * 판서 칸 접기(11-20): 칸 오른쪽 위 「칸 접기」 단추 또는 X → 칸이 사라지고(판서는 남김) 그 자리에 「판서 칸 펴기」 단추만 남는다. 기기에 기억.
  * 엔진(core.js 의 Deck · #stage 1920×1080)이 없으면 #stage 또는 [data-stage] 와 주소의 #장면 번호를 쓴다.
  */
 (function () {
@@ -3795,6 +3796,7 @@ try{
     var data = store.get(KEY);
     if (!data || data.v !== 1) data = { v: 1, areas: {}, slots: {}, memo: { pages: [{ bg: 'paper', s: [] }], cur: 0, side: 'right' } };
     if (!data.memo || !data.memo.pages || !data.memo.pages.length) data.memo = { pages: [{ bg: 'paper', s: [] }], cur: 0, side: 'right' };
+    if (!data.hide) data.hide = {};   // 접어 둔 판서 칸(장면/칸 이름 → true). 판서는 지우지 않고 칸만 감춘다
     var tool = store.get('lecture_board_tool') || {};
     var ci = tool.c >= 0 && tool.c < 4 ? tool.c : 0, wi = tool.w >= 0 && tool.w < 3 ? tool.w : 1;
     var saveT = 0, warned = false;
@@ -3825,6 +3827,10 @@ try{
       '#board-layer .bd-size{display:none;position:absolute;right:0;bottom:0;width:52px;height:52px;pointer-events:auto;touch-action:none;cursor:nwse-resize;background:linear-gradient(135deg,transparent 50%,#ffb020 50%);border-bottom-right-radius:12px}',
       '#board-layer.edit .bd-area .bd-size{display:block}',
       '#board-layer .bd-band{position:absolute;border:4px dashed #ffb020;background:rgba(255,176,32,.10);border-radius:12px}',
+      '.bd-slot-off{filter:opacity(0)!important;pointer-events:none!important}',
+      '#board-layer .bd-fold{position:absolute;height:40px;padding:0 14px;border:0;border-radius:10px;background:rgba(22,26,32,.72);color:#fff;font:600 19px/40px "Pretendard Variable",Pretendard,system-ui,sans-serif;white-space:nowrap;pointer-events:auto;cursor:pointer;opacity:.5;transform:translateX(-100%);transition:opacity .2s}',
+      '#board-layer .bd-fold:hover{opacity:.95}',
+      '#board-layer .bd-fold.off{opacity:.9;background:rgba(31,107,79,.92)}',
       '#board-layer .bd-hint{position:absolute;left:50%;top:22px;transform:translateX(-50%);padding:10px 22px;border-radius:9999px;background:rgba(22,26,32,.86);color:#fff;font:600 24px/1.3 "Pretendard Variable",Pretendard,system-ui,sans-serif;white-space:nowrap}',
       '#board-memo{position:absolute;top:0;height:' + SH + 'px;z-index:35;display:none;pointer-events:auto}',
       '#board-memo.open{display:block}',
@@ -3843,6 +3849,8 @@ try{
       '.bd-tools .bd-grid button .k{margin-left:auto;font-weight:500;font-size:11px;color:#7d8892}',
       '.bd-tools .bd-grid button[aria-pressed="true"]{background:#1f6b4f!important;color:#fff!important;border-color:#1f6b4f!important}',
       '.bd-tools .bd-grid button[aria-pressed="true"] .k{color:#d7f2e6}',
+      '.bd-tools .bd-grid .bd-wide{grid-column:1 / -1}',
+      '.bd-tools .bd-grid button:disabled{opacity:.45;cursor:default}',
       '.bd-sw .bd-undo{width:34px;margin-left:auto}',
       '.bd-sw .bd-undo svg{width:18px;height:18px}',
       '#lecture-tools .bd-ttl,#lecture-board-tools .bd-ttl{font-size:12px;font-weight:700;color:#7d8892;padding:2px 4px 0}',
@@ -4035,11 +4043,29 @@ try{
           b = slotBoxes[key] = { key: key, box: box, svg: box.querySelector('.bd-ink'), rect: null };
         }
         b.el = el;
+        var off = !!data.hide[key];
+        el.classList.toggle('bd-slot-off', off);   // filter 로 감춰서 checkVisibility(단계로 나왔는지)는 그대로 읽힌다
         var r = el.getBoundingClientRect();
         var rect = { x: (r.left - sr.left) * kx, y: (r.top - sr.top) * ky, w: r.width * kx, h: r.height * ky };
-        var show = visible(el) && rect.w > 4 && rect.h > 4;
+        var natural = visible(el) && rect.w > 4 && rect.h > 4;   // 장면·단계상 칸이 나와 있는가
+        var show = natural && !off;
         b.box.style.display = show ? '' : 'none';
         b.vis = show;
+        b.natural = natural;
+        // 칸 오른쪽 위 접기·펴기 단추 — 접어도 이 단추는 남아서 다시 펼 수 있다
+        if (!b.fold) {
+          var fb = document.createElement('button');
+          fb.type = 'button'; fb.className = 'bd-fold'; fb.setAttribute('data-interactive', '');
+          guard(fb);
+          fb.addEventListener('click', function (e) { toggleSlot(key); e.currentTarget.blur(); });
+          layer.appendChild(fb);
+          b.fold = fb;
+        }
+        b.fold.style.display = natural && !CLEAN ? '' : 'none';
+        b.fold.classList.toggle('off', off);
+        b.fold.textContent = off ? '판서 칸 펴기' : '칸 접기';
+        b.fold.title = off ? '감춘 판서 칸을 다시 보이기 (X)' : '판서 칸 감추기 — 쓴 판서는 지워지지 않아요 (X)';
+        b.fold.style.left = (rect.x + rect.w - 10) + 'px'; b.fold.style.top = (rect.y + 10) + 'px';
         var moved = !b.rect || Math.abs(b.rect.x - rect.x) > .5 || Math.abs(b.rect.y - rect.y) > .5 || Math.abs(b.rect.w - rect.w) > .5 || Math.abs(b.rect.h - rect.h) > .5;
         if (moved) {
           b.rect = rect;
@@ -4048,7 +4074,21 @@ try{
           drawSlot(b);
         }
       });
-      Object.keys(slotBoxes).forEach(function (k) { if (!seen[k]) { slotBoxes[k].box.remove(); delete slotBoxes[k]; } });
+      Object.keys(slotBoxes).forEach(function (k) { if (!seen[k]) { slotBoxes[k].box.remove(); if (slotBoxes[k].fold) slotBoxes[k].fold.remove(); delete slotBoxes[k]; } });
+      syncFold();
+    }
+    function sceneSlots() { return Object.keys(slotBoxes).filter(function (k) { return slotBoxes[k].natural; }); }
+    function toggleSlot(key) {
+      if (data.hide[key]) delete data.hide[key]; else data.hide[key] = true;
+      save(); syncSlots();
+    }
+    function toggleScene() {   // 이 장면의 판서 칸을 한꺼번에 — 하나라도 보이면 모두 접고, 모두 접혀 있으면 모두 편다
+      var ks = sceneSlots();
+      if (!ks.length) { toast('이 장면에는 판서 칸이 없어요. A 로 판서 영역을 만들 수 있어요'); return; }
+      var anyShown = ks.some(function (k) { return !data.hide[k]; });
+      ks.forEach(function (k) { if (anyShown) data.hide[k] = true; else delete data.hide[k]; });
+      save(); syncSlots();
+      toast(anyShown ? '판서 칸을 접었어요. 쓴 판서는 그대로 남아 있어요' : '판서 칸을 다시 폈어요');
     }
     function drawSlot(b) { if (b && b.rect) drawInk(b.svg, data.slots[b.key] || [], b.rect.w, b.rect.h); }
 
@@ -4292,6 +4332,7 @@ try{
       else if (k === 'e') { if (!e.repeat) setMode('erase'); }
       else if (k === 'a') { if (!e.repeat) setMode('area'); }
       else if (k === 'd') { if (!e.repeat) setMemo(); }
+      else if (k === 'x') { if (!e.repeat) toggleScene(); }
       else if (k === 'z' && (mode !== 'off' || memoOpen)) doUndo();
       else if (e.key === 'Escape' && (mode !== 'off' || memoOpen)) { if (mode === 'area' || !memoOpen) setMode('off'); else setMemo(false); }
       else hit = false;
@@ -4305,7 +4346,8 @@ try{
       area: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-dasharray="3 2.4"><rect x="3.5" y="5" width="17" height="14" rx="2"/></svg>',
       memo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M15 9h3M15 13h3"/></svg>',
       undo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>',
-      board: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 20l2-4M17 20l-2-4M7 9.5c2-2 3 1 5-1"/></svg>'
+      board: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M7 20l2-4M17 20l-2-4M7 9.5c2-2 3 1 5-1"/></svg>',
+      fold: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M14 4v16M17 10l-2 2 2 2"/></svg>'
     };
     var group = document.createElement('div');
     group.className = 'bd-tools';
@@ -4315,6 +4357,7 @@ try{
         '<button type="button" data-b="erase" aria-pressed="false" title="지우개 (E)"><span class="ic">' + IC.erase + '</span>지우개<span class="k">E</span></button>' +
         '<button type="button" data-b="area" aria-pressed="false" title="판서 영역 만들기·손보기 (A)"><span class="ic">' + IC.area + '</span>판서 영역<span class="k">A</span></button>' +
         '<button type="button" data-b="memo" aria-pressed="false" title="메모 화면 (D)"><span class="ic">' + IC.memo + '</span>메모 화면<span class="k">D</span></button>' +
+        '<button type="button" data-b="fold" aria-pressed="false" class="bd-wide" title="이 장면의 판서 칸 접기·펴기 (X) — 쓴 판서는 지워지지 않아요"><span class="ic">' + IC.fold + '</span><span class="lb">판서 칸 접기</span><span class="k">X</span></button>' +
       '</div>' +
       '<div class="bd-sw" role="group" aria-label="판서 색과 굵기">' +
         [0, 1, 2, 3].map(function (i) { return '<button type="button" data-col="' + i + '" aria-pressed="false" title="칠판에서는 밝은 분필 색으로 써져요"><i style="background:linear-gradient(135deg,' + INK[i] + ' 50%,' + (i === 0 ? '#c9c9c3' : CHALK[i]) + ' 50%)"></i></button>'; }).join('') +
@@ -4328,6 +4371,7 @@ try{
       else if (b.dataset.wd) { wi = +b.dataset.wd; if (mode !== 'pen') setMode('pen'); }
       else if (b.dataset.b === 'memo') setMemo();
       else if (b.dataset.b === 'undo') doUndo();
+      else if (b.dataset.b === 'fold') toggleScene();
       else setMode(b.dataset.b);
       store.set('lecture_board_tool', { c: ci, w: wi });
       syncTools(); b.blur();
@@ -4339,6 +4383,15 @@ try{
       group.querySelector('[data-b="memo"]').setAttribute('aria-pressed', String(memoOpen));
       group.querySelectorAll('[data-col]').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.col === ci)); });
       group.querySelectorAll('[data-wd]').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.wd === wi)); });
+      syncFold();
+    }
+    function syncFold() {   // 도구 상자의 「판서 칸 접기」 단추 — 이 장면에 칸이 있을 때만 쓸 수 있다
+      if (!group) return;
+      var fb = group.querySelector('[data-b="fold"]'); if (!fb) return;
+      var ks = sceneSlots(), allOff = ks.length > 0 && ks.every(function (k) { return data.hide[k]; });
+      fb.disabled = !ks.length;
+      fb.setAttribute('aria-pressed', String(allOff));
+      fb.querySelector('.lb').textContent = allOff ? '판서 칸 펴기' : '판서 칸 접기';
     }
     function placeTools() {
       if (CLEAN) return;
@@ -4367,7 +4420,7 @@ try{
     var table = document.querySelector('#help table');
     if (table) {
       var row = table.insertRow();
-      row.innerHTML = '<td><kbd>K</kbd> · <kbd>E</kbd> · <kbd>A</kbd> · <kbd>D</kbd></td><td>남는 판서 — 판서 펜 · 지우개 · 판서 영역 만들기(끌기) · 메모 화면 (장면을 오가도 남음, Z 되돌리기)</td>';
+      row.innerHTML = '<td><kbd>K</kbd> · <kbd>E</kbd> · <kbd>A</kbd> · <kbd>D</kbd> · <kbd>X</kbd></td><td>남는 판서 — 판서 펜 · 지우개 · 판서 영역 만들기(끌기) · 메모 화면 · 판서 칸 접기·펴기 (장면을 오가도 남음, Z 되돌리기)</td>';
     }
 
     /* ── 장면이 바뀌면 다시 그린다(가볍게 0.25초마다 확인) ── */
@@ -4388,7 +4441,8 @@ try{
       setMode: setMode, setMemo: setMemo, undo: doUndo,
       get mode() { return mode; }, get memoOpen() { return memoOpen; },
       get data() { return data; },
-      clearAll: function () { data = { v: 1, areas: {}, slots: {}, memo: { pages: [{ bg: 'paper', s: [] }], cur: 0, side: data.memo.side } }; undo.length = 0; save(); Object.keys(slotBoxes).forEach(function (k) { slotBoxes[k].box.remove(); delete slotBoxes[k]; }); renderAreas(); syncSlots(); if (memoOpen) renderMemo(); }
+      clearAll: function () { data = { v: 1, areas: {}, slots: {}, hide: {}, memo: { pages: [{ bg: 'paper', s: [] }], cur: 0, side: data.memo.side } }; undo.length = 0; save(); Object.keys(slotBoxes).forEach(function (k) { slotBoxes[k].box.remove(); if (slotBoxes[k].fold) slotBoxes[k].fold.remove(); delete slotBoxes[k]; }); stage.querySelectorAll('.bd-slot-off').forEach(function (n) { n.classList.remove('bd-slot-off'); }); renderAreas(); syncSlots(); if (memoOpen) renderMemo(); },
+      toggleSlots: function () { toggleScene(); }
     });
   }
   // 엔진 → 레이저 → 펜 → 도구 상자 → 판서 칠판 순서로 붙는다
